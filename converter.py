@@ -5,7 +5,7 @@ import pprint
 import argparse
 
 # Script params
-phoebus = "phoebus.sh"
+phoebus = "/dls_sw/apps/phoebus/dls_config/phoebus.sh"
 no_edit_file = "no_edit.txt"
 
 debug = False
