@@ -1,11 +1,21 @@
 meta_data:
   - domain: fe
+    domain_synoptic_dst: fe-support/synoptic
+    domain_ui_support_dst: fe-ui-support/bob
+    acc_ui_support_dst:  acc-ui-support/bob
 
 files:
   # Convert all top level screens and put them in the fe-services repository
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi
-    dst: /scratch/zrv91478/vscode/fe-services/synoptic
+    dst: synoptic
+    macros:
+      dom: FE22B
+      cell: 22
+      mks_type: a
+      type: B
+      srvalve: 03
 
   # Convert device screens and put them in the fe-ui-support repository
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/common
-    dst: /scratch/zrv91478/vscode/fe-ui-support/bob
+    dst: fe-ui-support
+    include_subdirs: true

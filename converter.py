@@ -1,73 +1,191 @@
+import re
+
 import screen_converter
 import yaml
 from pathlib import Path
+import xmltodict
+from dataclasses import dataclass, field
 
+MACRO_EXCEPTION_LIST = ["pv_name", "pv_value"]
+
+@dataclass
+class ConversionConfig:
+    src_path = Path()
+    dst_path = Path()
+    dst_dir = Path()
+    synoptic = False
+    macros: dict[str, str] = field(default_factory=lambda: {})
 
 class Converter:
-    def __init__(self, config_file, test):
+    def __init__(self, output_dir, config_file, test):
         self.test = test
-        self.screen_path_mapping: list[tuple] = []
+        self.output_dir = output_dir
+        # Mapping between a screens src path and destination dir
+        self.conversion_data: list[ConversionConfig] = []
+        # Mapping between a support module name and its screen location dir
+        self.support_module_locations: list[tuple] = []
         self.get_config(config_file)
 
     def get_config(self, config_file):
         # get useful data out of json
         with open(config_file, "r") as file:
             data = yaml.safe_load(file)
-            domain = data["meta_data"][0]["domain"]
-            print(f"Getting config data for domain: {domain}")
-            file_data = data["files"]
-            for path_data in file_data:
-                src_path = Path(path_data["src"])
-                dst_path = Path(path_data["dst"])
-                if src_path.is_dir():
-                    src_files = src_path.iterdir()
+            self.parse_meta_data(data["meta_data"][0])
+            all_file_data = data["files"]
+            for file_data in all_file_data:
+                self.conversion_data.extend(self.parse_file_data(file_data))
+
+    def parse_file_data(self, file_data):
+        new_conversions = []
+
+        src_files = []
+        dst_paths = []
+        src_path_config = Path(file_data["src"])
+        dst_path_config = Path()
+
+        if file_data["dst"] == "acc-ui-support":
+            dst_path_config = self.acc_ui_support_dst_full
+            dst_path_partial = self.acc_ui_support_dst_part
+        elif file_data["dst"] == f"{self.domain}-ui-support":
+            dst_path_config = self.domain_ui_support_dst_full
+            dst_path_partial = self.domain_ui_support_dst_part
+        elif file_data["dst"] == "synoptic":
+            dst_path_config = self.domain_synoptic_dst_full
+            dst_path_partial = self.domain_synoptic_dst_part
+        else:
+            raise IndexError
+        
+        if src_path_config.is_dir():
+            if "include_subdirs" in file_data:
+                if file_data["include_subdirs"]:
+                    for file in src_path_config.rglob("*.opi"):
+                        src_files.append(file)
+                        recursive_dir = Path('')
+
+                        # We need to do some fancy path manipulation to recreate the old directory
+                        # structure in the destination directory
+                        if len(file.parent.parts) > len(src_path_config.parts):
+                            for subdir in file.parent.parts[len(src_path_config.parts):]:
+                                    recursive_dir = recursive_dir / subdir
+                        if (recursive_dir.parts[0], dst_path_partial / recursive_dir) not in self.support_module_locations:
+                            self.support_module_locations.append((recursive_dir.parts[0], dst_path_partial / recursive_dir))
+
+                        new_dst = dst_path_config / recursive_dir
+                        dst_paths.append(new_dst)
+            else:
+                for file in src_path_config.glob("*.opi"):
+                    src_files.append(file)
+                    dst_paths.append(dst_path_config)
+        else:
+            src_files = [src_path_config]
+            dst_paths = [dst_path_config]
+
+        for src_file, dst_path in zip(src_files, dst_paths, strict=True):
+            new_conversion = ConversionConfig()
+            new_conversion.src_path = src_file
+            new_conversion.dst_dir = dst_path
+            if "macros" in file_data:
+                new_conversion.macros = file_data["macros"]
+            if file_data["dst"] == "synoptic":
+                new_conversion.synoptic = True
+            new_conversions.append(new_conversion)
+
+        return new_conversions
+
+    def parse_meta_data(self, meta_data):
+        self.domain = meta_data["domain"]
+        print(f"Getting config data for domain: {self.domain}")
+        
+        self.acc_ui_support_dst_part = Path(meta_data["acc_ui_support_dst"])
+        self.domain_synoptic_dst_part = Path(meta_data["domain_synoptic_dst"])
+        self.domain_ui_support_dst_part = Path(meta_data["domain_ui_support_dst"])
+
+        self.acc_ui_support_dst_full = self.output_dir / meta_data["acc_ui_support_dst"]
+        self.domain_synoptic_dst_full = self.output_dir / meta_data["domain_synoptic_dst"]
+        self.domain_ui_support_dst_full = self.output_dir / meta_data["domain_ui_support_dst"]
+
+    def get_widget_dicts(self, file):
+        with open(file, "r", encoding="utf-8") as file:
+            fxml = file.read()
+            as_dict = xmltodict.parse(fxml)
+            widgets = as_dict["display"]["widget"]
+            return widgets
+
+    def update_filepaths(self, file):
+        widgets = self.get_widget_dicts(file)
+        for widget in widgets:
+            if not isinstance(widget, dict):
+                continue
+            if "file" in widget:
+                old_file_path = Path(widget["file"])
+                if len(old_file_path.parts) == 1:
+                    #No need to update filepath as looking for file in same dir
+                    pass
                 else:
-                    src_files = [src_path]
+                    support_module_found = False
+                    for mapping in self.support_module_locations:
+                        support_module = mapping[0]
+                        if support_module in old_file_path.parts:
+                            if support_module_found:
+                                raise IndexError("Support module already found, issue?")
+                            support_module_found = True
+                            widget["file"] = mapping[1]
+                    if not support_module_found:
+                        print(f"Could not find support module for file: {old_file_path}!")
+                        # raise IndexError(f"Could not find support module for file: {old_file_path}")
 
-                if self.test:
-                    # If in testing mode, output files to current directory/output
-                    dst_path = Path.cwd() / "output"
-                    dst_path.mkdir(exist_ok=True)
-                    
-                for src_file in src_files:
-                    if src_file.suffix == ".opi":
-                        self.screen_path_mapping.append((src_file, dst_path))
-
-    def update_filepaths(self):
-        # for line in xml file
-        #   if <file> or <image-file> in line:
-        #       Update path to new path somehow
+    def convert_generic_support_module(self):
+        #Using only the name of the support module, attempt to find its bob files,
+        #convert them to Phoebus and then save them in acc-ui-support/bob
         pass
 
-    def update_macros(self):
-        # If synoptic screen
-        #   if macro in line:
-        #       if macro is in our config data
-        #           macro = macro_value
-        #       else:
-        #           raise error
-        pass
 
-    def convert_to_techui_builder(self):
-        pass
+    def define_macros(self, file, conversion):
+        #look for any instances of eg ${string}
+        #see if there is already a macro resolution for the string either for the widget or file
+        #if not, check if this is an edge case string (eg pv_name) which doesnt need defining here
+        #if not try and add it if the conversion specifies a macro
+        #if the string is not defined in conversion.macros then raise an error
+        p = Path(file)
+        with p.open("r", encoding="utf-8") as fh:
+            content = fh.read()
+        macros = set(re.findall(r"\$[\{\(]([^\}\)]+)[\}\)]", content))
+
+        # This is where we add the macro to the file or to a widget in the file where it is needed
+        # But we can only do this if the macro was passed in to the converter.
+        # TODO: Rewrite!
+        for macro in macros:
+            if macro not in MACRO_EXCEPTION_LIST:
+                if f"<{macro}>" not in content:
+                    if macro in conversion.macros.keys():
+                        content = re.sub(r"\$[\{\(]([^\}\)]+)[\}\)]", str(conversion.macros[macro]), content)
+                    else:
+                        # This macro has not been defined!
+                        print("Could not find definition for macro {macro}!")
+                        # raise KeyError("Macro missing!")
+                
+        with p.open("w", encoding="utf-8") as fh:
+            fh.write(content)
+
 
     def convert(self):
-        for screen_src, screen_dst in self.screen_path_mapping:
+        for conversion in self.conversion_data:
+            # Create directories to place screens, this should probably be in screen_converter.py
+            conversion.dst_dir.mkdir(parents=True, exist_ok=True)
             # Convert .boy to .bob
-            screen_converter.main(screen_src, screen_dst)
+            converted_file = screen_converter.main(conversion.src_path, conversion.dst_dir)
+            # # We need to define macros which were previously passed into the file
+            self.define_macros(converted_file, conversion)
             # # Update filepaths
-            # self.update_filepaths()
-            # # Update macros
-            # self.update_macros()
-            # # Convert to techui-builder?
-            # self.convert_to_techui_builder()
+            self.update_filepaths(converted_file)
 
 
 def main(
-    config_file=Path.cwd() / "config" / "front-ends.yaml",
+    output_dir=Path.cwd() / "output",
+    config_file=Path.cwd() / "config" / "example.yaml",
     test=True,
 ):
-    converter = Converter(config_file, test)
+    converter = Converter(output_dir, config_file, test)
     converter.convert()
 
 
