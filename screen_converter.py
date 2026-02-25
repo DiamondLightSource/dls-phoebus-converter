@@ -526,7 +526,7 @@ def main(
     no_modify=False,
     replace_tab=False,
     no_edit_file=None,
-):
+) -> Path:
     dst_file = dst_dir / src_file.name.replace(".opi", ".bob")
     tmp_file = dst_dir / "tmp.opi"
 
@@ -591,7 +591,7 @@ def main(
 
     log_data = sc.cs
     log_conversion_steps(log_data)
-
+    return sc.dst_file
 
 if __name__ == "__main__":
     main(*parse_args())
