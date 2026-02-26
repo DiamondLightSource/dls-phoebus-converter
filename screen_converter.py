@@ -7,7 +7,6 @@ from dataclasses import dataclass
 import logging
 from logconfig import setup_logging
 
-
 PHOEBUS_SH_FILE = "/dls_sw/apps/phoebus/dls_config/phoebus.sh"
 PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
 TEMPLATE_FILE = "templates/example_template.xml"
@@ -19,18 +18,18 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 @dataclass
 class ConversionSteps:
-    replaceEdmSym = False
-    fixGroupCont = False
-    updateLegSev = False
-    fixExitBut = False
-    replaceOpiExt = False
-    nonABAction = False
-    replaceWithAB = False
-    replaceDBScript = False
-    fixOpenActionName = False
-    fixActionMacroName = False
-    createSymImages = False
-    replaceActionTab = False
+    replace_edm_sym = False
+    fix_group_cont = False
+    update_leg_sev = False
+    fix_exit_but = False
+    replace_opi_ext = False
+    non_ab_action = False
+    replace_with_ab = False
+    replace_db_script = False
+    fix_open_action_name = False
+    fix_action_macro_name = False
+    create_sym_images = False
+    replace_action_tab = False
 
 
 class ScreenConverter:
@@ -69,7 +68,7 @@ class ScreenConverter:
                     fixed = True
                 result.append(line)
         if fixed:
-            self.cs.replaceEdmSym = True
+            self.cs.replace_edm_sym = True
             logger.debug("Replacing CSS EDM Widgets in OPI before conversion")
             with open(self.tmp_file, "w") as f:
                 f.writelines(result)
@@ -102,17 +101,16 @@ class ScreenConverter:
         for line in stderr.decode("utf-8").split("/n"):
             logger.debug(line)
 
-    def update_legacy_sev_status(self, inputField, legSev, newSev):
-        if legSev in inputField:
-            self.cs.updateLegSev = True
-            result = inputField.replace(legSev, newSev)
-            if self.debug:
-                print(" -> Fixing " + legSev + " to " + newSev)
+    def update_legacy_sev_status(self, input_field, leg_sev, new_sev):
+        if leg_sev in input_field:
+            self.cs.update_leg_sev = True
+            result = input_field.replace(leg_sev, new_sev)
+            logger.debug("Fixing " + leg_sev + " to " + new_sev)
             return result
         else:
-            return inputField
+            return input_field
 
-    def check_legacy_sev(self, inputField):
+    def check_legacy_sev(self, input_field):
         # OK, Major, Minor, Invalid/undefined
         legacy = [
             "pvLegacySev0==0",
@@ -120,42 +118,44 @@ class ScreenConverter:
             "pvLegacySev0==2",
             "pvLegacySev0==-1",
         ]
-        newV = ["pvSev0==0", "pvSev0==2", "pvSev0==1", "pvSev0==3"]
-        result = inputField
+        new_v = ["pvSev0==0", "pvSev0==2", "pvSev0==1", "pvSev0==3"]
+        result = input_field
         for i in range(len(legacy)):
-            result = self.update_legacy_sev_status(result, legacy[i], newV[i])
+            result = self.update_legacy_sev_status(result, legacy[i], new_v[i])
         return result
 
     def check_rule(self, widget):
         if "rules" in widget:
             if type(widget["rules"]["rule"]) is list:
                 for r in widget["rules"]["rule"]:
-                    ruleExpr = r["exp"]
-                    if type(ruleExpr) is list:
-                        for e in ruleExpr:
+                    rule_expr = r["exp"]
+                    if type(rule_expr) is list:
+                        for e in rule_expr:
                             e["@bool_exp"] = self.check_legacy_sev(e["@bool_exp"])
                     else:
-                        ruleExpr["@bool_exp"] = self.check_legacy_sev(
-                            ruleExpr["@bool_exp"]
+                        rule_expr["@bool_exp"] = self.check_legacy_sev(
+                            rule_expr["@bool_exp"]
                         )
             else:
-                ruleExpr = widget["rules"]["rule"]["exp"]
-                if type(ruleExpr) is list:
-                    for r in ruleExpr:
+                rule_expr = widget["rules"]["rule"]["exp"]
+                if type(rule_expr) is list:
+                    for r in rule_expr:
                         r["@bool_exp"] = self.check_legacy_sev(r["@bool_exp"])
                 else:
-                    ruleExpr["@bool_exp"] = self.check_legacy_sev(ruleExpr["@bool_exp"])
+                    rule_expr["@bool_exp"] = self.check_legacy_sev(
+                        rule_expr["@bool_exp"]
+                    )
 
     def fix_exit_button(self):
-        self.cs.fixExitBut = True
-        newaction = {}
-        newaction["@type"] = "close_display"
-        newaction["description"] = "Close display"
-        return newaction
+        self.cs.fix_exit_but = True
+        new_action = {}
+        new_action["@type"] = "close_display"
+        new_action["description"] = "Close display"
+        return new_action
 
     def replace_opi_extension(self, action):
         if "file" in action:
-            self.cs.replaceOpiExt = True
+            self.cs.replace_opi_ext = True
             logger.debug("Replacing file open action: " + str(action["file"]) + " to open .BOB file")
             opi = action["file"]
             bob = opi.replace(".opi", ".bob")
@@ -170,7 +170,7 @@ class ScreenConverter:
             if action["@type"] == "open_display":
                 if action["target"] == "tab":
                     action["target"] = "standalone"
-                    self.cs.replaceActionTab = True
+                    self.cs.replace_action_tab = True
 
     def check_actions_in_non_action_buttons(self, widget):
         if "actions" in widget:
@@ -179,7 +179,7 @@ class ScreenConverter:
                 and widget["@type"] != "action_button"
                 and widget["@type"] != "symbol"
             ):
-                self.cs.nonABAction = True
+                self.cs.non_ab_action = True
                 logger.debug(
                     "Action contained in widget that isn't an action button: "
                     + str(widget["@type"])
@@ -191,7 +191,7 @@ class ScreenConverter:
                     if widget["@type"] == "bool_button":
                         if widget["on_label"] != widget["off_label"]:
                             return
-                    self.cs.replaceWithAB = True
+                    self.cs.replace_with_ab = True
                     logger.debug(
                         "    Attempting to fix by converting to an action_button"
                     )
@@ -215,7 +215,7 @@ class ScreenConverter:
         if widget["text"] == "Graph":
             action = widget["actions"]["action"]
             if action["@type"] == "execute":
-                self.cs.replaceDBScript = True
+                self.cs.replace_db_script = True
                 action["@type"] = "open_file"
                 action["description"] = "Open File"
                 action["file"] = PLOT_LOCATION_MACRO + self.pname + ".plt"
@@ -224,7 +224,7 @@ class ScreenConverter:
     def fix_embedded_screen_ext(self, widget):
         if "file" not in widget:
             return
-        self.cs.replaceOpiExt = True
+        self.cs.replace_opi_ext = True
         opi_file = widget["file"]
         bob_file = opi_file.replace(".opi", ".bob")
         widget["file"] = bob_file
@@ -233,17 +233,17 @@ class ScreenConverter:
         result = []
         with open(opifile, "r") as f:
             lines = f.readlines()
-            checkForBorderProp = False
-            foundBorderProp = False
+            check_for_border_prop = False
+            found_border_prop = False
             fixed = False
             for line in lines:
                 if (
                     "org.csstudio.opibuilder.widgets.groupingContainer" in line
-                    and not checkForBorderProp
+                    and not check_for_border_prop
                 ):
-                    checkForBorderProp = True
+                    check_for_border_prop = True
                 elif "<widget typeId" in line:
-                    if checkForBorderProp and not foundBorderProp:
+                    if check_for_border_prop and not found_border_prop:
                         fixed = True
                         result.append("   <border_color>\n")
                         result.append(
@@ -252,21 +252,20 @@ class ScreenConverter:
                         result.append("   </border_color>\n")
                         result.append("   <border_style>0</border_style>\n")
                         # Reset
-                        checkForBorderProp = False
-                        foundBorderProp = False
+                        check_for_border_prop = False
+                        found_border_prop = False
                         if (
                             "org.csstudio.opibuilder.widgets.groupingContainer" in line
-                            and not checkForBorderProp
+                            and not check_for_border_prop
                         ):
-                            checkForBorderProp = True
-                if checkForBorderProp:
+                            check_for_border_prop = True
+                if check_for_border_prop:
                     if "border_color" in line:
-                        checkForBorderProp = False
-                        foundBorderProp = True
-
+                        check_for_border_prop = False
+                        found_border_prop = True
                 result.append(line)
         if fixed:
-            self.cs.fixGroupCont = True
+            self.cs.fix_group_cont = True
             logger.debug(
                 "OPI ERROR: Missing border property in 'Group' widget... fixing"
             )
@@ -281,7 +280,7 @@ class ScreenConverter:
             if "macros" in action.keys():
                 for i in action["macros"]:
                     if action["macros"][i] == "$(name)":
-                        self.cs.fixActionMacroName = True
+                        self.cs.fix_action_macro_name = True
                         action["macros"][i] = widget["name"]
 
     def create_symbol_from_edm(self, widget):
@@ -308,24 +307,24 @@ class ScreenConverter:
                     location = s["location"]
                     width = int(s["width"])
                     height = int(s["height"])
-                    nimages = int(s["nimages"])
-                    startindex = s["startindex"]
-                    invalidimageindex = int(s["invalidimageindex"])
+                    n_images = int(s["nimages"])
+                    start_index = s["startindex"]
+                    invalid_image_index = int(s["invalidimageindex"])
 
                     # Run action of left click
                     if "actions" in widget:
                         widget["run_actions_on_mouse_click"] = "true"
 
                     # Set up symbols
-                    outimage = location.split(".")[:-1]
+                    out_image = location.split(".")[:-1]
                     ext = "." + location.split(".")[-1]
                     logger.info("Creating new images for symbol from: " + location)
-                    if os.path.isfile(outimage[0] + "_0" + ext):
+                    if os.path.isfile(out_image[0] + "_0" + ext):
                         logger.info("   ... images already exist - skipping")
                     else:
-                        self.cs.createSymImages = True
-                        for n in range(nimages):
-                            output = outimage[0] + "_" + str(n) + ext
+                        self.cs.create_sym_images = True
+                        for n in range(n_images):
+                            output = out_image[0] + "_" + str(n) + ext
                             x = 0 + width * n
                             cmd = (
                                 "convert "
@@ -347,17 +346,17 @@ class ScreenConverter:
 
                             stdout, stderr = process.communicate()
 
-                    outimage = ".".join(image.split(".")[:-1])
+                    out_image = ".".join(image.split(".")[:-1])
                     ext = "." + image.split(".")[-1]
                     symbols = []
-                    startindexlist = startindex.split(",")
-                    if len(startindexlist) > 1:
-                        for n in startindexlist:
-                            symbols.append(outimage + "_" + n + ext)
+                    start_index_list = start_index.split(",")
+                    if len(start_index_list) > 1:
+                        for n in start_index_list:
+                            symbols.append(out_image + "_" + n + ext)
                     else:
-                        for n in range(nimages - int(startindexlist[0])):
-                            index = n + int(startindexlist[0])
-                            symbols.append(outimage + "_" + str(index) + ext)
+                        for n in range(n_images - int(start_index_list[0])):
+                            index = n + int(start_index_list[0])
+                            symbols.append(out_image + "_" + str(index) + ext)
 
                     widget["symbols"]["symbol"] = symbols
 
@@ -371,7 +370,7 @@ class ScreenConverter:
                             if e["@bool_exp"] == "pvLegacySev0==-1":
                                 exp["@bool_exp"] = "pvSev0==3 || pvSev0==4"
                                 exp["value"] = (
-                                    outimage + "_" + str(invalidimageindex) + ext
+                                    out_image + "_" + str(invalid_image_index) + ext
                                 )
 
                         rule["exp"] = exp
@@ -438,41 +437,41 @@ class ScreenConverter:
 
 def log_conversion_steps(log_data):
     # Log what was done
-    if log_data.replaceEdmSym:
-    if log_data.fixGroupCont:
+    if log_data.replace_edm_sym:
         logger.info("Replaced EDMSymbol widgets in OPI before running converter")
+    if log_data.fix_group_cont:
         logger.info(
             "Fixed Grouping Container widget is OPI that is missing required properties"
         )
+    if log_data.update_leg_sev:
         logger.info("Updating legacy PV severity status")
+    if log_data.fix_exit_but:
         logger.info(
             "Converting EXIT to script to an EXIT action button to close display"
         )
-    if log_data.updateLegSev:
-    if log_data.fixExitBut:
-    if log_data.replaceOpiExt:
+    if log_data.replace_opi_ext:
         logger.info(
             "Replaced .OPI file extensions with .BOB for EmbeddedDisplay/LinkingContainers/Open Display actions"
         )
-    if log_data.nonABAction:
+    if log_data.non_ab_action:
         logger.warning(
             "Found an action on a widget that is NOT an ActionButton or Symbol widget. Debug for more"
         )
-    if log_data.replaceWithAB:
+    if log_data.replace_with_ab:
         logger.info(
             "Replaced a Rectangle/BooleanButton widget with an action with an Action Button widget"
         )
-    if log_data.replaceDBScript:
+    if log_data.replace_db_script:
         logger.info(
             "Replaced script to open databrowser with an action to open a DataBrowser plt file"
         )
-    if log_data.fixActionMacroName:
+    if log_data.fix_action_macro_name:
         logger.info(
             "Fixed Open Display action that contains the $name macro that does not get parsed"
         )
-    if log_data.createSymImages:
-    if log_data.replaceActionTab:
+    if log_data.create_sym_images:
         logger.info("Created new images for Symbol widget from original")
+    if log_data.replace_action_tab:
         logger.info("Replace open display target=tab with target=standalone")
 
 
