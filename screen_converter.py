@@ -512,8 +512,16 @@ def parse_args():
     else:
         template_file = TEMPLATE_FILE
 
-    return src_file, dst_dir, template_file, args.pname, args.fix_group, args.no_modify, args.replace_tab, args.no_edit_file,
-    
+    return (
+        src_file,
+        dst_dir,
+        template_file,
+        args.pname,
+        args.fix_group,
+        args.no_modify,
+        args.replace_tab,
+        args.no_edit_file,
+    )
 
 
 def main(
@@ -592,6 +600,7 @@ def main(
     log_data = sc.cs
     log_conversion_steps(log_data)
     return sc.dst_file
+
 
 if __name__ == "__main__":
     main(*parse_args())
