@@ -4,11 +4,17 @@ import os
 import xmltodict
 import argparse
 from dataclasses import dataclass
+import logging
+from logconfig import setup_logging
 
 
 PHOEBUS_SH_FILE = "/dls_sw/apps/phoebus/dls_config/phoebus.sh"
 PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
 TEMPLATE_FILE = "templates/example_template.xml"
+
+if not logging.getLogger("dls_phoebus_converter"):
+    setup_logging()
+logger = logging.getLogger("dls_phoebus_converter")
 
 
 @dataclass
@@ -64,8 +70,7 @@ class ScreenConverter:
                 result.append(line)
         if fixed:
             self.cs.replaceEdmSym = True
-            if self.debug:
-                print("-> Replacing CSS EDM Widgets in OPI before conversion")
+            logger.debug("Replacing CSS EDM Widgets in OPI before conversion")
             with open(self.tmp_file, "w") as f:
                 f.writelines(result)
 
@@ -74,8 +79,7 @@ class ScreenConverter:
     def delete_old_file(self):
         try:
             os.remove(self.dst_file)
-            if self.debug:
-                print("-> Removing old conversion: " + self.dst_file)
+            logger.info(f"Removing old converted file: {self.dst_file}")
         except OSError:
             pass
 
@@ -92,11 +96,11 @@ class ScreenConverter:
             convert_command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
 
+        # Captures the stdout and stderr from the converter process.
+        # This can be very verbose, so we log it at the DEBUG level.
         stdout, stderr = process.communicate()
-        # print(stdout)
         for line in stderr.decode("utf-8").split("/n"):
-            if self.debug:
-                print(line)
+            logger.debug(line)
 
     def update_legacy_sev_status(self, inputField, legSev, newSev):
         if legSev in inputField:
@@ -152,8 +156,7 @@ class ScreenConverter:
     def replace_opi_extension(self, action):
         if "file" in action:
             self.cs.replaceOpiExt = True
-            if self.debug:
-                print("-> Replacing file open action to open .BOB")
+            logger.debug("Replacing file open action: " + str(action["file"]) + " to open .BOB file")
             opi = action["file"]
             bob = opi.replace(".opi", ".bob")
             action["file"] = bob
@@ -177,21 +180,21 @@ class ScreenConverter:
                 and widget["@type"] != "symbol"
             ):
                 self.cs.nonABAction = True
-                if self.debug:
-                    print(
-                        "-> !!!!!!! WARNING: Action contained in widget that isn't an action button: "
-                        + str(widget["@type"])
-                        + ", name: "
-                        + str(widget["name"])
-                    )
-                    print("    action: " + str(widget["actions"]["action"]))
+                logger.debug(
+                    "Action contained in widget that isn't an action button: "
+                    + str(widget["@type"])
+                    + ", name: "
+                    + str(widget["name"])
+                )
+                logger.debug("    action: " + str(widget["actions"]["action"]))
                 if widget["@type"] == "rectangle" or widget["@type"] == "bool_button":
                     if widget["@type"] == "bool_button":
                         if widget["on_label"] != widget["off_label"]:
                             return
                     self.cs.replaceWithAB = True
-                    if self.debug:
-                        print("  Attempting to fix by converting to an action_button")
+                    logger.debug(
+                        "    Attempting to fix by converting to an action_button"
+                    )
                     widget["@type"] = "action_button"
 
                     if "on_label" in widget:
@@ -208,8 +211,7 @@ class ScreenConverter:
                                 widget["rules"]["rule"].remove(r)
 
     def replace_data_browser_script(self, widget):
-        if self.debug:
-            print("-> Replacing databrowser")
+        logger.debug("Replacing databrowser script with action to open plot file")
         if widget["text"] == "Graph":
             action = widget["actions"]["action"]
             if action["@type"] == "execute":
@@ -265,10 +267,9 @@ class ScreenConverter:
                 result.append(line)
         if fixed:
             self.cs.fixGroupCont = True
-            if self.debug:
-                print(
-                    "-> OPI ERROR: Missing border property in 'Group' widget... fixing"
-                )
+            logger.debug(
+                "OPI ERROR: Missing border property in 'Group' widget... fixing"
+            )
             with open(self.tmp_file, "w") as f:
                 f.writelines(result)
 
@@ -286,7 +287,10 @@ class ScreenConverter:
     def create_symbol_from_edm(self, widget):
         setup_dict = {}
         if not os.path.isfile(self.template_file):
-            print("Error!!!! No template files provided!!")
+            error_msg = f"No template file provided"
+            logger.error(error_msg, exc_info=True)
+            raise FileNotFoundError(error_msg)
+
         with open(self.template_file, "r", encoding="utf-8") as file:
             fxml = file.read()
 
@@ -299,8 +303,7 @@ class ScreenConverter:
                 sym_list = setup_dict["symbols"]["symbol"]
             for s in sym_list:
                 if s["name"] == widget["name"]:
-                    if self.debug:
-                        print("-> Fixing Symbol widget with name: " + s["name"])
+                    logger.info("Fixing Symbol widget with name: " + s["name"])
                     image = s["image"]
                     location = s["location"]
                     width = int(s["width"])
@@ -316,12 +319,9 @@ class ScreenConverter:
                     # Set up symbols
                     outimage = location.split(".")[:-1]
                     ext = "." + location.split(".")[-1]
-                    if self.debug:
-                        print("-> Creating new images for symbol from: " + location)
+                    logger.info("Creating new images for symbol from: " + location)
                     if os.path.isfile(outimage[0] + "_0" + ext):
-                        # Skip if it alreayd exists
-                        if self.debug:
-                            print("   ... images already exist - skipping")
+                        logger.info("   ... images already exist - skipping")
                     else:
                         self.cs.createSymImages = True
                         for n in range(nimages):
@@ -377,14 +377,13 @@ class ScreenConverter:
                         rule["exp"] = exp
 
     def parse_widget(self, widget, spacing, level, parent):
-        # print(str(level)+ " " + spacing + widget["@type"] + ": " + widget["name"])
 
         if not isinstance(widget, dict):
             return
 
         if "@typeId" in widget:
-            print(
-                "-> Detected old CSS index '@typeid' - suggests that the Phoebus converter\
+            logging.info(
+                "Detected old CSS index '@typeid' - suggests that the Phoebus converter\
     failed to convert the GroupContainer widget.\nTry running converter with --fixGroup option."
             )
             exit(0)
@@ -440,39 +439,41 @@ class ScreenConverter:
 def log_conversion_steps(log_data):
     # Log what was done
     if log_data.replaceEdmSym:
-        print("-> Replaced EDMSymbol widgets in OPI before running converter")
     if log_data.fixGroupCont:
-        print(
-            "-> Fixed Grouping Container widget is OPI that is missing required properties"
+        logger.info("Replaced EDMSymbol widgets in OPI before running converter")
+        logger.info(
+            "Fixed Grouping Container widget is OPI that is missing required properties"
+        )
+        logger.info("Updating legacy PV severity status")
+        logger.info(
+            "Converting EXIT to script to an EXIT action button to close display"
         )
     if log_data.updateLegSev:
-        print("-> Updating legacy PV severity status")
     if log_data.fixExitBut:
-        print("-> Converting EXIT to script to an EXIT action button to close display")
     if log_data.replaceOpiExt:
-        print(
-            "-> Replaced .OPI file extensions with .BOB for EmbeddedDisplay/LinkingContainers/Open Display actions"
+        logger.info(
+            "Replaced .OPI file extensions with .BOB for EmbeddedDisplay/LinkingContainers/Open Display actions"
         )
     if log_data.nonABAction:
-        print(
-            "-> Found an action on a widget that is NOT an ActionButton or Symbol widget. Debug for more"
+        logger.warning(
+            "Found an action on a widget that is NOT an ActionButton or Symbol widget. Debug for more"
         )
     if log_data.replaceWithAB:
-        print(
-            "-> Replaced a Rectangle/BooleanButton widget with an action with an Action Button widget"
+        logger.info(
+            "Replaced a Rectangle/BooleanButton widget with an action with an Action Button widget"
         )
     if log_data.replaceDBScript:
-        print(
-            "-> Replaced script to open databrowser with an action to open a DataBrowser plt file"
+        logger.info(
+            "Replaced script to open databrowser with an action to open a DataBrowser plt file"
         )
     if log_data.fixActionMacroName:
-        print(
-            "-> Fixed Open Display action that contains the $name macro that does not get parsed"
+        logger.info(
+            "Fixed Open Display action that contains the $name macro that does not get parsed"
         )
     if log_data.createSymImages:
-        print("-> Created new images for Symbol widget from original")
     if log_data.replaceActionTab:
-        print("-> Replace open display target=tab with target=standalone")
+        logger.info("Created new images for Symbol widget from original")
+        logger.info("Replace open display target=tab with target=standalone")
 
 
 def parse_args():
@@ -549,7 +550,7 @@ def main(
             lines = f.readlines()
             for line in lines:
                 if src_file == line.strip():
-                    print(
+                    logging.warning(
                         "!!! OPI file to be converted is in the 'no_edit' list suggesting \
                     that it has had manual changes that should not be overwritten.\n\
                     If this is incorrect then remove this file from the "

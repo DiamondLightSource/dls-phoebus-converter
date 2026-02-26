@@ -2,11 +2,16 @@ import re
 
 import screen_converter
 import yaml
+import logging
 from pathlib import Path
 import xmltodict
 from dataclasses import dataclass, field
+from logconfig import setup_logging
 
 MACRO_EXCEPTION_LIST = ["pv_name", "pv_value"]
+
+setup_logging()
+logger = logging.getLogger("dls_phoebus_converter")
 
 
 @dataclass
@@ -39,7 +44,7 @@ class Converter:
 
     def parse_meta_data(self, meta_data):
         self.domain = meta_data["domain"]
-        print(f"Getting config data for domain: {self.domain}")
+        logger.info(f"Getting config data for domain: {self.domain}\n")
 
         self.acc_ui_support_dst_part = Path(meta_data["acc_ui_support_dst"])
         self.domain_synoptic_dst_part = Path(meta_data["domain_synoptic_dst"])
@@ -74,7 +79,9 @@ class Converter:
             dst_path_config = self.domain_synoptic_dst_full
             dst_path_partial = self.domain_synoptic_dst_part
         else:
-            raise IndexError(f"Invalid dst field in config file: {file_data['dst']}")
+            error_msg = f"Invalid dst field in config file: {file_data['dst']}"
+            logger.error(error_msg, exc_info=True)
+            raise ValueError(error_msg)
 
         # If the src path is a directory, we find all .opi files within it and add them
         # to the conversion list, otherwise we add the single file specified
@@ -147,7 +154,7 @@ class Converter:
                             support_module_found = True
                             widget["file"] = mapping[1]
                     if not support_module_found:
-                        print(
+                        logger.warning(
                             f"Could not find support module for file: {old_file_path}!"
                         )
                         # raise IndexError(f"Could not find support module for file: {old_file_path}")
@@ -182,7 +189,7 @@ class Converter:
                         )
                     else:
                         # This macro has not been defined!
-                        print("Could not find definition for macro {macro}!")
+                        logger.warning(f"Could not find definition for macro: {macro}")
                         # raise KeyError("Macro missing!")
 
         with p.open("w", encoding="utf-8") as fh:
@@ -190,6 +197,7 @@ class Converter:
 
     def convert(self):
         for conversion in self.conversion_data:
+            logger.info(f"Converting {conversion.src_path}")
             # Create directories to place screens, this should probably be in screen_converter.py
             conversion.dst_dir.mkdir(parents=True, exist_ok=True)
             # Convert .boy to .bob
@@ -200,6 +208,7 @@ class Converter:
             self.define_macros(converted_file, conversion)
             # Update filepaths
             self.update_filepaths(converted_file)
+            logger.info(f"Conversion saved to {converted_file}\n")
 
 
 def main(
