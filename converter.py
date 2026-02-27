@@ -153,7 +153,11 @@ class Converter:
                                 raise IndexError("Support module already found, issue?")
                             support_module_found = True
                             widget["file"] = mapping[1]
-                            logger.info("Updated filepath for widget: " + str({widget["name"]}) + f" to {mapping[1]}")
+                            logger.info(
+                                "Updated filepath for widget: "
+                                + str({widget["name"]})
+                                + f" to {mapping[1]}"
+                            )
                     if not support_module_found:
                         logger.warning(
                             f"Could not find support module for file: {old_file_path}"
@@ -169,7 +173,7 @@ class Converter:
         # look for any instances of eg ${string}
         # see if there is already a macro resolution for the string either for the widget or file
         # if not, check if this is an edge case string (eg pv_name) which doesnt need defining here
-        # Exclude any macros with whitespace characters. These are used for bash commands e.g. configure-ioc -s 
+        # Exclude any macros with whitespace characters. These are used for bash commands e.g. configure-ioc -s
         # if not try and add it if the conversion specifies a macro
         # if the string is not defined in conversion.macros then log a warning
         p = Path(file)
