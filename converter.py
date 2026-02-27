@@ -169,13 +169,13 @@ class Converter:
         # look for any instances of eg ${string}
         # see if there is already a macro resolution for the string either for the widget or file
         # if not, check if this is an edge case string (eg pv_name) which doesnt need defining here
+        # Exclude any macros with whitespace characters. These are used for bash commands e.g. configure-ioc -s 
         # if not try and add it if the conversion specifies a macro
-        # if the string is not defined in conversion.macros then raise an error
+        # if the string is not defined in conversion.macros then log a warning
         p = Path(file)
         with p.open("r", encoding="utf-8") as fh:
             content = fh.read()
-        macros = set(re.findall(r"\$[\{\(]([^\}\)]+)[\}\)]", content))
-
+        macros = set(re.findall(r"\$[\{\(]([^\}\)\s]+)[\}\)]", content))
         logger.info(f"Found macros in file: {macros}")
         # This is where we add the macro to the file or to a widget in the file where it is needed
         # But we can only do this if the macro was passed in to the converter.
