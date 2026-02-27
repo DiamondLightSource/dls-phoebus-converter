@@ -16,15 +16,15 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 @dataclass
 class ConversionConfig:
-    src_path = Path()
-    dst_path = Path()
-    dst_dir = Path()
-    synoptic = False
+    src_path: Path = Path()
+    dst_path: Path = Path()
+    dst_dir: Path = Path()
+    synoptic: bool = False
     macros: dict[str, str] = field(default_factory=lambda: {})
 
 
 class Converter:
-    def __init__(self, output_dir, config_file, test):
+    def __init__(self, output_dir: Path, config_file: Path, test: bool) -> None:
         self.test = test
         self.output_dir = output_dir
         # Mapping between a screens src path and destination dir
@@ -33,7 +33,7 @@ class Converter:
         self.support_module_locations: list[tuple] = []
         self.get_config(config_file)
 
-    def get_config(self, config_file):
+    def get_config(self, config_file: Path) -> None:
         # get useful data out of json
         with open(config_file, "r") as file:
             data = yaml.safe_load(file)
@@ -42,7 +42,7 @@ class Converter:
             for file_data in all_file_data:
                 self.conversion_data.extend(self.parse_file_data(file_data))
 
-    def parse_meta_data(self, meta_data):
+    def parse_meta_data(self, meta_data: dict) -> None:
         self.domain = meta_data["domain"]
         logger.info(f"Getting config data for domain: {self.domain}\n")
 
@@ -58,7 +58,7 @@ class Converter:
             self.output_dir / meta_data["domain_ui_support_dst"]
         )
 
-    def parse_file_data(self, file_data):
+    def parse_file_data(self, file_data: dict) -> list[ConversionConfig]:
         new_conversions = []
 
         src_files = []
@@ -127,14 +127,14 @@ class Converter:
 
         return new_conversions
 
-    def get_widget_dicts(self, file):
+    def get_widget_dicts(self, file: Path) -> list[dict]:
         with open(file, "r", encoding="utf-8") as file:
             fxml = file.read()
             as_dict = xmltodict.parse(fxml)
             widgets = as_dict["display"]["widget"]
             return widgets
 
-    def update_filepaths(self, file):
+    def update_filepaths(self, file: Path) -> None:
         widgets = self.get_widget_dicts(file)
         for widget in widgets:
             if not isinstance(widget, dict):
@@ -165,7 +165,7 @@ class Converter:
         # convert them to Phoebus and then save them in acc-ui-support/bob
         pass
 
-    def define_macros(self, file, conversion):
+    def define_macros(self, file: Path, conversion: ConversionConfig) -> None:
         # look for any instances of eg ${string}
         # see if there is already a macro resolution for the string either for the widget or file
         # if not, check if this is an edge case string (eg pv_name) which doesnt need defining here
