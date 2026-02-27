@@ -153,9 +153,10 @@ class Converter:
                                 raise IndexError("Support module already found, issue?")
                             support_module_found = True
                             widget["file"] = mapping[1]
+                            logger.info("Updated filepath for widget: " + str({widget["name"]}) + f" to {mapping[1]}")
                     if not support_module_found:
                         logger.warning(
-                            f"Could not find support module for file: {old_file_path}!"
+                            f"Could not find support module for file: {old_file_path}"
                         )
                         # raise IndexError(f"Could not find support module for file: {old_file_path}")
 
@@ -175,6 +176,7 @@ class Converter:
             content = fh.read()
         macros = set(re.findall(r"\$[\{\(]([^\}\)]+)[\}\)]", content))
 
+        logger.info(f"Found macros in file: {macros}")
         # This is where we add the macro to the file or to a widget in the file where it is needed
         # But we can only do this if the macro was passed in to the converter.
         # TODO: Rewrite!
