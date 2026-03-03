@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 import re
 
 import opi_converter
@@ -24,8 +25,11 @@ class ConversionConfig:
 
 
 class Converter:
-    def __init__(self, output_dir: Path, config_file: Path, test: bool) -> None:
-        self.test = test
+    def __init__(self,
+                 config_file: Path,
+                 output_dir: Path,
+                 debug: bool = False) -> None:
+        self.debug = debug
         self.output_dir = output_dir
         # Mapping between a screens src path and destination dir
         self.conversion_data: list[ConversionConfig] = []
@@ -234,17 +238,49 @@ class Converter:
             # We need to define macros which were previously passed into the synoptic as script arguments
             if conversion.synoptic:
                 self.handle_macros(converted_file, conversion)
-            # Update filepaths
+            # Update filepath within bob files to the new locations of screens
             self.update_filepaths(converted_file)
             logger.info(f"Conversion saved to {converted_file}\n")
 
 
-def main(
-    output_dir=Path.cwd() / "output",
-    config_file=Path.cwd() / "config" / "example.yaml",
-    test=True,
-):
-    converter = Converter(output_dir, config_file, test)
+def parse_arguments():
+    """Parse command line arguments sent to virtac"""
+    parser = ArgumentParser()
+    parser.add_argument(
+        "config_file",
+        type=str,
+        help="The yaml config for the conversion. This can either be a full path to a" \
+        " .yaml file or the name of one of the .yaml files in config/",
+    )
+    parser.add_argument(
+        "-o",
+        "--output-dir",
+        required=False,
+        type=str,
+        help="The full path to the directory to output generated files to",
+        default=Path.cwd() / "output"
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        help="Disable the simulator's time-consuming emittance calculation",
+        action="store_true",
+        default=False,
+    )
+    args = parser.parse_args()
+
+    config_file = Path(args.config_file)
+    # If the user only supplied the name of a config file, then add the path to the
+    # directort containing the config files
+    if len(config_file.parts) == 1:
+        config_file = Path.cwd() / "config" / config_file
+
+    return config_file, Path(args.output_dir), args.debug
+
+def main():
+    args = parse_arguments()
+    logging.debug(f"Running screen conversion with arguments: {args}")
+    converter = Converter(config_file=args[0], output_dir=args[1], debug=args[2])
     converter.convert()
 
 
