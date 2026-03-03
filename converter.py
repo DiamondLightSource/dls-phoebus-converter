@@ -18,8 +18,8 @@ logger = logging.getLogger("dls_phoebus_converter")
 @dataclass
 class ConversionConfig:
     src_path: Path = Path()
-    dst_path: Path = Path()
     dst_dir: Path = Path()
+    dst_file: str = None
     synoptic: bool = False
     macros: dict[str, str] = field(default_factory=lambda: {})
 
@@ -91,6 +91,11 @@ class Converter:
         # to the conversion list, otherwise we add the single file specified
         # in the config
         if src_path_config.is_dir():
+            if "new_filename" in file_data:
+                message = "The 'new_filename' field cannot be used when src is given as a directory. Please check config file."
+                logger.error(message)
+                raise ValueError(message)
+
             if "include_subdirs" in file_data and file_data["include_subdirs"] is True:
                 for file in src_path_config.rglob("*.opi"):
                     src_files.append(file)
@@ -123,6 +128,8 @@ class Converter:
             new_conversion = ConversionConfig()
             new_conversion.src_path = src_file
             new_conversion.dst_dir = dst_path
+            if "new_filename" in file_data:
+                new_conversion.dst_file = file_data["new_filename"]
             if "macros" in file_data:
                 new_conversion.macros = file_data["macros"]
             if file_data["dst"] == "synoptic":
@@ -226,14 +233,14 @@ class Converter:
                     
         self.add_new_macros(file, new_macro_names, new_macro_values)
 
-    def convert(self):
+    def convert(self) -> None:
         for conversion in self.conversion_data:
             logger.info(f"Converting {conversion.src_path}")
             # Create directories to place screens, this should probably be in opi_converter.py
             conversion.dst_dir.mkdir(parents=True, exist_ok=True)
             # Convert .boy to .bob
             converted_file = opi_converter.main(
-                conversion.src_path, conversion.dst_dir
+                conversion.src_path, conversion.dst_dir, conversion.dst_file
             )
             # We need to define macros which were previously passed into the synoptic as script arguments
             if conversion.synoptic:

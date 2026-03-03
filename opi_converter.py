@@ -75,8 +75,9 @@ class ScreenConverter:
 
     def delete_old_file(self):
         try:
-            os.remove(self.dst_file)
-            logger.info(f"Removing old converted file: {self.dst_file}")
+            old_file = os.path.join(self.dst_dir, self.dst_file)
+            os.remove(old_file)
+            logger.info(f"Removing old converted file: {old_file}")
         except OSError:
             pass
 
@@ -421,7 +422,9 @@ class ScreenConverter:
 
     def modify_bob_xml(self):
         as_dict = {}
-        with open(self.dst_file, "r", encoding="utf-8") as file:
+        with open(
+            os.path.join(self.dst_dir, self.dst_file), "r", encoding="utf-8"
+        ) as file:
             fxml = file.read()
 
             as_dict = xmltodict.parse(fxml)
@@ -432,7 +435,7 @@ class ScreenConverter:
         return as_dict
 
     def write_dict(self, as_dict, xml_dict):
-        with open(self.dst_file, "w") as f:
+        with open(os.path.join(self.dst_dir, self.dst_file), "w") as f:
             new_xml = xmltodict.unparse(as_dict, pretty=True)
             f.write(new_xml)
 
@@ -538,6 +541,7 @@ def parse_args():
 def main(
     src_file,
     dst_dir,
+    dst_file=None,
     template_file=TEMPLATE_FILE,
     pname=None,
     fix_group=True,
@@ -545,7 +549,9 @@ def main(
     replace_tab=False,
     no_edit_file=None,
 ) -> Path:
-    dst_file = dst_dir / src_file.name.replace(".opi", ".bob")
+    if dst_file is None:
+        dst_file = src_file.name.replace(".opi", ".bob")
+
     tmp_file = dst_dir / "tmp.opi"
 
     sc = ScreenConverter(
@@ -590,10 +596,11 @@ def main(
 
     # Run Phoebus converter
     sc.run_converter(file)
+    new_file = os.path.join(dst_dir, dst_file)
 
     # Remove tmp OPI files if a modified version was created
     if use_tmp_file:
-        tmp_file.with_suffix(".bob").rename(dst_file)
+        tmp_file.with_suffix(".bob").rename(new_file)
         os.remove(tmp_file)
 
     if not no_modify:
@@ -609,7 +616,7 @@ def main(
 
     log_data = sc.cs
     log_conversion_steps(log_data)
-    return sc.dst_file
+    return Path(new_file)
 
 
 if __name__ == "__main__":

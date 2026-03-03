@@ -27,6 +27,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_B.opi
     dst: synoptic
+    new_filename: FE03I.bob
     macros:
       dom: FE03I
       cell: 03
