@@ -40,7 +40,6 @@ class ScreenConverter:
         dst_dir,
         tmp_file,
         template_file,
-        debug,
         pname,
         replace_tab,
     ):
@@ -49,7 +48,6 @@ class ScreenConverter:
         self.dst_dir = dst_dir
         self.tmp_file = tmp_file
         self.template_file = template_file
-        self.debug = debug
         self.pname = pname
         self.replace_tab = replace_tab
         self.cs = ConversionSteps()
@@ -506,6 +504,12 @@ def parse_args():
         action="store_true",
         help="File describing opi files that shouldnt be converted.",
     )
+    ap.add_argument(
+        "--debug",
+        help="Enable debug logging",
+        action="store_true",
+        default=False,
+    )
     args = ap.parse_args()
 
     src_file = Path(args.src_file)
@@ -515,6 +519,9 @@ def parse_args():
         template_file = Path(args["tfile"])
     else:
         template_file = TEMPLATE_FILE
+
+    if args.debug:
+        logger.setLevel(logging.DEBUG)
 
     return (
         src_file,
@@ -532,7 +539,6 @@ def main(
     src_file,
     dst_dir,
     template_file=TEMPLATE_FILE,
-    debug=False,
     pname=None,
     fix_group=True,
     no_modify=False,
@@ -543,7 +549,7 @@ def main(
     tmp_file = dst_dir / "tmp.opi"
 
     sc = ScreenConverter(
-        src_file, dst_file, dst_dir, tmp_file, template_file, debug, pname, replace_tab
+        src_file, dst_file, dst_dir, tmp_file, template_file, pname, replace_tab
     )
 
     # Check the no_edit file to see if we should even run the conversion

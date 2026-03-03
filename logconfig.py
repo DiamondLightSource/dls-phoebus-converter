@@ -45,14 +45,14 @@ default_config = {
         # All debug and user messages.
         "stderr": {
             "class": "logging.StreamHandler",
-            "level": "INFO",
+            "level": "DEBUG",
             "formatter": "simple",
             "stream": "ext://sys.stderr",
         },
         # Generated every time the script is run.
         "file": {
             "class": "logging.FileHandler",
-            "level": "INFO",
+            "level": "DEBUG",
             "formatter": "simple",
             "filename": get_timestamped_log_filename(),
             "mode": "w",
@@ -62,7 +62,7 @@ default_config = {
         # Fine-grained logging configuration for individual modules or classes
         # Use this to set different log levels without changing 'real' code.
         "dls_phoebus_converter": {
-            "level": "DEBUG",
+            "level": "INFO",
             "propagate": False,
             "handlers": ["stderr", "file"],
         },
