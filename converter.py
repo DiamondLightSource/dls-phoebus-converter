@@ -169,8 +169,8 @@ class Converter:
         # convert them to Phoebus and then save them in acc-ui-support/bob
         pass
 
-    def add_new_macro(self, file: Path, macro_names: list[str], macro_values: list[str]):
-        """Add a new macro to the top level of the bob file."""
+    def add_new_macros(self, file: Path, macro_names: list[str], macro_values: list[str]):
+        """Add a list of macro name/values to the top level of the bob file."""
 
         with open(file, "r", encoding="utf-8") as fh:
             fxml = fh.read()
@@ -220,7 +220,7 @@ class Converter:
                     logger.warning(f"Could not find definition for macro: '{macro}'. "
                                    "Should this have been defined in your yaml config?")
                     
-        self.add_new_macro(file, new_macro_names, new_macro_values)
+        self.add_new_macros(file, new_macro_names, new_macro_values)
 
     def convert(self):
         for conversion in self.conversion_data:
@@ -241,7 +241,7 @@ class Converter:
 
 def main(
     output_dir=Path.cwd() / "output",
-    config_file=Path.cwd() / "config" / "examples.yaml",
+    config_file=Path.cwd() / "config" / "example.yaml",
     test=True,
 ):
     converter = Converter(output_dir, config_file, test)
