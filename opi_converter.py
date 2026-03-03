@@ -156,7 +156,11 @@ class ScreenConverter:
     def replace_opi_extension(self, action):
         if "file" in action:
             self.cs.replace_opi_ext = True
-            logger.debug("Replacing file open action: " + str(action["file"]) + " to open .BOB file")
+            logger.debug(
+                "Replacing file open action: "
+                + str(action["file"])
+                + " to open .BOB file"
+            )
             opi = action["file"]
             bob = opi.replace(".opi", ".bob")
             action["file"] = bob
