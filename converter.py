@@ -128,8 +128,8 @@ class Converter:
         return new_conversions
 
     def get_widget_dicts(self, file: Path) -> list[dict]:
-        with open(file, "r", encoding="utf-8") as file:
-            fxml = file.read()
+        with open(file, "r", encoding="utf-8") as fh:
+            fxml = fh.read()
             as_dict = xmltodict.parse(fxml)
             widgets = as_dict["display"]["widget"]
             return widgets
