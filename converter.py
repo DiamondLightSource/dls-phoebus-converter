@@ -204,10 +204,10 @@ class Converter:
     def convert(self):
         for conversion in self.conversion_data:
             logger.info(f"Converting {conversion.src_path}")
-            # Create directories to place screens, this should probably be in screen_converter.py
+            # Create directories to place screens, this should probably be in opi_converter.py
             conversion.dst_dir.mkdir(parents=True, exist_ok=True)
             # Convert .boy to .bob
-            converted_file = screen_converter.main(
+            converted_file = opi_converter.main(
                 conversion.src_path, conversion.dst_dir
             )
             # We need to define macros which were previously passed into the file
