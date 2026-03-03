@@ -263,7 +263,7 @@ def parse_arguments():
     parser.add_argument(
         "-d",
         "--debug",
-        help="Disable the simulator's time-consuming emittance calculation",
+        help="Enable debug logging",
         action="store_true",
         default=False,
     )
@@ -274,13 +274,16 @@ def parse_arguments():
     # directort containing the config files
     if len(config_file.parts) == 1:
         config_file = Path.cwd() / "config" / config_file
+    
+    if args.debug:
+        logger.setLevel(logging.DEBUG)
 
-    return config_file, Path(args.output_dir), args.debug
+    return config_file, Path(args.output_dir)
 
 def main():
     args = parse_arguments()
-    logging.debug(f"Running screen conversion with arguments: {args}")
-    converter = Converter(config_file=args[0], output_dir=args[1], debug=args[2])
+    logger.debug(f"Running screen conversion with arguments: {args}")
+    converter = Converter(config_file=args[0], output_dir=args[1])
     converter.convert()
 
 
