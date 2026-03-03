@@ -18,6 +18,7 @@
   <height>700</height>
   <macros>
     <include_parent_macros>true</include_parent_macros>
+    <test>hello</test>
   </macros>
   <name>$(dom)</name>
   <rules />
@@ -251,7 +252,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>34.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -279,7 +280,7 @@ $(pv_value)</tooltip>
         <color name="Text: FG" red="0" green="0" blue="0" />
       </foreground_color>
       <group_name></group_name>
-      <height>194</height>
+      <height>1</height>
       <macros>
         <include_parent_macros>true</include_parent_macros>
         <id>01</id>
@@ -297,7 +298,7 @@ $(pv_value)</tooltip>
       <tooltip></tooltip>
       <visible>true</visible>
       <widget_type>Linking Container</widget_type>
-      <width>66</width>
+      <width>1</width>
       <wuid>4276664a:15c7868e695:7577</wuid>
       <x>24</x>
       <y>0</y>
@@ -502,7 +503,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>34.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -617,7 +618,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>34.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -714,7 +715,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>34.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -1122,7 +1123,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>34.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -1309,7 +1310,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>34.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -1567,7 +1568,7 @@ $(pv_value)</tooltip>
       <show_scrollbar>true</show_scrollbar>
       <tooltip></tooltip>
       <transparent>true</transparent>
-      <visible>false</visible>
+      <visible>true</visible>
       <widget_type>Grouping Container</widget_type>
       <width>1041</width>
       <wuid>-4e7b6da0:179cc030df2:-7bc2</wuid>
@@ -3192,7 +3193,7 @@ $(pv_value)</tooltip>
           <keep_wh_ratio>false</keep_wh_ratio>
         </scale_options>
         <scripts />
-        <sub_image_width>568.0</sub_image_width>
+        <sub_image_width>24.0</sub_image_width>
         <tooltip>$(pv_name)
 $(pv_value)</tooltip>
         <visible>true</visible>
@@ -4129,7 +4130,7 @@ $(pv_value)</tooltip>
           <keep_wh_ratio>false</keep_wh_ratio>
         </scale_options>
         <scripts />
-        <sub_image_width>333.0</sub_image_width>
+        <sub_image_width>24.0</sub_image_width>
         <tooltip>$(pv_name)
 $(pv_value)</tooltip>
         <visible>true</visible>
@@ -5671,7 +5672,7 @@ $(pv_value)</tooltip>
       <show_scrollbar>true</show_scrollbar>
       <tooltip></tooltip>
       <transparent>true</transparent>
-      <visible>true</visible>
+      <visible>false</visible>
       <widget_type>Grouping Container</widget_type>
       <width>1041</width>
       <wuid>52a9ad92:193bf9860fc:-7881</wuid>
@@ -5695,7 +5696,7 @@ $(pv_value)</tooltip>
           <color name="Text: FG" red="0" green="0" blue="0" />
         </foreground_color>
         <group_name></group_name>
-        <height>99</height>
+        <height>1</height>
         <macros>
           <include_parent_macros>true</include_parent_macros>
           <suffix>:C</suffix>
@@ -5713,7 +5714,7 @@ $(pv_value)</tooltip>
         <tooltip></tooltip>
         <visible>true</visible>
         <widget_type>Linking Container</widget_type>
-        <width>371</width>
+        <width>1</width>
         <wuid>52a9ad92:193bf9860fc:-7877</wuid>
         <x>0</x>
         <y>10</y>
@@ -5792,7 +5793,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>34.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -6162,7 +6163,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>18.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -6250,7 +6251,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>18.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -6346,7 +6347,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>175.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -6535,7 +6536,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>34.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -6563,7 +6564,7 @@ $(pv_value)</tooltip>
       <color name="Text: FG" red="0" green="0" blue="0" />
     </foreground_color>
     <group_name></group_name>
-    <height>194</height>
+    <height>1</height>
     <macros>
       <include_parent_macros>true</include_parent_macros>
       <id>06</id>
@@ -6581,7 +6582,7 @@ $(pv_value)</tooltip>
     <tooltip></tooltip>
     <visible>true</visible>
     <widget_type>Linking Container</widget_type>
-    <width>66</width>
+    <width>1</width>
     <wuid>661a8b5:179cc9f7f0b:-7c4d</wuid>
     <x>884</x>
     <y>40</y>
@@ -6786,7 +6787,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>34.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -6901,7 +6902,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>34.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -7119,7 +7120,7 @@ $(pv_value)</tooltip>
       <color name="Text: FG" red="0" green="0" blue="0" />
     </foreground_color>
     <group_name></group_name>
-    <height>194</height>
+    <height>1</height>
     <macros>
       <include_parent_macros>true</include_parent_macros>
       <id>05</id>
@@ -7137,7 +7138,7 @@ $(pv_value)</tooltip>
     <tooltip></tooltip>
     <visible>true</visible>
     <widget_type>Linking Container</widget_type>
-    <width>66</width>
+    <width>1</width>
     <wuid>661a8b5:179cc9f7f0b:-7bb9</wuid>
     <x>639</x>
     <y>40</y>
@@ -7342,7 +7343,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>34.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -7457,7 +7458,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>34.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -7775,7 +7776,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>18.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -8057,7 +8058,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>34.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -8085,7 +8086,7 @@ $(pv_value)</tooltip>
         <color name="Text: FG" red="0" green="0" blue="0" />
       </foreground_color>
       <group_name></group_name>
-      <height>194</height>
+      <height>1</height>
       <macros>
         <include_parent_macros>true</include_parent_macros>
         <id>04</id>
@@ -8103,7 +8104,7 @@ $(pv_value)</tooltip>
       <tooltip></tooltip>
       <visible>true</visible>
       <widget_type>Linking Container</widget_type>
-      <width>66</width>
+      <width>1</width>
       <wuid>661a8b5:179cc9f7f0b:-7d12</wuid>
       <x>15</x>
       <y>0</y>
@@ -8308,7 +8309,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>34.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -8423,7 +8424,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>34.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -9043,7 +9044,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>34.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -9071,7 +9072,7 @@ $(pv_value)</tooltip>
         <color name="Text: FG" red="0" green="0" blue="0" />
       </foreground_color>
       <group_name></group_name>
-      <height>194</height>
+      <height>1</height>
       <macros>
         <include_parent_macros>true</include_parent_macros>
         <id>02</id>
@@ -9089,7 +9090,7 @@ $(pv_value)</tooltip>
       <tooltip></tooltip>
       <visible>true</visible>
       <widget_type>Linking Container</widget_type>
-      <width>66</width>
+      <width>1</width>
       <wuid>4276664a:15c7868e695:7840</wuid>
       <x>3</x>
       <y>0</y>
@@ -9199,7 +9200,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>34.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -9314,7 +9315,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>34.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -9849,7 +9850,7 @@ $(pv_value)</tooltip>
         <keep_wh_ratio>false</keep_wh_ratio>
       </scale_options>
       <scripts />
-      <sub_image_width>30.0</sub_image_width>
+      <sub_image_width>24.0</sub_image_width>
       <tooltip>$(pv_name)
 $(pv_value)</tooltip>
       <visible>true</visible>
@@ -10486,7 +10487,7 @@ $(pv_value)</tooltip>
       <color name="Text: FG" red="0" green="0" blue="0" />
     </foreground_color>
     <group_name></group_name>
-    <height>194</height>
+    <height>1</height>
     <macros>
       <include_parent_macros>true</include_parent_macros>
       <id>03</id>
@@ -10504,7 +10505,7 @@ $(pv_value)</tooltip>
     <tooltip></tooltip>
     <visible>true</visible>
     <widget_type>Linking Container</widget_type>
-    <width>66</width>
+    <width>1</width>
     <wuid>661a8b5:179cc9f7f0b:-7d8d</wuid>
     <x>382</x>
     <y>40</y>
@@ -10709,7 +10710,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>34.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -10824,7 +10825,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>34.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
@@ -11203,7 +11204,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <sub_image_width>34.0</sub_image_width>
+    <sub_image_width>24.0</sub_image_width>
     <tooltip>$(pv_name)
 $(pv_value)</tooltip>
     <visible>true</visible>
