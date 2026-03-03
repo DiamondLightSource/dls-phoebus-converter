@@ -5,8 +5,261 @@ meta_data:
     acc_ui_support_dst:  acc-ui-support/bob
 
 files:
+  # region synoptic screens
   # Convert all top level screens and put them in the fe-services repository
-  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE02I.opi
+    dst: synoptic
+    macros:
+      dom: FE02I
+      cell: 02
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE02J.opi
+    dst: synoptic
+    macros:
+      dom: FE02J
+      cell: 02
+      mks_type: b
+      type: J
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_B.opi
+    dst: synoptic
+    macros:
+      dom: FE03I
+      cell: 03
+      mks_type: a
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_B.opi
+    dst: synoptic
+    macros:
+      dom: FE04I
+      cell: 04
+      mks_type: a
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE05I.opi
+    dst: synoptic
+    macros:
+      dom: FE05I
+      cell: 05
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux.opi
+    dst: synoptic
+    macros:
+      dom: FE06I
+      cell: 06
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux_plcmotion.opi
+    dst: synoptic
+    macros:
+      dom: FE07I
+      cell: 07
+      mks_type: a
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE07B.opi
+    dst: synoptic
+    macros:
+      dom: FE07B
+      cell: 07
+      mks_type: b
+      type: B
+      srvalve: 03
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE08I.opi
+    dst: synoptic
+    macros:
+      dom: FE08I
+      cell: 08
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE09I.opi
+    dst: synoptic
+    macros:
+      dom: FE09I
+      cell: 09
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE10I.opi
+    dst: synoptic
+    macros:
+      dom: FE10I
+      cell: 10
+      mks_type: a
+      type: I
+      srvalve: 02
+  
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE10B.opi
+    dst: synoptic
+    macros:
+      dom: FE10B
+      cell: 10
+      mks_type: b
+      type: B
+      srvalve: 03
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
+    dst: synoptic
+    macros:
+      dom: FE11I
+      cell: 11
+      mks_type: a
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE11K.opi
+    dst: synoptic
+    macros:
+      dom: FE11K
+      cell: 11
+      mks_type: b
+      type: K
+      srvalve: 03
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE12I.opi
+    dst: synoptic
+    macros:
+      dom: FE12I
+      cell: 12
+      mks_type: a
+      type: I
+      srvalve: 02
+
+  # - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE12I.opi
+  #   dst: synoptic
+  #   macros:
+  #     dom: FE12T
+  #     cell: 12
+  #     mks_type: a
+  #     type: I
+  #     srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE13I.opi
+    dst: synoptic
+    macros:
+      dom: FE13I
+      cell: 13
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE14I.opi
+    dst: synoptic
+    macros:
+      dom: FE14I
+      cell: 14
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE15I.opi
+    dst: synoptic
+    macros:
+      dom: FE15I
+      cell: 15
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux.opi
+    dst: synoptic
+    macros:
+      dom: FE16I
+      cell: 16
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_linux.opi
+    dst: synoptic
+    macros:
+      dom: FE16B
+      cell: 16
+      mks_type: b
+      type: B
+      srvalve: 03
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
+    dst: synoptic
+    macros:
+      dom: FE18I
+      cell: 18
+      mks_type: a
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_vx.opi
+    dst: synoptic
+    macros:
+      dom: FE18B
+      cell: 18
+      mks_type: a
+      type: B
+      srvalve: 03
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
+    dst: synoptic
+    macros:
+      dom: FE19I
+      cell: 19
+      mks_type: a
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE20I.opi
+    dst: synoptic
+    macros:
+      dom: FE20I
+      cell: 20
+      mks_type: a
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE21I.opi
+    dst: synoptic
+    macros:
+      dom: FE21I
+      cell: 21
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE21B.opi
+    dst: synoptic
+    macros:
+      dom: FE21B
+      cell: 21
+      mks_type: b
+      type: B
+      srvalve: 03
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
+    dst: synoptic
+    macros:
+      dom: FE22I
+      cell: 22
+      mks_type: a
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE22B.opi
     dst: synoptic
     macros:
       dom: FE22B
@@ -15,7 +268,71 @@ files:
       type: B
       srvalve: 03
 
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE23I.opi
+    dst: synoptic
+    macros:
+      dom: FE23I
+      cell: 23
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE23B.opi
+    dst: synoptic
+    macros:
+      dom: FE23B
+      cell: 23
+      mks_type: a
+      type: B
+      srvalve: 03
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
+    dst: synoptic
+    macros:
+      dom: FE24I
+      cell: 24
+      mks_type: a
+      type: I
+      srvalve: 02
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE24B.opi
+    dst: synoptic
+    macros:
+      dom: FE24B
+      cell: 24
+      mks_type: b
+      type: B
+      srvalve: 03
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_test.opi
+    dst: synoptic
+    macros:
+      dom: FE99I
+      cell: 99
+      type: I
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_test.opi
+    dst: synoptic
+    macros:
+      dom: FE99B
+      cell: 99
+      type: B
+
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux.opi
+    dst: synoptic
+    macros:
+      dom: FE98I
+      cell: 98
+      mks_type: b
+      type: I
+      srvalve: 02
+
+  # endregion synoptic screens
+
+  # region device level screens
   # Convert device screens and put them in the fe-ui-support repository
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/common
     dst: fe-ui-support
     include_subdirs: true
+
+  # endregion device level screens
