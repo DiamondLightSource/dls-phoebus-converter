@@ -8,7 +8,7 @@ import xmltodict
 from dataclasses import dataclass, field
 from logconfig import setup_logging
 
-MACRO_EXCEPTION_LIST = ["pv_name", "pv_value"]
+MACRO_EXCEPTION_LIST = ["pv_name", "pv_value", "name", "actions"]
 
 setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
@@ -169,37 +169,58 @@ class Converter:
         # convert them to Phoebus and then save them in acc-ui-support/bob
         pass
 
-    def define_macros(self, file: Path, conversion: ConversionConfig) -> None:
-        # look for any instances of eg ${string}
-        # see if there is already a macro resolution for the string either for the widget or file
-        # if not, check if this is an edge case string (eg pv_name) which doesnt need defining here
-        # Exclude any macros with whitespace characters. These are used for bash commands e.g. configure-ioc -s
-        # if not try and add it if the conversion specifies a macro
-        # if the string is not defined in conversion.macros then log a warning
-        p = Path(file)
-        with p.open("r", encoding="utf-8") as fh:
-            content = fh.read()
-        macros = set(re.findall(r"\$[\{\(]([^\}\)\s]+)[\}\)]", content))
-        logger.info(f"Found macros in file: {macros}")
-        # This is where we add the macro to the file or to a widget in the file where it is needed
-        # But we can only do this if the macro was passed in to the converter.
-        # TODO: Rewrite!
-        for macro in macros:
-            if macro not in MACRO_EXCEPTION_LIST:
-                if f"<{macro}>" not in content:
-                    if macro in conversion.macros.keys():
-                        content = re.sub(
-                            r"\$[\{\(]([^\}\)]+)[\}\)]",
-                            str(conversion.macros[macro]),
-                            content,
-                        )
-                    else:
-                        # This macro has not been defined!
-                        logger.warning(f"Could not find definition for macro: {macro}")
-                        # raise KeyError("Macro missing!")
+    def add_new_macro(self, file: Path, macro_names: list[str], macro_values: list[str]):
+        """Add a new macro to the top level of the bob file."""
 
-        with p.open("w", encoding="utf-8") as fh:
-            fh.write(content)
+        with open(file, "r", encoding="utf-8") as fh:
+            fxml = fh.read()
+            as_dict = xmltodict.parse(fxml)
+
+        if "macros" not in as_dict["display"]:
+            as_dict["display"]["macros"] = {}
+
+        macro_data = as_dict["display"]["macros"]
+
+        for new_macro_name, new_macro_value in zip(macro_names, macro_values, strict=True):
+            for existing_macro_name, existing_macro_value in macro_data.items():
+                if existing_macro_name == new_macro_name:
+                    logging.warning(f"An existing file macro is being overwritten: "
+                                    f"{existing_macro_name}:{existing_macro_value} -> "
+                                    f"{new_macro_name}:{new_macro_value}") 
+            macro_data[new_macro_name] = new_macro_value
+
+
+        with open(file, "w") as fh:
+            new_xml = xmltodict.unparse(as_dict, pretty=True)
+            fh.write(new_xml)
+
+    def handle_macros(self, file: Path, conversion: ConversionConfig) -> None:
+        """Look for unique instances of a macro eg ${string} in the bob file. We ignore a small
+        number of macros which are defined from other widget fields (MACRO_EXCEPTION_LIST).
+        If a macro is found in a file but has not been defined in the ConversionConfig, then
+        we log a warning."""
+
+        new_macro_names=[]
+        new_macro_values=[]
+
+        with file.open("r", encoding="utf-8") as fh:
+            content = fh.read()
+
+        unique_identified_macros = set(re.findall(r"\$[\{\(]([^\}\)\s]+)[\}\)]", content))
+        logger.info(f"Found macros in file: {unique_identified_macros}")
+
+        for macro in unique_identified_macros:
+            # Some macros refer to internal Phoebus objects, so we dont resolve these
+            if macro not in MACRO_EXCEPTION_LIST:
+                if macro in conversion.macros.keys():
+                    new_macro_names.append(macro)
+                    new_macro_values.append(conversion.macros[macro])
+                else:
+                    # This macro has not been defined!
+                    logger.warning(f"Could not find definition for macro: '{macro}'. "
+                                   "Should this have been defined in your yaml config?")
+                    
+        self.add_new_macro(file, new_macro_names, new_macro_values)
 
     def convert(self):
         for conversion in self.conversion_data:
@@ -210,8 +231,9 @@ class Converter:
             converted_file = opi_converter.main(
                 conversion.src_path, conversion.dst_dir
             )
-            # We need to define macros which were previously passed into the file
-            self.define_macros(converted_file, conversion)
+            # We need to define macros which were previously passed into the synoptic as script arguments
+            if conversion.synoptic:
+                self.handle_macros(converted_file, conversion)
             # Update filepaths
             self.update_filepaths(converted_file)
             logger.info(f"Conversion saved to {converted_file}\n")
@@ -219,7 +241,7 @@ class Converter:
 
 def main(
     output_dir=Path.cwd() / "output",
-    config_file=Path.cwd() / "config" / "example.yaml",
+    config_file=Path.cwd() / "config" / "examples.yaml",
     test=True,
 ):
     converter = Converter(output_dir, config_file, test)
