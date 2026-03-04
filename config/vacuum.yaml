@@ -27,6 +27,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_B.opi
     dst: synoptic
+    new_filename: FE03I.bob
     macros:
       dom: FE03I
       cell: 03
@@ -36,6 +37,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_B.opi
     dst: synoptic
+    new_filename: FE04I.bob
     macros:
       dom: FE04I
       cell: 04
@@ -54,6 +56,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux.opi
     dst: synoptic
+    new_filename: FE06I.bob
     macros:
       dom: FE06I
       cell: 06
@@ -63,6 +66,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux_plcmotion.opi
     dst: synoptic
+    new_filename: FE07I.bob
     macros:
       dom: FE07I
       cell: 07
@@ -117,6 +121,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
     dst: synoptic
+    new_filename: FE11I.bob
     macros:
       dom: FE11I
       cell: 11
@@ -180,6 +185,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux.opi
     dst: synoptic
+    new_filename: FE16I.bob
     macros:
       dom: FE16I
       cell: 16
@@ -189,6 +195,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_linux.opi
     dst: synoptic
+    new_filename: FE16B.bob
     macros:
       dom: FE16B
       cell: 16
@@ -198,6 +205,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
     dst: synoptic
+    new_filename: FE18I.bob
     macros:
       dom: FE18I
       cell: 18
@@ -207,6 +215,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_vx.opi
     dst: synoptic
+    new_filename: FE18B.bob
     macros:
       dom: FE18B
       cell: 18
@@ -216,6 +225,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
     dst: synoptic
+    new_filename: FE19I.bob
     macros:
       dom: FE19I
       cell: 19
@@ -252,6 +262,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
     dst: synoptic
+    new_filename: FE22I.bob
     macros:
       dom: FE22I
       cell: 22
@@ -288,6 +299,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
     dst: synoptic
+    new_filename: FE24I.bob
     macros:
       dom: FE24I
       cell: 24
@@ -306,6 +318,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_test.opi
     dst: synoptic
+    new_filename: FE99I.bob
     macros:
       dom: FE99I
       cell: 99
@@ -313,6 +326,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_test.opi
     dst: synoptic
+    new_filename: FE99B.bob
     macros:
       dom: FE99B
       cell: 99
@@ -320,6 +334,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux.opi
     dst: synoptic
+    new_filename: FE98I.bob
     macros:
       dom: FE98I
       cell: 98

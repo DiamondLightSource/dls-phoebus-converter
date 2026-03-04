@@ -7,9 +7,9 @@ from dataclasses import dataclass
 import logging
 from logconfig import setup_logging
 
-PHOEBUS_SH_FILE = "/dls_sw/apps/phoebus/dls_config/phoebus.sh"
+PHOEBUS_SH_FILE_PATH = "/dls_sw/apps/phoebus/dls_config/phoebus.sh"
 PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
-TEMPLATE_FILE = "templates/example_template.xml"
+TEMPLATE_FILE_PATH = "templates/example_template.xml"
 
 if not logging.getLogger("dls_phoebus_converter"):
     setup_logging()
@@ -35,26 +35,26 @@ class ConversionSteps:
 class ScreenConverter:
     def __init__(
         self,
-        src_file,
-        dst_file,
-        dst_dir,
-        tmp_file,
-        template_file,
+        src_file_path,
+        dst_filename,
+        dst_dir_path,
+        tmp_file_path,
+        template_file_path,
         pname,
         replace_tab,
     ):
-        self.src_file = src_file
-        self.dst_file = dst_file
-        self.dst_dir = dst_dir
-        self.tmp_file = tmp_file
-        self.template_file = template_file
+        self.src_file_path = src_file_path
+        self.dst_filename = dst_filename
+        self.dst_dir_path = dst_dir_path
+        self.tmp_file_path = tmp_file_path
+        self.template_file_path = template_file_path
         self.pname = pname
         self.replace_tab = replace_tab
         self.cs = ConversionSteps()
 
     def replace_edm_symbol_widget(self):
         result = []
-        with open(self.src_file, "r") as f:
+        with open(self.src_file_path, "r") as f:
             lines = f.readlines()
             fixed = False
             for line in lines:
@@ -68,26 +68,27 @@ class ScreenConverter:
         if fixed:
             self.cs.replace_edm_sym = True
             logger.debug("Replacing CSS EDM Widgets in OPI before conversion")
-            with open(self.tmp_file, "w") as f:
+            with open(self.tmp_file_path, "w") as f:
                 f.writelines(result)
 
         return fixed
 
     def delete_old_file(self):
         try:
-            os.remove(self.dst_file)
-            logger.info(f"Removing old converted file: {self.dst_file}")
+            old_file = os.path.join(self.dst_dir_path, self.dst_filename)
+            os.remove(old_file)
+            logger.info(f"Removing old converted file: {old_file}")
         except OSError:
             pass
 
-    def run_converter(self, file):
+    def run_converter(self, opi_file_path):
         convert_command = (
-            PHOEBUS_SH_FILE
+            PHOEBUS_SH_FILE_PATH
             + "\
         -main org.csstudio.display.builder.model.Converter -output "
-            + str(self.dst_dir)
+            + str(self.dst_dir_path)
             + " "
-            + str(file)
+            + str(opi_file_path)
         )
         process = subprocess.Popen(
             convert_command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE
@@ -231,9 +232,9 @@ class ScreenConverter:
         bob_file = opi_file.replace(".opi", ".bob")
         widget["file"] = bob_file
 
-    def fix_grouping_container(self, opifile):
+    def fix_grouping_container(self, opi_file_path):
         result = []
-        with open(opifile, "r") as f:
+        with open(opi_file_path, "r") as f:
             lines = f.readlines()
             check_for_border_prop = False
             found_border_prop = False
@@ -271,7 +272,7 @@ class ScreenConverter:
             logger.debug(
                 "OPI ERROR: Missing border property in 'Group' widget... fixing"
             )
-            with open(self.tmp_file, "w") as f:
+            with open(self.tmp_file_path, "w") as f:
                 f.writelines(result)
 
         return fixed
@@ -287,12 +288,12 @@ class ScreenConverter:
 
     def create_symbol_from_edm(self, widget):
         setup_dict = {}
-        if not os.path.isfile(self.template_file):
+        if not os.path.isfile(self.template_file_path):
             error_msg = f"No template file provided"
             logger.error(error_msg, exc_info=True)
             raise FileNotFoundError(error_msg)
 
-        with open(self.template_file, "r", encoding="utf-8") as file:
+        with open(self.template_file_path, "r", encoding="utf-8") as file:
             fxml = file.read()
 
             setup_dict = xmltodict.parse(fxml)
@@ -421,7 +422,9 @@ class ScreenConverter:
 
     def modify_bob_xml(self):
         as_dict = {}
-        with open(self.dst_file, "r", encoding="utf-8") as file:
+        with open(
+            os.path.join(self.dst_dir_path, self.dst_filename), "r", encoding="utf-8"
+        ) as file:
             fxml = file.read()
 
             as_dict = xmltodict.parse(fxml)
@@ -432,7 +435,7 @@ class ScreenConverter:
         return as_dict
 
     def write_dict(self, as_dict, xml_dict):
-        with open(self.dst_file, "w") as f:
+        with open(os.path.join(self.dst_dir_path, self.dst_filename), "w") as f:
             new_xml = xmltodict.unparse(as_dict, pretty=True)
             f.write(new_xml)
 
@@ -512,21 +515,21 @@ def parse_args():
     )
     args = ap.parse_args()
 
-    src_file = Path(args.src_file)
-    dst_dir = Path(args.dst_dir)
+    src_file_path = Path(args.src_file)
+    dst_dir_path = Path(args.dst_dir)
 
     if args.tfile is not None:
-        template_file = Path(args["tfile"])
+        template_file_path = Path(args["tfile"])
     else:
-        template_file = TEMPLATE_FILE
+        template_file_path = TEMPLATE_FILE_PATH
 
     if args.debug:
         logger.setLevel(logging.DEBUG)
 
     return (
-        src_file,
-        dst_dir,
-        template_file,
+        src_file_path,
+        dst_dir_path,
+        template_file_path,
         args.pname,
         args.fix_group,
         args.no_modify,
@@ -536,20 +539,29 @@ def parse_args():
 
 
 def main(
-    src_file,
-    dst_dir,
-    template_file=TEMPLATE_FILE,
+    src_file_path,
+    dst_dir_path,
+    dst_filename=None,
+    template_file_path=TEMPLATE_FILE_PATH,
     pname=None,
     fix_group=True,
     no_modify=False,
     replace_tab=False,
     no_edit_file=None,
 ) -> Path:
-    dst_file = dst_dir / src_file.name.replace(".opi", ".bob")
-    tmp_file = dst_dir / "tmp.opi"
+    if dst_filename is None:
+        dst_filename = src_file_path.name.replace(".opi", ".bob")
+
+    tmp_file_path = dst_dir_path / "tmp.opi"
 
     sc = ScreenConverter(
-        src_file, dst_file, dst_dir, tmp_file, template_file, pname, replace_tab
+        src_file_path,
+        dst_filename,
+        dst_dir_path,
+        tmp_file_path,
+        template_file_path,
+        pname,
+        replace_tab,
     )
 
     # Check the no_edit file to see if we should even run the conversion
@@ -558,7 +570,7 @@ def main(
         with open(no_edit_file, "r") as f:
             lines = f.readlines()
             for line in lines:
-                if src_file == line.strip():
+                if src_file_path == line.strip():
                     logging.warning(
                         "!!! OPI file to be converted is in the 'no_edit' list suggesting \
                     that it has had manual changes that should not be overwritten.\n\
@@ -576,25 +588,26 @@ def main(
     if fix_group:
         # Fix missing border items from grouping container
         if use_tmp_file:
-            sc.fix_grouping_container(tmp_file)
+            sc.fix_grouping_container(tmp_file_path)
         else:
-            use_tmp_file = sc.fix_grouping_container(src_file)
+            use_tmp_file = sc.fix_grouping_container(src_file_path)
 
     # If conversion has already been run, delete previous BOB conversion
     sc.delete_old_file()
 
-    file = src_file
+    file = src_file_path
     # Should we use the modified OPI files
     if use_tmp_file:
-        file = tmp_file
+        file = tmp_file_path
 
     # Run Phoebus converter
     sc.run_converter(file)
+    new_file = os.path.join(dst_dir_path, dst_filename)
 
     # Remove tmp OPI files if a modified version was created
     if use_tmp_file:
-        tmp_file.with_suffix(".bob").rename(dst_file)
-        os.remove(tmp_file)
+        tmp_file_path.with_suffix(".bob").rename(new_file)
+        os.remove(tmp_file_path)
 
     if not no_modify:
         """ 
@@ -609,7 +622,7 @@ def main(
 
     log_data = sc.cs
     log_conversion_steps(log_data)
-    return sc.dst_file
+    return Path(new_file)
 
 
 if __name__ == "__main__":

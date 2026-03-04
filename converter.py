@@ -17,29 +17,29 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 @dataclass
 class ConversionConfig:
-    src_path: Path = Path()
-    dst_path: Path = Path()
-    dst_dir: Path = Path()
+    src_file_path: Path = Path()
+    dst_dir_path: Path = Path()
+    dst_filename: str = None
     synoptic: bool = False
     macros: dict[str, str] = field(default_factory=lambda: {})
 
 
 class Converter:
     def __init__(self,
-                 config_file: Path,
-                 output_dir: Path,
+                 config_file_path: Path,
+                 output_dir_path: Path,
                  debug: bool = False) -> None:
         self.debug = debug
-        self.output_dir = output_dir
+        self.output_dir_path = output_dir_path
         # Mapping between a screens src path and destination dir
         self.conversion_data: list[ConversionConfig] = []
         # Mapping between a support module name and its screen location dir
         self.support_module_locations: list[tuple] = []
-        self.get_config(config_file)
+        self.get_config(config_file_path)
 
-    def get_config(self, config_file: Path) -> None:
+    def get_config(self, config_file_path: Path) -> None:
         # get useful data out of json
-        with open(config_file, "r") as file:
+        with open(config_file_path, "r") as file:
             data = yaml.safe_load(file)
             self.parse_meta_data(data["meta_data"][0])
             all_file_data = data["files"]
@@ -54,19 +54,21 @@ class Converter:
         self.domain_synoptic_dst_part = Path(meta_data["domain_synoptic_dst"])
         self.domain_ui_support_dst_part = Path(meta_data["domain_ui_support_dst"])
 
-        self.acc_ui_support_dst_full = self.output_dir / meta_data["acc_ui_support_dst"]
+        self.acc_ui_support_dst_full = (
+            self.output_dir_path / meta_data["acc_ui_support_dst"]
+        )
         self.domain_synoptic_dst_full = (
-            self.output_dir / meta_data["domain_synoptic_dst"]
+            self.output_dir_path / meta_data["domain_synoptic_dst"]
         )
         self.domain_ui_support_dst_full = (
-            self.output_dir / meta_data["domain_ui_support_dst"]
+            self.output_dir_path / meta_data["domain_ui_support_dst"]
         )
 
     def parse_file_data(self, file_data: dict) -> list[ConversionConfig]:
         new_conversions = []
 
-        src_files = []
-        dst_paths = []
+        src_file_paths = []
+        dst_dir_paths = []
         src_path_config = Path(file_data["src"])
         dst_path_config = Path()
 
@@ -91,15 +93,22 @@ class Converter:
         # to the conversion list, otherwise we add the single file specified
         # in the config
         if src_path_config.is_dir():
+            if "new_filename" in file_data:
+                message = "The 'new_filename' field cannot be used when src is given as a directory. Please check config file."
+                logger.error(message)
+                raise ValueError(message)
+
             if "include_subdirs" in file_data and file_data["include_subdirs"] is True:
-                for file in src_path_config.rglob("*.opi"):
-                    src_files.append(file)
+                for file_paths in src_path_config.rglob("*.opi"):
+                    src_file_paths.append(file_paths)
                     recursive_dir = Path("")
 
                     # We need to do some fancy path manipulation to recreate the old directory
                     # structure in the destination directory
-                    if len(file.parent.parts) > len(src_path_config.parts):
-                        for subdir in file.parent.parts[len(src_path_config.parts) :]:
+                    if len(file_paths.parent.parts) > len(src_path_config.parts):
+                        for subdir in file_paths.parent.parts[
+                            len(src_path_config.parts) :
+                        ]:
                             recursive_dir = recursive_dir / subdir
                     if (
                         recursive_dir.parts[0],
@@ -110,19 +119,23 @@ class Converter:
                         )
 
                     new_dst = dst_path_config / recursive_dir
-                    dst_paths.append(new_dst)
+                    dst_dir_paths.append(new_dst)
             else:
-                for file in src_path_config.glob("*.opi"):
-                    src_files.append(file)
-                    dst_paths.append(dst_path_config)
+                for file_paths in src_path_config.glob("*.opi"):
+                    src_file_paths.append(file_paths)
+                    dst_dir_paths.append(dst_path_config)
         else:
-            src_files = [src_path_config]
-            dst_paths = [dst_path_config]
+            src_file_paths = [src_path_config]
+            dst_dir_paths = [dst_path_config]
 
-        for src_file, dst_path in zip(src_files, dst_paths, strict=True):
+        for src_file_path, dst_dir_path in zip(
+            src_file_paths, dst_dir_paths, strict=True
+        ):
             new_conversion = ConversionConfig()
-            new_conversion.src_path = src_file
-            new_conversion.dst_dir = dst_path
+            new_conversion.src_file_path = src_file_path
+            new_conversion.dst_dir_path = dst_dir_path
+            if "new_filename" in file_data:
+                new_conversion.dst_filename = file_data["new_filename"]
             if "macros" in file_data:
                 new_conversion.macros = file_data["macros"]
             if file_data["dst"] == "synoptic":
@@ -131,15 +144,15 @@ class Converter:
 
         return new_conversions
 
-    def get_widget_dicts(self, file: Path) -> list[dict]:
-        with open(file, "r", encoding="utf-8") as fh:
+    def get_widget_dicts(self, file_path: Path) -> list[dict]:
+        with open(file_path, "r", encoding="utf-8") as fh:
             fxml = fh.read()
             as_dict = xmltodict.parse(fxml)
             widgets = as_dict["display"]["widget"]
             return widgets
 
-    def update_filepaths(self, file: Path) -> None:
-        widgets = self.get_widget_dicts(file)
+    def update_filepaths(self, file_path: Path) -> None:
+        widgets = self.get_widget_dicts(file_path)
         for widget in widgets:
             if not isinstance(widget, dict):
                 continue
@@ -173,10 +186,12 @@ class Converter:
         # convert them to Phoebus and then save them in acc-ui-support/bob
         pass
 
-    def add_new_macros(self, file: Path, macro_names: list[str], macro_values: list[str]):
+    def add_new_macros(
+        self, file_path: Path, macro_names: list[str], macro_values: list[str]
+    ) -> None:
         """Add a list of macro name/values to the top level of the bob file."""
 
-        with open(file, "r", encoding="utf-8") as fh:
+        with open(file_path, "r", encoding="utf-8") as fh:
             fxml = fh.read()
             as_dict = xmltodict.parse(fxml)
 
@@ -185,32 +200,37 @@ class Converter:
 
         macro_data = as_dict["display"]["macros"]
 
-        for new_macro_name, new_macro_value in zip(macro_names, macro_values, strict=True):
+        for new_macro_name, new_macro_value in zip(
+            macro_names, macro_values, strict=True
+        ):
             for existing_macro_name, existing_macro_value in macro_data.items():
                 if existing_macro_name == new_macro_name:
-                    logging.warning(f"An existing file macro is being overwritten: "
-                                    f"{existing_macro_name}:{existing_macro_value} -> "
-                                    f"{new_macro_name}:{new_macro_value}") 
+                    logging.warning(
+                        f"An existing file macro is being overwritten: "
+                        f"{existing_macro_name}:{existing_macro_value} -> "
+                        f"{new_macro_name}:{new_macro_value}"
+                    )
             macro_data[new_macro_name] = new_macro_value
 
-
-        with open(file, "w") as fh:
+        with open(file_path, "w") as fh:
             new_xml = xmltodict.unparse(as_dict, pretty=True)
             fh.write(new_xml)
 
-    def handle_macros(self, file: Path, conversion: ConversionConfig) -> None:
+    def handle_macros(self, file_path: Path, conversion: ConversionConfig) -> None:
         """Look for unique instances of a macro eg ${string} in the bob file. We ignore a small
         number of macros which are defined from other widget fields (MACRO_EXCEPTION_LIST).
         If a macro is found in a file but has not been defined in the ConversionConfig, then
         we log a warning."""
 
-        new_macro_names=[]
-        new_macro_values=[]
+        new_macro_names = []
+        new_macro_values = []
 
-        with file.open("r", encoding="utf-8") as fh:
+        with file_path.open("r", encoding="utf-8") as fh:
             content = fh.read()
 
-        unique_identified_macros = set(re.findall(r"\$[\{\(]([^\}\)\s]+)[\}\)]", content))
+        unique_identified_macros = set(
+            re.findall(r"\$[\{\(]([^\}\)\s]+)[\}\)]", content)
+        )
         logger.info(f"Found macros in file: {unique_identified_macros}")
 
         for macro in unique_identified_macros:
@@ -221,19 +241,23 @@ class Converter:
                     new_macro_values.append(conversion.macros[macro])
                 else:
                     # This macro has not been defined!
-                    logger.warning(f"Could not find definition for macro: '{macro}'. "
-                                   "Should this have been defined in your yaml config?")
-                    
-        self.add_new_macros(file, new_macro_names, new_macro_values)
+                    logger.warning(
+                        f"Could not find definition for macro: '{macro}'. "
+                        "Should this have been defined in your yaml config?"
+                    )
 
-    def convert(self):
+        self.add_new_macros(file_path, new_macro_names, new_macro_values)
+
+    def convert(self) -> None:
         for conversion in self.conversion_data:
-            logger.info(f"Converting {conversion.src_path}")
+            logger.info(f"Converting {conversion.src_file_path}")
             # Create directories to place screens, this should probably be in opi_converter.py
-            conversion.dst_dir.mkdir(parents=True, exist_ok=True)
+            conversion.dst_dir_path.mkdir(parents=True, exist_ok=True)
             # Convert .boy to .bob
             converted_file = opi_converter.main(
-                conversion.src_path, conversion.dst_dir
+                conversion.src_file_path,
+                conversion.dst_dir_path,
+                conversion.dst_filename,
             )
             # We need to define macros which were previously passed into the synoptic as script arguments
             if conversion.synoptic:
@@ -269,21 +293,20 @@ def parse_arguments():
     )
     args = parser.parse_args()
 
-    config_file = Path(args.config_file)
+    config_file_path = Path(args.config_file)
     # If the user only supplied the name of a config file, then add the path to the
     # directort containing the config files
-    if len(config_file.parts) == 1:
-        config_file = Path.cwd() / "config" / config_file
-    
+    if len(config_file_path.parts) == 1:
+        config_file_path = Path.cwd() / "config" / config_file_path
     if args.debug:
         logger.setLevel(logging.DEBUG)
 
-    return config_file, Path(args.output_dir)
+    return config_file_path, Path(args.output_dir)
 
 def main():
     args = parse_arguments()
     logger.debug(f"Running screen conversion with arguments: {args}")
-    converter = Converter(config_file=args[0], output_dir=args[1])
+    converter = Converter(config_file_path=args[0], output_dir_path=args[1])
     converter.convert()
 
 
