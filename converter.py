@@ -25,10 +25,9 @@ class ConversionConfig:
 
 
 class Converter:
-    def __init__(self,
-                 config_file_path: Path,
-                 output_dir_path: Path,
-                 debug: bool = False) -> None:
+    def __init__(
+        self, config_file_path: Path, output_dir_path: Path, debug: bool = False
+    ) -> None:
         self.debug = debug
         self.output_dir_path = output_dir_path
         # Mapping between a screens src path and destination dir
@@ -43,8 +42,24 @@ class Converter:
             data = yaml.safe_load(file)
             self.parse_meta_data(data["meta_data"][0])
             all_file_data = data["files"]
+            
+            dir_index_list = []
+            # Move directories last in the list so that single files
+            # can be processed in more detail where required.
             for file_data in all_file_data:
-                self.conversion_data.extend(self.parse_file_data(file_data))
+                if Path(file_data["src"]).is_dir():
+                    dir_index_list.append(all_file_data.index(file_data))
+
+            for index in dir_index_list:
+                all_file_data.append(all_file_data.pop(index))
+
+            processed_files = []
+            for file_data in all_file_data:
+                self.conversion_data.extend(
+                    self.parse_file_data(file_data, processed_files)
+                )
+                if Path(file_data["src"]).is_file():
+                    processed_files.append(Path(file_data["src"]))
 
     def parse_meta_data(self, meta_data: dict) -> None:
         self.domain = meta_data["domain"]
@@ -64,9 +79,10 @@ class Converter:
             self.output_dir_path / meta_data["domain_ui_support_dst"]
         )
 
-    def parse_file_data(self, file_data: dict) -> list[ConversionConfig]:
+    def parse_file_data(
+        self, file_data: dict, processed_files: list
+    ) -> list[ConversionConfig]:
         new_conversions = []
-
         src_file_paths = []
         dst_dir_paths = []
         src_path_config = Path(file_data["src"])
@@ -100,9 +116,10 @@ class Converter:
 
             if "include_subdirs" in file_data and file_data["include_subdirs"] is True:
                 for file_paths in src_path_config.rglob("*.opi"):
-                    src_file_paths.append(file_paths)
-                    recursive_dir = Path("")
+                    if file_paths not in processed_files:
+                        src_file_paths.append(file_paths)
 
+                    recursive_dir = Path("")
                     # We need to do some fancy path manipulation to recreate the old directory
                     # structure in the destination directory
                     if len(file_paths.parent.parts) > len(src_path_config.parts):
@@ -122,8 +139,13 @@ class Converter:
                     dst_dir_paths.append(new_dst)
             else:
                 for file_paths in src_path_config.glob("*.opi"):
-                    src_file_paths.append(file_paths)
-                    dst_dir_paths.append(dst_path_config)
+                    if file_paths not in processed_files:
+                        src_file_paths.append(file_paths)
+                        dst_dir_paths.append(dst_path_config)
+                    else:
+                        logger.warning(
+                            f"File {file_paths} has already been processed, skipping conversion."
+                        )
         else:
             src_file_paths = [src_path_config]
             dst_dir_paths = [dst_path_config]
@@ -273,7 +295,7 @@ def parse_arguments():
     parser.add_argument(
         "config_file",
         type=str,
-        help="The yaml config for the conversion. This can either be a full path to a" \
+        help="The yaml config for the conversion. This can either be a full path to a"
         " .yaml file or the name of one of the .yaml files in config/",
     )
     parser.add_argument(
@@ -282,7 +304,7 @@ def parse_arguments():
         required=False,
         type=str,
         help="The full path to the directory to output generated files to",
-        default=Path.cwd() / "output"
+        default=Path.cwd() / "output",
     )
     parser.add_argument(
         "-d",
@@ -302,6 +324,7 @@ def parse_arguments():
         logger.setLevel(logging.DEBUG)
 
     return config_file_path, Path(args.output_dir)
+
 
 def main():
     args = parse_arguments()
