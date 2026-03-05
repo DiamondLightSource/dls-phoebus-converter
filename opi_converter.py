@@ -215,14 +215,15 @@ class ScreenConverter:
 
     def replace_data_browser_script(self, widget):
         logger.debug("Replacing databrowser script with action to open plot file")
-        if widget["text"] == "Graph":
-            action = widget["actions"]["action"]
-            if action["@type"] == "execute":
-                self.cs.replace_db_script = True
-                action["@type"] = "open_file"
-                action["description"] = "Open File"
-                action["file"] = PLOT_LOCATION_MACRO + self.pname + ".plt"
-                del action["script"]
+        if self.pname is not None:
+            if widget["text"] == "Graph":
+                action = widget["actions"]["action"]
+                if action["@type"] == "execute":
+                    self.cs.replace_db_script = True
+                    action["@type"] = "open_file"
+                    action["description"] = "Open File"
+                    action["file"] = PLOT_LOCATION_MACRO + self.pname + ".plt"
+                    del action["script"]
 
     def fix_embedded_screen_ext(self, widget):
         if "file" not in widget:
@@ -384,11 +385,11 @@ class ScreenConverter:
             return
 
         if "@typeId" in widget:
-            logging.info(
+            logging.error(
                 "Detected old CSS index '@typeid' - suggests that the Phoebus converter\
     failed to convert the GroupContainer widget.\nTry running converter with --fixGroup option."
             )
-            exit(0)
+            return
 
         if widget["@type"] == "group":
             if type(widget["widget"]) is not list:
