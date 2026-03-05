@@ -3,11 +3,11 @@ meta_data:
     domain_synoptic_dst: fe-services/synoptic
     domain_ui_support_dst: fe-ui-support/bob
     acc_ui_support_dst:  acc-ui-support/bob
+    convert_dependencies: True
 
 
 files:
-  # region synoptic screens
-  # Convert FE22B.opi
+  # Convert FE22B.opi and its dependencies
   - src: examples/FE22B.opi
     dst: synoptic
     macros:
