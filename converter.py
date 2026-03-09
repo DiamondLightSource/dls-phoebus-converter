@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 import re
+import typing
 
 import opi_converter
 import yaml
@@ -209,12 +210,17 @@ class Converter:
         )
         return resolved_path
     
-    def find_widget_filepaths_recursive(self, widget, widget_file_paths):
+    def search_widget_filepaths_recursive(self, widget, func: typing.Callable, widget_file_paths=None, macros=None):
+        """This generic, recursive function takes a widget and searches for any references to filepaths
+         these can be in multiple different widget fields and also in widgets within the widget etc
+         When a filepath is found, it is passed into the passed func callable."""
+
+        args = [arg for arg in [widget_file_paths, macros] if arg is not None]
         if not isinstance(widget, dict):
             return
         if "widget" in widget:
             for widget in widget["widget"]:
-                self.find_widget_filepaths_recursive(widget, widget_file_paths)
+                self.search_widget_filepaths_recursive(widget, func, widget_file_paths, macros)
         if "tabs" in widget:
             for tab in widget["tabs"]["tab"]:
                 # widget["tabs"]["tab"] can either be a single tab or a list of tabs, so
@@ -222,44 +228,54 @@ class Converter:
                 if type(tab) is str:
                     for child_widget in widget["tabs"]["tab"]["children"]["widget"]:
                         if type(child_widget) is str:
-                            self.find_widget_filepaths_recursive(widget["tabs"]["tab"]["children"]["widget"], widget_file_paths)
+                            self.search_widget_filepaths_recursive(widget["tabs"]["tab"]["children"]["widget"], func, widget_file_paths, macros)
                             break
-                        self.find_widget_filepaths_recursive(child_widget, widget_file_paths)
+                        self.search_widget_filepaths_recursive(child_widget, func, widget_file_paths, macros)
                     break
                 if "children" in tab and tab["children"] is not None:
                     for child_widget in tab["children"]["widget"]:
                         if type(child_widget) is str:
-                            self.find_widget_filepaths_recursive(tab["children"]["widget"], widget_file_paths)
+                            self.search_widget_filepaths_recursive(tab["children"]["widget"], func, widget_file_paths, macros)
                             break
-                        self.find_widget_filepaths_recursive(child_widget, widget_file_paths)
+                        self.search_widget_filepaths_recursive(child_widget, func, widget_file_paths, macros)
         if "symbols" in widget:
             for symbol_widget_name in widget["symbols"]:
                 symbol_widget = widget["symbols"][symbol_widget_name]
                 if symbol_widget != [None, None]:
                     if isinstance(symbol_widget, list):
                         for symbol_path in symbol_widget:
-                            widget_file_paths.append(symbol_path)
+                            func(Path(symbol_path), *args, symbol=True)
                     else:
-                        logger.warning(f"Warning, edm style symbol widget detected: {widget['name']}")
-                        widget_file_paths.append(symbol_widget)
+                        # We only log when we find edm widget not when we later switch it
+                        if func.__name__ == "append_new_filepath":
+                            logger.warning(f"Warning, edm style symbol widget detected: {widget['name']}")
+                        func(Path(symbol_widget), *args, symbol=True)
         if "file" in widget and widget["file"] is not None:
-            widget_file_paths.append(Path(widget["file"]))
+            func(Path(widget["file"]), *args)
         if "opi_file" in widget and widget["opi_file"] is not None:
-            widget_file_paths.append(Path(widget["opi_file"]))
+            func(Path(widget["opi_file"]), *args)
         if "actions" in widget and widget["actions"] is not None:
             for action in widget["actions"]:
                 if "path" in widget["actions"][action]:
-                    widget_file_paths.append(Path(widget["actions"][action]["path"]))
+                    func(Path(widget["actions"][action]["path"]), *args)
                 elif "file" in widget["actions"][action]:
-                    widget_file_paths.append(Path(widget["actions"][action]["file"]))
+                    func(Path(widget["actions"][action]["file"]), *args)
         return widget_file_paths
+
+    def get_widget_filepaths(self, widget, widget_file_paths):
+        def append_new_filepath(path_string, widget_file_paths, symbol=False):
+            widget_file_paths.append(path_string)
+        return self.search_widget_filepaths_recursive(widget, append_new_filepath, widget_file_paths)
+
+    def update_widget_filepaths(self, widget, macros):
+        self.search_widget_filepaths_recursive(widget, self.switch_filepaths, macros)
 
     def get_required_support_modules(self, file_path: Path, macros) -> None:
         widgets = self.get_widget_dicts(file_path)
         widget_file_paths: list[Path] = []
         # Look for filepaths in xml
         for widget in widgets:
-            self.find_widget_filepaths_recursive(widget, widget_file_paths)
+            self.get_widget_filepaths(widget, widget_file_paths)
 
         # Only keep unique filepaths and fill in macros
         file_paths_unique = set()
@@ -295,26 +311,34 @@ class Converter:
         logger.info(f"Required domain modules: {self.domain_support_module_locations}")
         logger.info(f"Required acc modules: {self.acc_support_module_locations}")
     
-    def switch_filepaths(self, path_string, macros, symbol=False) -> str:
+    def switch_filepaths(self, file_path, macros, symbol=False) -> str:
         "Takes an old file_path string and returns what the new file_path should be. This is done"
         "by getting the name of the support module from the old path and matching it with our data."
+        file_path_string = str(file_path)
         all_support_modules = self.domain_support_module_locations + self.acc_support_module_locations
         # If the pathstring is in the current directory, eg file.bob, then no need to change it
-        if len(Path(path_string).parts) <=1:
-            return path_string
+        if len(file_path.parts) <=1:
+            return file_path_string
 
         # If we have already updated the paths, dont do it again:
-        if str(self.acc_ui_support_dst_part) in path_string or str(self.domain_ui_support_dst_part) in path_string or str(self.domain_synoptic_dst_part) in path_string:
-            return path_string
+        if str(self.acc_ui_support_dst_part) in file_path_string or str(self.domain_ui_support_dst_part) in file_path_string or str(self.domain_synoptic_dst_part) in file_path_string:
+            return file_path_string
 
-        path_string = self.fill_in_file_path_macros(path_string, macros)
-        file_name = Path(path_string).with_suffix(".bob").name
-        
-        r = re.search(r'^[^/]*/([^/]+)', str(path_string))
-        if r:
-            support_module_name = r.group(1)
+        file_path_string = self.fill_in_file_path_macros(file_path_string, macros)
+        file_path = Path(file_path_string)
+        if file_path.name == ".opi":
+            file_name = file_path.with_suffix(".bob").name
         else:
-            raise Exception(f"Could not find support module in string: {path_string}")
+            file_name=file_path.name
+
+        new_filepath = Path()
+        for part in file_path.parts:
+            strings_to_skip = ["..", ".", "images", "symbols"]
+            if part not in strings_to_skip:
+                new_filepath = new_filepath / part
+            elif part in ["images", "symbols"]:
+                return str(self.domain_ui_support_dst_part.parent / "symbols" / file_name)
+        support_module_name = new_filepath.parts[0]
         
         for data in all_support_modules:
             if data[0] == support_module_name:
@@ -322,53 +346,9 @@ class Converter:
                     return str(Path(*data[1].parts[:-2]) / "symbols" / file_name)
                 else:
                     return str(data[1] / file_name)
-                 
-        logger.error(f"Could not find new path for old path: {path_string}")
-        return path_string
-
-    def update_widget_filepaths_recursive(self, widget, macros):
-        if not isinstance(widget, dict):
-            return
-        if "widget" in widget:
-            for widget in widget["widget"]:
-                self.update_widget_filepaths_recursive(widget, macros)
-        if "tabs" in widget:
-            for tab in widget["tabs"]["tab"]:
-                # widget["tabs"]["tab"] can either be a single tab or a list of tabs, so
-                # we have to handle this by checking the type of tab
-                if type(tab) is str:
-                    for child_widget in widget["tabs"]["tab"]["children"]["widget"]:
-                        if type(child_widget) is str:
-                            self.update_widget_filepaths_recursive(widget["tabs"]["tab"]["children"]["widget"], macros)
-                            break
-                        self.update_widget_filepaths_recursive(child_widget, macros)
-                    break
-                if "children" in tab and tab["children"] is not None:
-                    for child_widget in tab["children"]["widget"]:
-                        if type(child_widget) is str:
-                            self.update_widget_filepaths_recursive(tab["children"]["widget"], macros)
-                            break
-                        self.update_widget_filepaths_recursive(child_widget, macros)
-        if "symbols" in widget:
-            for symbol_widget_name in widget["symbols"]:
-                symbol_widget = widget["symbols"][symbol_widget_name]
-                if symbol_widget != [None, None]:
-                    if isinstance(symbol_widget, list):
-                        for symbol_path in symbol_widget:
-                            self.switch_filepaths(symbol_path, macros, symbol=True)
-                    else:
-                        self.switch_filepaths(symbol_widget, macros, symbol=True)
-
-        if "file" in widget and widget["file"] is not None:
-            widget["file"] = self.switch_filepaths(widget["file"], macros)
-        if "opi_file" in widget and widget["opi_file"] is not None:
-            widget["opi_file"] = self.switch_filepaths(widget["opi_file"], macros)
-        if "actions" in widget and widget["actions"] is not None:
-            for action in widget["actions"]:
-                if "path" in widget["actions"][action]:
-                    widget["actions"][action]["path"] = self.switch_filepaths(widget["actions"][action]["path"], macros)
-                elif "file" in widget["actions"][action]:
-                    widget["actions"][action]["file"] = self.switch_filepaths(widget["actions"][action]["file"], macros)
+                
+        logger.warning(f"Could not find support module for old path: {file_path_string}. Filepath unchanged.")
+        return file_path_string
     
     def update_filepaths(self, file, macros):
         with open(file, "r", encoding="utf-8") as fh:
@@ -378,7 +358,7 @@ class Converter:
 
         # Look for filepaths in xml
         for widget in widgets:
-            self.update_widget_filepaths_recursive(widget, macros)
+            self.update_widget_filepaths(widget, macros)
 
         as_dict["display"]["widget"] = widgets
         with open(file, "w") as fh:
