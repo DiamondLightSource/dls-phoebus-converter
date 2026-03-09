@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from logconfig import setup_logging
 
 MACRO_EXCEPTION_LIST = ["pv_name", "pv_value", "name", "actions"]
-ACC_UI_SUPPORT_MODULE_LIST = ["devIocStats", "digitelMpc", "mks937a", "mpsPermits", "rga", "timingTemplates"]
+ACC_UI_SUPPORT_MODULE_LIST = ["devIocStats", "digitelMpc", "mks937a", "mpsPermit", "rga", "TimingTemplates"]
 
 setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
@@ -26,6 +26,11 @@ class ConversionConfig:
     support_module_name: str | None = None
     synoptic: bool = False
     macros: dict[str, str] = field(default_factory=lambda: {})
+    # This stores the entire contents of the bob file
+    all_phoebus_data: dict = field(default_factory=lambda: {})
+    # This just stores the widget data from the bob file
+    widget_data: dict = field(default_factory=lambda: {})
+
 
 
 class Converter:
@@ -191,12 +196,17 @@ class Converter:
 
         return new_conversions
 
-    def get_widget_dicts(self, file_path: Path) -> list[dict]:
+    def read_bob_file_contents(self, file_path: Path, conversion):
         with open(file_path, "r", encoding="utf-8") as fh:
             fxml = fh.read()
             as_dict = xmltodict.parse(fxml)
-            widgets = as_dict["display"]["widget"]
-            return widgets
+            conversion.all_phoebus_data = as_dict
+            conversion.widget_data = as_dict["display"]["widget"]
+
+    def write_bob_file_contents(self, file_path: Path, conversion):
+        with open(file_path, "w") as fh:
+            new_xml = xmltodict.unparse(conversion.all_phoebus_data, pretty=True)
+            fh.write(new_xml)
 
     def fill_in_file_path_macros(self, string: str, macros) -> str:
         def replace(match):
@@ -216,6 +226,7 @@ class Converter:
          When a filepath is found, it is passed into the passed func callable."""
 
         args = [arg for arg in [widget_file_paths, macros] if arg is not None]
+
         if not isinstance(widget, dict):
             return
         if "widget" in widget:
@@ -243,44 +254,50 @@ class Converter:
                 symbol_widget = widget["symbols"][symbol_widget_name]
                 if symbol_widget != [None, None]:
                     if isinstance(symbol_widget, list):
-                        for symbol_path in symbol_widget:
-                            func(Path(symbol_path), *args, symbol=True)
+                        for i, symbol_path in enumerate(symbol_widget):
+                            if func(Path(symbol_path), *args, symbol=True):
+                                symbol_widget[i] = func(Path(symbol_path), *args, symbol=True)
                     else:
                         # We only log when we find edm widget not when we later switch it
                         if func.__name__ == "append_new_filepath":
                             logger.warning(f"Warning, edm style symbol widget detected: {widget['name']}")
-                        func(Path(symbol_widget), *args, symbol=True)
+                        if func(Path(symbol_widget), *args, symbol=True):
+                            widget["symbols"]["symbol"] = func(Path(symbol_widget), *args, symbol=True)
         if "file" in widget and widget["file"] is not None:
-            func(Path(widget["file"]), *args)
+            if func(Path(widget["file"]), *args):
+                widget["file"] = func(Path(widget["file"]), *args)
         if "opi_file" in widget and widget["opi_file"] is not None:
-            func(Path(widget["opi_file"]), *args)
+            if func(Path(widget["opi_file"]), widget["opi_file"], *args):
+                widget["opi_file"] = func(Path(widget["opi_file"]), widget["opi_file"], *args)
         if "actions" in widget and widget["actions"] is not None:
             for action in widget["actions"]:
                 if "path" in widget["actions"][action]:
-                    func(Path(widget["actions"][action]["path"]), *args)
+                    if func(Path(widget["actions"][action]["path"]), *args):
+                        widget["actions"][action]["path"] = func(Path(widget["actions"][action]["path"]), *args)
                 elif "file" in widget["actions"][action]:
-                    func(Path(widget["actions"][action]["file"]), *args)
+                    if func(Path(widget["actions"][action]["file"]), *args):
+                        widget["actions"][action]["file"] = func(Path(widget["actions"][action]["file"]), *args)
         return widget_file_paths
 
     def get_widget_filepaths(self, widget, widget_file_paths):
         def append_new_filepath(path_string, widget_file_paths, symbol=False):
             widget_file_paths.append(path_string)
+            return False
         return self.search_widget_filepaths_recursive(widget, append_new_filepath, widget_file_paths)
 
     def update_widget_filepaths(self, widget, macros):
         self.search_widget_filepaths_recursive(widget, self.switch_filepaths, macros)
 
-    def get_required_support_modules(self, file_path: Path, macros) -> None:
-        widgets = self.get_widget_dicts(file_path)
+    def get_required_support_modules(self, conversion: ConversionConfig, file_path: Path) -> None:
         widget_file_paths: list[Path] = []
         # Look for filepaths in xml
-        for widget in widgets:
+        for widget in conversion.widget_data:
             self.get_widget_filepaths(widget, widget_file_paths)
 
         # Only keep unique filepaths and fill in macros
         file_paths_unique = set()
         for file_path in set(widget_file_paths):
-            file_paths_unique.add(Path(self.fill_in_file_path_macros(str(file_path), macros)))
+            file_paths_unique.add(Path(self.fill_in_file_path_macros(str(file_path), conversion.macros)))
                 
         # If a support module has been requested and we are not already converting it,
         # then add it to the list of extra required support modules which we will attempt
@@ -321,7 +338,7 @@ class Converter:
             return file_path_string
 
         # If we have already updated the paths, dont do it again:
-        if str(self.acc_ui_support_dst_part) in file_path_string or str(self.domain_ui_support_dst_part) in file_path_string or str(self.domain_synoptic_dst_part) in file_path_string:
+        if self.acc_ui_support_dst_part.parts[0] in file_path_string or self.domain_ui_support_dst_part.parts[0] in file_path_string or self.domain_synoptic_dst_part.parts[0] in file_path_string:
             return file_path_string
 
         file_path_string = self.fill_in_file_path_macros(file_path_string, macros)
@@ -337,7 +354,7 @@ class Converter:
             if part not in strings_to_skip:
                 new_filepath = new_filepath / part
             elif part in ["images", "symbols"]:
-                return str(self.domain_ui_support_dst_part.parent / "symbols" / file_name)
+                symbol=True
         support_module_name = new_filepath.parts[0]
         
         for data in all_support_modules:
@@ -350,34 +367,22 @@ class Converter:
         logger.warning(f"Could not find support module for old path: {file_path_string}. Filepath unchanged.")
         return file_path_string
     
-    def update_filepaths(self, file, macros):
-        with open(file, "r", encoding="utf-8") as fh:
-            fxml = fh.read()
-            as_dict = xmltodict.parse(fxml)
-            widgets = as_dict["display"]["widget"]
-
+    def update_filepaths(self, conversion):
         # Look for filepaths in xml
-        for widget in widgets:
-            self.update_widget_filepaths(widget, macros)
+        for widget in conversion.widget_data:
+            self.update_widget_filepaths(widget, conversion.macros)
 
-        as_dict["display"]["widget"] = widgets
-        with open(file, "w") as fh:
-            new_xml = xmltodict.unparse(as_dict, pretty=True)
-            fh.write(new_xml)
+        conversion.all_phoebus_data["display"]["widget"] = conversion.widget_data
 
     def add_new_macros(
-        self, file_path: Path, macro_names: list[str], macro_values: list[str]
+        self, conversion: ConversionConfig, macro_names: list[str], macro_values: list[str]
     ) -> None:
         """Add a list of macro name/values to the top level of the bob file."""
 
-        with open(file_path, "r", encoding="utf-8") as fh:
-            fxml = fh.read()
-            as_dict = xmltodict.parse(fxml)
+        if "macros" not in conversion.all_phoebus_data["display"]:
+            conversion.all_phoebus_data["display"]["macros"] = {}
 
-        if "macros" not in as_dict["display"]:
-            as_dict["display"]["macros"] = {}
-
-        macro_data = as_dict["display"]["macros"]
+        macro_data = conversion.all_phoebus_data["display"]["macros"]
 
         for new_macro_name, new_macro_value in zip(
             macro_names, macro_values, strict=True
@@ -391,9 +396,7 @@ class Converter:
                     )
             macro_data[new_macro_name] = new_macro_value
 
-        with open(file_path, "w") as fh:
-            new_xml = xmltodict.unparse(as_dict, pretty=True)
-            fh.write(new_xml)
+        conversion.widget_data = conversion.all_phoebus_data["display"]["widget"]
 
     def handle_macros(self, file_path: Path, conversion: ConversionConfig) -> None:
         """Look for unique instances of a macro eg ${string} in the bob file. We ignore a small
@@ -425,7 +428,7 @@ class Converter:
                         "Should this have been defined in your yaml config?"
                     )
 
-        self.add_new_macros(file_path, new_macro_names, new_macro_values)
+        self.add_new_macros(conversion, new_macro_names, new_macro_values)
 
     def get_existing_support_module_filepath(self, support_module_name) -> str | None:
         dls_sw_support_modules = Path("/dls_sw/prod/R3.14.12.7/support/")
@@ -489,8 +492,10 @@ class Converter:
     def convert(self) -> None:
         for conversion in self.conversion_data:
             logger.info(f"Converting {conversion.src_file_path}")
+                                                                     
             # Create directories to place screens, this should probably be in opi_converter.py
             conversion.dst_dir_path.mkdir(parents=True, exist_ok=True)
+
             # Convert .boy to .bob
             converted_file = opi_converter.main(
                 conversion.src_file_path,
@@ -498,14 +503,20 @@ class Converter:
                 conversion.dst_filename,
                 conversion.template_file_path
             )
+
+            # Read in the widget data from the new bob file
+            self.read_bob_file_contents(converted_file, conversion)
+
             # We need to define macros which were previously passed into the synoptic as script arguments
             if conversion.synoptic:
                 self.handle_macros(converted_file, conversion)
+                self.write_bob_file_contents(converted_file, conversion)
 
             # Update filepath within bob files to the new locations of screens
-            self.get_required_support_modules(converted_file, conversion.macros)
+            self.get_required_support_modules(conversion, converted_file)
 
-            self.update_filepaths(converted_file, conversion.macros)
+            self.update_filepaths(conversion)
+            self.write_bob_file_contents(converted_file, conversion)
 
             logger.info(f"Conversion saved to {converted_file}\n")
 
