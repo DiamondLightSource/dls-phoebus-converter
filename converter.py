@@ -21,6 +21,7 @@ class ConversionConfig:
     src_file_path: Path = Path()
     dst_dir_path: Path = Path()
     dst_filename: str | None = None
+    template_file_path: Path | None = None
     support_module_name: str | None = None
     synoptic: bool = False
     macros: dict[str, str] = field(default_factory=lambda: {})
@@ -174,6 +175,15 @@ class Converter:
                 new_conversion.macros = file_data["macros"]
             if "support_module_name" in file_data:
                 new_conversion.support_module_name = support_module_name
+            if "template_file" in file_data:
+                template_file_path = Path(file_data["template_file"])
+                if template_file_path.is_file():
+                    new_conversion.template_file_path = template_file_path
+                else:
+                    template_file_path = Path.cwd() / "templates" / template_file_path
+                if not template_file_path.is_file():
+                    raise FileNotFoundError(f"Could not find template file {str(template_file_path)}")
+                new_conversion.template_file_path = template_file_path
             if file_data["dst"] == "synoptic":
                 new_conversion.synoptic = True
             new_conversions.append(new_conversion)
@@ -223,9 +233,15 @@ class Converter:
                             break
                         self.find_widget_filepaths_recursive(child_widget, widget_file_paths)
         if "symbols" in widget:
-            for symbol in widget["symbols"]:
-                if widget["symbols"][symbol] != [None, None]:
-                    widget_file_paths.append(Path(widget["symbols"][symbol]))
+            for symbol_widget_name in widget["symbols"]:
+                symbol_widget = widget["symbols"][symbol_widget_name]
+                if symbol_widget != [None, None]:
+                    if isinstance(symbol_widget, list):
+                        for symbol_path in symbol_widget:
+                            widget_file_paths.append(symbol_path)
+                    else:
+                        logger.warning(f"Warning, edm style symbol widget detected: {widget['name']}")
+                        widget_file_paths.append(symbol_widget)
         if "file" in widget and widget["file"] is not None:
             widget_file_paths.append(Path(widget["file"]))
         if "opi_file" in widget and widget["opi_file"] is not None:
@@ -334,9 +350,15 @@ class Converter:
                             break
                         self.update_widget_filepaths_recursive(child_widget, macros)
         if "symbols" in widget:
-            for symbol in widget["symbols"]:
-                if widget["symbols"][symbol] != [None, None]:
-                    widget["symbols"][symbol] = self.switch_filepaths(widget["symbols"][symbol], macros, symbol=True)
+            for symbol_widget_name in widget["symbols"]:
+                symbol_widget = widget["symbols"][symbol_widget_name]
+                if symbol_widget != [None, None]:
+                    if isinstance(symbol_widget, list):
+                        for symbol_path in symbol_widget:
+                            self.switch_filepaths(symbol_path, macros, symbol=True)
+                    else:
+                        self.switch_filepaths(symbol_widget, macros, symbol=True)
+
         if "file" in widget and widget["file"] is not None:
             widget["file"] = self.switch_filepaths(widget["file"], macros)
         if "opi_file" in widget and widget["opi_file"] is not None:
@@ -494,6 +516,7 @@ class Converter:
                 conversion.src_file_path,
                 conversion.dst_dir_path,
                 conversion.dst_filename,
+                conversion.template_file_path
             )
             # We need to define macros which were previously passed into the synoptic as script arguments
             if conversion.synoptic:

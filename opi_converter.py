@@ -9,7 +9,6 @@ from logconfig import setup_logging
 
 PHOEBUS_SH_FILE_PATH = "/dls_sw/apps/phoebus/dls_config/phoebus.sh"
 PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
-TEMPLATE_FILE_PATH = "templates/example_template.xml"
 
 if not logging.getLogger("dls_phoebus_converter"):
     setup_logging()
@@ -289,6 +288,10 @@ class ScreenConverter:
 
     def create_symbol_from_edm(self, widget):
         setup_dict = {}
+        if self.template_file_path is None:
+            logger.warning("Found edm symbol widget but could not convert it due to no template file being supplied.")
+            return
+        
         if not os.path.isfile(self.template_file_path):
             error_msg = f"No template file provided"
             logger.error(error_msg, exc_info=True)
@@ -521,8 +524,6 @@ def parse_args():
 
     if args.tfile is not None:
         template_file_path = Path(args["tfile"])
-    else:
-        template_file_path = TEMPLATE_FILE_PATH
 
     if args.debug:
         logger.setLevel(logging.DEBUG)
@@ -543,7 +544,7 @@ def main(
     src_file_path,
     dst_dir_path,
     dst_filename=None,
-    template_file_path=TEMPLATE_FILE_PATH,
+    template_file_path=None,
     pname=None,
     fix_group=True,
     no_modify=False,
