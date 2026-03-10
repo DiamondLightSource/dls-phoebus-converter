@@ -510,14 +510,14 @@ class Converter:
             # We need to define macros which were previously passed into the synoptic as script arguments
             if conversion.synoptic:
                 self.handle_macros(converted_file, conversion)
-                self.write_bob_file_contents(converted_file, conversion)
 
-            # Update filepath within bob files to the new locations of screens
+            # Figure out which filepaths within bob files need updating and
+            # update them to the new paths.
             self.get_required_support_modules(conversion, converted_file)
-
             self.update_filepaths(conversion)
-            self.write_bob_file_contents(converted_file, conversion)
 
+            # Overwrite the bob file with the modified xml data
+            self.write_bob_file_contents(converted_file, conversion)
             logger.info(f"Conversion saved to {converted_file}\n")
 
         # Get missing support module screens
