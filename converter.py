@@ -1,485 +1,572 @@
-import subprocess
-import os
+from argparse import ArgumentParser
+import re
+import typing
+
+import opi_converter
+import yaml
+import logging
+from pathlib import Path, PosixPath
 import xmltodict
-import pprint
-import argparse
+from dataclasses import dataclass, field
+from logconfig import setup_logging
 
-# Script params
-phoebus = "/dls_sw/apps/phoebus/dls_config/phoebus.sh"
-no_edit_file = "no_edit.txt"
+MACRO_EXCEPTION_LIST = ["pv_name", "pv_value", "name", "actions"]
+ACC_UI_SUPPORT_MODULE_LIST = ["devIocStats", "digitelMpc", "mks937a", "mpsPermit", "rga", "TimingTemplates"]
 
-debug = False
-
-
-# Conversion options
-ap = argparse.ArgumentParser()
-ap.add_argument("-f", "--file", required=True, help="opi file")
-ap.add_argument("-t", "--tfile", required=False, help="Template file")
-ap.add_argument("-p", "--pname", required=False, help="Databrowser plot file to open in action")
-ap.add_argument("--fixGroup", action="store_true", help="Fix grouping container")
-ap.add_argument("--nomodify", action="store_true", help="Don't modify anything after the Phoebus conversion")
-ap.add_argument("--replaceTab", action="store_true", help="Replace actions that open in tabs to open in standalone")
-args = vars(ap.parse_args())
-
-infile = args["file"]
-outdir = "/".join(infile.split("/")[:-1])+"/"
-tmpfile = outdir + "tmp.opi"
-template_file = "/test/"
-if args["tfile"] != None:
-    template_file = args["tfile"]
-
-outfile = outdir + infile.split("/")[-1].replace(".opi",".bob")
-
-plot_loc_macro = "$(PLOT_LOC)"
+setup_logging()
+logger = logging.getLogger("dls_phoebus_converter")
 
 
-mydict = {}
-replaceEdmSym = False
-fixGroupCont = False
-updateLegSev = False
-fixExitBut = False
-replaceOpiExt = False
-nonABAction = False
-replaceWithAB = False
-replaceDBScript = False
-fixOpenActionName = False
-fixActionMacroName = False
-createSymImages = False
-replaceActionTab = False
+@dataclass
+class ConversionConfig:
+    src_file_path: Path = Path()
+    dst_dir_path: Path = Path()
+    dst_filename: str | None = None
+    template_file_path: Path | None = None
+    support_module_name: str | None = None
+    synoptic: bool = False
+    macros: dict[str, str] = field(default_factory=lambda: {})
+    # This stores the entire contents of the bob file
+    all_phoebus_data: dict = field(default_factory=lambda: {})
+    # This just stores the widget data from the bob file
+    widget_data: dict = field(default_factory=lambda: {})
 
 
 
-def replaceEdmSymbolWidget():
-    result = []
-    with open(infile, "r") as f:
-        lines = f.readlines()
-        checkForBorderProp = False
-        foundBorderProp = False
-        fixed = False
-        for line in lines:
-            if "org.csstudio.opibuilder.widgets.edm.symbolwidget" in line:
-                line = line.replace("org.csstudio.opibuilder.widgets.edm.symbolwidget","org.csstudio.opibuilder.widgets.symbol.multistate.MultistateMonitorWidget")
-                fixed = True
-            result.append(line)
-    if fixed:
-        global replaceEdmSym
-        replaceEdmSym = True
-        if debug:
-            print("-> Replacing CSS EDM Widgets in OPI before conversion")
-        with open(tmpfile, "w") as f:
-            f.writelines(result)
+class Converter:
+    def __init__(
+        self, config_file_path: Path, output_dir_path: Path, debug: bool = False
+    ) -> None:
+        self.debug = debug
+        self.output_dir_path = output_dir_path
+        self.config_file = config_file_path
+        self.convert_dependencies = False
+        # Mapping between a screens src path and destination dir
+        self.conversion_data: list[ConversionConfig] = []
+        # Mapping between a support module name and its screen location dir
+        self.domain_support_module_locations: list[tuple] = []
+        self.acc_support_module_locations: list[tuple] = []
+        self.get_config(config_file_path)
+        self.make_top_dirs()
 
-    return fixed
+    def make_top_dirs(self) -> None:
+        self.acc_ui_support_dst_full.mkdir(parents=True, exist_ok=True)
+        self.domain_synoptic_dst_full.mkdir(parents=True, exist_ok=True)
+        self.domain_ui_support_dst_full.mkdir(parents=True, exist_ok=True)
 
-
-def deleteOldFile():
-    try:
-        os.remove(outfile)
-        if debug:
-            print("-> Removing old conversion: "+outfile)
-    except OSError:
-        pass
-
-def runConverter(file):
-    convert_command = phoebus+"\
-     -main org.csstudio.display.builder.model.Converter -output "+outdir+" "+file
-    process = subprocess.Popen(convert_command.split(),
-                     stdout=subprocess.PIPE, 
-                     stderr=subprocess.PIPE)
-
-    stdout, stderr = process.communicate()
-    #print(stdout)
-    for l in stderr.decode("utf-8").split("/n"):
-        if debug:
-            print(l)
-
-def updateLegacySevStatus(inputField, legSev, newSev):
-    if legSev in inputField:
-        global updateLegSev
-        updateLegSev = True
-        result = inputField.replace(legSev, newSev)
-        if debug:
-            print(" -> Fixing "+legSev+" to "+newSev)
-        return result
-    else:
-        return inputField
-
-def checkLegacySev(inputField):
-    # OK, Major, Minor, Invalid/undefined
-    legacy = ["pvLegacySev0==0", "pvLegacySev0==1", "pvLegacySev0==2", "pvLegacySev0==-1"]
-    newV = ["pvSev0==0", "pvSev0==2", "pvSev0==1", "pvSev0==3"]
-    result = inputField
-    for i in range(len(legacy)):
-        result = updateLegacySevStatus(result, legacy[i], newV[i])       
-    return result
-
-def checkRule(widget):
-    if "rules" in widget:
-        if type(widget["rules"]["rule"]) is list:
-            for r in widget["rules"]["rule"]:
-                ruleExpr = r["exp"]
-                if type(ruleExpr) == list:
-                    for e in ruleExpr:
-                        e["@bool_exp"] = checkLegacySev(e["@bool_exp"])
-                else:
-                    ruleExpr["@bool_exp"] = checkLegacySev(ruleExpr["@bool_exp"])
+    def get_config(self, config_file: Path | str) -> None:
+        # get useful data out of json
+        if type(config_file) is PosixPath:
+            with open(config_file, "r") as file:
+                data = yaml.safe_load(file)
         else:
-            ruleExpr = widget["rules"]["rule"]["exp"]
-            if type(ruleExpr) is list:
-                for r in ruleExpr:
-                    r["@bool_exp"] = checkLegacySev(r["@bool_exp"])
-            else:
-                ruleExpr["@bool_exp"] = checkLegacySev(ruleExpr["@bool_exp"])
+            data = config_file
+        self.parse_meta_data(data["meta_data"][0])
+        all_file_data = data["files"]
+            
+        dir_index_list = []
+        # Move directories last in the list so that single files
+        # can be processed in more detail where required.
+        for file_data in all_file_data:
+            if Path(file_data["src"]).is_dir():
+                dir_index_list.append(all_file_data.index(file_data))
 
+        for index in dir_index_list:
+            all_file_data.append(all_file_data.pop(index))
 
-def fixExitButton():
-    global fixExitBut
-    fixExitBut = True
-    newaction = {}
-    newaction["@type"] = "close_display"
-    newaction["description"] = "Close display"
-    return newaction
+        processed_files: list[Path] = []
+        for file_data in all_file_data:
+            self.conversion_data.extend(self.parse_file_data(file_data, processed_files))
+            if Path(file_data["src"]).is_file():
+                processed_files.append(Path(file_data["src"]))
 
-def replaceOpiExtenstion(action):
-    if "file" in action:
-        global replaceOpiExt
-        replaceOpiExt = True
-        if debug:
-            print("-> Replacing file open action to open .BOB")
-        opi = action["file"]
-        bob = opi.replace(".opi", ".bob")
-        action["file"] = bob
+    def parse_meta_data(self, meta_data: dict) -> None:
+        self.domain = meta_data["domain"]
+        logger.info(f"Getting config data for domain: {self.domain}\n")
 
+        self.domain_synoptic_dst_part = Path(meta_data["domain_synoptic_dst"])
+        self.acc_ui_support_dst_part = Path(meta_data["acc_ui_support_dst"])
+        self.domain_ui_support_dst_part = Path(meta_data["domain_ui_support_dst"])
 
-def replaceOpenInTab(actions):
-    global replaceActionTab
-    if type(actions["action"]) == list:
-        acts = actions["action"]
-    else:
-        acts = [actions["action"]]
-    for action in acts:
-        if action["@type"] == "open_display":
-            if action["target"] == "tab":
-                action["target"] = "standalone"
-                replaceActionTab = True
+        self.domain_synoptic_dst_full = self.output_dir_path / meta_data["domain_synoptic_dst"]
+        self.acc_ui_support_dst_full = self.output_dir_path / meta_data["domain_synoptic_dst"] / meta_data["acc_ui_support_dst"]
+        self.domain_ui_support_dst_full = self.output_dir_path / meta_data["domain_synoptic_dst"] / meta_data["domain_ui_support_dst"]
 
+        if "convert_dependencies" in meta_data:
+            self.convert_dependencies = bool(meta_data["convert_dependencies"])
 
-def checkActionsInNonActionButtons(widget):
-    if "actions" in widget:
-        if widget["actions"] != None and widget["@type"] != "action_button" and widget["@type"] != "symbol":
-            global nonABAction
-            nonABAction = True
-            if debug:
-                print("-> !!!!!!! WARNING: Action contained in widget that isn't an action button: "+str(widget["@type"])+", name: "+str(widget["name"]))
-                print("    action: "+str(widget["actions"]["action"]))
-            if widget["@type"] == "rectangle" or widget["@type"] == "bool_button":
-                if widget["@type"] == "bool_button":
-                    if widget["on_label"] != widget["off_label"]:
-                        return
-                global replaceWithAB
-                replaceWithAB = True
-                if debug:
-                    print("  Attempting to fix by converting to an action_button")
-                widget["@type"] = "action_button"
+    def parse_file_data(
+        self, file_data: dict, processed_files: list
+    ) -> list[ConversionConfig]:
+        new_conversions = []
+        src_file_paths = []
+        dst_dir_paths = []
+        src_path_config = Path(file_data["src"])
+        dst_path_config = Path()
+        support_module_name = None
 
-                if "on_label" in widget:
-                    widget["text"] = widget["on_label"]
-                else:
-                    widget["text"] = ""
-                if "rules" in widget:
-                    if type(widget["rules"]["rule"]) == list:
-                        for r in widget["rules"]["rule"]:
-                            if r["@prop_id"] == "line_color":
-                                widget["rules"]["rule"].remove(r)
+        if "support_module_name" in file_data:
+            support_module_name = file_data["support_module_name"]
+
+        # Common support module area shared across Accelerator Controls
+        if file_data["dst"] == "acc-ui-support":
+            dst_path_config = self.acc_ui_support_dst_full
+            dst_path_partial = self.acc_ui_support_dst_part
+        # Domain specific screens
+        elif file_data["dst"] == f"{self.domain}-ui-support":
+            dst_path_config = self.domain_ui_support_dst_full
+            dst_path_partial = self.domain_ui_support_dst_part
+        # Top level screens
+        elif file_data["dst"] == "synoptic":
+            dst_path_config = self.domain_synoptic_dst_full
+            dst_path_partial = self.domain_synoptic_dst_part
+        else:
+            error_msg = f"Invalid dst field in config file: {file_data['dst']}"
+            logger.error(error_msg, exc_info=True)
+            raise ValueError(error_msg)
+
+        # If the src path is a directory, we find all .opi files within it and add them
+        # to the conversion list, otherwise we add the single file specified
+        # in the config
+        if src_path_config.is_dir():
+            if "new_filename" in file_data:
+                message = "The 'new_filename' field cannot be used when src is given as a directory. Please check config file."
+                logger.error(message)
+                raise ValueError(message)
+
+            if "include_subdirs" in file_data and file_data["include_subdirs"] is True:
+                for file_paths in src_path_config.rglob("*.opi"):
+                    src_file_paths.append(file_paths)
+
+                    if support_module_name is not None:
+                        recursive_dir = Path(support_module_name)
                     else:
-                        if widget["rules"]["rule"]["@prop_id"] == "line_color":
-                                widget["rules"]["rule"].remove(r)
+                        recursive_dir = Path(src_path_config.name)
 
+                    # We need to do some fancy path manipulation to recreate the old directory
+                    # structure in the destination directory
+                    if len(file_paths.parent.parts) > len(src_path_config.parts):
+                        for subdir in file_paths.parent.parts[
+                            len(src_path_config.parts) :
+                        ]:
+                            recursive_dir = recursive_dir / subdir
 
+                        if (recursive_dir.parts[0], dst_path_partial / recursive_dir) not in self.domain_support_module_locations:
+                            self.domain_support_module_locations.append((recursive_dir.parts[0], dst_path_partial / recursive_dir))
 
-def replaceDataBrowserScript(widget):
-    if debug:
-        print("-> Replacing databrowser")
-    if widget["text"] == "Graph":
-        action = widget["actions"]["action"]
-        if action["@type"] == "execute":
-            global replaceDBScript
-            replaceDBScript = True
-            action["@type"] = "open_file"
-            action["description"] = "Open File"
-            action["file"] = plot_loc_macro+args["pname"]+".plt"
-            del action["script"] 
-
-
-def fixEmbeddedScreenExt(widget):
-    if "file" not in widget:
-        return
-    global replaceOpiExt
-    replaceOpiExt = True
-    opi_file = widget["file"]
-    bob_file = opi_file.replace(".opi", ".bob")
-    widget["file"] = bob_file
-
-
-def fixGroupingContainer(opifile):
-    result = []
-    with open(opifile, "r") as f:
-        lines = f.readlines()
-        checkForBorderProp = False
-        foundBorderProp = False
-        fixed = False
-        for line in lines:
-            if "org.csstudio.opibuilder.widgets.groupingContainer" in line and not checkForBorderProp:
-                checkForBorderProp = True
-            elif "<widget typeId" in line:
-                if checkForBorderProp and not foundBorderProp:
-                    fixed = True
-                    result.append("   <border_color>\n")
-                    result.append('     <color name="Canvas" red="200" green="200" blue="200"></color>\n')
-                    result.append("   </border_color>\n")
-                    result.append("   <border_style>0</border_style>\n")
-                    # Reset
-                    checkForBorderProp = False
-                    foundBorderProp = False
-                    if "org.csstudio.opibuilder.widgets.groupingContainer" in line and not checkForBorderProp:
-                        checkForBorderProp = True
-            if checkForBorderProp:
-                if "border_color" in line:
-                    checkForBorderProp = False
-                    foundBorderProp = True
-           
-            result.append(line)
-    if fixed:
-        global fixGroupCont
-        fixGroupCont = True
-        if debug:
-            print("-> OPI ERROR: Missing border property in 'Group' widget... fixing")
-        with open(tmpfile, "w") as f:
-            f.writelines(result)
-
-    return fixed
-
-
-def fixActionOpenMacro(widget):
-    action = widget["actions"]["action"]
-    if action["@type"] == "open_display":
-        for i in action["macros"]:
-            if action["macros"][i] == "$(name)":
-                global fixActionMacroName
-                fixActionMacroName = True
-                action["macros"][i] = widget["name"]
-
-def createSymbolFromEdm(widget):
-    setup_dict = {}
-    if not os.path.isfile(template_file):
-        print("!!!! No template files provided!! Exiting")
-        exit(-1)
-    with open(template_file, 'r', encoding='utf-8') as file:
-        fxml = file.read()
-
-        setup_dict = xmltodict.parse(fxml)
-
-        sym_list = []
-        if type(setup_dict["symbols"]["symbol"]) != list:
-            sym_list = [setup_dict["symbols"]["symbol"]]
+                    new_dst = dst_path_config / recursive_dir
+                    dst_dir_paths.append(new_dst)
+            else:
+                for file_paths in src_path_config.glob("*.opi"):
+                    if file_paths not in processed_files:
+                        src_file_paths.append(file_paths)
+                        dst_dir_paths.append(dst_path_config)
+                    else:
+                        logger.warning(
+                            f"File {file_paths} has already been processed, skipping conversion."
+                        )
         else:
-            sym_list = setup_dict["symbols"]["symbol"]
-        for s in sym_list:
-            name = s["name"]
-            if s["name"] == widget["name"]:
-                if debug:
-                    print("-> Fixing Symbol widget with name: "+s["name"])
-                image = s["image"]
-                location = s["location"]
-                width = int(s["width"])
-                height = int(s["height"])
-                nimages = int(s["nimages"])
-                startindex = s["startindex"]
-                invalidimageindex = int(s["invalidimageindex"])
+            src_file_paths = [src_path_config]
+            dst_dir_paths = [dst_path_config]
 
-                # Run action of left click
-                if "actions" in widget:
-                    widget["run_actions_on_mouse_click"] = "true"
-
-                # Set up symbols
-                outimage = location.split(".")[:-1]
-                ext = "."+location.split(".")[-1]
-                if debug:
-                    print("-> Creating new images for symbol from: "+location)
-                if os.path.isfile(outimage[0]+"_0"+ext):
-                    # Skip if it alreayd exists
-                    if debug:
-                        print("   ... images already exist - skipping")
+        for src_file_path, dst_dir_path in zip(
+            src_file_paths, dst_dir_paths, strict=True
+        ):
+            new_conversion = ConversionConfig()
+            new_conversion.src_file_path = src_file_path
+            new_conversion.dst_dir_path = dst_dir_path
+            if "new_filename" in file_data:
+                new_conversion.dst_filename = file_data["new_filename"]
+            if "macros" in file_data:
+                new_conversion.macros = file_data["macros"]
+            if "support_module_name" in file_data:
+                new_conversion.support_module_name = support_module_name
+            if "template_file" in file_data:
+                template_file_path = Path(file_data["template_file"])
+                if template_file_path.is_file():
+                    new_conversion.template_file_path = template_file_path
                 else:
-                    global createSymImages
-                    createSymImages = True
-                    for n in range(nimages):
-                        output = outimage[0]+"_"+str(n)+ext
-                        x = 0 + width*n
-                        cmd =  "convert " + location + " -crop "+str(width)+"x"+str(height)+"+"+str(x)+"+0 "+output
-                        process = subprocess.Popen(cmd.split(),
-                                 stdout=subprocess.PIPE, 
-                                 stderr=subprocess.PIPE)
+                    template_file_path = Path.cwd() / "templates" / template_file_path
+                if not template_file_path.is_file():
+                    raise FileNotFoundError(f"Could not find template file {str(template_file_path)}")
+                new_conversion.template_file_path = template_file_path
+            if file_data["dst"] == "synoptic":
+                new_conversion.synoptic = True
+            new_conversions.append(new_conversion)
 
-                        stdout, stderr = process.communicate()
+        return new_conversions
 
-                outimage = ".".join(image.split(".")[:-1])
-                ext = "."+image.split(".")[-1]
-                symbols = []
-                startindexlist = startindex.split(",")
-                if len(startindexlist) > 1:
-                    for n in startindexlist:
-                        symbols.append(outimage+"_"+n+ext)
+    def read_bob_file_contents(self, file_path: Path, conversion):
+        with open(file_path, "r", encoding="utf-8") as fh:
+            fxml = fh.read()
+            as_dict = xmltodict.parse(fxml)
+            conversion.all_phoebus_data = as_dict
+            conversion.widget_data = as_dict["display"]["widget"]
+
+    def write_bob_file_contents(self, file_path: Path, conversion):
+        with open(file_path, "w") as fh:
+            new_xml = xmltodict.unparse(conversion.all_phoebus_data, pretty=True)
+            fh.write(new_xml)
+
+    def fill_in_file_path_macros(self, string: str, macros) -> str:
+        def replace(match):
+            key = match.group(1)              # the ‘x’ inside ${x}
+            return macros.get(key, match.group(0))   # default: leave unchanged
+
+        resolved_path = re.sub(
+            r"\$[\{\(]([^\}\)\s]+)[\}\)]",
+            replace,
+            str(string)
+        )
+        return resolved_path
+    
+    def search_widget_filepaths_recursive(self, widget, func: typing.Callable, widget_file_paths=None, macros=None):
+        """This generic, recursive function takes a widget and searches for any references to filepaths
+         these can be in multiple different widget fields and also in widgets within the widget etc
+         When a filepath is found, it is passed into the passed func callable."""
+
+        args = [arg for arg in [widget_file_paths, macros] if arg is not None]
+
+        if not isinstance(widget, dict):
+            return
+        if "widget" in widget:
+            for widget in widget["widget"]:
+                self.search_widget_filepaths_recursive(widget, func, widget_file_paths, macros)
+        if "tabs" in widget:
+            for tab in widget["tabs"]["tab"]:
+                # widget["tabs"]["tab"] can either be a single tab or a list of tabs, so
+                # we have to handle this by checking the type of tab
+                if type(tab) is str:
+                    for child_widget in widget["tabs"]["tab"]["children"]["widget"]:
+                        if type(child_widget) is str:
+                            self.search_widget_filepaths_recursive(widget["tabs"]["tab"]["children"]["widget"], func, widget_file_paths, macros)
+                            break
+                        self.search_widget_filepaths_recursive(child_widget, func, widget_file_paths, macros)
+                    break
+                if "children" in tab and tab["children"] is not None:
+                    for child_widget in tab["children"]["widget"]:
+                        if type(child_widget) is str:
+                            self.search_widget_filepaths_recursive(tab["children"]["widget"], func, widget_file_paths, macros)
+                            break
+                        self.search_widget_filepaths_recursive(child_widget, func, widget_file_paths, macros)
+        if "symbols" in widget:
+            for symbol_widget_name in widget["symbols"]:
+                symbol_widget = widget["symbols"][symbol_widget_name]
+                if symbol_widget != [None, None]:
+                    if isinstance(symbol_widget, list):
+                        for i, symbol_path in enumerate(symbol_widget):
+                            if func(Path(symbol_path), *args, symbol=True):
+                                symbol_widget[i] = func(Path(symbol_path), *args, symbol=True)
+                    else:
+                        # We only log when we find edm widget not when we later switch it
+                        if func.__name__ == "append_new_filepath":
+                            logger.warning(f"Warning, edm style symbol widget detected: {widget['name']}")
+                        if func(Path(symbol_widget), *args, symbol=True):
+                            widget["symbols"]["symbol"] = func(Path(symbol_widget), *args, symbol=True)
+        if "file" in widget and widget["file"] is not None:
+            if func(Path(widget["file"]), *args):
+                widget["file"] = func(Path(widget["file"]), *args)
+        if "opi_file" in widget and widget["opi_file"] is not None:
+            if func(Path(widget["opi_file"]), widget["opi_file"], *args):
+                widget["opi_file"] = func(Path(widget["opi_file"]), widget["opi_file"], *args)
+        if "actions" in widget and widget["actions"] is not None:
+            for action in widget["actions"]:
+                if "path" in widget["actions"][action]:
+                    if func(Path(widget["actions"][action]["path"]), *args):
+                        widget["actions"][action]["path"] = func(Path(widget["actions"][action]["path"]), *args)
+                elif "file" in widget["actions"][action]:
+                    if func(Path(widget["actions"][action]["file"]), *args):
+                        widget["actions"][action]["file"] = func(Path(widget["actions"][action]["file"]), *args)
+        return widget_file_paths
+
+    def get_widget_filepaths(self, widget, widget_file_paths):
+        def append_new_filepath(path_string, widget_file_paths, symbol=False):
+            widget_file_paths.append(path_string)
+            return False
+        return self.search_widget_filepaths_recursive(widget, append_new_filepath, widget_file_paths)
+
+    def update_widget_filepaths(self, widget, macros):
+        self.search_widget_filepaths_recursive(widget, self.switch_filepaths, macros)
+
+    def get_required_support_modules(self, conversion: ConversionConfig, file_path: Path) -> None:
+        widget_file_paths: list[Path] = []
+        # Look for filepaths in xml
+        for widget in conversion.widget_data:
+            self.get_widget_filepaths(widget, widget_file_paths)
+
+        # Only keep unique filepaths and fill in macros
+        file_paths_unique = set()
+        for file_path in set(widget_file_paths):
+            file_paths_unique.add(Path(self.fill_in_file_path_macros(str(file_path), conversion.macros)))
+                
+        # If a support module has been requested and we are not already converting it,
+        # then add it to the list of extra required support modules which we will attempt
+        # to build later.
+        for file_path in file_paths_unique:
+            # Search through the filepath and remove any strings which dont look useful
+            new_filepath = Path()
+            for part in file_path.parts:
+                strings_to_skip = ["..", ".", "images", "symbols"]
+                if part not in strings_to_skip:
+                    new_filepath = new_filepath / part
+            file_path = new_filepath
+
+            # If we only have 1 part left, it is probably the file itself which isnt a support module
+            # so we move to the next one
+            if len(file_path.parts) > 1:
+                # The support module should be the second to last part
+                support_module_name = file_path.parts[-2]
+                if support_module_name in ACC_UI_SUPPORT_MODULE_LIST:
+                    new_entry = (support_module_name, self.acc_ui_support_dst_part / support_module_name)
+                    if new_entry not in self.acc_support_module_locations:
+                        self.acc_support_module_locations.append(new_entry)
                 else:
-                    for n in range(nimages-int(startindexlist[0])):
-                        index = n + int(startindexlist[0])
-                        symbols.append(outimage+"_"+str(index)+ext)
+                    new_entry = (support_module_name, self.domain_ui_support_dst_part / support_module_name)
+                    if new_entry not in self.domain_support_module_locations:
+                        self.domain_support_module_locations.append(new_entry)
 
-                widget["symbols"]["symbol"] = symbols
+        logger.info(f"Required domain modules: {self.domain_support_module_locations}")
+        logger.info(f"Required acc modules: {self.acc_support_module_locations}")
+    
+    def switch_filepaths(self, file_path, macros, symbol=False) -> str:
+        "Takes an old file_path string and returns what the new file_path should be. This is done"
+        "by getting the name of the support module from the old path and matching it with our data."
+        file_path_string = str(file_path)
+        all_support_modules = self.domain_support_module_locations + self.acc_support_module_locations
+        # If the pathstring is in the current directory, eg file.bob, then no need to change it
+        if len(file_path.parts) <=1:
+            return file_path_string
 
-                # Fix rules
-                rule = widget["rules"]["rule"]
-                if rule["@prop_id"] == "image_index":
-                    rule["@prop_id"] = "symbols[0]"
-                    rule["@out_exp"] = "false"
-                    exp = {}
-                    for e in rule["exp"]:
-                        if e["@bool_exp"] == "pvLegacySev0==-1":
-                            exp["@bool_exp"] = "pvSev0==3 || pvSev0==4"
-                            exp["value"] = outimage + "_" + str(invalidimageindex)+ext
+        # If we have already updated the paths, dont do it again:
+        if self.acc_ui_support_dst_part.parts[0] in file_path_string or self.domain_ui_support_dst_part.parts[0] in file_path_string or self.domain_synoptic_dst_part.parts[0] in file_path_string:
+            return file_path_string
 
-                    rule["exp"] = exp
-
-
-def parseWidget(widget, spacing, level, parent):
-    #print(str(level)+ " " + spacing + widget["@type"] + ": " + widget["name"])
-
-    if not isinstance(widget, dict):
-        return
-
-    if "@typeId" in widget:
-        print("-> Detected old CSS index '@typeid' - suggests that the Phoebus converter\
-failed to convert the GroupContainer widget.\nTry running converter with --fixGroup option.")
-        exit(0)
-
-    if widget["@type"] == "group":
-        if type(widget["widget"]) is not list:
-            parseWidget(widget["widget"], spacing+" ", level+1, widget)
+        file_path_string = self.fill_in_file_path_macros(file_path_string, macros)
+        file_path = Path(file_path_string)
+        if file_path.name == ".opi":
+            file_name = file_path.with_suffix(".bob").name
         else:
-            for w in widget["widget"]:
-                parseWidget(w, spacing+" ", level+1, widget)
-    elif widget["@type"] == "action_button" :
-        if "text" in widget:
-            if widget["text"] == "EXIT" or widget["text"] == "Exit" or widget["text"] == "Cancel":
-                widget["actions"]["action"] = fixExitButton()
-        replaceOpiExtenstion(widget["actions"]["action"])
-        replaceDataBrowserScript(widget)
-        if args["replaceTab"]:
-            replaceOpenInTab(widget["actions"])
-    elif widget["@type"] == "symbol":
-        if "actions" in widget:
-            if widget["actions"] != None:
-                replaceOpiExtenstion(widget["actions"]["action"])
-                fixActionOpenMacro(widget)
-        createSymbolFromEdm(widget)
-    elif widget["@type"] == "embedded":
-        fixEmbeddedScreenExt(widget)
+            file_name=file_path.name
 
-    checkRule(widget)
-    checkActionsInNonActionButtons(widget)
+        new_filepath = Path()
+        for part in file_path.parts:
+            strings_to_skip = ["..", ".", "images", "symbols"]
+            if part not in strings_to_skip:
+                new_filepath = new_filepath / part
+            elif part in ["images", "symbols"]:
+                symbol=True
+        support_module_name = new_filepath.parts[0]
+        
+        for data in all_support_modules:
+            if data[0] == support_module_name:
+                if symbol:
+                    return str(Path(*data[1].parts[:-2]) / "symbols" / file_name)
+                else:
+                    return str(data[1] / file_name)
+                
+        logger.warning(f"Could not find support module for old path: {file_path_string}. Filepath unchanged.")
+        return file_path_string
+    
+    def update_filepaths(self, conversion):
+        # Look for filepaths in xml
+        for widget in conversion.widget_data:
+            self.update_widget_filepaths(widget, conversion.macros)
 
-def modifyBobXml():
-    as_dict = {}
-    with open(outfile, 'r', encoding='utf-8') as file:
-        fxml = file.read()
+        conversion.all_phoebus_data["display"]["widget"] = conversion.widget_data
 
-        as_dict = xmltodict.parse(fxml)
-        widgets = as_dict["display"]["widget"]
-        for w in widgets:
-            parseWidget(w, "", 0, as_dict["display"])
+    def add_new_macros(
+        self, conversion: ConversionConfig, macro_names: list[str], macro_values: list[str]
+    ) -> None:
+        """Add a list of macro name/values to the top level of the bob file."""
 
-    return as_dict
+        if "macros" not in conversion.all_phoebus_data["display"]:
+            conversion.all_phoebus_data["display"]["macros"] = {}
 
-def writeDict(as_dict, xml_dict): 
-    with open(outfile, "w") as f:
-        new_xml = xmltodict.unparse(as_dict,pretty=True)
-        f.write(new_xml)
-        #pprint.pprint(as_dict["display"]["widget"], indent=2)
-      
+        macro_data = conversion.all_phoebus_data["display"]["macros"]
+
+        for new_macro_name, new_macro_value in zip(
+            macro_names, macro_values, strict=True
+        ):
+            for existing_macro_name, existing_macro_value in macro_data.items():
+                if existing_macro_name == new_macro_name:
+                    logging.warning(
+                        f"An existing file macro is being overwritten: "
+                        f"{existing_macro_name}:{existing_macro_value} -> "
+                        f"{new_macro_name}:{new_macro_value}"
+                    )
+            macro_data[new_macro_name] = new_macro_value
+
+        conversion.widget_data = conversion.all_phoebus_data["display"]["widget"]
+
+    def handle_macros(self, file_path: Path, conversion: ConversionConfig) -> None:
+        """Look for unique instances of a macro eg ${string} in the bob file. We ignore a small
+        number of macros which are defined from other widget fields (MACRO_EXCEPTION_LIST).
+        If a macro is found in a file but has not been defined in the ConversionConfig, then
+        we log a warning."""
+
+        new_macro_names = []
+        new_macro_values = []
+
+        with file_path.open("r", encoding="utf-8") as fh:
+            content = fh.read()
+
+        unique_identified_macros = set(
+            re.findall(r"\$[\{\(]([^\}\)\s]+)[\}\)]", content)
+        )
+        logger.info(f"Found macros in file: {unique_identified_macros}")
+
+        for macro in unique_identified_macros:
+            # Some macros refer to internal Phoebus objects, so we dont resolve these
+            if macro not in MACRO_EXCEPTION_LIST:
+                if macro in conversion.macros.keys():
+                    new_macro_names.append(macro)
+                    new_macro_values.append(conversion.macros[macro])
+                else:
+                    # This macro has not been defined!
+                    logger.warning(
+                        f"Could not find definition for macro: '{macro}'. "
+                        "Should this have been defined in your yaml config?"
+                    )
+
+        self.add_new_macros(conversion, new_macro_names, new_macro_values)
+
+    def get_existing_support_module_filepath(self, support_module_name) -> str | None:
+        dls_sw_support_modules = Path("/dls_sw/prod/R3.14.12.7/support/")
+        version_list = []
+        latest_file = Path("")
+        # Look for the support module on dls_sw and get the path to the latest release
+        for path in dls_sw_support_modules.iterdir():
+            if path.name==support_module_name:
+                for version in path.iterdir():
+                    if version.is_dir():
+                        version_list.append(version)
+                latest_file = max([f for f in version_list], key=lambda item: item.stat().st_ctime)
+
+        opi_dir_guess = latest_file / f"{support_module_name}App" / "opi" / "opi"
+        if opi_dir_guess.is_dir():
+            return str(opi_dir_guess)
+        else:
+            logger.error(f"Could not find {support_module_name} in {str(dls_sw_support_modules)}")
+            return None
+
+    def convert_extra_support_modules(self):
+        all_support_modules = self.domain_support_module_locations + self.acc_support_module_locations
+
+        if type(self.config_file) is PosixPath:
+            with open(self.config_file, "r") as file:
+                data = yaml.safe_load(file)
+        else:
+            data = self.config_file
+        data["files"] = []
+
+        existing_modules_paths = list(self.acc_ui_support_dst_full.iterdir())  + list(self.domain_ui_support_dst_full.iterdir())
+        existing_module_names = [path.name for path in existing_modules_paths]
+        # sm -> support module
+        for sm_name, sm_file_path in all_support_modules:
+            if sm_name not in existing_module_names:
+                # Filter out any files which have been mistaken for support modules
+                if sm_file_path.suffix == '':
+                    sm_src_file_path = self.get_existing_support_module_filepath(sm_name)
+                    if sm_src_file_path is not None:
+                        if sm_name in ACC_UI_SUPPORT_MODULE_LIST:
+                            data["files"].append({
+                                'src': sm_src_file_path,
+                                'dst': 'acc-ui-support',
+                                'support_module_name': sm_name,
+                                'include_subdirs': True
+                            })
+                        else:
+                            data["files"].append({
+                                'src': sm_src_file_path,
+                                'dst': 'fe-ui-support',
+                                'support_module_name': sm_name,
+                                'include_subdirs': True
+                            })
+                    logger.info(f"Converting extra support module: {sm_name}")
+        if len(data["files"]) > 0:
+            self.get_config(data)
+            self.convert()
+        else:
+            logger.info("Creating extra modules finished!")
+
+    def convert(self) -> None:
+        for conversion in self.conversion_data:
+            logger.info(f"Converting {conversion.src_file_path}")
+                                                                     
+            # Create directories to place screens, this should probably be in opi_converter.py
+            conversion.dst_dir_path.mkdir(parents=True, exist_ok=True)
+
+            # Convert .boy to .bob
+            converted_file = opi_converter.main(
+                conversion.src_file_path,
+                conversion.dst_dir_path,
+                conversion.dst_filename,
+                conversion.template_file_path
+            )
+
+            # Read in the widget data from the new bob file
+            self.read_bob_file_contents(converted_file, conversion)
+
+            # We need to define macros which were previously passed into the synoptic as script arguments
+            if conversion.synoptic:
+                self.handle_macros(converted_file, conversion)
+
+            # Figure out which filepaths within bob files need updating and
+            # update them to the new paths.
+            self.get_required_support_modules(conversion, converted_file)
+            self.update_filepaths(conversion)
+
+            # Overwrite the bob file with the modified xml data
+            self.write_bob_file_contents(converted_file, conversion)
+            logger.info(f"Conversion saved to {converted_file}\n")
+
+        # Get missing support module screens
+        if self.convert_dependencies:
+            self.convert_extra_support_modules()
+
+def parse_arguments():
+    """Parse command line arguments sent to virtac"""
+    parser = ArgumentParser()
+    parser.add_argument(
+        "config_file",
+        type=str,
+        help="The yaml config for the conversion. This can either be a full path to a"
+        " .yaml file or the name of one of the .yaml files in config/",
+    )
+    parser.add_argument(
+        "-o",
+        "--output-dir",
+        required=False,
+        type=str,
+        help="The full path to the directory to output generated files to",
+        default=Path.cwd() / "output",
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        help="Enable debug logging",
+        action="store_true",
+        default=False,
+    )
+    args = parser.parse_args()
+
+    config_file_path = Path(args.config_file)
+    # If the user only supplied the name of a config file, then add the path to the
+    # directort containing the config files
+    if len(config_file_path.parts) == 1:
+        config_file_path = Path.cwd() / "config" / config_file_path
+    if args.debug:
+        logger.setLevel(logging.DEBUG)
+
+    return config_file_path, Path(args.output_dir)
+
 
 def main():
-    # Check the no_edit file to see if we should even run the conversion
-    with open(no_edit_file, "r") as f:
-        lines = f.readlines()
-        for line in lines:
-            if infile == line.strip():
-                print("!!! OPI file to be converted is in the 'no_edit' list suggesting \
-    that it has had manual changes that should not be overwritten.\n\
-    If this is incorrect then remove this file from the "+no_edit_file+".\n\
-    Exiting...")
-                exit(0)
+    args = parse_arguments()
+    logger.debug(f"Running screen conversion with arguments: {args}")
+    converter = Converter(config_file_path=args[0], output_dir_path=args[1])
+    converter.convert()
 
-    use_tmp_file = False
-    # Modify the OPI file before running conversion
-    use_tmp_file = replaceEdmSymbolWidget()
-
-    if args["fixGroup"]:
-        # Fix missing border items from grouping container
-        if use_tmp_file:
-            fixGroupingContainer(tmpfile)
-        else:
-            use_tmp_file = fixGroupingContainer(infile)    
-
-    # If conversion has already been run, delete previous BOB conversion
-    deleteOldFile()
-
-    file = infile
-    # Should we used the modified OPI files
-    if use_tmp_file:
-        file = tmpfile
-
-    # Run Phoebus converter
-    runConverter(file)
-
-    # Remove tmp OPI files if a modified version was created
-    if use_tmp_file:
-        os.rename(tmpfile.replace(".opi",".bob"), outfile)
-        #os.remove(tmpfile)
-
-    if not args["nomodify"]:
-        """ 
-            - Replaces EXIT scripts with an ActionButton to Exit
-            - Action Buttons to open displays are modified to open .bob extensions
-            - Rules using legacy severity are replaced
-            - Flag that actions are running on non-action buttons
-        """
-        xml_dict = modifyBobXml()
-        # Write out modified xml
-        writeDict(xml_dict, xml_dict)
-
-    # Log what was done
-    if replaceEdmSym:
-        print("-> Replaced EDMSymbol widgets in OPI before running converter")
-    if fixGroupCont:
-        print("-> Fixed Grouping Container widget is OPI that is missing required properties")
-    if updateLegSev:
-        print("-> Updating legacy PV severity status")
-    if fixExitBut:
-        print("-> Converting EXIT to script to an EXIT action button to close display")
-    if replaceOpiExt:
-        print("-> Replaced .OPI file extensions with .BOB for EmbeddedDisplay/LinkingContainers/Open Display actions")
-    if nonABAction:
-        print("-> Found an action on a widget that is NOT an ActionButton or Symbol widget. Debug for more")
-    if replaceWithAB:
-        print("-> Replaced a Rectangle/BooleanButton widget with an action with an Action Button widget")
-    if replaceDBScript:
-        print("-> Replaced script to open databrowser with an action to open a DataBrowser plt file")
-    if fixActionMacroName:
-        print("-> Fixed Open Display action that contains the $name macro that does not get parsed")
-    if createSymImages:
-        print("-> Created new images for Symbol widget from original")
-    if replaceActionTab:
-        print("-> Replace open display target=tab with target=standalone")
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,6 @@
+# Requied packages
+PyYAML
+xmltodict
+
+# Development packages
+ruff

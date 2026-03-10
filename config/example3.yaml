@@ -1,0 +1,12 @@
+meta_data:
+  - domain: fe
+    domain_synoptic_dst: fe-services/synoptic
+    domain_ui_support_dst: fe-ui-support/bob
+    acc_ui_support_dst:  acc-ui-support/bob
+
+
+files:
+  # Convert all support module screens in the common directory and sub directories
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/common
+    dst: fe-ui-support
+    include_subdirs: true
