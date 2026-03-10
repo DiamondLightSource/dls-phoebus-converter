@@ -179,6 +179,7 @@ class ScreenConverter:
         if "actions" in widget:
             if (
                 widget["actions"] is not None
+                and "action" in widget["actions"]
                 and widget["@type"] != "action_button"
                 and widget["@type"] != "symbol"
             ):
@@ -279,13 +280,16 @@ class ScreenConverter:
         return fixed
 
     def fix_action_open_macro(self, widget):
-        action = widget["actions"]["action"]
-        if action["@type"] == "open_display":
-            if "macros" in action.keys():
-                for i in action["macros"]:
-                    if action["macros"][i] == "$(name)":
-                        self.cs.fix_action_macro_name = True
-                        action["macros"][i] = widget["name"]
+        actions = widget["actions"]["action"]
+        if type(actions) is not list:
+            actions = [actions]
+        for action in actions:
+            if action["@type"] == "open_display":
+                if "macros" in action.keys():
+                    for i in action["macros"]:
+                        if action["macros"][i] == "$(name)":
+                            self.cs.fix_action_macro_name = True
+                            action["macros"][i] = widget["name"]
 
     def create_symbol_from_edm(self, widget):
         setup_dict = {}
@@ -392,11 +396,12 @@ class ScreenConverter:
             return
 
         if widget["@type"] == "group":
-            if type(widget["widget"]) is not list:
-                self.parse_widget(widget["widget"], spacing + " ", level + 1, widget)
-            else:
-                for w in widget["widget"]:
-                    self.parse_widget(w, spacing + " ", level + 1, widget)
+            if "widget" in widget:
+                if type(widget["widget"]) is not list:
+                    self.parse_widget(widget["widget"], spacing + " ", level + 1, widget)
+                else:
+                    for w in widget["widget"]:
+                        self.parse_widget(w, spacing + " ", level + 1, widget)
         elif widget["@type"] == "action_button":
             if "text" in widget:
                 if (
@@ -405,13 +410,17 @@ class ScreenConverter:
                     or widget["text"] == "Cancel"
                 ):
                     widget["actions"]["action"] = self.fix_exit_button()
-            self.replace_opi_extension(widget["actions"]["action"])
+            if widget["actions"] is not None: 
+                self.replace_opi_extension(widget["actions"]["action"])
             self.replace_data_browser_script(widget)
             if self.replace_tab:
                 self.replace_open_in_tab(widget["actions"])
         elif widget["@type"] == "symbol":
             if "actions" in widget:
-                if widget["actions"] is not None:
+                if (
+                    widget["actions"] is not None
+                    and "action" in widget["actions"]
+                ):
                     self.replace_opi_extension(widget["actions"]["action"])
                     self.fix_action_open_macro(widget)
             self.create_symbol_from_edm(widget)
