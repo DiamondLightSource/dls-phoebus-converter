@@ -9,7 +9,6 @@ from logconfig import setup_logging
 
 PHOEBUS_SH_FILE_PATH = "/dls_sw/apps/phoebus/dls_config/phoebus.sh"
 PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
-TEMPLATE_FILE_PATH = "templates/example_template.xml"
 
 if not logging.getLogger("dls_phoebus_converter"):
     setup_logging()
@@ -179,6 +178,7 @@ class ScreenConverter:
         if "actions" in widget:
             if (
                 widget["actions"] is not None
+                and "action" in widget["actions"]
                 and widget["@type"] != "action_button"
                 and widget["@type"] != "symbol"
             ):
@@ -215,14 +215,15 @@ class ScreenConverter:
 
     def replace_data_browser_script(self, widget):
         logger.debug("Replacing databrowser script with action to open plot file")
-        if widget["text"] == "Graph":
-            action = widget["actions"]["action"]
-            if action["@type"] == "execute":
-                self.cs.replace_db_script = True
-                action["@type"] = "open_file"
-                action["description"] = "Open File"
-                action["file"] = PLOT_LOCATION_MACRO + self.pname + ".plt"
-                del action["script"]
+        if self.pname is not None:
+            if widget["text"] == "Graph":
+                action = widget["actions"]["action"]
+                if action["@type"] == "execute":
+                    self.cs.replace_db_script = True
+                    action["@type"] = "open_file"
+                    action["description"] = "Open File"
+                    action["file"] = PLOT_LOCATION_MACRO + self.pname + ".plt"
+                    del action["script"]
 
     def fix_embedded_screen_ext(self, widget):
         if "file" not in widget:
@@ -278,16 +279,23 @@ class ScreenConverter:
         return fixed
 
     def fix_action_open_macro(self, widget):
-        action = widget["actions"]["action"]
-        if action["@type"] == "open_display":
-            if "macros" in action.keys():
-                for i in action["macros"]:
-                    if action["macros"][i] == "$(name)":
-                        self.cs.fix_action_macro_name = True
-                        action["macros"][i] = widget["name"]
+        actions = widget["actions"]["action"]
+        if type(actions) is not list:
+            actions = [actions]
+        for action in actions:
+            if action["@type"] == "open_display":
+                if "macros" in action.keys():
+                    for i in action["macros"]:
+                        if action["macros"][i] == "$(name)":
+                            self.cs.fix_action_macro_name = True
+                            action["macros"][i] = widget["name"]
 
     def create_symbol_from_edm(self, widget):
         setup_dict = {}
+        if self.template_file_path is None:
+            logger.warning("Found edm symbol widget but could not convert it due to no template file being supplied.")
+            return
+        
         if not os.path.isfile(self.template_file_path):
             error_msg = f"No template file provided"
             logger.error(error_msg, exc_info=True)
@@ -384,18 +392,19 @@ class ScreenConverter:
             return
 
         if "@typeId" in widget:
-            logging.info(
+            logging.error(
                 "Detected old CSS index '@typeid' - suggests that the Phoebus converter\
     failed to convert the GroupContainer widget.\nTry running converter with --fixGroup option."
             )
-            exit(0)
+            return
 
         if widget["@type"] == "group":
-            if type(widget["widget"]) is not list:
-                self.parse_widget(widget["widget"], spacing + " ", level + 1, widget)
-            else:
-                for w in widget["widget"]:
-                    self.parse_widget(w, spacing + " ", level + 1, widget)
+            if "widget" in widget:
+                if type(widget["widget"]) is not list:
+                    self.parse_widget(widget["widget"], spacing + " ", level + 1, widget)
+                else:
+                    for w in widget["widget"]:
+                        self.parse_widget(w, spacing + " ", level + 1, widget)
         elif widget["@type"] == "action_button":
             if "text" in widget:
                 if (
@@ -404,13 +413,17 @@ class ScreenConverter:
                     or widget["text"] == "Cancel"
                 ):
                     widget["actions"]["action"] = self.fix_exit_button()
-            self.replace_opi_extension(widget["actions"]["action"])
+            if widget["actions"] is not None: 
+                self.replace_opi_extension(widget["actions"]["action"])
             self.replace_data_browser_script(widget)
             if self.replace_tab:
                 self.replace_open_in_tab(widget["actions"])
         elif widget["@type"] == "symbol":
             if "actions" in widget:
-                if widget["actions"] is not None:
+                if (
+                    widget["actions"] is not None
+                    and "action" in widget["actions"]
+                ):
                     self.replace_opi_extension(widget["actions"]["action"])
                     self.fix_action_open_macro(widget)
             self.create_symbol_from_edm(widget)
@@ -520,8 +533,6 @@ def parse_args():
 
     if args.tfile is not None:
         template_file_path = Path(args["tfile"])
-    else:
-        template_file_path = TEMPLATE_FILE_PATH
 
     if args.debug:
         logger.setLevel(logging.DEBUG)
@@ -542,7 +553,7 @@ def main(
     src_file_path,
     dst_dir_path,
     dst_filename=None,
-    template_file_path=TEMPLATE_FILE_PATH,
+    template_file_path=None,
     pname=None,
     fix_group=True,
     no_modify=False,
