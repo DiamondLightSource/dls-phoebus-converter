@@ -10,6 +10,7 @@ files:
   # Convert FE22B.opi and its dependencies
   - src: examples/FE22B.opi
     dst: synoptic
+    template_file: FE22B_template.xml
     macros:
       dom: FE22B
       cell: 22

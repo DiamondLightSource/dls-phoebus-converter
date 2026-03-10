@@ -1,8 +1,9 @@
 meta_data:
   - domain: fe
-    domain_synoptic_dst: fe-support/synoptic
+    domain_synoptic_dst: fe-services/synoptic
     domain_ui_support_dst: fe-ui-support/bob
     acc_ui_support_dst:  acc-ui-support/bob
+    # convert_dependencies: True
 
 files:
   # region synoptic screens
@@ -272,6 +273,7 @@ files:
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE22B.opi
     dst: synoptic
+    template_file: FE22B_template.xml
     macros:
       dom: FE22B
       cell: 22
