@@ -386,6 +386,13 @@ class ScreenConverter:
 
                         rule["exp"] = exp
 
+    def convert_pv_function(self, widget):
+        if "pv_name" in widget:
+            pv_name = widget["pv_name"]
+            if "pv(" in pv_name:
+                widget["pv_name"] = widget["pv_name"].replace('pv("','`')
+                widget["pv_name"] = widget["pv_name"].replace('")','`')
+
     def parse_widget(self, widget, spacing, level, parent):
 
         if not isinstance(widget, dict):
@@ -430,6 +437,7 @@ class ScreenConverter:
         elif widget["@type"] == "embedded":
             self.fix_embedded_screen_ext(widget)
 
+        self.convert_pv_function(widget)
         self.check_rule(widget)
         self.check_actions_in_non_action_buttons(widget)
 
