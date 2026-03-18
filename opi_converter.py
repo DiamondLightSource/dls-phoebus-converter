@@ -386,6 +386,43 @@ class ScreenConverter:
 
                         rule["exp"] = exp
 
+    def parse_all_fields_in_dict(self, input_dict):
+        for field in input_dict:
+            if type(input_dict[field]) is dict:
+                self.parse_all_fields_in_dict(input_dict[field])
+            elif type(input_dict[field]) is list:
+                for item in input_dict[field]:
+                    if type(item) is dict:
+                        self.parse_all_fields_in_dict(item)
+                    else:
+                        self.find_pv_function_in_field(input_dict, field)
+            else:
+                self.find_pv_function_in_field(input_dict, field)
+
+    def find_pv_function_in_field(self, widget, field):
+        # Some fields may contain lists
+        if type(widget[field]) is list:
+            for i in range(len(widget[field])):
+                widget[field][i] = self.convert_pv_function(widget[field][i])
+        else:
+            widget[field] = self.convert_pv_function(widget[field])
+
+    def convert_pv_function(self, inpString):
+        if inpString is not None and "pv(" in inpString:
+            pv_replacement = "".join([g if i==0 else g if (k := g.find('")'))<0 else "`"+g[:k]+"`"+g[k+2:] for (i,g) in enumerate(inpString.split('pv("'))])
+            # Catch case where there is a function call nested within a pv(...) function
+            # In this case the above replacement will not have found pv(" and so it
+            # will still exist in the replacement. There is no way to handle this in Phoebus
+            # so just issue warning
+            if "pv(" in pv_replacement:
+                logger.warning("Cannot fix the following formula in Phoebus "+inpString)
+            else:
+                logger.info("Replace pv() function with "+pv_replacement)
+                return pv_replacement
+
+        # Otherwise return the original
+        return inpString
+
     def parse_widget(self, widget, spacing, level, parent):
 
         if not isinstance(widget, dict):
@@ -430,6 +467,7 @@ class ScreenConverter:
         elif widget["@type"] == "embedded":
             self.fix_embedded_screen_ext(widget)
 
+        self.parse_all_fields_in_dict(widget)
         self.check_rule(widget)
         self.check_actions_in_non_action_buttons(widget)
 
