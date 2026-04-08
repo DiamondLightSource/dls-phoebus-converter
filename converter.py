@@ -249,6 +249,7 @@ class Converter:
                             self.search_widget_filepaths_recursive(tab["children"]["widget"], func, widget_file_paths, macros)
                             break
                         self.search_widget_filepaths_recursive(child_widget, func, widget_file_paths, macros)
+        
         if "symbols" in widget:
             for symbol_widget_name in widget["symbols"]:
                 symbol_widget = widget["symbols"][symbol_widget_name]
@@ -267,14 +268,14 @@ class Converter:
             if func(Path(widget["file"]), *args):
                 widget["file"] = func(Path(widget["file"]), *args)
         if "opi_file" in widget and widget["opi_file"] is not None:
-            if func(Path(widget["opi_file"]), widget["opi_file"], *args):
-                widget["opi_file"] = func(Path(widget["opi_file"]), widget["opi_file"], *args)
+            if func(Path(widget["opi_file"]), *args):
+                widget["opi_file"] = func(Path(widget["opi_file"]), *args)
         if "actions" in widget and widget["actions"] is not None:
             for action in widget["actions"]:
-                if "path" in widget["actions"][action]:
+                if "path" in widget["actions"][action] and widget["actions"][action]["path"] is not None:
                     if func(Path(widget["actions"][action]["path"]), *args):
                         widget["actions"][action]["path"] = func(Path(widget["actions"][action]["path"]), *args)
-                elif "file" in widget["actions"][action]:
+                elif "file" in widget["actions"][action] and widget["actions"][action]["file"] is not None:
                     if func(Path(widget["actions"][action]["file"]), *args):
                         widget["actions"][action]["file"] = func(Path(widget["actions"][action]["file"]), *args)
         return widget_file_paths
