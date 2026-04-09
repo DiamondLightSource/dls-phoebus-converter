@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import subprocess
 import os
 import xmltodict
@@ -371,20 +372,71 @@ class ScreenConverter:
 
                     widget["symbols"]["symbol"] = symbols
 
-                    # Fix rules
-                    rule = widget["rules"]["rule"]
-                    if rule["@prop_id"] == "image_index":
-                        rule["@prop_id"] = "symbols[0]"
-                        rule["@out_exp"] = "false"
-                        exp = {}
-                        for e in rule["exp"]:
-                            if e["@bool_exp"] == "pvLegacySev0==-1":
-                                exp["@bool_exp"] = "pvSev0==3 || pvSev0==4"
-                                exp["value"] = (
-                                    out_image + "_" + str(invalid_image_index) + ext
-                                )
+                    if "rules" in widget:
+                        rules = widget["rules"]["rule"]
+                        if type(rules) is not list:
+                            rules = [rules]
 
-                        rule["exp"] = exp
+                        for rule in rules:
+                            # We look through the rules and see if we need to re-order any symbols
+                            if rule["@prop_id"] == "image_index":
+                                widget["symbols"]["symbol"] = self.reorder_wdigets_from_rules(symbols, rule)
+
+                            # Fix issues with rules
+                            if rule["@prop_id"] == "image_index":
+                                rule["@prop_id"] = "symbols[0]"
+                                rule["@out_exp"] = "false"
+                                expression = {}
+                                for e in rule["exp"]:
+                                    if e["@bool_exp"] == "pvLegacySev0==-1":
+                                        expression["@bool_exp"] = "pvSev0==3 || pvSev0==4"
+                                        expression["value"] = (
+                                            out_image + "_" + str(invalid_image_index) + ext
+                                        )
+                                rule["exp"] = expression
+
+
+    def reorder_wdigets_from_rules(self, symbols, rule):
+        # Search through all boolean expressions and create a map between the PV value
+        # and the symbol index to use.
+        # We only bother to handle 2 cases,
+        # - pvX == Y
+        # - pvX >= Y && pvX < Z
+
+        # Contains a list of tuples of (pv_val, symbol_index)
+        reorder_map: list(tuple) = []
+        try:
+            if "exp" in rule:
+                for e in rule["exp"]:
+                    pv_val = None
+                    result = int(e["expression"])
+                    bool_logic = e["@bool_exp"]
+                    bool_logic = bool_logic.replace(" ", "")
+                    # Match for pvX in string
+                    if re.findall(r'pv\d+', bool_logic):
+                        if "==" in bool_logic:
+                            match = re.search(r'==\s*(\d+)', bool_logic)
+                            if match:
+                                pv_val = int(match.group(1))
+                        elif ">=" in bool_logic and "<" in bool_logic and "&&" in bool_logic:
+                            # Gets the integer between >= and &&. This could be made smarter if required
+                            match = re.search(r'>=\s*(.+?)\s*&&', bool_logic)
+                            if match:
+                                pv_val = int(float(match.group(1)))
+                        reorder_map.append((pv_val, result))
+
+        except (LookupError, ValueError):
+            logger.warning("Failed to parse rule when attempting to reorder symbol widget.")
+
+        # Sort the map by ascending pv_val
+        reorder_map = sorted(reorder_map, key=lambda x: x[0])
+        new_symbols_order = [symbol for symbol in symbols]
+        for pv_val, index in reorder_map:
+            for symbol in symbols:
+                if f"_{index}." in symbol and index < len(new_symbols_order):
+                    new_symbols_order[pv_val] = symbol
+
+        return new_symbols_order
 
     def parse_all_fields_in_dict(self, input_dict):
         for field in input_dict:
