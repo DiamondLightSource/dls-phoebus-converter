@@ -433,7 +433,11 @@ class ScreenConverter:
         new_symbols_order = [symbol for symbol in symbols]
         for pv_val, index in reorder_map:
             for symbol in symbols:
-                if f"_{index}." in symbol and index < len(new_symbols_order):
+                if pv_val >= len(new_symbols_order):
+                    # Sometimes rules can specify a symbol to use for a pv_value
+                    # outside the number of images, we handle this by adding it to the end
+                    new_symbols_order.append(symbol)
+                elif f"_{index}." in symbol:
                     new_symbols_order[pv_val] = symbol
 
         return new_symbols_order
