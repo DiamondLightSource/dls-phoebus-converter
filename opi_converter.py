@@ -1,6 +1,5 @@
 from pathlib import Path
 import re
-import shutil
 import subprocess
 import os
 import xmltodict
@@ -57,7 +56,7 @@ class ScreenConverter:
         alarm_sensitive_progress_bars = []
         in_progress_bar = False
         alarm_sensitive = False
-        widget_name = ""
+        name_ids = ["", ""]
         with open(self.src_file_path, "r") as f:
             lines = f.readlines()
             for line in lines:
@@ -65,13 +64,15 @@ class ScreenConverter:
                     in_progress_bar = True
                 elif "</widget>" in line:
                     if alarm_sensitive:
-                        alarm_sensitive_progress_bars.append(widget_name)
+                        alarm_sensitive_progress_bars.append(name_ids)
                     in_progress_bar = False
-                    widget_name = ""
+                    name_ids = ["", ""]
                     alarm_sensitive = False
                 if in_progress_bar:
                     if "<name>" in line:
-                        widget_name = re.search(r'<name>(.*?)</name>', line).group(1)
+                        name_ids[0] = re.search(r'<name>(.*?)</name>', line).group(1)
+                    if "<pv_name>" in line:
+                        name_ids[1] = re.search(r'<pv_name>(.*?)</pv_name>', line).group(1)
                     if "<fillcolor_alarm_sensitive>true</fillcolor_alarm_sensitive>" in line or \
                     "<forecolor_alarm_sensitive>true</forecolor_alarm_sensitive>" in line or \
                     "<backcolor_alarm_sensitive>true</backcolor_alarm_sensitive>" in line:
@@ -496,8 +497,9 @@ class ScreenConverter:
         elif widget["@type"] == "progressbar":
             # Look for any progress bar widgets with alarm borders enabled
             alarm_sensitive_progress_bars = self.get_alarm_sensitive_progress_bars()
-            if widget["name"] in alarm_sensitive_progress_bars:
-                widget["border_alarm_sensitive"] = "true"
+            if "name" in widget and "pv_name" in widget:
+                if [widget["name"], widget["pv_name"]] in alarm_sensitive_progress_bars:
+                    widget["border_alarm_sensitive"] = "true"
 
         self.parse_all_fields_in_dict(widget)
         self.check_rule(widget)
