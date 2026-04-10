@@ -373,16 +373,19 @@ class ScreenConverter:
                     widget["symbols"]["symbol"] = symbols
 
                     if "rules" in widget:
+                        additional_rules = []
                         rules = widget["rules"]["rule"]
+
                         if type(rules) is not list:
                             rules = [rules]
 
                         for rule in rules:
                             # We look through the rules and see if we need to re-order any symbols
                             if rule["@prop_id"] == "image_index":
-                                widget["symbols"]["symbol"] = self.reorder_wdigets_from_rules(symbols, rule)
+                                widget["symbols"]["symbol"] = self.reorder_widgets_from_rules(symbols, rule)
 
-                            # Fix issues with rules
+                            # Look for a rule which is used to change the displayed symbol to a symbol
+                            # signifying an invalid state.
                             if rule["@prop_id"] == "image_index":
                                 rule["@prop_id"] = "symbols[0]"
                                 rule["@out_exp"] = "false"
@@ -394,9 +397,21 @@ class ScreenConverter:
                                             out_image + "_" + str(invalid_image_index) + ext
                                         )
                                 rule["exp"] = expression
-
-
-    def reorder_wdigets_from_rules(self, symbols, rule):
+                            
+                                # We must create a rule for each symbol specified for the widget which
+                                # overwrites the displayed symbol widget with the special invalid state symbol.
+                                for i in range(1, len(widget["symbols"]["symbol"])):
+                                    # Copy dictionary to get a unique copy
+                                    additional_rule = rule.copy()
+                                    additional_rule["@name"] = rule["@name"] + f"_{i}"
+                                    additional_rule["@prop_id"] = f"symbols[{i}]"
+                                    additional_rules.append(additional_rule)
+                        
+                        # Extend the rules for this widget with the new rules we created
+                        rules.extend(additional_rules)
+                        widget["rules"]["rule"] = rules
+                    
+    def reorder_widgets_from_rules(self, symbols, rule):
         # Search through all boolean expressions and create a map between the PV value
         # and the symbol index to use.
         # We only bother to handle 2 cases,
