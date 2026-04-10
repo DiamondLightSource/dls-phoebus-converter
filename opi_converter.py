@@ -74,8 +74,7 @@ class ScreenConverter:
                         widget_name = re.search(r'<name>(.*?)</name>', line).group(1)
                     if "<fillcolor_alarm_sensitive>true</fillcolor_alarm_sensitive>" in line or \
                     "<forecolor_alarm_sensitive>true</forecolor_alarm_sensitive>" in line or \
-                    "<backcolor_alarm_sensitive>true</backcolor_alarm_sensitive>" in line or \
-                    "<border_alarm_sensitive>false</border_alarm_sensitive>" in line:
+                    "<backcolor_alarm_sensitive>true</backcolor_alarm_sensitive>" in line:
                         alarm_sensitive = True
         return alarm_sensitive_progress_bars
 
