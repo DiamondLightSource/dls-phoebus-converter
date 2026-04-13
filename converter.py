@@ -513,6 +513,10 @@ class Converter:
                 conversion.template_file_path
             )
 
+            # Conversion failed, skip to next file
+            if converted_file is None:
+                continue
+
             # Read in the widget data from the new bob file
             self.read_bob_file_contents(converted_file, conversion)
 

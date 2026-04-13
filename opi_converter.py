@@ -133,6 +133,11 @@ class ScreenConverter:
                 logger.error(line)
             logger.debug(line)
 
+        if not output_file.is_file():
+            return False
+        else:
+            return True
+
     def update_legacy_sev_status(self, input_field, leg_sev, new_sev):
         if leg_sev in input_field:
             self.cs.update_leg_sev = True
@@ -712,7 +717,7 @@ def main(
     no_modify=False,
     replace_tab=False,
     no_edit_file=None,
-) -> Path:
+) -> Path | None:
     if dst_filename is None:
         dst_filename = src_file_path.name.replace(".opi", ".bob")
 
@@ -770,9 +775,11 @@ def main(
         file = tmp_file_path
 
     # Run Phoebus converter
-    sc.run_converter(file)
+    conversion_success = sc.run_converter(file)
+    if not conversion_success:
+        return None
+    
     new_file = os.path.join(dst_dir_path, dst_filename)
-
     # Remove tmp OPI files if a modified version was created
     if use_tmp_file:
         tmp_file_path.with_suffix(".bob").rename(new_file)
@@ -787,7 +794,11 @@ def main(
         """
         xml_dict = sc.modify_bob_xml()
         # Write out modified xml
-        sc.write_dict(xml_dict, xml_dict)
+        if xml_dict is not None:
+            sc.write_dict(xml_dict, xml_dict)
+        else:
+            # Dictionary could not be parsed
+            return None
 
     log_data = sc.cs
     log_conversion_steps(log_data)
