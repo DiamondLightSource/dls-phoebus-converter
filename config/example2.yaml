@@ -17,3 +17,8 @@ files:
       mks_type: a
       type: B
       srvalve: 03
+  # Convert all support module screens in the common directory and sub directories
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/common
+    dst: fe-ui-support
+    include_subdirs: true
+      
