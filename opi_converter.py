@@ -121,11 +121,16 @@ class ScreenConverter:
         process = subprocess.Popen(
             convert_command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
+        output_file = self.dst_dir_path / "tmp.bob"
 
         # Captures the stdout and stderr from the converter process.
-        # This can be very verbose, so we log it at the DEBUG level.
+        # This can be very verbose, so we log it at the DEBUG level
         stdout, stderr = process.communicate()
-        for line in stderr.decode("utf-8").split("/n"):
+        if not output_file.is_file():
+            logger.error(f"Phoebus conversion command failed: {convert_command}")
+        for line in stderr.decode("utf-8").split("\n"):
+            if not output_file.is_file():
+                logger.error(line)
             logger.debug(line)
 
     def update_legacy_sev_status(self, input_field, leg_sev, new_sev):
@@ -584,10 +589,14 @@ class ScreenConverter:
             fxml = file.read()
 
             as_dict = xmltodict.parse(fxml)
-            if "widget" in as_dict["display"]:
+            try:
                 widgets = as_dict["display"]["widget"]
-                for w in widgets:
-                    self.parse_widget(w, "", 0, as_dict["display"])
+            except KeyError as e:
+                logger.error(f"Failed to parse xml for file: {self.src_file_path} with error:\n {e}")
+                return None
+            
+            for w in widgets:
+                self.parse_widget(w, "", 0, as_dict["display"])
 
         return as_dict
 
