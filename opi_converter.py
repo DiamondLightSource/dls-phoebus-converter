@@ -771,14 +771,16 @@ def main(
 
     # Run Phoebus converter
     conversion_success = sc.run_converter(tmp_file_path)
+
+    # Delete tmp.opi
+    os.remove(tmp_file_path)
+
     if not conversion_success:
         return None
     
+    # Rename tmp.bob to the required name
     new_file = os.path.join(dst_dir_path, dst_filename)
-
-    # Rename tmp.bob to the required name and delete tmp.opi
     tmp_file_path.with_suffix(".bob").rename(new_file)
-    os.remove(tmp_file_path)
 
     if not no_modify:
         """ 
