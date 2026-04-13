@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from logconfig import setup_logging
 
 MACRO_EXCEPTION_LIST = ["pv_name", "pv_value", "name", "actions"]
-ACC_UI_SUPPORT_MODULE_LIST = ["devIocStats", "digitelMpc", "mks937a", "mpsPermit", "rga", "TimingTemplates"]
+ACC_UI_SUPPORT_MODULE_LIST = ["devIocStats", "digitelMpc", "mks937a", "mks937b", "mpsPermit", "rga", "TimingTemplates"]
 
 setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
