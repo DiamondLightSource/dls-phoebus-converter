@@ -399,20 +399,90 @@ class ScreenConverter:
 
                     widget["symbols"]["symbol"] = symbols
 
-                    # Fix rules
-                    rule = widget["rules"]["rule"]
-                    if rule["@prop_id"] == "image_index":
-                        rule["@prop_id"] = "symbols[0]"
-                        rule["@out_exp"] = "false"
-                        exp = {}
-                        for e in rule["exp"]:
-                            if e["@bool_exp"] == "pvLegacySev0==-1":
-                                exp["@bool_exp"] = "pvSev0==3 || pvSev0==4"
-                                exp["value"] = (
-                                    out_image + "_" + str(invalid_image_index) + ext
-                                )
+                    if "rules" in widget:
+                        additional_rules = []
+                        rules = widget["rules"]["rule"]
 
-                        rule["exp"] = exp
+                        if type(rules) is not list:
+                            rules = [rules]
+
+                        for rule in rules:
+                            # We look through the rules and see if we need to re-order any symbols
+                            if rule["@prop_id"] == "image_index":
+                                widget["symbols"]["symbol"] = self.reorder_widgets_from_rules(symbols, rule)
+
+                            # Look for a rule which is used to change the displayed symbol to a symbol
+                            # signifying an invalid state.
+                            if rule["@prop_id"] == "image_index":
+                                rule["@prop_id"] = "symbols[0]"
+                                rule["@out_exp"] = "false"
+                                expression = {}
+                                for e in rule["exp"]:
+                                    if e["@bool_exp"] == "pvLegacySev0==-1":
+                                        expression["@bool_exp"] = "pvSev0==3 || pvSev0==4"
+                                        expression["value"] = (
+                                            out_image + "_" + str(invalid_image_index) + ext
+                                        )
+                                rule["exp"] = expression
+                            
+                                # We must create a rule for each symbol specified for the widget which
+                                # overwrites the displayed symbol widget with the special invalid state symbol.
+                                for i in range(1, len(widget["symbols"]["symbol"])):
+                                    # Copy dictionary to get a unique copy
+                                    additional_rule = rule.copy()
+                                    additional_rule["@name"] = rule["@name"] + f"_{i}"
+                                    additional_rule["@prop_id"] = f"symbols[{i}]"
+                                    additional_rules.append(additional_rule)
+                        
+                        # Extend the rules for this widget with the new rules we created
+                        rules.extend(additional_rules)
+                        widget["rules"]["rule"] = rules
+                    
+    def reorder_widgets_from_rules(self, symbols, rule):
+        # Search through all boolean expressions and create a map between the PV value
+        # and the symbol index to use.
+        # We only bother to handle 2 cases,
+        # - pvX == Y
+        # - pvX >= Y && pvX < Z
+
+        # Contains a list of tuples of (pv_val, symbol_index)
+        reorder_map: list(tuple) = []
+        try:
+            if "exp" in rule:
+                for e in rule["exp"]:
+                    pv_val = None
+                    result = int(e["expression"])
+                    bool_logic = e["@bool_exp"]
+                    bool_logic = bool_logic.replace(" ", "")
+                    # Match for pvX in string
+                    if re.findall(r'pv\d+', bool_logic):
+                        if "==" in bool_logic:
+                            match = re.search(r'==\s*(\d+)', bool_logic)
+                            if match:
+                                pv_val = int(match.group(1))
+                        elif ">=" in bool_logic and "<" in bool_logic and "&&" in bool_logic:
+                            # Gets the integer between >= and &&. This could be made smarter if required
+                            match = re.search(r'>=\s*(.+?)\s*&&', bool_logic)
+                            if match:
+                                pv_val = int(float(match.group(1)))
+                        reorder_map.append((pv_val, result))
+
+        except (LookupError, ValueError):
+            logger.warning("Failed to parse rule when attempting to reorder symbol widget.")
+
+        # Sort the map by ascending pv_val
+        reorder_map = sorted(reorder_map, key=lambda x: x[0])
+        new_symbols_order = [symbol for symbol in symbols]
+        for pv_val, index in reorder_map:
+            for symbol in symbols:
+                if pv_val >= len(new_symbols_order):
+                    # Sometimes rules can specify a symbol to use for a pv_value
+                    # outside the number of images, we handle this by adding it to the end
+                    new_symbols_order.append(symbol)
+                elif f"_{index}." in symbol:
+                    new_symbols_order[pv_val] = symbol
+
+        return new_symbols_order
 
     def parse_all_fields_in_dict(self, input_dict):
         for field in input_dict:
