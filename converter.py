@@ -202,7 +202,8 @@ class Converter:
             fxml = fh.read()
             as_dict = xmltodict.parse(fxml)
             conversion.all_phoebus_data = as_dict
-            conversion.widget_data = as_dict["display"]["widget"]
+            if "widget" in as_dict["display"]:
+                conversion.widget_data = as_dict["display"]["widget"]
 
     def write_bob_file_contents(self, file_path: Path, conversion):
         with open(file_path, "w") as fh:
