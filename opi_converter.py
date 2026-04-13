@@ -1,5 +1,6 @@
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import os
 import xmltodict
@@ -8,7 +9,7 @@ from dataclasses import dataclass
 import logging
 from logconfig import setup_logging
 
-PHOEBUS_SH_FILE_PATH = "/dls_sw/apps/phoebus/dls_config/phoebus.sh"
+PHOEBUS_SH_FILE_PATH = "/dls_sw/deploy-tools/modules/phoebus/dev/entrypoints/phoebus"
 PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
 
 if not logging.getLogger("dls_phoebus_converter"):
@@ -752,6 +753,11 @@ def main(
     file = src_file_path
     # Should we use the modified OPI files
     if use_tmp_file:
+        file = tmp_file_path
+    else:
+        # Copy the src file to a tmp location as autoconverting directly from the src file
+        # sometimes fails due to read permissions?
+        shutil.copy(src_file_path, tmp_file_path)
         file = tmp_file_path
 
     # Run Phoebus converter
