@@ -750,40 +750,35 @@ def main(
                     )
                     exit(0)
 
-    use_tmp_file = False
+    use_modified_opi = False
     # Modify the OPI file before running conversion
-    use_tmp_file = sc.replace_edm_symbol_widget()
-
+    use_modified_opi = sc.replace_edm_symbol_widget()
     if fix_group:
         # Fix missing border items from grouping container
-        if use_tmp_file:
+        if use_modified_opi:
             sc.fix_grouping_container(tmp_file_path)
         else:
-            use_tmp_file = sc.fix_grouping_container(src_file_path)
+            use_modified_opi = sc.fix_grouping_container(src_file_path)
 
     # If conversion has already been run, delete previous BOB conversion
     sc.delete_old_file()
 
-    file = src_file_path
     # Should we use the modified OPI files
-    if use_tmp_file:
-        file = tmp_file_path
-    else:
-        # Copy the src file to a tmp location as autoconverting directly from the src file
-        # sometimes fails due to read permissions?
+    if not use_modified_opi:
+        # Copy the src file to the tmp location overwriting any existing tmp.opi. This is done
+        # as autoconverting directly from the src file sometimes fails due to read permission issues
         shutil.copy(src_file_path, tmp_file_path)
-        file = tmp_file_path
 
     # Run Phoebus converter
-    conversion_success = sc.run_converter(file)
+    conversion_success = sc.run_converter(tmp_file_path)
     if not conversion_success:
         return None
     
     new_file = os.path.join(dst_dir_path, dst_filename)
-    # Remove tmp OPI files if a modified version was created
-    if use_tmp_file:
-        tmp_file_path.with_suffix(".bob").rename(new_file)
-        os.remove(tmp_file_path)
+
+    # Rename tmp.bob to the required name and delete tmp.opi
+    tmp_file_path.with_suffix(".bob").rename(new_file)
+    os.remove(tmp_file_path)
 
     if not no_modify:
         """ 
