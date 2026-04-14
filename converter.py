@@ -431,6 +431,12 @@ class Converter:
                         "Should this have been defined in your yaml config?"
                     )
 
+        # Add macros defined in config even if they are not in the parent display
+        for m in conversion.macros.keys():
+            if m not in new_macro_names:
+                new_macro_names.append(m)
+                new_macro_values.append(conversion.macros[m])
+
         self.add_new_macros(conversion, new_macro_names, new_macro_values)
 
     def get_existing_support_module_filepath(self, support_module_name) -> str | None:
