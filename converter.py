@@ -515,7 +515,9 @@ class Converter:
             # Figure out which filepaths within bob files need updating and
             # update them to the new paths.
             self.get_required_support_modules(conversion, converted_file)
-            self.update_filepaths(conversion)
+            # Support module paths are relative and so don't need to have their paths updated
+            if conversion.support_module_name is None:
+                self.update_filepaths(conversion)
 
             # Overwrite the bob file with the modified xml data
             self.write_bob_file_contents(converted_file, conversion)
