@@ -151,8 +151,9 @@ class Converter:
                         ]:
                             recursive_dir = recursive_dir / subdir
 
-                        if (recursive_dir.parts[0], dst_path_partial / recursive_dir) not in self.domain_support_module_locations:
-                            self.domain_support_module_locations.append((recursive_dir.parts[0], dst_path_partial / recursive_dir))
+                        qualified_module_name = "-".join(recursive_dir.parts)
+                        if (qualified_module_name, dst_path_partial / recursive_dir) not in self.domain_support_module_locations:
+                            self.domain_support_module_locations.append((qualified_module_name, dst_path_partial / recursive_dir))
 
                     new_dst = dst_path_config / recursive_dir
                     dst_dir_paths.append(new_dst)
@@ -201,7 +202,8 @@ class Converter:
             fxml = fh.read()
             as_dict = xmltodict.parse(fxml)
             conversion.all_phoebus_data = as_dict
-            conversion.widget_data = as_dict["display"]["widget"]
+            if "widget" in as_dict["display"]:
+                conversion.widget_data = as_dict["display"]["widget"]
 
     def write_bob_file_contents(self, file_path: Path, conversion):
         with open(file_path, "w") as fh:
@@ -356,7 +358,7 @@ class Converter:
                 new_filepath = new_filepath / part
             elif part in ["images", "symbols"]:
                 symbol=True
-        support_module_name = new_filepath.parts[0]
+        support_module_name = "-".join(new_filepath.parts[:-1])
         
         for data in all_support_modules:
             if data[0] == support_module_name:

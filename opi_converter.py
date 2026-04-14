@@ -583,9 +583,10 @@ class ScreenConverter:
             fxml = file.read()
 
             as_dict = xmltodict.parse(fxml)
-            widgets = as_dict["display"]["widget"]
-            for w in widgets:
-                self.parse_widget(w, "", 0, as_dict["display"])
+            if "widget" in as_dict["display"]:
+                widgets = as_dict["display"]["widget"]
+                for w in widgets:
+                    self.parse_widget(w, "", 0, as_dict["display"])
 
         return as_dict
 
