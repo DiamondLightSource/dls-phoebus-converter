@@ -202,16 +202,11 @@ class ScreenConverter:
             bob = opi.replace(".opi", ".bob")
             action["file"] = bob
 
-    def replace_open_in_tab(self, actions):
-        if type(actions["action"]) is list:
-            acts = actions["action"]
-        else:
-            acts = [actions["action"]]
-        for action in acts:
-            if action["@type"] == "open_display":
-                if action["target"] == "tab":
-                    action["target"] = "standalone"
-                    self.cs.replace_action_tab = True
+    def replace_open_in_tab(self, action):
+        if action["@type"] == "open_display":
+            if action["target"] == "tab":
+                action["target"] = "standalone"
+                self.cs.replace_action_tab = True
 
     def check_actions_in_non_action_buttons(self, widget):
         if "actions" in widget:
@@ -252,17 +247,76 @@ class ScreenConverter:
                             if widget["rules"]["rule"]["@prop_id"] == "line_color":
                                 widget["rules"]["rule"].remove(r)
 
-    def replace_data_browser_script(self, widget):
-        logger.debug("Replacing databrowser script with action to open plot file")
-        if self.pname is not None:
-            if widget["text"] == "Graph":
-                action = widget["actions"]["action"]
-                if action["@type"] == "execute":
-                    self.cs.replace_db_script = True
-                    action["@type"] = "open_file"
-                    action["description"] = "Open File"
-                    action["file"] = PLOT_LOCATION_MACRO + self.pname + ".plt"
-                    del action["script"]
+
+    def process_widget_actions(self, widget):
+        actions = widget["actions"]["action"]
+        if type(actions) is not list:
+            actions = [actions]
+
+        for action in actions:
+            self.replace_opi_extension(action)
+            if self.replace_tab:
+                self.replace_open_in_tab(action)
+
+            # Currently we are only looking at databrowser/StripTool related actions
+            if action["@type"] == "execute":
+                if "executeEclipseCommand" in action["script"]["text"]:
+                    if "org.csstudio.trends.databrowser2" in action["script"]["text"]:
+                        if self.pname is not None:
+                            self.cs.replace_db_script = True
+                            action["@type"] = "open_file"
+                            action["description"] = "Open File"
+                            action["file"] = PLOT_LOCATION_MACRO + self.pname + ".plt"
+                            del action["script"]
+                        else:
+                            self.set_new_databrowser_action_from_execute_eclipse(action)
+                    else:
+                        logger.warning("Screen contains an executeEclipseCommand script which is not supported by Phoebus." \
+                        f'Found script: {action["script"]["text"]} in file {self.src_file_path}')
+
+            elif action["@type"] == "command":
+                if "strip.py" in action["command"]:
+                    self.set_new_databrowser_action_from_strip_command(action)
+
+    def set_new_databrowser_action_from_strip_command(self, action):
+        # We will be implementing a new Phoebus action which opens PV(s) in the databrowser, so
+        # eventually this code will be replaced with that, for now we use a command action.
+        search_string = action["command"]
+        str_list = search_string.split(" ")
+        for i, string in enumerate(str_list):
+            if "strip.py" in string:
+                pv_names = str_list[i+1:-1]
+                break
+
+        if type(pv_names) is not list:
+            pv_names = [pv_names]
+        pv_command_str = "pv://?"
+        for pv in pv_names:
+            pv_command_str += f"{pv}&"
+
+        action["@type"] = "command"
+        action["description"] = "Launch databrowser"
+        action["command"] = f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'
+
+    def set_new_databrowser_action_from_execute_eclipse(self, action):
+        # We will be implementing a new Phoebus action which opens PV(s) in the databrowser, so
+        # eventually this code will be replaced with that, for now we use a command action.
+        search_string = action["script"]["text"]
+        match = re.search(r"'pvnames',\s*'([^']+)'", search_string)
+        if match:
+            pv_names = match.group(1)
+            pv_names = pv_names.split(",")
+        else:
+            logger.error(f"Could not find PV name from script text: {search_string}")
+            pass
+        
+        pv_command_str = "pv://?"
+        for pv in pv_names:
+            pv_command_str += f"{pv}&"
+
+        action["@type"] = "command"
+        action["description"] = "Launch databrowser"
+        action["command"] = f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'
 
     def fix_embedded_screen_ext(self, widget):
         if "file" not in widget:
@@ -560,10 +614,8 @@ class ScreenConverter:
                 ):
                     widget["actions"]["action"] = self.fix_exit_button()
             if widget["actions"] is not None: 
-                self.replace_opi_extension(widget["actions"]["action"])
-            self.replace_data_browser_script(widget)
-            if self.replace_tab:
-                self.replace_open_in_tab(widget["actions"])
+                self.process_widget_actions(widget)
+
         elif widget["@type"] == "symbol":
             if "actions" in widget:
                 if (
