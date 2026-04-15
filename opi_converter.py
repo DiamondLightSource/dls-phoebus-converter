@@ -605,11 +605,39 @@ class ScreenConverter:
 
         return as_dict
 
-    def write_dict(self, as_dict, xml_dict):
+    def write_dict(self, as_dict):
         with open(os.path.join(self.dst_dir_path, self.dst_filename), "w") as f:
             new_xml = xmltodict.unparse(as_dict, pretty=True)
             f.write(new_xml)
 
+    def run_pre_conversion_steps(self, fix_group):
+        """Perform modifications to the .opi file before doing the main conversion
+        to .bob using the Phoebus converter."""
+        use_modified_opi = False
+        use_modified_opi = self.replace_edm_symbol_widget()
+        if fix_group:
+            # Fix missing border items from grouping container
+            if use_modified_opi:
+                self.fix_grouping_container(self.tmp_file_path)
+            else:
+                use_modified_opi = self.fix_grouping_container(self.src_file_path)
+        return use_modified_opi
+    
+    def run_post_conversion_steps(self, no_modify):
+        """ 
+            - Replaces EXIT scripts with an ActionButton to Exit
+            - Action Buttons to open displays are modified to open .bob extensions
+            - Rules using legacy severity are replaced
+            - Flag that actions are running on non-action buttons
+        """
+        if not no_modify:
+            xml_dict = self.modify_bob_xml()
+            # Write out modified xml
+            if xml_dict is not None:
+                self.write_dict(xml_dict)
+            else:
+                # Dictionary could not be parsed
+                return None
 
 def log_conversion_steps(log_data):
     # Log what was done
@@ -746,22 +774,15 @@ def main(
                     If this is incorrect then remove this file from the "
                         + no_edit_file
                         + ".\n\
-                    Exiting..."
+                    Skipping this conversion"
                     )
-                    exit(0)
-
-    use_modified_opi = False
-    # Modify the OPI file before running conversion
-    use_modified_opi = sc.replace_edm_symbol_widget()
-    if fix_group:
-        # Fix missing border items from grouping container
-        if use_modified_opi:
-            sc.fix_grouping_container(tmp_file_path)
-        else:
-            use_modified_opi = sc.fix_grouping_container(src_file_path)
+                    return None
 
     # If conversion has already been run, delete previous BOB conversion
     sc.delete_old_file()
+
+    # Modify the OPI file before running conversion
+    use_modified_opi = sc.run_pre_conversion_steps(fix_group)
 
     # Should we use the modified OPI files
     if not use_modified_opi:
@@ -782,20 +803,8 @@ def main(
     new_file = os.path.join(dst_dir_path, dst_filename)
     tmp_file_path.with_suffix(".bob").rename(new_file)
 
-    if not no_modify:
-        """ 
-            - Replaces EXIT scripts with an ActionButton to Exit
-            - Action Buttons to open displays are modified to open .bob extensions
-            - Rules using legacy severity are replaced
-            - Flag that actions are running on non-action buttons
-        """
-        xml_dict = sc.modify_bob_xml()
-        # Write out modified xml
-        if xml_dict is not None:
-            sc.write_dict(xml_dict, xml_dict)
-        else:
-            # Dictionary could not be parsed
-            return None
+    # Make modifications to converted .bob file
+    sc.run_post_conversion_steps(no_modify)
 
     log_data = sc.cs
     log_conversion_steps(log_data)
