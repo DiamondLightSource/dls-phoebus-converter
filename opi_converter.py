@@ -41,7 +41,6 @@ class ScreenConverter:
         dst_dir_path,
         tmp_file_path,
         template_file_path,
-        pname,
         replace_tab,
     ):
         self.src_file_path = src_file_path
@@ -49,7 +48,6 @@ class ScreenConverter:
         self.dst_dir_path = dst_dir_path
         self.tmp_file_path = tmp_file_path
         self.template_file_path = template_file_path
-        self.pname = pname
         self.replace_tab = replace_tab
         self.cs = ConversionSteps()
 
@@ -262,14 +260,7 @@ class ScreenConverter:
             if action["@type"] == "execute":
                 if "executeEclipseCommand" in action["script"]["text"]:
                     if "org.csstudio.trends.databrowser2" in action["script"]["text"]:
-                        if self.pname is not None:
-                            self.cs.replace_db_script = True
-                            action["@type"] = "open_file"
-                            action["description"] = "Open File"
-                            action["file"] = PLOT_LOCATION_MACRO + self.pname + ".plt"
-                            del action["script"]
-                        else:
-                            self.set_new_databrowser_action_from_execute_eclipse(action)
+                        self.set_new_databrowser_action_from_execute_eclipse(action)
                     else:
                         logger.warning("Screen contains an executeEclipseCommand script which is not supported by Phoebus." \
                         f'Found script: {action["script"]["text"]} in file {self.src_file_path}')
@@ -792,7 +783,6 @@ def main(
     dst_dir_path,
     dst_filename=None,
     template_file_path=None,
-    pname=None,
     fix_group=True,
     no_modify=False,
     replace_tab=False,
@@ -809,7 +799,6 @@ def main(
         dst_dir_path,
         tmp_file_path,
         template_file_path,
-        pname,
         replace_tab,
     )
 
