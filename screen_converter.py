@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from logconfig import setup_logging
 
 MACRO_EXCEPTION_LIST = ["pv_name", "pv_value", "name", "actions"]
-ACC_UI_SUPPORT_MODULE_LIST = ["devIocStats", "digitelMpc", "mks937a", "mpsPermit", "rga", "TimingTemplates"]
+ACC_UI_SUPPORT_MODULE_LIST = ["devIocStats", "digitelMpc", "mks937a", "mks937b", "mpsPermit", "rga", "TimingTemplates"]
 
 setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
@@ -512,6 +512,10 @@ class Converter:
                 conversion.dst_filename,
                 conversion.template_file_path
             )
+
+            # Conversion failed, skip to next file
+            if converted_file is None:
+                continue
 
             # Read in the widget data from the new bob file
             self.read_bob_file_contents(converted_file, conversion)

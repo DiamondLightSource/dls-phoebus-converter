@@ -1,5 +1,6 @@
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import os
 import xmltodict
@@ -8,7 +9,7 @@ from dataclasses import dataclass
 import logging
 from logconfig import setup_logging
 
-PHOEBUS_SH_FILE_PATH = "/dls_sw/apps/phoebus/dls_config/phoebus.sh"
+PHOEBUS_SH_FILE_PATH = "/dls_sw/deploy-tools/modules/phoebus/dev/entrypoints/phoebus"
 PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
 
 if not logging.getLogger("dls_phoebus_converter"):
@@ -40,7 +41,6 @@ class ScreenConverter:
         dst_dir_path,
         tmp_file_path,
         template_file_path,
-        pname,
         replace_tab,
     ):
         self.src_file_path = src_file_path
@@ -48,7 +48,6 @@ class ScreenConverter:
         self.dst_dir_path = dst_dir_path
         self.tmp_file_path = tmp_file_path
         self.template_file_path = template_file_path
-        self.pname = pname
         self.replace_tab = replace_tab
         self.cs = ConversionSteps()
 
@@ -120,12 +119,22 @@ class ScreenConverter:
         process = subprocess.Popen(
             convert_command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
+        output_file = self.dst_dir_path / "tmp.bob"
 
         # Captures the stdout and stderr from the converter process.
-        # This can be very verbose, so we log it at the DEBUG level.
+        # This can be very verbose, so we log it at the DEBUG level
         stdout, stderr = process.communicate()
-        for line in stderr.decode("utf-8").split("/n"):
+        if not output_file.is_file():
+            logger.error(f"Phoebus conversion command failed: {convert_command}")
+        for line in stderr.decode("utf-8").split("\n"):
+            if not output_file.is_file():
+                logger.error(line)
             logger.debug(line)
+
+        if not output_file.is_file():
+            return False
+        else:
+            return True
 
     def update_legacy_sev_status(self, input_field, leg_sev, new_sev):
         if leg_sev in input_field:
@@ -191,16 +200,11 @@ class ScreenConverter:
             bob = opi.replace(".opi", ".bob")
             action["file"] = bob
 
-    def replace_open_in_tab(self, actions):
-        if type(actions["action"]) is list:
-            acts = actions["action"]
-        else:
-            acts = [actions["action"]]
-        for action in acts:
-            if action["@type"] == "open_display":
-                if action["target"] == "tab":
-                    action["target"] = "standalone"
-                    self.cs.replace_action_tab = True
+    def replace_open_in_tab(self, action):
+        if action["@type"] == "open_display":
+            if action["target"] == "tab":
+                action["target"] = "standalone"
+                self.cs.replace_action_tab = True
 
     def check_actions_in_non_action_buttons(self, widget):
         if "actions" in widget:
@@ -241,17 +245,69 @@ class ScreenConverter:
                             if widget["rules"]["rule"]["@prop_id"] == "line_color":
                                 widget["rules"]["rule"].remove(r)
 
-    def replace_data_browser_script(self, widget):
-        logger.debug("Replacing databrowser script with action to open plot file")
-        if self.pname is not None:
-            if widget["text"] == "Graph":
-                action = widget["actions"]["action"]
-                if action["@type"] == "execute":
-                    self.cs.replace_db_script = True
-                    action["@type"] = "open_file"
-                    action["description"] = "Open File"
-                    action["file"] = PLOT_LOCATION_MACRO + self.pname + ".plt"
-                    del action["script"]
+
+    def process_widget_actions(self, widget):
+        actions = widget["actions"]["action"]
+        if type(actions) is not list:
+            actions = [actions]
+
+        for action in actions:
+            self.replace_opi_extension(action)
+            if self.replace_tab:
+                self.replace_open_in_tab(action)
+
+            # Currently we are only looking at databrowser/StripTool related actions
+            if action["@type"] == "execute":
+                if "executeEclipseCommand" in action["script"]["text"]:
+                    if "org.csstudio.trends.databrowser2" in action["script"]["text"]:
+                        self.set_new_databrowser_action_from_execute_eclipse(action)
+                    else:
+                        logger.warning("Screen contains an executeEclipseCommand script which is not supported by Phoebus." \
+                        f'Found script: {action["script"]["text"]} in file {self.src_file_path}')
+
+            elif action["@type"] == "command":
+                if "strip.py" in action["command"]:
+                    self.set_new_databrowser_action_from_strip_command(action)
+
+    def set_new_databrowser_action_from_strip_command(self, action):
+        # We will be implementing a new Phoebus action which opens PV(s) in the databrowser, so
+        # eventually this code will be replaced with that, for now we use a command action.
+        search_string = action["command"]
+        str_list = search_string.split(" ")
+        for i, string in enumerate(str_list):
+            if "strip.py" in string:
+                pv_names = str_list[i+1:-1]
+                break
+
+        if type(pv_names) is not list:
+            pv_names = [pv_names]
+        pv_command_str = "pv://?"
+        for pv in pv_names:
+            pv_command_str += f"{pv}&"
+
+        action["@type"] = "command"
+        action["description"] = "Launch databrowser"
+        action["command"] = f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'
+
+    def set_new_databrowser_action_from_execute_eclipse(self, action):
+        # We will be implementing a new Phoebus action which opens PV(s) in the databrowser, so
+        # eventually this code will be replaced with that, for now we use a command action.
+        search_string = action["script"]["text"]
+        match = re.search(r"'pvnames',\s*'([^']+)'", search_string)
+        if match:
+            pv_names = match.group(1)
+            pv_names = pv_names.split(",")
+        else:
+            logger.error(f"Could not find PV name from script text: {search_string}")
+            pass
+        
+        pv_command_str = "pv://?"
+        for pv in pv_names:
+            pv_command_str += f"{pv}&"
+
+        action["@type"] = "command"
+        action["description"] = "Launch databrowser"
+        action["command"] = f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'
 
     def fix_embedded_screen_ext(self, widget):
         if "file" not in widget:
@@ -549,10 +605,8 @@ class ScreenConverter:
                 ):
                     widget["actions"]["action"] = self.fix_exit_button()
             if widget["actions"] is not None: 
-                self.replace_opi_extension(widget["actions"]["action"])
-            self.replace_data_browser_script(widget)
-            if self.replace_tab:
-                self.replace_open_in_tab(widget["actions"])
+                self.process_widget_actions(widget)
+
         elif widget["@type"] == "symbol":
             if "actions" in widget:
                 if (
@@ -583,18 +637,50 @@ class ScreenConverter:
             fxml = file.read()
 
             as_dict = xmltodict.parse(fxml)
-            if "widget" in as_dict["display"]:
+            try:
                 widgets = as_dict["display"]["widget"]
-                for w in widgets:
-                    self.parse_widget(w, "", 0, as_dict["display"])
+            except KeyError as e:
+                logger.error(f"Failed to parse xml for file: {self.src_file_path} with error:\n {e}")
+                return None
+            
+            for w in widgets:
+                self.parse_widget(w, "", 0, as_dict["display"])
 
         return as_dict
 
-    def write_dict(self, as_dict, xml_dict):
+    def write_dict(self, as_dict):
         with open(os.path.join(self.dst_dir_path, self.dst_filename), "w") as f:
             new_xml = xmltodict.unparse(as_dict, pretty=True)
             f.write(new_xml)
 
+    def run_pre_conversion_steps(self, fix_group):
+        """Perform modifications to the .opi file before doing the main conversion
+        to .bob using the Phoebus converter."""
+        use_modified_opi = False
+        use_modified_opi = self.replace_edm_symbol_widget()
+        if fix_group:
+            # Fix missing border items from grouping container
+            if use_modified_opi:
+                self.fix_grouping_container(self.tmp_file_path)
+            else:
+                use_modified_opi = self.fix_grouping_container(self.src_file_path)
+        return use_modified_opi
+    
+    def run_post_conversion_steps(self, no_modify):
+        """ 
+            - Replaces EXIT scripts with an ActionButton to Exit
+            - Action Buttons to open displays are modified to open .bob extensions
+            - Rules using legacy severity are replaced
+            - Flag that actions are running on non-action buttons
+        """
+        if not no_modify:
+            xml_dict = self.modify_bob_xml()
+            # Write out modified xml
+            if xml_dict is not None:
+                self.write_dict(xml_dict)
+            else:
+                # Dictionary could not be parsed
+                return None
 
 def log_conversion_steps(log_data):
     # Log what was done
@@ -697,12 +783,11 @@ def main(
     dst_dir_path,
     dst_filename=None,
     template_file_path=None,
-    pname=None,
     fix_group=True,
     no_modify=False,
     replace_tab=False,
     no_edit_file=None,
-) -> Path:
+) -> Path | None:
     if dst_filename is None:
         dst_filename = src_file_path.name.replace(".opi", ".bob")
 
@@ -714,7 +799,6 @@ def main(
         dst_dir_path,
         tmp_file_path,
         template_file_path,
-        pname,
         replace_tab,
     )
 
@@ -731,48 +815,37 @@ def main(
                     If this is incorrect then remove this file from the "
                         + no_edit_file
                         + ".\n\
-                    Exiting..."
+                    Skipping this conversion"
                     )
-                    exit(0)
-
-    use_tmp_file = False
-    # Modify the OPI file before running conversion
-    use_tmp_file = sc.replace_edm_symbol_widget()
-
-    if fix_group:
-        # Fix missing border items from grouping container
-        if use_tmp_file:
-            sc.fix_grouping_container(tmp_file_path)
-        else:
-            use_tmp_file = sc.fix_grouping_container(src_file_path)
+                    return None
 
     # If conversion has already been run, delete previous BOB conversion
     sc.delete_old_file()
 
-    file = src_file_path
+    # Modify the OPI file before running conversion
+    use_modified_opi = sc.run_pre_conversion_steps(fix_group)
+
     # Should we use the modified OPI files
-    if use_tmp_file:
-        file = tmp_file_path
+    if not use_modified_opi:
+        # Copy the src file to the tmp location overwriting any existing tmp.opi. This is done
+        # as autoconverting directly from the src file sometimes fails due to read permission issues
+        shutil.copy(src_file_path, tmp_file_path)
 
     # Run Phoebus converter
-    sc.run_converter(file)
+    conversion_success = sc.run_converter(tmp_file_path)
+
+    # Delete tmp.opi
+    os.remove(tmp_file_path)
+
+    if not conversion_success:
+        return None
+    
+    # Rename tmp.bob to the required name
     new_file = os.path.join(dst_dir_path, dst_filename)
+    tmp_file_path.with_suffix(".bob").rename(new_file)
 
-    # Remove tmp OPI files if a modified version was created
-    if use_tmp_file:
-        tmp_file_path.with_suffix(".bob").rename(new_file)
-        os.remove(tmp_file_path)
-
-    if not no_modify:
-        """ 
-            - Replaces EXIT scripts with an ActionButton to Exit
-            - Action Buttons to open displays are modified to open .bob extensions
-            - Rules using legacy severity are replaced
-            - Flag that actions are running on non-action buttons
-        """
-        xml_dict = sc.modify_bob_xml()
-        # Write out modified xml
-        sc.write_dict(xml_dict, xml_dict)
+    # Make modifications to converted .bob file
+    sc.run_post_conversion_steps(no_modify)
 
     log_data = sc.cs
     log_conversion_steps(log_data)
