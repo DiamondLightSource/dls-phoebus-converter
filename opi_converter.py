@@ -61,7 +61,7 @@ class ScreenConverter:
             for line in lines:
                 if "org.csstudio.opibuilder.widgets.progressbar" in line:
                     in_progress_bar = True
-                elif "</widget>" in line:
+                if "</widget>" in line:
                     if alarm_sensitive:
                         alarm_sensitive_progress_bars.append(name_ids)
                     in_progress_bar = False
