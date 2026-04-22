@@ -596,6 +596,22 @@ class ScreenConverter:
                 else:
                     for w in widget["widget"]:
                         self.parse_widget(w, spacing + " ", level + 1, widget)
+        elif widget["@type"] == "tabs":
+            if "tabs" in widget:
+                if "tab" in widget["tabs"]:
+                    if type(widget["tabs"]["tab"]) is not list:
+                        if type(widget["tabs"]["tab"]["children"]["widget"]) is not list:
+                            self.parse_widget(widget["tabs"]["tab"]["children"]["widget"], spacing + " ", level + 1, widget)
+                        else:
+                            for child_widget in widget["tabs"]["tab"]["children"]["widget"]:
+                                self.parse_widget(child_widget, spacing + " ", level + 1, widget)
+                    else:
+                        for tab in widget["tabs"]["tab"]:
+                            if type(tab["children"]["widget"]) is not list:
+                                self.parse_widget(tab["children"]["widget"], spacing + " ", level + 1, widget)
+                            else:
+                                for child_widget in tab["children"]["widget"]:
+                                    self.parse_widget(child_widget, spacing + " ", level + 1, widget)
         elif widget["@type"] == "action_button":
             if "text" in widget:
                 if (
