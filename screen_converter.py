@@ -2,6 +2,7 @@ import logging
 import re
 import typing
 from argparse import ArgumentParser
+from importlib import import_module
 from pathlib import Path, PosixPath
 
 import xmltodict
@@ -9,7 +10,6 @@ import yaml
 
 import opi_converter
 from dataclasses import dataclass, field
-from fe_special_case import resize_absb_temps_fe22b
 from logconfig import setup_logging
 
 MACRO_EXCEPTION_LIST = ["pv_name", "pv_value", "name", "actions"]
@@ -50,6 +50,11 @@ class Converter:
         self.acc_support_module_locations: list[tuple] = []
         self.get_config(config_file_path)
         self.make_top_dirs()
+
+        try:
+            self.special_case_module = import_module(f"{self.domain}_special_case")
+        except ModuleNotFoundError:
+            logger.warning(f"Failed to import module: {self.domain}_special_case, continuing without it.")
 
     def make_top_dirs(self) -> None:
         self.acc_ui_support_dst_full.mkdir(parents=True, exist_ok=True)
@@ -441,13 +446,6 @@ class Converter:
 
         self.add_new_macros(conversion, new_macro_names, new_macro_values)
 
-    def handle_fe_special_cases(self, converted_file, conversion):
-        """Make any case-by-case adjustments to FE specific screens which are not handled
-        by the normal conversion process."""
-
-        if "absb_temps_fe22b.bob" in str(converted_file):
-            resize_absb_temps_fe22b(converted_file, conversion)
-
     def get_existing_support_module_filepath(self, support_module_name) -> str | None:
         dls_sw_support_modules = Path("/dls_sw/prod/R3.14.12.7/support/")
         version_list = []
@@ -540,8 +538,7 @@ class Converter:
             if conversion.support_module_name is None:
                 self.update_filepaths(conversion)
 
-            # Handle special cases
-            self.handle_fe_special_cases(converted_file, conversion)
+            self.special_case_module.handle_special_cases(converted_file, conversion)
 
             # Overwrite the bob file with the modified xml data
             self.write_bob_file_contents(converted_file, conversion)
