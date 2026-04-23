@@ -22,7 +22,7 @@ def resize_absb_temps_fe22b(bob_file, conversion):
 
 # Generic function to be inlcluded in each domain-specific special case module.
 # This is dynamically imported and then called by the main conversion process.
-def handle_special_cases(bob_file, conversion):
+def run(bob_file, conversion):
     """Make any case-by-case adjustments to FE specific screens which are not handled
     by the normal conversion process."""
 

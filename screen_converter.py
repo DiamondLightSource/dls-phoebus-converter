@@ -54,7 +54,7 @@ class Converter:
         try:
             self.special_case_module = import_module(f"{self.domain}_special_case")
         except ModuleNotFoundError:
-            logger.warning(f"Failed to import module: {self.domain}_special_case, continuing without it.")
+            logger.info(f"Could not import module: {self.domain}_special_case.")
 
     def make_top_dirs(self) -> None:
         self.acc_ui_support_dst_full.mkdir(parents=True, exist_ok=True)
@@ -538,7 +538,13 @@ class Converter:
             if conversion.support_module_name is None:
                 self.update_filepaths(conversion)
 
-            self.special_case_module.handle_special_cases(converted_file, conversion)
+            # Special cases are tweaks which are not handled by the
+            # normal conversion process and are often unique to a specific screen.
+            # These are optionally defined in a domain-specific special case module.
+            try:
+                self.special_case_module.run(converted_file, conversion)
+            except AttributeError:
+                pass
 
             # Overwrite the bob file with the modified xml data
             self.write_bob_file_contents(converted_file, conversion)
