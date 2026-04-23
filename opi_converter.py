@@ -51,6 +51,31 @@ class ScreenConverter:
         self.replace_tab = replace_tab
         self.cs = ConversionSteps()
 
+    def get_transparent_background_tank_widget(self):
+        in_tank_widget = False
+        transparent_background = False
+        transparent_backgrounds = []
+        name_ids = ["", ""]
+        with open(self.src_file_path, "r") as f:
+            lines = f.readlines()
+            for line in lines:
+                if "org.csstudio.opibuilder.widgets.tank" in line:
+                    in_tank_widget = True
+                if "</widget>" in line:
+                    if transparent_background:
+                        transparent_backgrounds.append(name_ids)
+                    in_tank_widget = False
+                    name_ids = ["", ""]
+                    transparent_background = False
+                if in_tank_widget:
+                    if "<name>" in line:
+                        name_ids[0] = re.search(r'<name>(.*?)</name>', line).group(1)
+                    if "<pv_name>" in line:
+                        name_ids[1] = re.search(r'<pv_name>(.*?)</pv_name>', line).group(1)
+                    if "<transparent_background>true</transparent_background>" in line:
+                        transparent_background = True
+        return transparent_backgrounds
+
     def get_alarm_sensitive_progress_bars(self):
         alarm_sensitive_progress_bars = []
         in_progress_bar = False
@@ -61,7 +86,7 @@ class ScreenConverter:
             for line in lines:
                 if "org.csstudio.opibuilder.widgets.progressbar" in line:
                     in_progress_bar = True
-                elif "</widget>" in line:
+                if "</widget>" in line:
                     if alarm_sensitive:
                         alarm_sensitive_progress_bars.append(name_ids)
                     in_progress_bar = False
@@ -596,6 +621,22 @@ class ScreenConverter:
                 else:
                     for w in widget["widget"]:
                         self.parse_widget(w, spacing + " ", level + 1, widget)
+        elif widget["@type"] == "tabs":
+            if "tabs" in widget:
+                if "tab" in widget["tabs"]:
+                    if type(widget["tabs"]["tab"]) is not list:
+                        if type(widget["tabs"]["tab"]["children"]["widget"]) is not list:
+                            self.parse_widget(widget["tabs"]["tab"]["children"]["widget"], spacing + " ", level + 1, widget)
+                        else:
+                            for child_widget in widget["tabs"]["tab"]["children"]["widget"]:
+                                self.parse_widget(child_widget, spacing + " ", level + 1, widget)
+                    else:
+                        for tab in widget["tabs"]["tab"]:
+                            if type(tab["children"]["widget"]) is not list:
+                                self.parse_widget(tab["children"]["widget"], spacing + " ", level + 1, widget)
+                            else:
+                                for child_widget in tab["children"]["widget"]:
+                                    self.parse_widget(child_widget, spacing + " ", level + 1, widget)
         elif widget["@type"] == "action_button":
             if "text" in widget:
                 if (
@@ -624,6 +665,13 @@ class ScreenConverter:
             if "name" in widget and "pv_name" in widget:
                 if [widget["name"], widget["pv_name"]] in alarm_sensitive_progress_bars:
                     widget["border_alarm_sensitive"] = "true"
+        elif widget["@type"] == "tank":
+            # Phoebus is missing the <transparent_background> option, so we just set the background
+            # colour to transparent
+            transparent_tank_backgrounds = self.get_transparent_background_tank_widget()
+            if "name" in widget and "pv_name" in widget:
+                if [widget["name"], widget["pv_name"]] in transparent_tank_backgrounds:
+                    widget["background_color"] = {'color': {'@name': 'Transparent', '@red': '255', '@green': '255', '@blue': '255'}}
 
         self.parse_all_fields_in_dict(widget)
         self.check_rule(widget)
