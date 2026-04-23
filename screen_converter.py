@@ -1,12 +1,14 @@
-from argparse import ArgumentParser
+import logging
 import re
 import typing
+from argparse import ArgumentParser
+from importlib import import_module
+from pathlib import Path, PosixPath
+
+import xmltodict
+import yaml
 
 import opi_converter
-import yaml
-import logging
-from pathlib import Path, PosixPath
-import xmltodict
 from dataclasses import dataclass, field
 from logconfig import setup_logging
 
@@ -48,6 +50,11 @@ class Converter:
         self.acc_support_module_locations: list[tuple] = []
         self.get_config(config_file_path)
         self.make_top_dirs()
+
+        try:
+            self.special_case_module = import_module(f"{self.domain}_special_case")
+        except ModuleNotFoundError:
+            logger.info(f"Could not import module: {self.domain}_special_case.")
 
     def make_top_dirs(self) -> None:
         self.acc_ui_support_dst_full.mkdir(parents=True, exist_ok=True)
@@ -531,8 +538,17 @@ class Converter:
             if conversion.support_module_name is None:
                 self.update_filepaths(conversion)
 
+            # Special cases are tweaks which are not handled by the
+            # normal conversion process and are often unique to a specific screen.
+            # These are optionally defined in a domain-specific special case module.
+            try:
+                self.special_case_module.run(converted_file, conversion)
+            except AttributeError:
+                pass
+
             # Overwrite the bob file with the modified xml data
             self.write_bob_file_contents(converted_file, conversion)
+
             logger.info(f"Conversion saved to {converted_file}\n")
 
         # Get missing support module screens
