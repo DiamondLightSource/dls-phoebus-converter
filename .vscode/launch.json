@@ -9,7 +9,7 @@
             "type": "debugpy",
             "request": "launch",
             "justMyCode": false,
-            "program": "${file}",
+            "program": "${workspaceFolder}/src/dls_phoebus_converter/__main__.py",
             "console": "integratedTerminal",
             "args": "example.yaml -o ${workspaceFolder}/output/"
         }
