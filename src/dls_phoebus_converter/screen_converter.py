@@ -58,9 +58,14 @@ class Converter:
         self.make_top_dirs()
 
         try:
-            self.special_case_module = import_module(f"{self.domain}_special_case")
+            self.special_case_module = import_module(
+                f"dls_phoebus_converter.{self.domain}_special_case"
+            )
         except ModuleNotFoundError:
-            logger.info(f"Could not import module: {self.domain}_special_case.")
+            logger.info(
+                f"Could not import module: "
+                f"dls_phoebus_converter.{self.domain}_special_case."
+            )
 
     def make_top_dirs(self) -> None:
         self.acc_ui_support_dst_full.mkdir(parents=True, exist_ok=True)
@@ -224,7 +229,9 @@ class Converter:
                 if template_file_path.is_file():
                     new_conversion.template_file_path = template_file_path
                 else:
-                    template_file_path = Path.cwd() / "templates" / template_file_path
+                    template_file_path = (
+                        Path.cwd() / "config/templates" / template_file_path
+                    )
                 if not template_file_path.is_file():
                     raise FileNotFoundError(
                         f"Could not find template file {str(template_file_path)}"
