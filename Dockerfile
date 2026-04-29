@@ -4,9 +4,24 @@ FROM ghcr.io/diamondlightsource/ubuntu-devcontainer:noble AS developer
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    graphviz \
-    && apt-get dist-clean
+    graphviz tclsh tcl-dev imagemagick
 
+WORKDIR /tmp
+
+# Install apptainer to allow us to run apptainer images from matlab
+RUN wget https://github.com/apptainer/apptainer/releases/download/v1.4.5/apptainer_1.4.5_amd64.deb \
+    && apt install -y ./apptainer_1.4.5_amd64.deb
+
+# Install environment-modules
+RUN curl -LJO https://github.com/envmodules/modules/releases/download/v5.6.1/modules-5.6.1.tar.gz \
+    && tar xfz modules-5.6.1.tar.gz \
+    && cd modules-5.6.1 && ./configure && make && make install \
+    && ln -s /usr/local/Modules/init/profile.sh /etc/profile.d/modules.sh \
+    && ln -s /usr/local/Modules/init/profile.csh /etc/profile.d/modules.csh
+
+ENV MODULEPATH=/dls_sw/deploy-tools/modulefiles
+
+RUN apt-get dist-clean
 # The build stage installs the context into the venv
 FROM developer AS build
 
@@ -28,9 +43,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 FROM ubuntu:noble AS runtime
 
 # Add apt-get system dependecies for runtime here if needed
-# RUN apt-get update -y && apt-get install -y --no-install-recommends \
-#     some-library \
-#     && apt-get dist-clean
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    apptainer \
+    && apt-get dist-clean
 
 # Copy the python installation from the build stage
 COPY --from=build /python /python

@@ -49,7 +49,9 @@
         // Allow the container to access the host X11 display and EPICS CA
         "--net=host",
         // Make sure SELinux does not disable with access to host filesystems like tmp
-        "--security-opt=label=disable"
+        "--security-opt=label=disable",
+        // Add fuse device for apptainer testing inside the dev container
+        "--device=/dev/fuse"
     ],
     "mounts": [
         // Mount in the user terminal config folder so it can be edited
@@ -63,6 +65,21 @@
             "source": "devcontainer-shared-cache",
             "target": "/cache",
             "type": "volume"
+        },
+        {
+            "source": "/dls_sw",
+            "target": "/dls_sw",
+            "type": "bind"
+        },
+        {
+            "source": "/dls",
+            "target": "/dls",
+            "type": "bind"
+        },
+        {
+            "source": "/home/ops",
+            "target": "/home/ops",
+            "type": "bind"
         }
     ],
     // Mount the parent as /workspaces so we can pip install peers as editable

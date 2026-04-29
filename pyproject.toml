@@ -12,7 +12,10 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 description = "Converts Diamond cs-studio screens for use in Phoebus"
-dependencies = [] # Add project dependencies here, e.g. ["click", "numpy"]
+dependencies = [
+    "pyyaml",
+    "xmltodict",
+] # Add project dependencies here, e.g. ["click", "numpy"]
 dynamic = ["version"]
 license.file = "LICENSE"
 readme = "README.md"
