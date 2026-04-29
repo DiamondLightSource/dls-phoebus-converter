@@ -8,7 +8,7 @@
             "name": "Python Debugger: Current File with Arguments",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/screen_converter.py",
+            "program": "${workspaceFolder}/src/dls_phoebus_converter/screen_converter.py",
             "console": "integratedTerminal",
             "args": "example.yaml -o ${workspaceFolder}/output/"
         }
