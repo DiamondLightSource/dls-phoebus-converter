@@ -185,26 +185,29 @@ class ScreenConverter:
         return result
 
     def check_rule(self, widget):
-        if "rules" in widget:
-            if type(widget["rules"]["rule"]) is list:
-                for r in widget["rules"]["rule"]:
-                    rule_expr = r["exp"]
-                    if type(rule_expr) is list:
-                        for e in rule_expr:
-                            e["@bool_exp"] = self.check_legacy_sev(e["@bool_exp"])
-                    else:
-                        rule_expr["@bool_exp"] = self.check_legacy_sev(
-                            rule_expr["@bool_exp"]
-                        )
-            else:
-                rule_expr = widget["rules"]["rule"]["exp"]
-                if type(rule_expr) is list:
-                    for r in rule_expr:
-                        r["@bool_exp"] = self.check_legacy_sev(r["@bool_exp"])
-                else:
-                    rule_expr["@bool_exp"] = self.check_legacy_sev(
-                        rule_expr["@bool_exp"]
-                    )
+        if "rules" in widget and "rule" in widget["rules"]:
+            rules = widget["rules"]["rule"]
+            if type(rules) is not list:
+                rules = [rules]
+
+            for rule in rules:
+                if "exp" in rule:
+                    rule_exprs = rule["exp"]
+                    if type(rule_exprs) is not list:
+                        rule_exprs = [rule_exprs]
+                    for e in rule_exprs:
+                        self.fix_rule_expression(e)
+
+    def fix_rule_expression(self, expression):
+        """Fix common issues that come up in cs-studio rules"""
+
+        # Use new syntax for getting a PV alarm severity
+        expression["@bool_exp"] = self.check_legacy_sev(expression["@bool_exp"])
+
+        # widget.getValue() is not available in Phoebus, we assume this is an attempt to get the
+        # value of the widgets pv, so we replace it with pv0
+        if "widget.getValue()" in expression["@bool_exp"]:
+            expression["@bool_exp"] = expression["@bool_exp"].replace("widget.getValue()", "pv0")
 
     def fix_exit_button(self):
         self.cs.fix_exit_but = True
