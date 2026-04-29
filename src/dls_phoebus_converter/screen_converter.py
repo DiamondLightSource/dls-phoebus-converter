@@ -70,7 +70,7 @@ class Converter:
     def get_config(self, config_file: Path | str) -> None:
         # get useful data out of json
         if type(config_file) is PosixPath:
-            with open(config_file, "r") as file:
+            with open(config_file) as file:
                 data = yaml.safe_load(file)
         else:
             data = config_file
@@ -155,7 +155,10 @@ class Converter:
         # in the config
         if src_path_config.is_dir():
             if "new_filename" in file_data:
-                message = "The 'new_filename' field cannot be used when src is given as a directory. Please check config file."
+                message = (
+                    "The 'new_filename' field cannot be used when src is given as "
+                    "a directory. Please check config file."
+                )
                 logger.error(message)
                 raise ValueError(message)
 
@@ -168,8 +171,8 @@ class Converter:
                     else:
                         recursive_dir = Path(src_path_config.name)
 
-                    # We need to do some fancy path manipulation to recreate the old directory
-                    # structure in the destination directory
+                    # We need to do some fancy path manipulation to recreate the old
+                    # directory structure in the destination directory
                     if len(file_paths.parent.parts) > len(src_path_config.parts):
                         for subdir in file_paths.parent.parts[
                             len(src_path_config.parts) :
@@ -197,7 +200,8 @@ class Converter:
                         dst_dir_paths.append(dst_path_config)
                     else:
                         logger.warning(
-                            f"File {file_paths} has already been processed, skipping conversion."
+                            f"File {file_paths} has already been processed, skipping "
+                            "conversion."
                         )
         else:
             src_file_paths = [src_path_config]
@@ -233,7 +237,7 @@ class Converter:
         return new_conversions
 
     def read_bob_file_contents(self, file_path: Path, conversion):
-        with open(file_path, "r", encoding="utf-8") as fh:
+        with open(file_path, encoding="utf-8") as fh:
             fxml = fh.read()
             as_dict = xmltodict.parse(fxml)
             conversion.all_phoebus_data = as_dict
@@ -256,18 +260,19 @@ class Converter:
     def search_widget_filepaths_recursive(
         self, widget, func: typing.Callable, widget_file_paths=None, macros=None
     ):
-        """This generic, recursive function takes a widget and searches for any references to filepaths
-        these can be in multiple different widget fields and also in widgets within the widget etc
-        When a filepath is found, it is passed into the passed func callable."""
+        """This generic, recursive function takes a widget and searches for any
+        references to filepaths these can be in multiple different widget fields and
+        also in widgets within the widget etc. When a filepath is found, it is passed
+        into the passed func callable."""
 
         args = [arg for arg in [widget_file_paths, macros] if arg is not None]
 
         if not isinstance(widget, dict):
             return
         if "widget" in widget:
-            for widget in widget["widget"]:
+            for child in widget["widget"]:
                 self.search_widget_filepaths_recursive(
-                    widget, func, widget_file_paths, macros
+                    child, func, widget_file_paths, macros
                 )
         if "tabs" in widget:
             for tab in widget["tabs"]["tab"]:
@@ -312,10 +317,12 @@ class Converter:
                                     Path(symbol_path), *args, symbol=True
                                 )
                     else:
-                        # We only log when we find edm widget not when we later switch it
+                        # We only log when we find an edm widget not when we later
+                        # switch it
                         if func.__name__ == "append_new_filepath":
                             logger.warning(
-                                f"Warning, edm style symbol widget detected: {widget['name']}"
+                                "Warning, edm style symbol widget detected: "
+                                f"{widget['name']}"
                             )
                         if func(Path(symbol_widget), *args, symbol=True):
                             widget["symbols"]["symbol"] = func(
@@ -375,8 +382,8 @@ class Converter:
             )
 
         # If a support module has been requested and we are not already converting it,
-        # then add it to the list of extra required support modules which we will attempt
-        # to build later.
+        # then add it to the list of extra required support modules which we will
+        # attempt to build later.
         for file_path in file_paths_unique:
             # Search through the filepath and remove any strings which dont look useful
             new_filepath = Path()
@@ -386,8 +393,8 @@ class Converter:
                     new_filepath = new_filepath / part
             file_path = new_filepath
 
-            # If we only have 1 part left, it is probably the file itself which isnt a support module
-            # so we move to the next one
+            # If we only have 1 part left, it is probably the file itself which isnt a
+            # support module so we move to the next one
             if len(file_path.parts) > 1:
                 # The support module should be the second to last part
                 support_module_name = file_path.parts[-2]
@@ -410,13 +417,15 @@ class Converter:
         logger.info(f"Required acc modules: {self.acc_support_module_locations}")
 
     def switch_filepaths(self, file_path, macros, symbol=False) -> str:
-        "Takes an old file_path string and returns what the new file_path should be. This is done"
-        "by getting the name of the support module from the old path and matching it with our data."
+        "Takes an old file_path string and returns what the new file_path should be."
+        "This is done by getting the name of the support module from the old path and"
+        "matching it with our data."
         file_path_string = str(file_path)
         all_support_modules = (
             self.domain_support_module_locations + self.acc_support_module_locations
         )
-        # If the pathstring is in the current directory, eg file.bob, then no need to change it
+        # If the pathstring is in the current directory, eg file.bob, then no need to
+        # change it
         if len(file_path.parts) <= 1:
             return file_path_string
 
@@ -452,7 +461,8 @@ class Converter:
                     return str(data[1] / file_name)
 
         logger.warning(
-            f"Could not find support module for old path: {file_path_string}. Filepath unchanged."
+            f"Could not find support module for old path: {file_path_string}. Filepath "
+            "unchanged."
         )
         return file_path_string
 
@@ -491,10 +501,10 @@ class Converter:
         conversion.widget_data = conversion.all_phoebus_data["display"]["widget"]
 
     def handle_macros(self, file_path: Path, conversion: ConversionConfig) -> None:
-        """Look for unique instances of a macro eg ${string} in the bob file. We ignore a small
-        number of macros which are defined from other widget fields (MACRO_EXCEPTION_LIST).
-        If a macro is found in a file but has not been defined in the ConversionConfig, then
-        we log a warning."""
+        """Look for unique instances of a macro eg ${string} in the bob file. We ignore
+        a small number of macros which are defined from other widget fields
+        (MACRO_EXCEPTION_LIST). If a macro is found in a file but has not been defined
+        in the ConversionConfig, then we log a warning."""
 
         new_macro_names = []
         new_macro_values = []
@@ -539,7 +549,7 @@ class Converter:
                     if version.is_dir():
                         version_list.append(version)
                 latest_file = max(
-                    [f for f in version_list], key=lambda item: item.stat().st_ctime
+                    list(version_list), key=lambda item: item.stat().st_ctime
                 )
 
         opi_dir_guess = latest_file / f"{support_module_name}App" / "opi" / "opi"
@@ -557,7 +567,7 @@ class Converter:
         )
 
         if type(self.config_file) is PosixPath:
-            with open(self.config_file, "r") as file:
+            with open(self.config_file) as file:
                 data = yaml.safe_load(file)
         else:
             data = self.config_file
@@ -605,7 +615,8 @@ class Converter:
         for conversion in self.conversion_data:
             logger.info(f"Converting {conversion.src_file_path}")
 
-            # Create directories to place screens, this should probably be in opi_converter.py
+            # Create directories to place screens, this should probably be in
+            # opi_converter.py
             conversion.dst_dir_path.mkdir(parents=True, exist_ok=True)
 
             # Convert .boy to .bob
@@ -623,14 +634,16 @@ class Converter:
             # Read in the widget data from the new bob file
             self.read_bob_file_contents(converted_file, conversion)
 
-            # We need to define macros which were previously passed into the synoptic as script arguments
+            # We need to define macros which were previously passed into the synoptic as
+            #  script arguments
             if conversion.synoptic:
                 self.handle_macros(converted_file, conversion)
 
             # Figure out which filepaths within bob files need updating and
             # update them to the new paths.
             self.get_required_support_modules(conversion, converted_file)
-            # Support module paths are relative and so don't need to have their paths updated
+            # Support module paths are relative and so don't need to have their paths
+            # updated
             if conversion.support_module_name is None:
                 self.update_filepaths(conversion)
 

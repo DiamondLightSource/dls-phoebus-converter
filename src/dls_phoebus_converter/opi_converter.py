@@ -58,7 +58,7 @@ class ScreenConverter:
         transparent_background = False
         transparent_backgrounds = []
         name_ids = ["", ""]
-        with open(self.src_file_path, "r") as f:
+        with open(self.src_file_path) as f:
             lines = f.readlines()
             for line in lines:
                 if "org.csstudio.opibuilder.widgets.tank" in line:
@@ -85,7 +85,7 @@ class ScreenConverter:
         in_progress_bar = False
         alarm_sensitive = False
         name_ids = ["", ""]
-        with open(self.src_file_path, "r") as f:
+        with open(self.src_file_path) as f:
             lines = f.readlines()
             for line in lines:
                 if "org.csstudio.opibuilder.widgets.progressbar" in line:
@@ -116,7 +116,7 @@ class ScreenConverter:
 
     def replace_edm_symbol_widget(self):
         result = []
-        with open(self.src_file_path, "r") as f:
+        with open(self.src_file_path) as f:
             lines = f.readlines()
             fixed = False
             for line in lines:
@@ -215,8 +215,8 @@ class ScreenConverter:
         # Use new syntax for getting a PV alarm severity
         expression["@bool_exp"] = self.check_legacy_sev(expression["@bool_exp"])
 
-        # widget.getValue() is not available in Phoebus, we assume this is an attempt to get the
-        # value of the widgets pv, so we replace it with pv0
+        # widget.getValue() is not available in Phoebus, we assume this is an attempt to
+        # get the value of the widgets pv, so we replace it with pv0
         if "widget.getValue()" in expression["@bool_exp"]:
             expression["@bool_exp"] = expression["@bool_exp"].replace(
                 "widget.getValue()", "pv0"
@@ -303,8 +303,9 @@ class ScreenConverter:
                         self.set_new_databrowser_action_from_execute_eclipse(action)
                     else:
                         logger.warning(
-                            "Screen contains an executeEclipseCommand script which is not supported by Phoebus."
-                            f"Found script: {action['script']['text']} in file {self.src_file_path}"
+                            "Screen contains an executeEclipseCommand script which is"
+                            "not supported by Phoebus. Found script: "
+                            f"{action['script']['text']} in file {self.src_file_path}"
                         )
 
             elif action["@type"] == "command":
@@ -312,8 +313,9 @@ class ScreenConverter:
                     self.set_new_databrowser_action_from_strip_command(action)
 
     def set_new_databrowser_action_from_strip_command(self, action):
-        # We will be implementing a new Phoebus action which opens PV(s) in the databrowser, so
-        # eventually this code will be replaced with that, for now we use a command action.
+        # We will be implementing a new Phoebus action which opens PV(s) in the
+        # databrowser, so eventually this code will be replaced with that, for now we
+        # use a command action.
         search_string = action["command"]
         str_list = search_string.split(" ")
         for i, string in enumerate(str_list):
@@ -330,12 +332,13 @@ class ScreenConverter:
         action["@type"] = "command"
         action["description"] = "Launch databrowser"
         action["command"] = (
-            f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'
+            f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'  # noqa: E501
         )
 
     def set_new_databrowser_action_from_execute_eclipse(self, action):
-        # We will be implementing a new Phoebus action which opens PV(s) in the databrowser, so
-        # eventually this code will be replaced with that, for now we use a command action.
+        # We will be implementing a new Phoebus action which opens PV(s) in the
+        # databrowser, so eventually this code will be replaced with that, for now we
+        # use a command action.
         search_string = action["script"]["text"]
         match = re.search(r"'pvnames',\s*'([^']+)'", search_string)
         if match:
@@ -352,7 +355,7 @@ class ScreenConverter:
         action["@type"] = "command"
         action["description"] = "Launch databrowser"
         action["command"] = (
-            f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'
+            f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'  # noqa: E501
         )
 
     def fix_embedded_screen_ext(self, widget):
@@ -365,7 +368,7 @@ class ScreenConverter:
 
     def fix_grouping_container(self, opi_file_path):
         result = []
-        with open(opi_file_path, "r") as f:
+        with open(opi_file_path) as f:
             lines = f.readlines()
             check_for_border_prop = False
             found_border_prop = False
@@ -381,7 +384,7 @@ class ScreenConverter:
                         fixed = True
                         result.append("   <border_color>\n")
                         result.append(
-                            '     <color name="Canvas" red="200" green="200" blue="200"></color>\n'
+                            '     <color name="Canvas" red="200" green="200" blue="200"></color>\n'  # noqa: E501
                         )
                         result.append("   </border_color>\n")
                         result.append("   <border_style>0</border_style>\n")
@@ -424,16 +427,17 @@ class ScreenConverter:
         setup_dict = {}
         if self.template_file_path is None:
             logger.warning(
-                "Found edm symbol widget but could not convert it due to no template file being supplied."
+                "Found edm symbol widget but could not convert it due to no template"
+                "file being supplied."
             )
             return
 
         if not os.path.isfile(self.template_file_path):
-            error_msg = f"No template file provided"
+            error_msg = "No template file provided"
             logger.error(error_msg, exc_info=True)
             raise FileNotFoundError(error_msg)
 
-        with open(self.template_file_path, "r", encoding="utf-8") as file:
+        with open(self.template_file_path, encoding="utf-8") as file:
             fxml = file.read()
 
             setup_dict = xmltodict.parse(fxml)
@@ -511,14 +515,15 @@ class ScreenConverter:
                             rules = [rules]
 
                         for rule in rules:
-                            # We look through the rules and see if we need to re-order any symbols
+                            # We look through the rules and see if we need to re-order
+                            # any symbols
                             if rule["@prop_id"] == "image_index":
                                 widget["symbols"]["symbol"] = (
                                     self.reorder_widgets_from_rules(symbols, rule)
                                 )
 
-                            # Look for a rule which is used to change the displayed symbol to a symbol
-                            # signifying an invalid state.
+                            # Look for a rule which is used to change the displayed
+                            # symbol to a symbol signifying an invalid state.
                             if rule["@prop_id"] == "image_index":
                                 rule["@prop_id"] = "symbols[0]"
                                 rule["@out_exp"] = "false"
@@ -536,8 +541,9 @@ class ScreenConverter:
                                         )
                                 rule["exp"] = expression
 
-                                # We must create a rule for each symbol specified for the widget which
-                                # overwrites the displayed symbol widget with the special invalid state symbol.
+                                # We must create a rule for each symbol specified for
+                                # the widget which overwrites the displayed symbol
+                                # widget with the special invalid state symbol.
                                 for i in range(1, len(widget["symbols"]["symbol"])):
                                     # Copy dictionary to get a unique copy
                                     additional_rule = rule.copy()
@@ -576,7 +582,8 @@ class ScreenConverter:
                             and "<" in bool_logic
                             and "&&" in bool_logic
                         ):
-                            # Gets the integer between >= and &&. This could be made smarter if required
+                            # Gets the integer between >= and &&. This could be made
+                            # smarter if required
                             match = re.search(r">=\s*(.+?)\s*&&", bool_logic)
                             if match:
                                 pv_val = int(float(match.group(1)))
@@ -589,12 +596,12 @@ class ScreenConverter:
 
         # Sort the map by ascending pv_val
         reorder_map = sorted(reorder_map, key=lambda x: x[0])
-        new_symbols_order = [symbol for symbol in symbols]
+        new_symbols_order = list(symbols)
         for pv_val, index in reorder_map:
             for symbol in symbols:
                 if pv_val >= len(new_symbols_order):
-                    # Sometimes rules can specify a symbol to use for a pv_value
-                    # outside the number of images, we handle this by adding it to the end
+                    # Sometimes rules can specify a symbol to use for a pv_value outside
+                    # the number of images, we handle this by adding it to the end
                     new_symbols_order.append(symbol)
                 elif f"_{index}." in symbol:
                     new_symbols_order[pv_val] = symbol
@@ -622,8 +629,8 @@ class ScreenConverter:
         else:
             widget[field] = self.convert_pv_function(widget[field])
 
-    def convert_pv_function(self, inpString):
-        if inpString is not None and "pv(" in inpString:
+    def convert_pv_function(self, inp_string):
+        if inp_string is not None and "pv(" in inp_string:
             pv_replacement = "".join(
                 [
                     g
@@ -631,23 +638,23 @@ class ScreenConverter:
                     else g
                     if (k := g.find('")')) < 0
                     else "`" + g[:k] + "`" + g[k + 2 :]
-                    for (i, g) in enumerate(inpString.split('pv("'))
+                    for (i, g) in enumerate(inp_string.split('pv("'))
                 ]
             )
             # Catch case where there is a function call nested within a pv(...) function
             # In this case the above replacement will not have found pv(" and so it
-            # will still exist in the replacement. There is no way to handle this in Phoebus
-            # so just issue warning
+            # will still exist in the replacement. There is no way to handle this in
+            # Phoebus so just issue warning
             if "pv(" in pv_replacement:
                 logger.warning(
-                    "Cannot fix the following formula in Phoebus " + inpString
+                    "Cannot fix the following formula in Phoebus " + inp_string
                 )
             else:
                 logger.info("Replace pv() function with " + pv_replacement)
                 return pv_replacement
 
         # Otherwise return the original
-        return inpString
+        return inp_string
 
     def parse_widget(self, widget, spacing, level, parent):
 
@@ -656,8 +663,9 @@ class ScreenConverter:
 
         if "@typeId" in widget:
             logging.error(
-                "Detected old CSS index '@typeid' - suggests that the Phoebus converter\
-    failed to convert the GroupContainer widget.\nTry running converter with --fixGroup option."
+                "Detected old CSS index '@typeid' - suggests that the Phoebus converter"
+                "failed to convert the GroupContainer widget.\n"
+                "Try running converter with --fixGroup option."
             )
             return
 
@@ -731,8 +739,8 @@ class ScreenConverter:
                 if [widget["name"], widget["pv_name"]] in alarm_sensitive_progress_bars:
                     widget["border_alarm_sensitive"] = "true"
         elif widget["@type"] == "tank":
-            # Phoebus is missing the <transparent_background> option, so we just set the background
-            # colour to transparent
+            # Phoebus is missing the <transparent_background> option, so we just set the
+            # background colour to transparent
             transparent_tank_backgrounds = self.get_transparent_background_tank_widget()
             if "name" in widget and "pv_name" in widget:
                 if [widget["name"], widget["pv_name"]] in transparent_tank_backgrounds:
@@ -752,7 +760,7 @@ class ScreenConverter:
     def modify_bob_xml(self):
         as_dict = {}
         with open(
-            os.path.join(self.dst_dir_path, self.dst_filename), "r", encoding="utf-8"
+            os.path.join(self.dst_dir_path, self.dst_filename), encoding="utf-8"
         ) as file:
             fxml = file.read()
 
@@ -761,7 +769,8 @@ class ScreenConverter:
                 widgets = as_dict["display"]["widget"]
             except KeyError as e:
                 logger.error(
-                    f"Failed to parse xml for file: {self.src_file_path} with error:\n {e}"
+                    f"Failed to parse xml for file: {self.src_file_path} with error:\n"
+                    f"{e}"
                 )
                 return None
 
@@ -821,23 +830,28 @@ def log_conversion_steps(log_data):
         )
     if log_data.replace_opi_ext:
         logger.info(
-            "Replaced .OPI file extensions with .BOB for EmbeddedDisplay/LinkingContainers/Open Display actions"
+            "Replaced .OPI file extensions with .BOB for "
+            "EmbeddedDisplay/LinkingContainers/Open Display actions"
         )
     if log_data.non_ab_action:
         logger.warning(
-            "Found an action on a widget that is NOT an ActionButton or Symbol widget. Debug for more"
+            "Found an action on a widget that is NOT an ActionButton or Symbol widget. "
+            "Debug for more"
         )
     if log_data.replace_with_ab:
         logger.info(
-            "Replaced a Rectangle/BooleanButton widget with an action with an Action Button widget"
+            "Replaced a Rectangle/BooleanButton widget with an action with an Action "
+            "Button widget"
         )
     if log_data.replace_db_script:
         logger.info(
-            "Replaced script to open databrowser with an action to open a DataBrowser plt file"
+            "Replaced script to open databrowser with an action to open a DataBrowser "
+            "plt file"
         )
     if log_data.fix_action_macro_name:
         logger.info(
-            "Fixed Open Display action that contains the $name macro that does not get parsed"
+            "Fixed Open Display action that contains the $name macro that does not get "
+            "parsed"
         )
     if log_data.create_sym_images:
         logger.info("Created new images for Symbol widget from original")
@@ -928,17 +942,17 @@ def main(
     # Check the no_edit file to see if we should even run the conversion
     # Instead of doing it like this, we could read a comment at the top of the bob file
     if no_edit_file is not None:
-        with open(no_edit_file, "r") as f:
+        with open(no_edit_file) as f:
             lines = f.readlines()
             for line in lines:
                 if src_file_path == line.strip():
                     logging.warning(
-                        "!!! OPI file to be converted is in the 'no_edit' list suggesting \
-                    that it has had manual changes that should not be overwritten.\n\
-                    If this is incorrect then remove this file from the "
-                        + no_edit_file
-                        + ".\n\
-                    Skipping this conversion"
+                        "!!! OPI file to be converted is in the 'no_edit' list"
+                        "suggesting that it has had manual changes that should not be"
+                        "overwritten.\n"
+                        "If this is incorrect then remove this file from the "
+                        f"{no_edit_file}.\n"
+                        "Skipping this conversion"
                     )
                     return None
 
@@ -950,8 +964,9 @@ def main(
 
     # Should we use the modified OPI files
     if not use_modified_opi:
-        # Copy the src file to the tmp location overwriting any existing tmp.opi. This is done
-        # as autoconverting directly from the src file sometimes fails due to read permission issues
+        # Copy the src file to the tmp location overwriting any existing tmp.opi. This
+        # is done as autoconverting directly from the src file sometimes fails due to
+        # read permission issues
         shutil.copy(src_file_path, tmp_file_path)
 
     # Run Phoebus converter
