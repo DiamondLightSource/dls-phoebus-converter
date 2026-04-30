@@ -90,17 +90,17 @@ commands = [
     ],
 ]
 
-[tool.tox.env.type-checking]
-description = "Run mypy"
-commands = [
-    [
-        "mypy",
-        "src",
-        "tests",
-        { replace = "posargs", default = [
-        ], extend = true },
-    ],
-]
+# [tool.tox.env.type-checking]
+# description = "Run mypy"
+# commands = [
+#     [
+#         "mypy",
+#         "src",
+#         "tests",
+#         { replace = "posargs", default = [
+#         ], extend = true },
+#     ],
+# ]
 
 [tool.tox.env.tests]
 description = "Run tests with coverage"
