@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: dls-phoebus-converter
+  title: dls-phoebus-converter
+  description: Converts Diamond cs-studio screens for use in Phoebus
+spec:
+  type: application
+  lifecycle: experimental
+  owner: group:default/high-level-apps

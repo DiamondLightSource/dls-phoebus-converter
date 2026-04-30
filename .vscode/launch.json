@@ -5,10 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Debugger: Current File with Arguments",
+            "name": "Python Debugger: Debug dls-phoebus-converter",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/screen_converter.py",
+            "justMyCode": false,
+            "program": "${workspaceFolder}/src/dls_phoebus_converter/__main__.py",
             "console": "integratedTerminal",
             "args": "example.yaml -o ${workspaceFolder}/output/"
         }

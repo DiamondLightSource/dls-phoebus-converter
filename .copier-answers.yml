@@ -1,0 +1,19 @@
+# Changes here will be overwritten by Copier
+_commit: 5.0.3
+_src_path: https://github.com/DiamondLightSource/python-copier-template.git
+author_email: philip.smith@diamond.ac.uk
+author_name: Phil Smith
+component_lifecycle: experimental
+component_owner: group:default/high-level-apps
+component_type: application
+description: Converts Diamond cs-studio screens for use in Phoebus
+distribution_name: dls-phoebus-converter
+docker: true
+docker_debug: false
+docs_type: README
+git_platform: github.com
+github_org: DiamondLightSource
+package_name: dls_phoebus_converter
+pypi: false
+repo_name: dls-phoebus-converter
+type_checker: mypy
