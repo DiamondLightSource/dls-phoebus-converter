@@ -42,10 +42,17 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # The runtime stage copies the built venv into a runtime container
 FROM ubuntu:noble AS runtime
 
-# Add apt-get system dependecies for runtime here if needed
+# Add any system dependencies for the runtime environment here
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    apptainer \
-    && apt-get dist-clean
+    graphviz imagemagick wget ca-certificates
+
+WORKDIR /tmp
+
+# Install apptainer to allow us to run apptainer images from matlab
+RUN wget https://github.com/apptainer/apptainer/releases/download/v1.4.5/apptainer_1.4.5_amd64.deb \
+    && apt install -y ./apptainer_1.4.5_amd64.deb
+
+RUN apt-get dist-clean
 
 # Copy the python installation from the build stage
 COPY --from=build /python /python
