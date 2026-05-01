@@ -73,3 +73,5 @@ lockfiles/
 # input and output files for development testing
 input/
 output/
+output2/
+logs/
