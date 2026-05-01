@@ -519,9 +519,9 @@ class Converter:
         with file_path.open("r", encoding="utf-8") as fh:
             content = fh.read()
 
-        unique_identified_macros = set(
-            re.findall(r"\$[\{\(]([^\}\)\s]+)[\}\)]", content)
-        )
+        identified_macros = re.findall(r"\$[\{\(]([^\}\)\s]+)[\}\)]", content)
+
+        unique_identified_macros = list(dict.fromkeys(identified_macros))
         logger.info(f"Found macros in file: {unique_identified_macros}")
 
         for macro in unique_identified_macros:
