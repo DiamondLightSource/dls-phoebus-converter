@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<width>265</width>
+	<height>90</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="action_button" version="3.0.0">
+		<name>auto(command|Stop)</name>
+		<actions>
+			<action type="write_pv">
+				<description>Write PV</description>
+				<pv_name>$(pv_name)</pv_name>
+				<value>1</value>
+			</action>
+		</actions>
+		<pv_name>$(P)$(M).STOP</pv_name>
+		<text>STOP</text>
+		<x>200</x>
+		<y>60</y>
+		<width>54</width>
+		<height>20</height>
+		<foreground_color>
+			<color name="Major" red="255" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>Stop
+$(pv_name)
+$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Readback</name>
+		<pv_name>$(P)$(M).RBV</pv_name>
+		<x>35</x>
+		<y>30</y>
+		<width>191</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<tooltip>Readback
+$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>Tweak Plus</name>
+		<actions>
+			<action type="write_pv">
+				<description>Write PV</description>
+				<pv_name>$(pv_name)</pv_name>
+				<value>1</value>
+			</action>
+		</actions>
+		<pv_name>$(P)$(M).TWF</pv_name>
+		<text></text>
+		<x>225</x>
+		<y>5</y>
+		<width>30</width>
+		<height>20</height>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>Tweak Plus
+$(pv_name)
+$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>Tweak Minus</name>
+		<actions>
+			<action type="write_pv">
+				<description>Write PV</description>
+				<pv_name>$(pv_name)</pv_name>
+				<value>1</value>
+			</action>
+		</actions>
+		<pv_name>$(P)$(M).TWR</pv_name>
+		<text></text>
+		<x>5</x>
+		<y>5</y>
+		<width>30</width>
+		<height>20</height>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>Tweak Minus
+$(pv_name)
+$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="led" version="2.0.0">
+		<name>Low Limit</name>
+		<pv_name>$(P)$(M).MSTA</pv_name>
+		<bit>2</bit>
+		<x>10</x>
+		<y>30</y>
+		<off_color>
+			<color red="96" green="96" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Yellow LED: On" red="255" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color red="192" green="192" blue="192"></color>
+		</foreground_color>
+		<line_color>
+			<color red="150" green="150" blue="150"></color>
+		</line_color>
+		<square>true</square>
+		<actions></actions>
+		<rules>
+			<rule name="DirectionalLimits" prop_id="bit" out_exp="true">
+				<exp bool_exp="pv0 &gt;= 0">
+					<expression>13</expression>
+				</exp>
+				<exp bool_exp="pv0 &lt; 0">
+					<expression>2</expression>
+				</exp>
+				<pv_name>$(P)$(M).MRES</pv_name>
+			</rule>
+		</rules>
+		<tooltip>Low Limit
+$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="led" version="2.0.0">
+		<name>High Limit</name>
+		<pv_name>$(P)$(M).MSTA</pv_name>
+		<bit>13</bit>
+		<x>230</x>
+		<y>30</y>
+		<off_color>
+			<color red="96" green="96" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Yellow LED: On" red="255" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color red="192" green="192" blue="192"></color>
+		</foreground_color>
+		<line_color>
+			<color red="150" green="150" blue="150"></color>
+		</line_color>
+		<square>true</square>
+		<actions></actions>
+		<rules>
+			<rule name="DirectionalLimits" prop_id="bit" out_exp="true">
+				<exp bool_exp="pv0 &gt;= 0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0 &lt; 0">
+					<expression>13</expression>
+				</exp>
+				<pv_name>$(P)$(M).MRES</pv_name>
+			</rule>
+		</rules>
+		<tooltip>High Limit
+$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>Demand</name>
+		<pv_name>$(P)$(M).VAL</pv_name>
+		<x>40</x>
+		<y>5</y>
+		<width>180</width>
+		<height>21</height>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<actions></actions>
+		<tooltip>Demand
+$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Controller" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<actions execute_as_one="true">
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>motor.bob</file>
+				<macros>
+					<motor>$(P)$(M)</motor>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<text>More</text>
+		<x>5</x>
+		<y>59</y>
+		<width>54</width>
+		<height>20</height>
+		<foreground_color>
+			<color name="Related Display: FG" red="128" green="64" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>Stop
+$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>Demand_1</name>
+		<pv_name>$(P)$(M).TWV</pv_name>
+		<x>69</x>
+		<y>58</y>
+		<width>122</width>
+		<height>21</height>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<actions></actions>
+		<tooltip>Demand
+$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Controller" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+</display>

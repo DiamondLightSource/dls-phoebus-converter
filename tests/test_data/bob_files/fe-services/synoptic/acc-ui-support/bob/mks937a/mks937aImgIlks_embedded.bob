@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>MKS 937A IMG Interlocks - $(device)</name>
+	<x>999</x>
+	<y>79</y>
+	<width>232</width>
+	<height>140</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>8</grid_step_x>
+	<grid_step_y>8</grid_step_y>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>8</x>
+		<y>16</y>
+		<width>225</width>
+		<height>113</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Grey 65%" red="166" green="166" blue="166"></color>
+		</background_color>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>Details</text>
+		<x>8</x>
+		<y>8</y>
+		<width>48</width>
+		<height>16</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 50%" red="128" green="128" blue="128"></color>
+		</background_color>
+		<transparent>false</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>8</x>
+		<y>8</y>
+		<width>49</width>
+		<height>17</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Grey 75%" red="192" green="192" blue="192"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):RLY:SP.DESC</pv_name>
+		<x>16</x>
+		<y>64</y>
+		<width>136</width>
+		<height>21</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 75%" red="192" green="192" blue="192"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):PRO:SP.DESC</pv_name>
+		<x>16</x>
+		<y>32</y>
+		<width>136</width>
+		<height>21</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 75%" red="192" green="192" blue="192"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM TextInput</name>
+		<pv_name>$(device):PRO:SETSP</pv_name>
+		<x>150</x>
+		<y>32</y>
+		<width>72</width>
+		<height>24</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</background_color>
+		<format>2</format>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM TextInput</name>
+		<pv_name>$(device):RLY:SETSP</pv_name>
+		<x>150</x>
+		<y>64</y>
+		<width>72</width>
+		<height>24</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</background_color>
+		<format>2</format>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>DLS symbol</name>
+		<pv_name>$(device):PRO:ILKSETSP:NOWRITE</pv_name>
+		<symbols>
+			<symbol>../mks937a/mks937aLock-symbol-61.png</symbol>
+		</symbols>
+		<x>120</x>
+		<y>32</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=-1.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;99.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>DLS symbol</name>
+		<pv_name>$(device):RLY:ILKSETSP:NOWRITE</pv_name>
+		<symbols>
+			<symbol>../mks937a/mks937aLock-symbol-61.png</symbol>
+		</symbols>
+		<x>120</x>
+		<y>64</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=-1.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;99.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>0</name>
+		<x>16</x>
+		<y>96</y>
+		<width>214</width>
+		<height>25</height>
+		<style>3</style>
+		<foreground_color>
+			<color red="0" green="128" blue="255"></color>
+		</foreground_color>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color red="240" green="240" blue="240"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<actions></actions>
+		<rules>
+			<rule name="visibleRule" prop_id="visible" out_exp="false">
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp; pv0&lt;2.0">
+					<value>true</value>
+				</exp>
+				<exp bool_exp="true">
+					<value>false</value>
+				</exp>
+				<pv_name>$(device):RLA:EXISTS</pv_name>
+			</rule>
+		</rules>
+		<widget type="textentry" version="3.0.0">
+			<name>EDM TextInput</name>
+			<pv_name>$(device):RLA:SETSP</pv_name>
+			<x>135</x>
+			<width>72</width>
+			<font>
+				<font family="liberation sans" style="BOLD" size="14.0"></font>
+			</font>
+			<foreground_color>
+				<color name="Controller: FG" red="0" green="0" blue="196"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Grey 90%" red="230" green="230" blue="230"></color>
+			</background_color>
+			<format>2</format>
+			<show_units>false</show_units>
+			<horizontal_alignment>1</horizontal_alignment>
+			<actions></actions>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+			<border_color>
+				<color red="0" green="128" blue="255"></color>
+			</border_color>
+		</widget>
+		<widget type="symbol" version="2.0.0">
+			<name>DLS symbol</name>
+			<pv_name>$(device):RLA:ILKSETSP:NOWRITE</pv_name>
+			<symbols>
+				<symbol>../mks937a/mks937aLock-symbol-61.png</symbol>
+			</symbols>
+			<x>104</x>
+			<width>24</width>
+			<height>24</height>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<actions></actions>
+			<rules>
+				<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+					<exp bool_exp="pvSev0==3">
+						<expression>0</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=-1.0&amp;&amp;pv0&lt;0.0">
+						<expression>0</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;99.0">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+						<expression>2</expression>
+					</exp>
+					<exp bool_exp="true">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(pv_name)</pv_name>
+				</rule>
+			</rules>
+			<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="textupdate" version="2.0.0">
+			<name>EDM Text Update</name>
+			<pv_name>$(device):RLA:SP.DESC</pv_name>
+			<width>136</width>
+			<height>21</height>
+			<font>
+				<font family="liberation sans" style="REGULAR" size="14.0"></font>
+			</font>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Grey 75%" red="192" green="192" blue="192"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<vertical_alignment>1</vertical_alignment>
+			<wrap_words>false</wrap_words>
+			<actions></actions>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+	</widget>
+</display>

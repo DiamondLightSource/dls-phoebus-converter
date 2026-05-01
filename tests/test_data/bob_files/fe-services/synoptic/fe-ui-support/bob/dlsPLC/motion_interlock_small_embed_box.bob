@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<width>420</width>
+	<height>250</height>
+	<background_color>
+		<color red="240" green="240" blue="240"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="embedded" version="2.0.0">
+		<file>motion_interlock_small_embed.opi</file>
+		<x>10</x>
+		<y>10</y>
+		<width>266</width>
+		<height>211</height>
+		<resize>4</resize>
+		<transparent>true</transparent>
+		<actions></actions>
+	</widget>
+</display>

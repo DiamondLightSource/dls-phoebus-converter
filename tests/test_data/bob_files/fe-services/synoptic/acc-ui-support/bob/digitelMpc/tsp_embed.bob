@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<width>325</width>
+	<height>50</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="symbol" version="2.0.0">
+		<name>V1</name>
+		<pv_name>$(device):STA</pv_name>
+		<symbols>
+			<symbol>symbol/tsp 1.svg</symbol>
+		</symbols>
+		<width>20</width>
+		<height>20</height>
+		<background_color>
+			<color red="240" green="240" blue="240"></color>
+		</background_color>
+		<actions execute_as_one="true">
+			<action type="open_display">
+				<description>Open detail screen</description>
+				<file>tsp_detail.bob</file>
+				<macros>
+					<device>$(device)</device>
+				</macros>
+				<target>tab</target>
+			</action>
+		</actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<preserve_ratio>false</preserve_ratio>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>ArrayPortRbv</name>
+		<pv_name>$(device):POWER</pv_name>
+		<x>70</x>
+		<width>91</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>ExposureLabel</name>
+		<text>Power</text>
+		<x>25</x>
+		<width>45</width>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>ExposureLabel_2</name>
+		<text>Mode</text>
+		<x>25</x>
+		<y>25</y>
+		<width>45</width>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>ArrayCounterReadback_1</name>
+		<pv_name>$(device):MODE</pv_name>
+		<x>70</x>
+		<y>25</y>
+		<width>91</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>ExposureLabel_3</name>
+		<text>Status</text>
+		<x>165</x>
+		<width>61</width>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>ArrayCounterReadback_3</name>
+		<pv_name>$(device):STA</pv_name>
+		<x>225</x>
+		<width>91</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>ExposureLabel_4</name>
+		<text>Filament</text>
+		<x>165</x>
+		<y>25</y>
+		<width>61</width>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>ArrayCounterReadback_4</name>
+		<pv_name>$(device):FIL</pv_name>
+		<x>225</x>
+		<y>25</y>
+		<width>91</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+</display>

@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>$(dom)</name>
+	<x>543</x>
+	<y>581</y>
+	<width>600</width>
+	<height>55</height>
+	<background_color>
+		<color name="Grey 75%" red="192" green="192" blue="192"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>8</grid_step_x>
+	<grid_step_y>8</grid_step_y>
+	<widget type="label" version="2.0.0">
+		<name>Label</name>
+		<text>TMON01</text>
+		<x>100</x>
+		<width>120</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_1</name>
+		<text>TMON02</text>
+		<x>250</x>
+		<width>120</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_2</name>
+		<text>TMON03</text>
+		<x>400</x>
+		<width>120</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_3</name>
+		<text>TMON04</text>
+		<x>550</x>
+		<width>120</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="progressbar" version="2.0.0">
+		<name>Progress Bar</name>
+		<pv_name>$(dom)-DI-PBPM-01:TMON01:C</pv_name>
+		<x>100</x>
+		<y>145</y>
+		<width>120</width>
+		<height>28</height>
+		<fill_color>
+			<color red="0" green="0" blue="255"></color>
+		</fill_color>
+		<background_color>
+			<color red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
+				<macros>
+					<temp>$(pv_name)</temp>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<scripts></scripts>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<limits_from_pv>false</limits_from_pv>
+	</widget>
+	<widget type="progressbar" version="2.0.0">
+		<name>Progress Bar_1</name>
+		<pv_name>$(dom)-DI-PBPM-01:TMON02:C</pv_name>
+		<x>250</x>
+		<y>145</y>
+		<width>120</width>
+		<height>28</height>
+		<fill_color>
+			<color red="0" green="0" blue="255"></color>
+		</fill_color>
+		<background_color>
+			<color red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
+				<macros>
+					<temp>$(pv_name)</temp>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<scripts></scripts>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<limits_from_pv>false</limits_from_pv>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_4</name>
+		<text>PBPM-01</text>
+		<y>120</y>
+		<width>92</width>
+		<height>53</height>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>2</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="progressbar" version="2.0.0">
+		<name>Progress Bar</name>
+		<pv_name>$(dom)-RS-ABSB-01:TMON01$(suffix)</pv_name>
+		<x>100</x>
+		<y>70</y>
+		<width>120</width>
+		<height>28</height>
+		<fill_color>
+			<color red="0" green="0" blue="255"></color>
+		</fill_color>
+		<background_color>
+			<color red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
+				<macros>
+					<temp>$(pv_name)</temp>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<scripts></scripts>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<limits_from_pv>false</limits_from_pv>
+	</widget>
+	<widget type="progressbar" version="2.0.0">
+		<name>Progress Bar_1</name>
+		<pv_name>$(dom)-RS-ABSB-01:TMON02$(suffix)</pv_name>
+		<x>250</x>
+		<y>70</y>
+		<width>120</width>
+		<height>28</height>
+		<fill_color>
+			<color red="0" green="0" blue="255"></color>
+		</fill_color>
+		<background_color>
+			<color red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
+				<macros>
+					<temp>$(pv_name)</temp>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<scripts></scripts>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<limits_from_pv>false</limits_from_pv>
+	</widget>
+	<widget type="progressbar" version="2.0.0">
+		<name>Progress Bar_2</name>
+		<pv_name>$(dom)-RS-ABSB-01:TMON03$(suffix)</pv_name>
+		<x>400</x>
+		<y>70</y>
+		<width>120</width>
+		<height>28</height>
+		<fill_color>
+			<color red="0" green="0" blue="255"></color>
+		</fill_color>
+		<background_color>
+			<color red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
+				<macros>
+					<temp>$(pv_name)</temp>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<scripts></scripts>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<limits_from_pv>false</limits_from_pv>
+	</widget>
+	<widget type="progressbar" version="2.0.0">
+		<name>Progress Bar_3</name>
+		<pv_name>$(dom)-RS-ABSB-01:TMON04$(suffix)</pv_name>
+		<x>550</x>
+		<y>70</y>
+		<width>120</width>
+		<height>28</height>
+		<fill_color>
+			<color red="0" green="0" blue="255"></color>
+		</fill_color>
+		<background_color>
+			<color red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
+				<macros>
+					<temp>$(pv_name)</temp>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<scripts></scripts>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<limits_from_pv>false</limits_from_pv>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_4</name>
+		<text>ABSB-01</text>
+		<y>45</y>
+		<width>92</width>
+		<height>53</height>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>2</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Progress Bar Label</name>
+		<pv_name>$(dom)-DI-PBPM-01:TMON01:C</pv_name>
+		<x>100</x>
+		<y>120</y>
+		<width>120</width>
+		<height>53</height>
+		<transparent>true</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Progress Bar_1 Label</name>
+		<pv_name>$(dom)-DI-PBPM-01:TMON02:C</pv_name>
+		<x>250</x>
+		<y>120</y>
+		<width>120</width>
+		<height>53</height>
+		<transparent>true</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Progress Bar Label</name>
+		<pv_name>$(dom)-RS-ABSB-01:TMON01$(suffix)</pv_name>
+		<x>100</x>
+		<y>45</y>
+		<width>120</width>
+		<height>53</height>
+		<transparent>true</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Progress Bar_1 Label</name>
+		<pv_name>$(dom)-RS-ABSB-01:TMON02$(suffix)</pv_name>
+		<x>250</x>
+		<y>45</y>
+		<width>120</width>
+		<height>53</height>
+		<transparent>true</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Progress Bar_2 Label</name>
+		<pv_name>$(dom)-RS-ABSB-01:TMON03$(suffix)</pv_name>
+		<x>400</x>
+		<y>45</y>
+		<width>120</width>
+		<height>53</height>
+		<transparent>true</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Progress Bar_3 Label</name>
+		<pv_name>$(dom)-RS-ABSB-01:TMON04$(suffix)</pv_name>
+		<x>550</x>
+		<y>45</y>
+		<width>120</width>
+		<height>53</height>
+		<transparent>true</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+	</widget>
+</display>

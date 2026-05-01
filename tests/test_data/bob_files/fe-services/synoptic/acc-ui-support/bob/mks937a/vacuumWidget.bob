@@ -1,0 +1,1032 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<width>65</width>
+	<height>193</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="action_button" version="2.0.0">
+		<name>EDM Rectangle</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<width>65</width>
+		<height>193</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Grey 65%" red="166" green="166" blue="166"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>../mks937a/mks937aGauge.opi</file>
+				<macros>
+					<NOIMG>0</NOIMG>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<text></text>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(dom)-VA-GAUGE-$(id):P</pv_name>
+		<x>4</x>
+		<y>5</y>
+		<width>58</width>
+		<height>26</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 25%" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>2</format>
+		<precision>1</precision>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="progressbar" version="2.0.0">
+		<name>EDM progressbar</name>
+		<pv_name>$(dom)-VA-GAUGE-$(id):PLOG</pv_name>
+		<x>4</x>
+		<y>37</y>
+		<width>16</width>
+		<height>150</height>
+		<fill_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</fill_color>
+		<background_color>
+			<color name="Grey 40%" red="102" green="102" blue="102"></color>
+		</background_color>
+		<horizontal>false</horizontal>
+		<actions></actions>
+		<border_alarm_sensitive>true</border_alarm_sensitive>
+		<maximum>0.0</maximum>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>51</name>
+		<x>20</x>
+		<y>43</y>
+		<width>39</width>
+		<height>147</height>
+		<style>3</style>
+		<foreground_color>
+			<color red="0" green="128" blue="255"></color>
+		</foreground_color>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color red="240" green="240" blue="240"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<actions></actions>
+		<widget type="group" version="3.0.0">
+			<name>0</name>
+			<y>128</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text></text>
+				<x>23</x>
+				<width>1</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>1</name>
+			<y>119</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-10</text>
+				<x>23</x>
+				<width>15</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>- 10</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>2</name>
+			<y>109</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text></text>
+				<x>23</x>
+				<width>1</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>3</name>
+			<y>100</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-8</text>
+				<x>23</x>
+				<width>9</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>- 10</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>4</name>
+			<y>91</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text></text>
+				<x>23</x>
+				<width>1</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>5</name>
+			<y>81</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-6</text>
+				<x>23</x>
+				<width>9</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>- 10</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>6</name>
+			<y>72</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text></text>
+				<x>23</x>
+				<width>1</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>7</name>
+			<y>62</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-4</text>
+				<x>23</x>
+				<width>9</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>- 10</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>8</name>
+			<y>53</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text></text>
+				<x>23</x>
+				<width>1</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>9</name>
+			<y>44</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-2</text>
+				<x>23</x>
+				<width>9</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>- 10</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>10</name>
+			<y>35</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text></text>
+				<x>23</x>
+				<width>1</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>11</name>
+			<y>25</y>
+			<width>39</width>
+			<height>15</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>0</text>
+				<x>23</x>
+				<width>6</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>- 10</text>
+				<width>22</width>
+				<height>14</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>12</name>
+			<y>16</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text></text>
+				<x>23</x>
+				<width>1</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>13</name>
+			<y>6</y>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>2</text>
+				<x>23</x>
+				<width>6</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>- 10</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+		<widget type="group" version="3.0.0">
+			<name>14</name>
+			<width>39</width>
+			<height>16</height>
+			<style>3</style>
+			<foreground_color>
+				<color red="0" green="128" blue="255"></color>
+			</foreground_color>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="240" green="240" blue="240"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<actions></actions>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text></text>
+				<x>23</x>
+				<width>1</width>
+				<height>13</height>
+				<font>
+					<font family="liberation sans" style="BOLD" size="10.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<auto_size>true</auto_size>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+			<widget type="label" version="2.0.0">
+				<name>EDM Label</name>
+				<text>-</text>
+				<width>22</width>
+				<height>15</height>
+				<font>
+					<font family="liberation sans" style="REGULAR" size="12.0"></font>
+				</font>
+				<foreground_color>
+					<color name="Text: FG" red="0" green="0" blue="0"></color>
+				</foreground_color>
+				<background_color>
+					<color name="Canvas" red="200" green="200" blue="200"></color>
+				</background_color>
+				<vertical_alignment>1</vertical_alignment>
+				<wrap_words>false</wrap_words>
+				<actions></actions>
+				<border_color>
+					<color name="Black" red="0" green="0" blue="0"></color>
+				</border_color>
+			</widget>
+		</widget>
+	</widget>
+</display>

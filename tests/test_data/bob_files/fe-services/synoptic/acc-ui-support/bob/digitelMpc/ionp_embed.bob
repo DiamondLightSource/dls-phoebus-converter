@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<width>325</width>
+	<height>20</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="symbol" version="2.0.0">
+		<name>V1</name>
+		<pv_name>$(device):STA</pv_name>
+		<symbols>
+			<symbol>symbol/ionp 4.svg</symbol>
+		</symbols>
+		<width>20</width>
+		<height>20</height>
+		<background_color>
+			<color red="240" green="240" blue="240"></color>
+		</background_color>
+		<actions execute_as_one="true">
+			<action type="open_display">
+				<description>Open detail screen</description>
+				<file>ionp_detail.bob</file>
+				<macros>
+					<device>$(device)</device>
+				</macros>
+				<target>tab</target>
+			</action>
+		</actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<preserve_ratio>false</preserve_ratio>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>Action Button</name>
+		<actions>
+			<action type="write_pv">
+				<description>Write PV</description>
+				<pv_name>$(pv_name)</pv_name>
+				<value>1</value>
+			</action>
+		</actions>
+		<pv_name>$(device):START</pv_name>
+		<text>Start</text>
+		<x>25</x>
+		<width>55</width>
+		<height>20</height>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>Action Button_1</name>
+		<actions>
+			<action type="write_pv">
+				<description>Write PV</description>
+				<pv_name>$(pv_name)</pv_name>
+				<value>0</value>
+			</action>
+		</actions>
+		<pv_name>$(device):START</pv_name>
+		<text>Stop</text>
+		<x>85</x>
+		<width>55</width>
+		<height>20</height>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Readback_1</name>
+		<pv_name>$(device):P</pv_name>
+		<x>145</x>
+		<width>180</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>2</format>
+		<precision>1</precision>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+</display>

@@ -1,0 +1,1738 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>$(dom)</name>
+	<x>543</x>
+	<y>581</y>
+	<width>1080</width>
+	<height>700</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>8</grid_step_x>
+	<grid_step_y>8</grid_step_y>
+	<widget type="embedded" version="2.0.0">
+		<name>Linking Container</name>
+		<file>fe-ui-support/bob/common/vacuum/fe09i_vac.bob</file>
+		<x>5</x>
+		<y>40</y>
+		<width>977</width>
+		<height>371</height>
+		<resize>2</resize>
+		<transparent>true</transparent>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>FE$(cell)$(type) Control</text>
+		<width>1080</width>
+		<height>32</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="VA title" red="202" green="223" blue="159"></color>
+		</background_color>
+		<transparent>false</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="tabs" version="2.0.0">
+		<name>Tabbed Container</name>
+		<tabs>
+			<tab>
+				<name>IOC</name>
+				<children>
+					<widget type="action_button" version="3.0.0">
+						<name>Action Button</name>
+						<actions>
+							<action type="open_display">
+								<description>Open Display</description>
+								<file>acc-ui-support/bob/devIocStats/ioc_stats.bob</file>
+								<macros>
+									<ioc>$(dom)-CS-IOC-01</ioc>
+								</macros>
+								<target>standalone</target>
+							</action>
+						</actions>
+						<text>IOC Status</text>
+						<x>32</x>
+						<y>40</y>
+						<width>120</width>
+						<height>25</height>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Button: BG" red="205" green="205" blue="205"></color>
+						</background_color>
+						<tooltip>$(actions)</tooltip>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+					<widget type="action_button" version="3.0.0">
+						<name>Action Button</name>
+						<actions>
+							<action type="open_display">
+								<description>Open Display</description>
+								<file>acc-ui-support/bob/TimingTemplates/evr.bob</file>
+								<macros>
+									<evr>$(dom)-CS-EVR-01:SET-HW</evr>
+								</macros>
+								<target>standalone</target>
+							</action>
+						</actions>
+						<text>EVR</text>
+						<x>32</x>
+						<y>88</y>
+						<width>120</width>
+						<height>25</height>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Button: BG" red="205" green="205" blue="205"></color>
+						</background_color>
+						<tooltip>$(actions)</tooltip>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+				</children>
+			</tab>
+			<tab>
+				<name>Sequencer</name>
+				<children>
+					<widget type="embedded" version="2.0.0">
+						<name>Linking Container_1</name>
+						<file>fe-ui-support/bob/common/ioc/pySeq.bob</file>
+						<x>3</x>
+						<y>16</y>
+						<width>995</width>
+						<height>197</height>
+						<resize>2</resize>
+						<transparent>true</transparent>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+				</children>
+			</tab>
+			<tab>
+				<name>PMAC</name>
+				<children>
+					<widget type="embedded" version="2.0.0">
+						<name>Linking Container_1</name>
+						<macros>
+							<brick_ip>192.168.200.1</brick_ip>
+							<pmac_port>1025</pmac_port>
+							<brick_no>1</brick_no>
+						</macros>
+						<file>fe-ui-support/bob/common/motion/pmac.bob</file>
+						<x>33</x>
+						<y>50</y>
+						<width>251</width>
+						<height>92</height>
+						<resize>2</resize>
+						<transparent>true</transparent>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+				</children>
+			</tab>
+			<tab>
+				<name>Apertures</name>
+				<children>
+					<widget type="symbol" version="2.0.0">
+						<name>Edm Symbol Widget</name>
+						<symbols>
+							<symbol>images/fixed-aperture.png</symbol>
+						</symbols>
+						<x>48</x>
+						<y>48</y>
+						<width>120</width>
+						<height>120</height>
+						<background_color>
+							<color red="0" green="0" blue="255"></color>
+						</background_color>
+						<actions></actions>
+						<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>APTR-01</text>
+						<x>48</x>
+						<y>192</y>
+						<width>120</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="textupdate" version="2.0.0">
+						<name>Text Update</name>
+						<pv_name>$(dom)-AL-APTR-01:TMON01:C</pv_name>
+						<x>56</x>
+						<y>27</y>
+						<width>32</width>
+						<font>
+							<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+						</font>
+						<foreground_color>
+							<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+						</background_color>
+						<precision>1</precision>
+						<show_units>false</show_units>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="textupdate" version="2.0.0">
+						<name>Text Update_1</name>
+						<pv_name>$(dom)-AL-APTR-01:TMON02:C</pv_name>
+						<x>136</x>
+						<y>27</y>
+						<width>32</width>
+						<font>
+							<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+						</font>
+						<foreground_color>
+							<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+						</background_color>
+						<precision>1</precision>
+						<show_units>false</show_units>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="symbol" version="2.0.0">
+						<name>Edm Symbol Widget_1</name>
+						<symbols>
+							<symbol>images/beamsplitter.png</symbol>
+						</symbols>
+						<x>240</x>
+						<y>48</y>
+						<width>177</width>
+						<height>120</height>
+						<background_color>
+							<color red="0" green="0" blue="255"></color>
+						</background_color>
+						<actions></actions>
+						<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+					</widget>
+					<widget type="textupdate" version="2.0.0">
+						<name>Text Update_2</name>
+						<pv_name>$(dom)-AL-APTR-02:TMON01:C</pv_name>
+						<x>297</x>
+						<y>27</y>
+						<width>32</width>
+						<font>
+							<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+						</font>
+						<foreground_color>
+							<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+						</background_color>
+						<precision>1</precision>
+						<show_units>false</show_units>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="textupdate" version="2.0.0">
+						<name>Text Update_3</name>
+						<pv_name>$(dom)-AL-APTR-02:TMON02:C</pv_name>
+						<x>297</x>
+						<y>167</y>
+						<width>32</width>
+						<font>
+							<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+						</font>
+						<foreground_color>
+							<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+						</background_color>
+						<precision>1</precision>
+						<show_units>false</show_units>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_5</name>
+						<text>Beam Splitter</text>
+						<x>269</x>
+						<y>192</y>
+						<width>120</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="action_button" version="3.0.0">
+						<name>Action Button_1</name>
+						<actions execute_as_one="true">
+							<action type="open_display">
+								<description>Open Display</description>
+								<file>fe-ui-support/bob/pmacUtil/autohome.bob</file>
+								<macros>
+									<P>$(dom)-AL-APTR-03</P>
+								</macros>
+								<target>standalone</target>
+							</action>
+						</actions>
+						<text>Homing</text>
+						<x>483</x>
+						<y>95</y>
+						<width>120</width>
+						<height>25</height>
+						<foreground_color>
+							<color name="Controller: FG" red="0" green="0" blue="196"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Button: BG" red="205" green="205" blue="205"></color>
+						</background_color>
+						<tooltip>$(actions)</tooltip>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+					<widget type="group" version="3.0.0">
+						<name>Grouping Container</name>
+						<x>791</x>
+						<y>23</y>
+						<width>120</width>
+						<height>185</height>
+						<style>3</style>
+						<foreground_color>
+							<color red="0" green="128" blue="255"></color>
+						</foreground_color>
+						<line_color>
+							<color red="0" green="128" blue="255"></color>
+						</line_color>
+						<background_color>
+							<color red="240" green="240" blue="240"></color>
+						</background_color>
+						<transparent>true</transparent>
+						<actions></actions>
+						<widget type="label" version="2.0.0">
+							<name>Label</name>
+							<text>APTR-04</text>
+							<y>165</y>
+							<width>120</width>
+							<foreground_color>
+								<color name="Text: FG" red="0" green="0" blue="0"></color>
+							</foreground_color>
+							<background_color>
+								<color name="Canvas" red="200" green="200" blue="200"></color>
+							</background_color>
+							<horizontal_alignment>1</horizontal_alignment>
+							<vertical_alignment>1</vertical_alignment>
+							<wrap_words>false</wrap_words>
+							<actions></actions>
+							<border_color>
+								<color name="Black" red="0" green="0" blue="0"></color>
+							</border_color>
+						</widget>
+						<widget type="textupdate" version="2.0.0">
+							<name>Text Update</name>
+							<pv_name>$(dom)-AL-APTR-04:TMON03:C</pv_name>
+							<width>32</width>
+							<font>
+								<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+							</font>
+							<foreground_color>
+								<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+							</foreground_color>
+							<background_color>
+								<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+							</background_color>
+							<precision>1</precision>
+							<show_units>false</show_units>
+							<horizontal_alignment>1</horizontal_alignment>
+							<vertical_alignment>1</vertical_alignment>
+							<wrap_words>false</wrap_words>
+							<actions></actions>
+							<border_alarm_sensitive>false</border_alarm_sensitive>
+							<border_color>
+								<color name="Black" red="0" green="0" blue="0"></color>
+							</border_color>
+						</widget>
+						<widget type="textupdate" version="2.0.0">
+							<name>Text Update</name>
+							<pv_name>$(dom)-AL-APTR-04:TMON01:C</pv_name>
+							<x>80</x>
+							<width>32</width>
+							<font>
+								<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+							</font>
+							<foreground_color>
+								<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+							</foreground_color>
+							<background_color>
+								<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+							</background_color>
+							<precision>1</precision>
+							<show_units>false</show_units>
+							<horizontal_alignment>1</horizontal_alignment>
+							<vertical_alignment>1</vertical_alignment>
+							<wrap_words>false</wrap_words>
+							<actions></actions>
+							<border_alarm_sensitive>false</border_alarm_sensitive>
+							<border_color>
+								<color name="Black" red="0" green="0" blue="0"></color>
+							</border_color>
+						</widget>
+						<widget type="textupdate" version="2.0.0">
+							<name>Text Update</name>
+							<pv_name>$(dom)-AL-APTR-04:TMON04:C</pv_name>
+							<y>140</y>
+							<width>32</width>
+							<font>
+								<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+							</font>
+							<foreground_color>
+								<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+							</foreground_color>
+							<background_color>
+								<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+							</background_color>
+							<precision>1</precision>
+							<show_units>false</show_units>
+							<horizontal_alignment>1</horizontal_alignment>
+							<vertical_alignment>1</vertical_alignment>
+							<wrap_words>false</wrap_words>
+							<actions></actions>
+							<border_alarm_sensitive>false</border_alarm_sensitive>
+							<border_color>
+								<color name="Black" red="0" green="0" blue="0"></color>
+							</border_color>
+						</widget>
+						<widget type="textupdate" version="2.0.0">
+							<name>Text Update_8</name>
+							<pv_name>$(dom)-AL-APTR-04:TMON02:C</pv_name>
+							<x>80</x>
+							<y>140</y>
+							<width>32</width>
+							<font>
+								<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+							</font>
+							<foreground_color>
+								<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+							</foreground_color>
+							<background_color>
+								<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+							</background_color>
+							<precision>1</precision>
+							<show_units>false</show_units>
+							<horizontal_alignment>1</horizontal_alignment>
+							<vertical_alignment>1</vertical_alignment>
+							<wrap_words>false</wrap_words>
+							<actions></actions>
+							<border_alarm_sensitive>false</border_alarm_sensitive>
+							<border_color>
+								<color name="Black" red="0" green="0" blue="0"></color>
+							</border_color>
+						</widget>
+						<widget type="symbol" version="2.0.0">
+							<name>Edm Symbol Widget</name>
+							<symbols>
+								<symbol>images/customised-aperture.png</symbol>
+							</symbols>
+							<y>21</y>
+							<width>120</width>
+							<height>120</height>
+							<background_color>
+								<color red="0" green="0" blue="255"></color>
+							</background_color>
+							<actions execute_as_one="true">
+								<action type="open_display">
+									<description>Open Display</description>
+									<file>fe-ui-support/bob/common/motion/dual_motors.bob</file>
+									<macros>
+										<device>$(dom)-AL-APTR-04</device>
+										<m1>$(device):X</m1>
+										<m2>$(device):Y</m2>
+									</macros>
+									<target>standalone</target>
+								</action>
+							</actions>
+							<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+						</widget>
+					</widget>
+					<widget type="group" version="3.0.0">
+						<name>Grouping Container_1</name>
+						<x>608</x>
+						<y>23</y>
+						<width>120</width>
+						<height>185</height>
+						<style>3</style>
+						<foreground_color>
+							<color red="0" green="128" blue="255"></color>
+						</foreground_color>
+						<line_color>
+							<color red="0" green="128" blue="255"></color>
+						</line_color>
+						<background_color>
+							<color red="240" green="240" blue="240"></color>
+						</background_color>
+						<transparent>true</transparent>
+						<actions></actions>
+						<widget type="label" version="2.0.0">
+							<name>Label</name>
+							<text>APTR-03</text>
+							<y>165</y>
+							<width>120</width>
+							<foreground_color>
+								<color name="Text: FG" red="0" green="0" blue="0"></color>
+							</foreground_color>
+							<background_color>
+								<color name="Canvas" red="200" green="200" blue="200"></color>
+							</background_color>
+							<horizontal_alignment>1</horizontal_alignment>
+							<vertical_alignment>1</vertical_alignment>
+							<wrap_words>false</wrap_words>
+							<actions></actions>
+							<border_color>
+								<color name="Black" red="0" green="0" blue="0"></color>
+							</border_color>
+						</widget>
+						<widget type="textupdate" version="2.0.0">
+							<name>Text Update</name>
+							<pv_name>$(dom)-AL-APTR-03:TMON03:C</pv_name>
+							<width>32</width>
+							<font>
+								<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+							</font>
+							<foreground_color>
+								<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+							</foreground_color>
+							<background_color>
+								<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+							</background_color>
+							<precision>1</precision>
+							<show_units>false</show_units>
+							<horizontal_alignment>1</horizontal_alignment>
+							<vertical_alignment>1</vertical_alignment>
+							<wrap_words>false</wrap_words>
+							<actions></actions>
+							<border_alarm_sensitive>false</border_alarm_sensitive>
+							<border_color>
+								<color name="Black" red="0" green="0" blue="0"></color>
+							</border_color>
+						</widget>
+						<widget type="textupdate" version="2.0.0">
+							<name>Text Update</name>
+							<pv_name>$(dom)-AL-APTR-03:TMON01:C</pv_name>
+							<x>80</x>
+							<width>32</width>
+							<font>
+								<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+							</font>
+							<foreground_color>
+								<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+							</foreground_color>
+							<background_color>
+								<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+							</background_color>
+							<precision>1</precision>
+							<show_units>false</show_units>
+							<horizontal_alignment>1</horizontal_alignment>
+							<vertical_alignment>1</vertical_alignment>
+							<wrap_words>false</wrap_words>
+							<actions></actions>
+							<border_alarm_sensitive>false</border_alarm_sensitive>
+							<border_color>
+								<color name="Black" red="0" green="0" blue="0"></color>
+							</border_color>
+						</widget>
+						<widget type="textupdate" version="2.0.0">
+							<name>Text Update</name>
+							<pv_name>$(dom)-AL-APTR-03:TMON04:C</pv_name>
+							<y>140</y>
+							<width>32</width>
+							<font>
+								<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+							</font>
+							<foreground_color>
+								<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+							</foreground_color>
+							<background_color>
+								<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+							</background_color>
+							<precision>1</precision>
+							<show_units>false</show_units>
+							<horizontal_alignment>1</horizontal_alignment>
+							<vertical_alignment>1</vertical_alignment>
+							<wrap_words>false</wrap_words>
+							<actions></actions>
+							<border_alarm_sensitive>false</border_alarm_sensitive>
+							<border_color>
+								<color name="Black" red="0" green="0" blue="0"></color>
+							</border_color>
+						</widget>
+						<widget type="textupdate" version="2.0.0">
+							<name>Text Update_8</name>
+							<pv_name>$(dom)-AL-APTR-03:TMON02:C</pv_name>
+							<x>80</x>
+							<y>140</y>
+							<width>32</width>
+							<font>
+								<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+							</font>
+							<foreground_color>
+								<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+							</foreground_color>
+							<background_color>
+								<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+							</background_color>
+							<precision>1</precision>
+							<show_units>false</show_units>
+							<horizontal_alignment>1</horizontal_alignment>
+							<vertical_alignment>1</vertical_alignment>
+							<wrap_words>false</wrap_words>
+							<actions></actions>
+							<border_alarm_sensitive>false</border_alarm_sensitive>
+							<border_color>
+								<color name="Black" red="0" green="0" blue="0"></color>
+							</border_color>
+						</widget>
+						<widget type="symbol" version="2.0.0">
+							<name>Edm Symbol Widget</name>
+							<symbols>
+								<symbol>images/customised-aperture.png</symbol>
+							</symbols>
+							<y>21</y>
+							<width>120</width>
+							<height>120</height>
+							<background_color>
+								<color red="0" green="0" blue="255"></color>
+							</background_color>
+							<actions execute_as_one="true">
+								<action type="open_display">
+									<description>Open Display</description>
+									<file>fe-ui-support/bob/common/motion/dual_motors.bob</file>
+									<macros>
+										<device>$(dom)-AL-APTR-03</device>
+										<m1>$(device):X</m1>
+										<m2>$(device):Y</m2>
+									</macros>
+									<target>standalone</target>
+								</action>
+							</actions>
+							<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+						</widget>
+					</widget>
+					<widget type="action_button" version="3.0.0">
+						<name>Action Button_2</name>
+						<actions execute_as_one="true">
+							<action type="open_display">
+								<description>Open Display</description>
+								<file>fe-ui-support/bob/pmacUtil/autohome.bob</file>
+								<macros>
+									<P>$(dom)-AL-APTR-04</P>
+								</macros>
+								<target>standalone</target>
+							</action>
+						</actions>
+						<text>Homing</text>
+						<x>916</x>
+						<y>95</y>
+						<width>120</width>
+						<height>25</height>
+						<foreground_color>
+							<color name="Controller: FG" red="0" green="0" blue="196"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Button: BG" red="205" green="205" blue="205"></color>
+						</background_color>
+						<tooltip>$(actions)</tooltip>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+				</children>
+			</tab>
+			<tab>
+				<name>Cooling</name>
+				<children>
+					<widget type="rectangle" version="2.0.0">
+						<name>Rectangle</name>
+						<macros>
+							<pv_name></pv_name>
+						</macros>
+						<x>16</x>
+						<y>24</y>
+						<width>177</width>
+						<height>185</height>
+						<line_width>1</line_width>
+						<line_color>
+							<color name="Grey 40%" red="102" green="102" blue="102"></color>
+						</line_color>
+						<background_color>
+							<color name="Grey 75%" red="192" green="192" blue="192"></color>
+						</background_color>
+						<actions></actions>
+						<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_5</name>
+						<text>Rack Cooling</text>
+						<x>16</x>
+						<y>16</y>
+						<width>105</width>
+						<height>17</height>
+						<foreground_color>
+							<color name="Invalid" red="255" green="255" blue="255"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Grey 40%" red="102" green="102" blue="102"></color>
+						</background_color>
+						<transparent>false</transparent>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label</name>
+						<text>RACK-01 Fan</text>
+						<x>32</x>
+						<y>51</y>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="led" version="2.0.0">
+						<name>LED</name>
+						<pv_name>$(dom)-CS-FANC-01:FANALM</pv_name>
+						<x>144</x>
+						<y>48</y>
+						<width>25</width>
+						<height>25</height>
+						<off_color>
+							<color name="Green LED: On" red="0" green="255" blue="0"></color>
+						</off_color>
+						<on_color>
+							<color name="Red LED: On" red="255" green="0" blue="0"></color>
+						</on_color>
+						<foreground_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<line_color>
+							<color red="150" green="150" blue="150"></color>
+						</line_color>
+						<square>true</square>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+					<widget type="rectangle" version="2.0.0">
+						<name>Rectangle</name>
+						<macros>
+							<pv_name></pv_name>
+						</macros>
+						<x>216</x>
+						<y>24</y>
+						<width>459</width>
+						<height>185</height>
+						<line_width>1</line_width>
+						<line_color>
+							<color name="Grey 40%" red="102" green="102" blue="102"></color>
+						</line_color>
+						<background_color>
+							<color name="Grey 75%" red="192" green="192" blue="192"></color>
+						</background_color>
+						<actions></actions>
+						<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_5</name>
+						<text>Water Flow Switches</text>
+						<x>216</x>
+						<y>16</y>
+						<width>153</width>
+						<height>17</height>
+						<foreground_color>
+							<color name="Invalid" red="255" green="255" blue="255"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Grey 40%" red="102" green="102" blue="102"></color>
+						</background_color>
+						<transparent>false</transparent>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>APTR-02</text>
+						<x>229</x>
+						<y>83</y>
+						<width>80</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="led" version="2.0.0">
+						<name>LED_1</name>
+						<pv_name>$(dom)-AL-APTR-02:H2OALM01</pv_name>
+						<x>314</x>
+						<y>80</y>
+						<width>25</width>
+						<height>25</height>
+						<off_color>
+							<color name="Green LED: On" red="0" green="255" blue="0"></color>
+						</off_color>
+						<on_color>
+							<color name="Red LED: On" red="255" green="0" blue="0"></color>
+						</on_color>
+						<foreground_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<line_color>
+							<color red="150" green="150" blue="150"></color>
+						</line_color>
+						<square>true</square>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>APTR-03</text>
+						<x>229</x>
+						<y>115</y>
+						<width>80</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="led" version="2.0.0">
+						<name>LED_1</name>
+						<pv_name>$(dom)-AL-APTR-03:H2OALM01</pv_name>
+						<x>314</x>
+						<y>112</y>
+						<width>25</width>
+						<height>25</height>
+						<off_color>
+							<color name="Green LED: On" red="0" green="255" blue="0"></color>
+						</off_color>
+						<on_color>
+							<color name="Red LED: On" red="255" green="0" blue="0"></color>
+						</on_color>
+						<foreground_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<line_color>
+							<color red="150" green="150" blue="150"></color>
+						</line_color>
+						<square>true</square>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>APTR-04</text>
+						<x>229</x>
+						<y>147</y>
+						<width>80</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="led" version="2.0.0">
+						<name>LED_1</name>
+						<pv_name>$(dom)-AL-APTR-04:H2OALM01</pv_name>
+						<x>314</x>
+						<y>144</y>
+						<width>25</width>
+						<height>25</height>
+						<off_color>
+							<color name="Green LED: On" red="0" green="255" blue="0"></color>
+						</off_color>
+						<on_color>
+							<color name="Red LED: On" red="255" green="0" blue="0"></color>
+						</on_color>
+						<foreground_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<line_color>
+							<color red="150" green="150" blue="150"></color>
+						</line_color>
+						<square>true</square>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>APTR-01</text>
+						<x>229</x>
+						<y>51</y>
+						<width>80</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="led" version="2.0.0">
+						<name>LED_1</name>
+						<pv_name>$(dom)-AL-APTR-01:H2OALM01</pv_name>
+						<x>314</x>
+						<y>48</y>
+						<width>25</width>
+						<height>25</height>
+						<off_color>
+							<color name="Green LED: On" red="0" green="255" blue="0"></color>
+						</off_color>
+						<on_color>
+							<color name="Red LED: On" red="255" green="0" blue="0"></color>
+						</on_color>
+						<foreground_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<line_color>
+							<color red="150" green="150" blue="150"></color>
+						</line_color>
+						<square>true</square>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>ABSB-01</text>
+						<x>356</x>
+						<y>51</y>
+						<width>80</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="led" version="2.0.0">
+						<name>LED_1</name>
+						<pv_name>$(dom)-RS-ABSB-01:H2OALM01</pv_name>
+						<x>441</x>
+						<y>48</y>
+						<width>25</width>
+						<height>25</height>
+						<off_color>
+							<color name="Green LED: On" red="0" green="255" blue="0"></color>
+						</off_color>
+						<on_color>
+							<color name="Red LED: On" red="255" green="0" blue="0"></color>
+						</on_color>
+						<foreground_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<line_color>
+							<color red="150" green="150" blue="150"></color>
+						</line_color>
+						<square>true</square>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>PBPM-01</text>
+						<x>356</x>
+						<y>83</y>
+						<width>80</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="led" version="2.0.0">
+						<name>LED_1</name>
+						<pv_name>$(dom)-DI-PBPM-01:H2OALM01</pv_name>
+						<x>441</x>
+						<y>80</y>
+						<width>25</width>
+						<height>25</height>
+						<off_color>
+							<color name="Green LED: On" red="0" green="255" blue="0"></color>
+						</off_color>
+						<on_color>
+							<color name="Red LED: On" red="255" green="0" blue="0"></color>
+						</on_color>
+						<foreground_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<line_color>
+							<color red="150" green="150" blue="150"></color>
+						</line_color>
+						<square>true</square>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+				</children>
+			</tab>
+			<tab>
+				<name>Absorbers</name>
+				<children>
+					<widget type="symbol" version="2.0.0">
+						<name>Edm Symbol Widget</name>
+						<symbols>
+							<symbol>images/absorber-xsection.png</symbol>
+						</symbols>
+						<x>120</x>
+						<y>48</y>
+						<width>385</width>
+						<height>144</height>
+						<background_color>
+							<color red="0" green="0" blue="255"></color>
+						</background_color>
+						<actions></actions>
+						<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>First Absorber</text>
+						<x>264</x>
+						<y>191</y>
+						<width>120</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="textupdate" version="2.0.0">
+						<name>Text Update</name>
+						<pv_name>$(dom)-RS-ABSB-01:TMON01:C</pv_name>
+						<x>416</x>
+						<y>27</y>
+						<width>32</width>
+						<font>
+							<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+						</font>
+						<foreground_color>
+							<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+						</background_color>
+						<precision>1</precision>
+						<show_units>false</show_units>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+				</children>
+			</tab>
+			<tab>
+				<name>Vacuum</name>
+				<children>
+					<widget type="rectangle" version="2.0.0">
+						<name>Rectangle_2</name>
+						<macros>
+							<pv_name></pv_name>
+						</macros>
+						<x>16</x>
+						<y>24</y>
+						<width>225</width>
+						<height>185</height>
+						<line_width>1</line_width>
+						<line_color>
+							<color name="Grey 40%" red="102" green="102" blue="102"></color>
+						</line_color>
+						<background_color>
+							<color name="Grey 75%" red="192" green="192" blue="192"></color>
+						</background_color>
+						<actions></actions>
+						<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_5</name>
+						<text>Fast Valve Gauges</text>
+						<x>16</x>
+						<y>16</y>
+						<width>145</width>
+						<height>17</height>
+						<foreground_color>
+							<color name="Invalid" red="255" green="255" blue="255"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Grey 40%" red="102" green="102" blue="102"></color>
+						</background_color>
+						<transparent>false</transparent>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="textupdate" version="2.0.0">
+						<name>Text Update</name>
+						<pv_name>$(dom)-VA-FVG-01:P</pv_name>
+						<x>100</x>
+						<y>51</y>
+						<width>73</width>
+						<font>
+							<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+						</font>
+						<foreground_color>
+							<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+						</background_color>
+						<format>2</format>
+						<precision>1</precision>
+						<show_units>false</show_units>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>FVG1</text>
+						<x>32</x>
+						<y>51</y>
+						<width>50</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="textupdate" version="2.0.0">
+						<name>Text Update</name>
+						<pv_name>$(dom)-VA-FVG-02:P</pv_name>
+						<x>100</x>
+						<y>80</y>
+						<width>73</width>
+						<font>
+							<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+						</font>
+						<foreground_color>
+							<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+						</background_color>
+						<format>2</format>
+						<precision>1</precision>
+						<show_units>false</show_units>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>FVG2</text>
+						<x>32</x>
+						<y>80</y>
+						<width>50</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="textupdate" version="2.0.0">
+						<name>Text Update</name>
+						<pv_name>$(dom)-VA-FVG-03:P</pv_name>
+						<x>100</x>
+						<y>109</y>
+						<width>73</width>
+						<font>
+							<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+						</font>
+						<foreground_color>
+							<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+						</background_color>
+						<format>2</format>
+						<precision>1</precision>
+						<show_units>false</show_units>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>FVG3</text>
+						<x>32</x>
+						<y>109</y>
+						<width>50</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="textupdate" version="2.0.0">
+						<name>Text Update</name>
+						<pv_name>$(dom)-VA-FVG-04:P</pv_name>
+						<x>100</x>
+						<y>138</y>
+						<width>73</width>
+						<font>
+							<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+						</font>
+						<foreground_color>
+							<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+						</background_color>
+						<format>2</format>
+						<precision>1</precision>
+						<show_units>false</show_units>
+						<horizontal_alignment>1</horizontal_alignment>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>FVG4</text>
+						<x>32</x>
+						<y>138</y>
+						<width>50</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>mbar</text>
+						<x>176</x>
+						<y>51</y>
+						<width>50</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>mbar</text>
+						<x>176</x>
+						<y>80</y>
+						<width>50</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>mbar</text>
+						<x>176</x>
+						<y>109</y>
+						<width>50</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+					<widget type="label" version="2.0.0">
+						<name>Label_4</name>
+						<text>mbar</text>
+						<x>176</x>
+						<y>138</y>
+						<width>50</width>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Canvas" red="200" green="200" blue="200"></color>
+						</background_color>
+						<vertical_alignment>1</vertical_alignment>
+						<wrap_words>false</wrap_words>
+						<actions></actions>
+						<border_color>
+							<color name="Black" red="0" green="0" blue="0"></color>
+						</border_color>
+					</widget>
+				</children>
+			</tab>
+			<tab>
+				<name>Beam</name>
+				<children>
+					<widget type="action_button" version="3.0.0">
+						<name>Action Button_1</name>
+						<actions>
+							<action type="open_display">
+								<description>Open Display</description>
+								<file>fe-ui-support/bob/common/diagnositcs/xbpm.bob</file>
+								<target>standalone</target>
+							</action>
+						</actions>
+						<text>XBPM</text>
+						<x>32</x>
+						<y>40</y>
+						<width>120</width>
+						<height>25</height>
+						<foreground_color>
+							<color name="Text: FG" red="0" green="0" blue="0"></color>
+						</foreground_color>
+						<background_color>
+							<color name="Button: BG" red="205" green="205" blue="205"></color>
+						</background_color>
+						<tooltip>$(actions)</tooltip>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+					</widget>
+				</children>
+			</tab>
+		</tabs>
+		<x>24</x>
+		<y>440</y>
+		<width>1043</width>
+		<height>250</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<tab_height>10</tab_height>
+		<actions></actions>
+	</widget>
+	<widget type="led" version="2.0.0">
+		<name>LED_4</name>
+		<pv_name>$(dom)-MP-PERMT-01:STA</pv_name>
+		<x>904</x>
+		<y>432</y>
+		<width>25</width>
+		<height>25</height>
+		<off_color>
+			<color name="Major" red="255" green="0" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<line_color>
+			<color red="150" green="150" blue="150"></color>
+		</line_color>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>Action Button</name>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>acc-ui-support/bob/mpsPermit/mpsPermit.bob</file>
+				<macros>
+					<device>$(dom)-MP-PERMT-01</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<text>MPS</text>
+		<x>949</x>
+		<y>432</y>
+		<width>120</width>
+		<height>25</height>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Button: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="led" version="2.0.0">
+		<name>LED</name>
+		<pv_name>$(dom)-VA-FVALV-01:IMGILK.B7</pv_name>
+		<x>967</x>
+		<y>139</y>
+		<width>25</width>
+		<height>25</height>
+		<off_color>
+			<color name="Major" red="255" green="0" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<line_color>
+			<color red="150" green="150" blue="150"></color>
+		</line_color>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label</name>
+		<text>FVI2</text>
+		<x>953</x>
+		<y>113</y>
+		<width>53</width>
+		<height>17</height>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="led" version="2.0.0">
+		<name>LED</name>
+		<pv_name>$(dom)-VA-FVALV-01:IMGILK.B6</pv_name>
+		<x>726</x>
+		<y>139</y>
+		<width>25</width>
+		<height>25</height>
+		<off_color>
+			<color name="Major" red="255" green="0" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<line_color>
+			<color red="150" green="150" blue="150"></color>
+		</line_color>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label</name>
+		<text>FVI1</text>
+		<x>712</x>
+		<y>113</y>
+		<width>53</width>
+		<height>17</height>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="led" version="2.0.0">
+		<name>LED</name>
+		<pv_name>$(dom)-VA-FVALV-01:IMGILK.B8</pv_name>
+		<x>1019</x>
+		<y>139</y>
+		<width>25</width>
+		<height>25</height>
+		<off_color>
+			<color name="Major" red="255" green="0" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<line_color>
+			<color red="150" green="150" blue="150"></color>
+		</line_color>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label</name>
+		<text>FVI3</text>
+		<x>1005</x>
+		<y>113</y>
+		<width>53</width>
+		<height>17</height>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="led" version="2.0.0">
+		<name>LED</name>
+		<pv_name>$(dom)-VA-FVALV-01:IMGILK.B9</pv_name>
+		<x>1019</x>
+		<y>202</y>
+		<width>25</width>
+		<height>25</height>
+		<off_color>
+			<color name="Major" red="255" green="0" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<line_color>
+			<color red="150" green="150" blue="150"></color>
+		</line_color>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label</name>
+		<text>FVI4</text>
+		<x>1005</x>
+		<y>176</y>
+		<width>53</width>
+		<height>17</height>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<macros>
+		<dom>FE09I</dom>
+		<cell>09</cell>
+		<type>I</type>
+		<mks_type>b</mks_type>
+		<srvalve>2</srvalve>
+		<ISBL></ISBL>
+	</macros>
+</display>

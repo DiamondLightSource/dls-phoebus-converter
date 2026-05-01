@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>Interlocks - $(P)</name>
+	<x>1277</x>
+	<y>447</y>
+	<width>250</width>
+	<height>455</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<grid_step_x>4</grid_step_x>
+	<grid_step_y>4</grid_step_y>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle</name>
+		<y>8</y>
+		<width>250</width>
+		<height>447</height>
+		<line_width>1</line_width>
+		<line_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</line_color>
+		<background_color>
+			<color name="Grey 65%" red="166" green="166" blue="166"></color>
+		</background_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>Interlocks</text>
+		<width>65</width>
+		<height>13</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 50%" red="128" green="128" blue="128"></color>
+		</background_color>
+		<transparent>false</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="byte_monitor" version="2.0.0">
+		<name>EDM Byte</name>
+		<pv_name>$(device):INIILK</pv_name>
+		<x>26</x>
+		<y>63</y>
+		<width>26</width>
+		<height>386</height>
+		<numBits>16</numBits>
+		<bitReverse>true</bitReverse>
+		<horizontal>false</horizontal>
+		<square>true</square>
+		<off_color>
+			<color name="Amber" red="255" green="192" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Yellow LED: Off" red="96" green="96" blue="0"></color>
+		</on_color>
+		<rules>
+			<rule name="onColorAlarm" prop_id="on_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(device):INIILK</pv_name>
+			</rule>
+		</rules>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK0</pv_name>
+		<x>81</x>
+		<y>68</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK1</pv_name>
+		<x>81</x>
+		<y>92</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK2</pv_name>
+		<x>81</x>
+		<y>116</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK3</pv_name>
+		<x>81</x>
+		<y>140</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK4</pv_name>
+		<x>81</x>
+		<y>164</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK5</pv_name>
+		<x>81</x>
+		<y>188</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK6</pv_name>
+		<x>81</x>
+		<y>212</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK7</pv_name>
+		<x>81</x>
+		<y>236</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK8</pv_name>
+		<x>81</x>
+		<y>260</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK11</pv_name>
+		<x>81</x>
+		<y>332</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK13</pv_name>
+		<x>81</x>
+		<y>380</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK9</pv_name>
+		<x>81</x>
+		<y>284</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK10</pv_name>
+		<x>81</x>
+		<y>308</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK12</pv_name>
+		<x>81</x>
+		<y>356</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK14</pv_name>
+		<x>81</x>
+		<y>404</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(device):ILK15</pv_name>
+		<x>81</x>
+		<y>428</y>
+		<width>168</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="byte_monitor" version="2.0.0">
+		<name>EDM Byte</name>
+		<pv_name>$(device):RAWILK</pv_name>
+		<x>50</x>
+		<y>63</y>
+		<width>26</width>
+		<height>386</height>
+		<numBits>16</numBits>
+		<bitReverse>true</bitReverse>
+		<horizontal>false</horizontal>
+		<square>true</square>
+		<off_color>
+			<color name="Green LED: Off" red="0" green="96" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<rules>
+			<rule name="onColorAlarm" prop_id="on_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(device):RAWILK</pv_name>
+			</rule>
+		</rules>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="byte_monitor" version="2.0.0">
+		<name>EDM Byte</name>
+		<pv_name>$(device):ILK</pv_name>
+		<x>2</x>
+		<y>63</y>
+		<width>26</width>
+		<height>386</height>
+		<numBits>16</numBits>
+		<bitReverse>true</bitReverse>
+		<horizontal>false</horizontal>
+		<square>true</square>
+		<off_color>
+			<color name="Red LED: On" red="255" green="0" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Red LED: Off" red="96" green="0" blue="0"></color>
+		</on_color>
+		<rules>
+			<rule name="onColorAlarm" prop_id="on_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(device):ILK</pv_name>
+			</rule>
+		</rules>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>latched
+initial
+current</text>
+		<x>92</x>
+		<y>12</y>
+		<width>46</width>
+		<height>48</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>EDM Message Button</name>
+		<actions execute_as_one="true">
+			<action type="write_pv">
+				<description>Write PV</description>
+				<pv_name>$(pv_name)</pv_name>
+				<value>1</value>
+			</action>
+		</actions>
+		<pv_name>$(device):RESET.PROC</pv_name>
+		<text>null</text>
+		<x>148</x>
+		<y>12</y>
+		<width>97</width>
+		<height>45</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<rules>
+			<rule name="OnOffBackgroundRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pv0 == 1">
+					<value>
+						<color name="Controller: BG" red="205" green="205" blue="205"></color>
+					</value>
+				</exp>
+				<exp bool_exp="true">
+					<value>
+						<color name="Controller: BG" red="205" green="205" blue="205"></color>
+					</value>
+				</exp>
+				<pv_name>$(device):RESET.PROC</pv_name>
+			</rule>
+		</rules>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="polyline" version="2.0.0">
+		<name>EDM Line</name>
+		<x>13</x>
+		<y>18</y>
+		<width>78</width>
+		<height>49</height>
+		<points>
+			<point x="2.0" y="46.0"></point>
+			<point x="2.0" y="2.0"></point>
+			<point x="75.0" y="2.0"></point>
+		</points>
+		<line_width>5</line_width>
+		<line_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</line_color>
+	</widget>
+	<widget type="polyline" version="2.0.0">
+		<name>EDM Line</name>
+		<x>38</x>
+		<y>34</y>
+		<width>53</width>
+		<height>33</height>
+		<points>
+			<point x="1.0" y="30.0"></point>
+			<point x="1.0" y="2.0"></point>
+			<point x="50.0" y="2.0"></point>
+		</points>
+		<line_width>5</line_width>
+		<line_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</line_color>
+	</widget>
+	<widget type="polyline" version="2.0.0">
+		<name>EDM Line</name>
+		<x>62</x>
+		<y>50</y>
+		<width>29</width>
+		<height>17</height>
+		<points>
+			<point x="2.0" y="14.0"></point>
+			<point x="2.0" y="2.0"></point>
+			<point x="26.0" y="2.0"></point>
+		</points>
+		<line_width>5</line_width>
+		<line_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</line_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>Reset
+Interlocks</text>
+		<x>148</x>
+		<y>12</y>
+		<width>96</width>
+		<height>44</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Blue" red="0" green="0" blue="255"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<border_color>
+			<color name="Blue" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+</display>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>Nx102 Robotdxrealrw Detail</name>
+	<width>360</width>
+	<height>30</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget typeId="org.csstudio.opibuilder.widgets.detailpanel" version="1.0.0">
+		<actions hook="false" hook_all="false"></actions>
+		<border_color>
+			<color blue="255" green="128" red="0"></color>
+		</border_color>
+		<border_style>0</border_style>
+		<border_width>1</border_width>
+		<color_even_row_back>
+			<color blue="200" green="200" name="Canvas" red="200"></color>
+		</color_even_row_back>
+		<color_even_row_fore>
+			<color blue="0" green="0" red="0"></color>
+		</color_even_row_fore>
+		<color_odd_row_back>
+			<color blue="205" green="205" name="Controller: BG" red="205"></color>
+		</color_odd_row_back>
+		<color_odd_row_fore>
+			<color blue="0" green="0" red="0"></color>
+		</color_odd_row_fore>
+		<color_select_back>
+			<color blue="255" green="217" red="217"></color>
+		</color_select_back>
+		<color_select_fore>
+			<color blue="0" green="0" red="0"></color>
+		</color_select_fore>
+		<display_level>0</display_level>
+		<enabled>true</enabled>
+		<font>
+			<opifont.name fontName="Liberation Sans" height="15" pixels="true" style="0">Default</opifont.name>
+		</font>
+		<height>29</height>
+		<macros>
+			<include_parent_macros>true</include_parent_macros>
+		</macros>
+		<name>Detail Panel</name>
+		<pv_name></pv_name>
+		<pv_value></pv_value>
+		<row_0_row_level>0</row_0_row_level>
+		<row_0_row_name>demand + readback</row_0_row_name>
+		<row_0_row_name>$(desc)</row_0_row_name>
+		<row_0_row_tooltip>demand + readback</row_0_row_tooltip>
+		<row_0_row_tooltip>$(desc)</row_0_row_tooltip>
+		<row_101_row_name_value></row_101_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_2_row_name_value></row_2_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_3_row_name_value></row_3_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_4_row_name_value></row_4_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_5_row_name_value></row_5_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_6_row_name_value></row_6_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_7_row_name_value></row_7_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_8_row_name_value></row_8_row_name_value>
+		<row_10_row_name_value></row_10_row_name_value>
+		<row_10_row_name_value></row_10_row_name_value>
+		<row_10_row_name_value></row_10_row_name_value>
+		<row_111_row_name_value></row_111_row_name_value>
+		<row_11_row_name_value></row_11_row_name_value>
+		<row_121_row_name_value></row_121_row_name_value>
+		<row_131_row_name_value></row_131_row_name_value>
+		<row_141_row_name_value></row_141_row_name_value>
+		<row_151_row_name_value></row_151_row_name_value>
+		<row_161_row_name_value></row_161_row_name_value>
+		<row_171_row_name_value></row_171_row_name_value>
+		<row_181_row_name_value></row_181_row_name_value>
+		<row_9_row_name_value></row_9_row_name_value>
+		<row_9_row_name_value></row_9_row_name_value>
+		<row_191_row_name_value></row_191_row_name_value>
+		<row_0_row_name_value></row_0_row_name_value>
+		<row_21_row_name_value></row_21_row_name_value>
+		<row_31_row_name_value></row_31_row_name_value>
+		<row_41_row_name_value></row_41_row_name_value>
+		<row_51_row_name_value></row_51_row_name_value>
+		<row_61_row_name_value></row_61_row_name_value>
+		<row_71_row_name_value></row_71_row_name_value>
+		<row_81_row_name_value></row_81_row_name_value>
+		<row_91_row_name_value></row_91_row_name_value>
+		<row_count>2</row_count>
+		<rules></rules>
+		<scale_options>
+			<width_scalable>false</width_scalable>
+			<height_scalable>false</height_scalable>
+			<keep_wh_ratio>false</keep_wh_ratio>
+		</scale_options>
+		<scripts></scripts>
+		<tooltip></tooltip>
+		<vert_divider_pos>160</vert_divider_pos>
+		<visible>true</visible>
+		<widget_type>Detail Panel</widget_type>
+		<width>360</width>
+		<wuid>5b47f020:1762342e9b6:-7751</wuid>
+		<x>0</x>
+		<y>0</y>
+		<widget typeId="org.csstudio.opibuilder.widgets.groupingContainer" version="1.0.0">
+			<widget_type>Grouping Container</widget_type>
+			<font>
+				<opifont.name fontName="Arial" height="11" style="0">Default</opifont.name>
+			</font>
+			<background_color>
+				<color blue="200" green="200" name="Canvas" red="200"></color>
+			</background_color>
+			<foreground_color>
+				<color blue="0" green="0" name="Text: FG" red="0"></color>
+			</foreground_color>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+			<border_color>
+				<color blue="200" green="200" name="Canvas" red="200"></color>
+			</border_color>
+			<border_style>0</border_style>
+			<widget typeId="org.csstudio.opibuilder.widgets.TextInput" version="2.0.0">
+				<widget_type>Text Input</widget_type>
+				<forecolor_alarm_sensitive>true</forecolor_alarm_sensitive>
+				<show_units>false</show_units>
+				<horizontal_alignment>1</horizontal_alignment>
+				<font>
+					<opifont.name fontName="Arial" height="11" style="0">Default</opifont.name>
+				</font>
+				<background_color>
+					<color blue="205" green="205" name="Controller: BG" red="205"></color>
+				</background_color>
+				<foreground_color>
+					<color blue="192" green="0" name="Controller: FG" red="0"></color>
+				</foreground_color>
+				<border_alarm_sensitive>false</border_alarm_sensitive>
+				<height>25</height>
+				<rules>
+					<rule name="WaveformString" out_exp="false" prop_id="format_type">
+						<exp bool_exp="pvStr0 == 'waveform'">
+							<value>4</value>
+						</exp>
+						<pv trig="true">$(device)$(var).RTYP</pv>
+					</rule>
+				</rules>
+				<width>100</width>
+				<x>0</x>
+				<y>1</y>
+				<scale_options>
+					<width_scalable>false</width_scalable>
+					<height_scalable>false</height_scalable>
+					<keep_wh_ratio>false</keep_wh_ratio>
+				</scale_options>
+				<name>auto(demand|$(desc))</name>
+				<pv_name>$(device)$(variable)</pv_name>
+			</widget>
+			<widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+				<widget_type>Text Update</widget_type>
+				<forecolor_alarm_sensitive>true</forecolor_alarm_sensitive>
+				<horizontal_alignment>1</horizontal_alignment>
+				<font>
+					<opifont.name fontName="Arial" height="11" style="1">Default Bold</opifont.name>
+				</font>
+				<background_color>
+					<color blue="64" green="64" name="Monitor: BG" red="64"></color>
+				</background_color>
+				<foreground_color>
+					<color blue="96" green="255" name="Monitor: FG" red="96"></color>
+				</foreground_color>
+				<border_alarm_sensitive>false</border_alarm_sensitive>
+				<height>25</height>
+				<wrap_words>true</wrap_words>
+				<rules>
+					<rule name="WaveformString" out_exp="false" prop_id="format_type">
+						<exp bool_exp="pvStr0 == 'waveform'">
+							<value>4</value>
+						</exp>
+						<pv trig="true">$(device)$(var)_RBV.RTYP</pv>
+					</rule>
+				</rules>
+				<width>100</width>
+				<x>100</x>
+				<y>1</y>
+				<scale_options>
+					<width_scalable>false</width_scalable>
+					<height_scalable>false</height_scalable>
+					<keep_wh_ratio>false</keep_wh_ratio>
+				</scale_options>
+				<name>auto(readback|$(desc))</name>
+				<pv_name>$(device)$(variable)_RBV</pv_name>
+			</widget>
+			<height>28</height>
+		</widget>
+		<row_0_row_height>28</row_0_row_height>
+		<row_0_row_mode>2</row_0_row_mode>
+	</widget>
+</display>

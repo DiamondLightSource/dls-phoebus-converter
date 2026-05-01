@@ -11,7 +11,7 @@
             "justMyCode": false,
             "program": "${workspaceFolder}/src/dls_phoebus_converter/__main__.py",
             "console": "integratedTerminal",
-            "args": "example.yaml -o ${workspaceFolder}/output/"
+            "args": "example1.yaml -o ${workspaceFolder}/output/"
         }
     ]
 }

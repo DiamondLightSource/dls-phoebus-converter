@@ -1,0 +1,1268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<x>405</x>
+	<y>684</y>
+	<width>814</width>
+	<height>53</height>
+	<background_color>
+		<color name="Disconn/Invalid" red="255" green="255" blue="255"></color>
+	</background_color>
+	<widget type="group" version="3.0.0">
+		<name>0</name>
+		<x>10</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>1</name>
+		<x>58</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Green" red="0" green="192" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>2</name>
+		<x>106</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Green" red="0" green="192" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>3</name>
+		<x>154</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Amber" red="255" green="192" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>4</name>
+		<x>202</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Amber" red="255" green="192" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>5</name>
+		<x>250</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>6</name>
+		<x>298</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>7</name>
+		<x>346</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>8</name>
+		<x>393</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>9</name>
+		<x>442</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Amber" red="255" green="192" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>10</name>
+		<x>490</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Amber" red="255" green="192" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>11</name>
+		<x>538</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Amber" red="255" green="192" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>12</name>
+		<x>585</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>13</name>
+		<x>634</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>14</name>
+		<x>679</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>15</name>
+		<x>727</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>16</name>
+		<x>772</x>
+		<y>10</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>9</x>
+			<y>9</y>
+			<width>16</width>
+			<height>16</height>
+			<points>
+				<point x="0.0" y="15.0"></point>
+				<point x="0.0" y="0.0"></point>
+				<point x="15.0" y="0.0"></point>
+				<point x="15.0" y="15.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="ellipse" version="2.0.0">
+			<name>EDM Ellipse</name>
+			<x>15</x>
+			<y>22</y>
+			<width>4</width>
+			<height>4</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+	</widget>
+</display>

@@ -1,0 +1,3853 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>$(dom)</name>
+	<x>543</x>
+	<y>581</y>
+	<width>988</width>
+	<height>370</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>8</grid_step_x>
+	<grid_step_y>8</grid_step_y>
+	<widget type="symbol" version="2.0.0">
+		<name>SR$(cell)A-VA-VALVE-$(srvalve)</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34.png</symbol>
+		</symbols>
+		<x>12</x>
+		<y>280</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+				<macros>
+					<device>SR$(cell)A-VA-VALVE-$(srvalve)</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="action_button" version="2.0.0">
+		<name>EDM Rectangle_1</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>314</x>
+		<y>288</y>
+		<width>651</width>
+		<height>9</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/vacuumSpace/space.bob</file>
+				<macros>
+					<device>$(dom)-VA-SPACE-02</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<text></text>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-VALVE-01</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34.png</symbol>
+		</symbols>
+		<x>291</x>
+		<y>280</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+				<macros>
+					<device>$(dom)-VA-VALVE-01</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="action_button" version="2.0.0">
+		<name>EDM Rectangle_2</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>35</x>
+		<y>288</y>
+		<width>257</width>
+		<height>9</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/vacuumSpace/space.bob</file>
+				<macros>
+					<device>$(dom)-VA-SPACE-01</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<text></text>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-RS-ABSB-01</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>../../images/absorber-symbol.png</symbol>
+		</symbols>
+		<x>225</x>
+		<y>277</y>
+		<width>30</width>
+		<height>30</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+				<macros>
+					<device>$(dom)-RS-ABSB-01</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-VALVE-02</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34.png</symbol>
+		</symbols>
+		<x>964</x>
+		<y>280</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+				<macros>
+					<device>$(dom)-VA-VALVE-02</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-FVALV-01</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>../../images/fastFlap-symbol.png</symbol>
+		</symbols>
+		<x>397</x>
+		<y>268</y>
+		<width>24</width>
+		<height>48</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/feFastValve.bob</file>
+				<macros>
+					<device>$(dom)-VA-FVALV-01</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>Rectangle</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>843</x>
+		<y>47</y>
+		<width>58</width>
+		<height>232</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color red="210" green="199" blue="137"></color>
+		</background_color>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>Rectangle_1</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>843</x>
+		<y>302</y>
+		<width>58</width>
+		<height>66</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color red="210" green="199" blue="137"></color>
+		</background_color>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Text Update_1</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<text>ABSB-01</text>
+		<x>225</x>
+		<y>193</y>
+		<width>30</width>
+		<height>66</height>
+		<font>
+			<font name="Fine Print" family="Liberation Sans" style="REGULAR" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<rotation_step>3</rotation_step>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Text Update_2</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<text>FVALV-01</text>
+		<x>397</x>
+		<y>193</y>
+		<width>30</width>
+		<height>66</height>
+		<font>
+			<font name="Fine Print" family="Liberation Sans" style="REGULAR" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<rotation_step>3</rotation_step>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Text Update_5</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<text>SHTR-01</text>
+		<x>672</x>
+		<y>193</y>
+		<width>30</width>
+		<height>66</height>
+		<font>
+			<font name="Fine Print" family="Liberation Sans" style="REGULAR" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<rotation_step>3</rotation_step>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-PS-SHTR-01</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>../../images/fastFlap-symbol.png</symbol>
+		</symbols>
+		<x>675</x>
+		<y>269</y>
+		<width>24</width>
+		<height>48</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+				<macros>
+					<device>$(dom)-PS-SHTR-01</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-PS-SHTR-02</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>../../images/fastFlap-symbol.png</symbol>
+		</symbols>
+		<x>707</x>
+		<y>269</y>
+		<width>24</width>
+		<height>48</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+				<macros>
+					<device>$(dom)-PS-SHTR-02</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Text Update_6</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<text>SHTR-02</text>
+		<x>704</x>
+		<y>193</y>
+		<width>30</width>
+		<height>66</height>
+		<font>
+			<font name="Fine Print" family="Liberation Sans" style="REGULAR" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<rotation_step>3</rotation_step>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>Edm Symbol Widget</name>
+		<symbols>
+			<symbol>../../images/beam_direction.png</symbol>
+		</symbols>
+		<x>872</x>
+		<width>68</width>
+		<height>25</height>
+		<background_color>
+			<color red="0" green="0" blue="255"></color>
+		</background_color>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="embedded" version="2.0.0">
+		<name>Linking Container_1</name>
+		<macros>
+			<id>02</id>
+		</macros>
+		<file>fe-ui-support/bob/mks937$(mks_type)/vacuumWidget.bob</file>
+		<x>147</x>
+		<width>66</width>
+		<height>194</height>
+		<resize>2</resize>
+		<transparent>true</transparent>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_40</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>144</x>
+		<y>216</y>
+		<width>5</width>
+		<height>81</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-IMG-02</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</symbol>
+		</symbols>
+		<x>168</x>
+		<y>237</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Img.bob</file>
+				<macros>
+					<device>$(dom)-VA-IMG-02</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+					<expression>10</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+					<expression>11</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+					<expression>12</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+					<expression>13</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+					<expression>14</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+					<expression>15</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+					<expression>16</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-PIRG-02</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</symbol>
+		</symbols>
+		<x>168</x>
+		<y>204</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Pirg.bob</file>
+				<macros>
+					<device>$(dom)-VA-PIRG-02</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+					<expression>10</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+					<expression>11</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+					<expression>12</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+					<expression>13</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+					<expression>14</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+					<expression>15</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+					<expression>16</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_41</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>144</x>
+		<y>213</y>
+		<width>25</width>
+		<height>5</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_42</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>144</x>
+		<y>246</y>
+		<width>25</width>
+		<height>5</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="embedded" version="2.0.0">
+		<name>Linking Container_2</name>
+		<macros>
+			<id>03</id>
+		</macros>
+		<file>fe-ui-support/bob/mks937$(mks_type)/vacuumWidget.bob</file>
+		<x>332</x>
+		<width>66</width>
+		<height>194</height>
+		<resize>2</resize>
+		<transparent>true</transparent>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_43</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>329</x>
+		<y>216</y>
+		<width>5</width>
+		<height>81</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-IMG-03</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</symbol>
+		</symbols>
+		<x>353</x>
+		<y>237</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Img.bob</file>
+				<macros>
+					<device>$(dom)-VA-IMG-03</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+					<expression>10</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+					<expression>11</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+					<expression>12</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+					<expression>13</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+					<expression>14</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+					<expression>15</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+					<expression>16</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-PIRG-03</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</symbol>
+		</symbols>
+		<x>353</x>
+		<y>204</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Pirg.bob</file>
+				<macros>
+					<device>$(dom)-VA-PIRG-03</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+					<expression>10</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+					<expression>11</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+					<expression>12</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+					<expression>13</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+					<expression>14</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+					<expression>15</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+					<expression>16</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_44</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>329</x>
+		<y>213</y>
+		<width>25</width>
+		<height>5</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_45</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>329</x>
+		<y>246</y>
+		<width>25</width>
+		<height>5</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_46</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>446</x>
+		<y>288</y>
+		<width>5</width>
+		<height>33</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-IONP-03</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34.png</symbol>
+		</symbols>
+		<x>434</x>
+		<y>320</y>
+		<width>30</width>
+		<height>30</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
+				<macros>
+					<device>$(dom)-VA-IONP-03</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="embedded" version="2.0.0">
+		<name>Linking Container_3</name>
+		<macros>
+			<id>04</id>
+		</macros>
+		<file>fe-ui-support/bob/mks937$(mks_type)/vacuumWidget.bob</file>
+		<x>449</x>
+		<width>66</width>
+		<height>194</height>
+		<resize>2</resize>
+		<transparent>true</transparent>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_47</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>446</x>
+		<y>216</y>
+		<width>5</width>
+		<height>81</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-IMG-04</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</symbol>
+		</symbols>
+		<x>470</x>
+		<y>237</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Img.bob</file>
+				<macros>
+					<device>$(dom)-VA-IMG-04</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+					<expression>10</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+					<expression>11</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+					<expression>12</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+					<expression>13</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+					<expression>14</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+					<expression>15</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+					<expression>16</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-PIRG-04</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</symbol>
+		</symbols>
+		<x>470</x>
+		<y>204</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Pirg.bob</file>
+				<macros>
+					<device>$(dom)-VA-PIRG-04</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+					<expression>10</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+					<expression>11</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+					<expression>12</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+					<expression>13</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+					<expression>14</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+					<expression>15</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+					<expression>16</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_48</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>446</x>
+		<y>213</y>
+		<width>25</width>
+		<height>5</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_49</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>446</x>
+		<y>246</y>
+		<width>25</width>
+		<height>5</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_57</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>261</x>
+		<y>288</y>
+		<width>5</width>
+		<height>33</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-IONP-02</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34.png</symbol>
+		</symbols>
+		<x>249</x>
+		<y>320</y>
+		<width>30</width>
+		<height>30</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
+				<macros>
+					<device>$(dom)-VA-IONP-02</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Text Update_7</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<text>PBPM-01</text>
+		<x>191</x>
+		<y>211</y>
+		<width>27</width>
+		<height>60</height>
+		<font>
+			<font name="Fine Print" family="Liberation Sans" style="REGULAR" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color red="136" green="138" blue="133"></color>
+		</foreground_color>
+		<background_color>
+			<color red="136" green="138" blue="133"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<rotation_step>3</rotation_step>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>Grouping Container_1</name>
+		<x>478</x>
+		<y>277</y>
+		<width>62</width>
+		<height>65</height>
+		<style>3</style>
+		<foreground_color>
+			<color red="0" green="128" blue="255"></color>
+		</foreground_color>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color red="240" green="240" blue="240"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<actions></actions>
+		<widget type="rectangle" version="2.0.0">
+			<name>Rectangle_2</name>
+			<macros>
+				<pv_name></pv_name>
+			</macros>
+			<x>19</x>
+			<width>25</width>
+			<height>1</height>
+			<line_width>0</line_width>
+			<line_color>
+				<color name="Invalid" red="255" green="255" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="136" green="138" blue="133"></color>
+			</background_color>
+			<actions></actions>
+			<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>Rectangle_3</name>
+			<macros>
+				<pv_name></pv_name>
+			</macros>
+			<x>19</x>
+			<y>29</y>
+			<width>25</width>
+			<height>1</height>
+			<line_width>0</line_width>
+			<line_color>
+				<color name="Invalid" red="255" green="255" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color red="136" green="138" blue="133"></color>
+			</background_color>
+			<actions></actions>
+			<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		</widget>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Text Update_7</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<text>PBPM-02</text>
+		<x>492</x>
+		<y>204</y>
+		<width>34</width>
+		<height>73</height>
+		<font>
+			<font name="Fine Print" family="Liberation Sans" style="REGULAR" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color red="136" green="138" blue="133"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<rotation_step>3</rotation_step>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>Rectangle_2</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>191</x>
+		<y>277</y>
+		<width>25</width>
+		<height>1</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color name="Invalid" red="255" green="255" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color red="136" green="138" blue="133"></color>
+		</background_color>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>Rectangle_3</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>191</x>
+		<y>306</y>
+		<width>25</width>
+		<height>1</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color name="Invalid" red="255" green="255" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color red="136" green="138" blue="133"></color>
+		</background_color>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>89</x>
+		<y>288</y>
+		<width>5</width>
+		<height>33</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-IONP-01</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34.png</symbol>
+		</symbols>
+		<x>77</x>
+		<y>320</y>
+		<width>30</width>
+		<height>30</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
+				<macros>
+					<device>$(dom)-VA-IONP-01</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="embedded" version="2.0.0">
+		<name>Linking Container_2</name>
+		<macros>
+			<id>01</id>
+		</macros>
+		<file>fe-ui-support/bob/mks937$(mks_type)/vacuumWidget.bob</file>
+		<x>69</x>
+		<width>66</width>
+		<height>194</height>
+		<resize>2</resize>
+		<transparent>true</transparent>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_3</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>89</x>
+		<y>216</y>
+		<width>5</width>
+		<height>81</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-IMG-01</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</symbol>
+		</symbols>
+		<x>113</x>
+		<y>237</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Img.bob</file>
+				<macros>
+					<device>$(dom)-VA-IMG-01</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+					<expression>10</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+					<expression>11</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+					<expression>12</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+					<expression>13</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+					<expression>14</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+					<expression>15</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+					<expression>16</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-PIRG-01</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</symbol>
+		</symbols>
+		<x>113</x>
+		<y>204</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Pirg.bob</file>
+				<macros>
+					<device>$(dom)-VA-PIRG-01</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+					<expression>10</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+					<expression>11</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+					<expression>12</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+					<expression>13</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+					<expression>14</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+					<expression>15</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+					<expression>16</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-RGA-01</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>acc-ui-support/symbols/rga-symbol-34.png</symbol>
+		</symbols>
+		<x>45</x>
+		<y>204</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>acc-ui-support/bob/rga/rga.bob</file>
+				<macros>
+					<device>$(dom)-VA-RGA-01</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+					<expression>10</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_36</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>89</x>
+		<y>213</y>
+		<width>25</width>
+		<height>5</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_37</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>89</x>
+		<y>246</y>
+		<width>25</width>
+		<height>5</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_38</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>68</x>
+		<y>213</y>
+		<width>25</width>
+		<height>5</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-01:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>Grouping Container_2</name>
+		<x>580</x>
+		<width>81</width>
+		<height>350</height>
+		<style>3</style>
+		<foreground_color>
+			<color red="0" green="128" blue="255"></color>
+		</foreground_color>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color red="240" green="240" blue="240"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<actions></actions>
+		<widget type="embedded" version="2.0.0">
+			<name>Linking Container_4</name>
+			<macros>
+				<id>05</id>
+			</macros>
+			<file>fe-ui-support/bob/mks937$(mks_type)/vacuumWidget.bob</file>
+			<x>15</x>
+			<width>66</width>
+			<height>194</height>
+			<resize>2</resize>
+			<transparent>true</transparent>
+			<actions></actions>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle_50</name>
+			<macros>
+				<pv_name></pv_name>
+			</macros>
+			<x>12</x>
+			<y>216</y>
+			<width>5</width>
+			<height>81</height>
+			<line_width>0</line_width>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Green" red="0" green="196" blue="0"></color>
+			</background_color>
+			<actions></actions>
+			<rules>
+				<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+					<exp bool_exp="pvSev0==3">
+						<value>
+							<color name="Invalid" red="255" green="255" blue="255"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==2">
+						<value>
+							<color name="Major" red="255" green="0" blue="0"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==1">
+						<value>
+							<color name="Minor" red="255" green="241" blue="0"></color>
+						</value>
+					</exp>
+					<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+				</rule>
+				<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+					<exp bool_exp="pvSev0==3">
+						<value>
+							<color name="Invalid" red="255" green="255" blue="255"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==2">
+						<value>
+							<color name="Major" red="255" green="0" blue="0"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==1">
+						<value>
+							<color name="Minor" red="255" green="241" blue="0"></color>
+						</value>
+					</exp>
+					<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+				</rule>
+			</rules>
+			<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		</widget>
+		<widget type="symbol" version="2.0.0">
+			<name>$(dom)-VA-IMG-05</name>
+			<pv_name>$(name):STA</pv_name>
+			<symbols>
+				<symbol>fe-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</symbol>
+			</symbols>
+			<x>36</x>
+			<y>237</y>
+			<width>24</width>
+			<height>24</height>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<actions>
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Img.bob</file>
+					<macros>
+						<device>$(dom)-VA-IMG-05</device>
+					</macros>
+					<target>standalone</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+					<exp bool_exp="pvSev0==3">
+						<expression>0</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+						<expression>0</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+						<expression>2</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+						<expression>3</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+						<expression>4</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+						<expression>5</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+						<expression>6</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+						<expression>7</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+						<expression>8</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+						<expression>9</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+						<expression>10</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+						<expression>11</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+						<expression>12</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+						<expression>13</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+						<expression>14</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+						<expression>15</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+						<expression>16</expression>
+					</exp>
+					<exp bool_exp="true">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(pv_name)</pv_name>
+				</rule>
+			</rules>
+			<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="symbol" version="2.0.0">
+			<name>$(dom)-VA-PIRG-05</name>
+			<pv_name>$(name):STA</pv_name>
+			<symbols>
+				<symbol>fe-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</symbol>
+			</symbols>
+			<x>36</x>
+			<y>204</y>
+			<width>24</width>
+			<height>24</height>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<actions>
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Pirg.bob</file>
+					<macros>
+						<device>$(dom)-VA-PIRG-05</device>
+					</macros>
+					<target>standalone</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+					<exp bool_exp="pvSev0==3">
+						<expression>0</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+						<expression>0</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+						<expression>2</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+						<expression>3</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+						<expression>4</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+						<expression>5</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+						<expression>6</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+						<expression>7</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+						<expression>8</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+						<expression>9</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+						<expression>10</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+						<expression>11</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+						<expression>12</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+						<expression>13</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+						<expression>14</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+						<expression>15</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+						<expression>16</expression>
+					</exp>
+					<exp bool_exp="true">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(pv_name)</pv_name>
+				</rule>
+			</rules>
+			<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle_51</name>
+			<macros>
+				<pv_name></pv_name>
+			</macros>
+			<x>12</x>
+			<y>213</y>
+			<width>25</width>
+			<height>5</height>
+			<line_width>0</line_width>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Green" red="0" green="196" blue="0"></color>
+			</background_color>
+			<actions></actions>
+			<rules>
+				<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+					<exp bool_exp="pvSev0==3">
+						<value>
+							<color name="Invalid" red="255" green="255" blue="255"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==2">
+						<value>
+							<color name="Major" red="255" green="0" blue="0"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==1">
+						<value>
+							<color name="Minor" red="255" green="241" blue="0"></color>
+						</value>
+					</exp>
+					<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+				</rule>
+				<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+					<exp bool_exp="pvSev0==3">
+						<value>
+							<color name="Invalid" red="255" green="255" blue="255"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==2">
+						<value>
+							<color name="Major" red="255" green="0" blue="0"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==1">
+						<value>
+							<color name="Minor" red="255" green="241" blue="0"></color>
+						</value>
+					</exp>
+					<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+				</rule>
+			</rules>
+			<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle_52</name>
+			<macros>
+				<pv_name></pv_name>
+			</macros>
+			<x>12</x>
+			<y>246</y>
+			<width>25</width>
+			<height>5</height>
+			<line_width>0</line_width>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Green" red="0" green="196" blue="0"></color>
+			</background_color>
+			<actions></actions>
+			<rules>
+				<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+					<exp bool_exp="pvSev0==3">
+						<value>
+							<color name="Invalid" red="255" green="255" blue="255"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==2">
+						<value>
+							<color name="Major" red="255" green="0" blue="0"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==1">
+						<value>
+							<color name="Minor" red="255" green="241" blue="0"></color>
+						</value>
+					</exp>
+					<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+				</rule>
+				<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+					<exp bool_exp="pvSev0==3">
+						<value>
+							<color name="Invalid" red="255" green="255" blue="255"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==2">
+						<value>
+							<color name="Major" red="255" green="0" blue="0"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==1">
+						<value>
+							<color name="Minor" red="255" green="241" blue="0"></color>
+						</value>
+					</exp>
+					<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+				</rule>
+			</rules>
+			<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle_53</name>
+			<macros>
+				<pv_name></pv_name>
+			</macros>
+			<x>12</x>
+			<y>288</y>
+			<width>5</width>
+			<height>33</height>
+			<line_width>0</line_width>
+			<line_color>
+				<color red="0" green="128" blue="255"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Green" red="0" green="196" blue="0"></color>
+			</background_color>
+			<actions></actions>
+			<rules>
+				<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+					<exp bool_exp="pvSev0==3">
+						<value>
+							<color name="Invalid" red="255" green="255" blue="255"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==2">
+						<value>
+							<color name="Major" red="255" green="0" blue="0"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==1">
+						<value>
+							<color name="Minor" red="255" green="241" blue="0"></color>
+						</value>
+					</exp>
+					<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+				</rule>
+				<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+					<exp bool_exp="pvSev0==3">
+						<value>
+							<color name="Invalid" red="255" green="255" blue="255"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==2">
+						<value>
+							<color name="Major" red="255" green="0" blue="0"></color>
+						</value>
+					</exp>
+					<exp bool_exp="pvSev0==1">
+						<value>
+							<color name="Minor" red="255" green="241" blue="0"></color>
+						</value>
+					</exp>
+					<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+				</rule>
+			</rules>
+			<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		</widget>
+		<widget type="symbol" version="2.0.0">
+			<name>$(dom)-VA-IONP-04</name>
+			<pv_name>$(name):STA</pv_name>
+			<symbols>
+				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34.png</symbol>
+			</symbols>
+			<y>320</y>
+			<width>30</width>
+			<height>30</height>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<actions>
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
+					<macros>
+						<device>$(dom)-VA-IONP-04</device>
+					</macros>
+					<target>standalone</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+					<exp bool_exp="pvSev0==3">
+						<expression>0</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+						<expression>0</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+						<expression>2</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+						<expression>3</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+						<expression>4</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+						<expression>5</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+						<expression>6</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+						<expression>7</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+						<expression>8</expression>
+					</exp>
+					<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+						<expression>9</expression>
+					</exp>
+					<exp bool_exp="true">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(pv_name)</pv_name>
+				</rule>
+			</rules>
+			<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_4</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>922</x>
+		<y>288</y>
+		<width>5</width>
+		<height>33</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-IONP-05</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34.png</symbol>
+		</symbols>
+		<x>910</x>
+		<y>320</y>
+		<width>30</width>
+		<height>30</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
+				<macros>
+					<device>$(dom)-VA-IONP-05</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="embedded" version="2.0.0">
+		<name>Linking Container_5</name>
+		<macros>
+			<id>06</id>
+		</macros>
+		<file>fe-ui-support/bob/mks937$(mks_type)/vacuumWidget.bob</file>
+		<x>763</x>
+		<width>66</width>
+		<height>194</height>
+		<resize>2</resize>
+		<transparent>true</transparent>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_54</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>760</x>
+		<y>216</y>
+		<width>5</width>
+		<height>81</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-IMG-06</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</symbol>
+		</symbols>
+		<x>784</x>
+		<y>237</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Img.bob</file>
+				<macros>
+					<device>$(dom)-VA-IMG-06</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+					<expression>10</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+					<expression>11</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+					<expression>12</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+					<expression>13</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+					<expression>14</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+					<expression>15</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+					<expression>16</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>$(dom)-VA-PIRG-06</name>
+		<pv_name>$(name):STA</pv_name>
+		<symbols>
+			<symbol>fe-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</symbol>
+		</symbols>
+		<x>784</x>
+		<y>204</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/mks937$(mks_type)/mks937$(mks_type)Pirg.bob</file>
+				<macros>
+					<device>$(dom)-VA-PIRG-06</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;2.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=2.0&amp;&amp;pv0&lt;3.0">
+					<expression>3</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=3.0&amp;&amp;pv0&lt;4.0">
+					<expression>4</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=4.0&amp;&amp;pv0&lt;5.0">
+					<expression>5</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=5.0&amp;&amp;pv0&lt;6.0">
+					<expression>6</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=6.0&amp;&amp;pv0&lt;7.0">
+					<expression>7</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=7.0&amp;&amp;pv0&lt;8.0">
+					<expression>8</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=8.0&amp;&amp;pv0&lt;9.0">
+					<expression>9</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=9.0&amp;&amp;pv0&lt;10.0">
+					<expression>10</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=10.0&amp;&amp;pv0&lt;11.0">
+					<expression>11</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=11.0&amp;&amp;pv0&lt;12.0">
+					<expression>12</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=12.0&amp;&amp;pv0&lt;13.0">
+					<expression>13</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=13.0&amp;&amp;pv0&lt;14.0">
+					<expression>14</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=14.0&amp;&amp;pv0&lt;15.0">
+					<expression>15</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=15.0&amp;&amp;pv0&lt;16.0">
+					<expression>16</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_55</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>760</x>
+		<y>213</y>
+		<width>25</width>
+		<height>5</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle_56</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>760</x>
+		<y>246</y>
+		<width>25</width>
+		<height>5</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="lineColorAlarmRule" prop_id="line_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+			<rule name="backColorAlarmRule" prop_id="background_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>$(dom)-VA-SPACE-02:STA</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+</display>

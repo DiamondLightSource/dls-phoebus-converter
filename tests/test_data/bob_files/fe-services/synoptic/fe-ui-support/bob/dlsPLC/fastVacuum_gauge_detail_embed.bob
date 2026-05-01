@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<width>540</width>
+	<height>222</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="textupdate" version="2.0.0">
+		<name>Text Update</name>
+		<pv_name>$(dom)-VA-VFAST-01:TRIG_LEVEL$(id)</pv_name>
+		<x>162</x>
+		<y>25</y>
+		<width>120</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>2</format>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label</name>
+		<text>Actual Trigger Level</text>
+		<y>25</y>
+		<width>145</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Text Update_4</name>
+		<pv_name>$(dom)-VA-VFAST-01:HYST_LEVEL$(id)</pv_name>
+		<x>162</x>
+		<y>50</y>
+		<width>120</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>2</format>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_4</name>
+		<text>Actual Hysteresis Level</text>
+		<y>50</y>
+		<width>157</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Text Update_5</name>
+		<pv_name>$(dom)-VA-VFAST-01:TRIG_LEVEL$(id)_V</pv_name>
+		<x>290</x>
+		<y>25</y>
+		<width>120</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>1</format>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Text Update_6</name>
+		<pv_name>$(dom)-VA-VFAST-01:TRIG_LEVEL$(id)_RAW</pv_name>
+		<x>418</x>
+		<y>25</y>
+		<width>120</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>1</format>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Text Update_5</name>
+		<pv_name>$(dom)-VA-VFAST-01:TRIG_MULTI$(id)_RBV</pv_name>
+		<x>290</x>
+		<y>100</y>
+		<width>120</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_5</name>
+		<text>Trigger Multiplier</text>
+		<y>100</y>
+		<width>157</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>Text Input_2</name>
+		<pv_name>$(dom)-VA-VFAST-01:TRIG_MULTI$(id)</pv_name>
+		<x>162</x>
+		<y>100</y>
+		<width>120</width>
+		<height>19</height>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Text Update_5</name>
+		<pv_name>$(dom)-VA-VFAST-01:HYST_MULTI$(id)_RBV</pv_name>
+		<x>290</x>
+		<y>125</y>
+		<width>120</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_5</name>
+		<text>Hysteresis Multiplier</text>
+		<y>125</y>
+		<width>157</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>Text Input_2</name>
+		<pv_name>$(dom)-VA-VFAST-01:HYST_MULTI$(id)</pv_name>
+		<x>162</x>
+		<y>125</y>
+		<width>120</width>
+		<height>19</height>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Text Update_5</name>
+		<pv_name>$(dom)-VA-VFAST-01:AVG_TIME$(id)_RBV</pv_name>
+		<x>290</x>
+		<y>150</y>
+		<width>120</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_5</name>
+		<text>Averaging Time</text>
+		<y>150</y>
+		<width>157</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>Text Input_2</name>
+		<pv_name>$(dom)-VA-VFAST-01:AVG_TIME$(id)</pv_name>
+		<x>162</x>
+		<y>150</y>
+		<width>120</width>
+		<height>19</height>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Text Update_10</name>
+		<pv_name>$(dom)-VA-VFAST-01:HYST_LEVEL$(id)_V</pv_name>
+		<x>290</x>
+		<y>50</y>
+		<width>120</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>1</format>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Text Update_11</name>
+		<pv_name>$(dom)-VA-VFAST-01:HYST_LEVEL$(id)_RAW</pv_name>
+		<x>418</x>
+		<y>50</y>
+		<width>120</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>1</format>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_8</name>
+		<text>mbar</text>
+		<x>162</x>
+		<y>5</y>
+		<width>120</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_9</name>
+		<text>V</text>
+		<x>290</x>
+		<y>5</y>
+		<width>120</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_10</name>
+		<text>Raw</text>
+		<x>418</x>
+		<y>5</y>
+		<width>120</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Text Update_12</name>
+		<pv_name>$(dom)-VA-VFAST-01:CH$(id)_DESC</pv_name>
+		<x>162</x>
+		<y>175</y>
+		<width>248</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_11</name>
+		<text>Gauge Desc</text>
+		<y>175</y>
+		<width>157</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+</display>

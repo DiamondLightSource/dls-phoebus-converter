@@ -1,0 +1,2146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<x>174</x>
+	<y>96</y>
+	<width>550</width>
+	<height>60</height>
+	<background_color>
+		<color name="Disconn/Invalid" red="255" green="255" blue="255"></color>
+	</background_color>
+	<widget type="group" version="3.0.0">
+		<name>0</name>
+		<x>17</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>1</name>
+		<x>61</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Red" red="255" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Amber" red="255" green="192" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Red" red="255" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Red" red="255" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Red" red="255" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Red" red="255" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Red" red="255" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Red" red="255" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Red" red="255" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Red" red="255" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Red" red="255" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>2</name>
+		<x>105</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>3</name>
+		<x>149</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>4</name>
+		<x>193</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>5</name>
+		<x>237</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Green" red="0" green="192" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>6</name>
+		<x>281</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Amber" red="255" green="192" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>7</name>
+		<x>325</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>8</name>
+		<x>369</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>9</name>
+		<x>413</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>10</name>
+		<x>457</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>11</name>
+		<x>501</x>
+		<y>11</y>
+		<width>34</width>
+		<height>34</height>
+		<style>3</style>
+		<foreground_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</line_color>
+		<transparent>true</transparent>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<width>34</width>
+			<height>34</height>
+			<visible>false</visible>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="White" red="255" green="255" blue="255"></color>
+			</background_color>
+			<transparent>true</transparent>
+		</widget>
+		<widget type="rectangle" version="2.0.0">
+			<name>EDM Rectangle</name>
+			<x>1</x>
+			<y>1</y>
+			<width>32</width>
+			<height>32</height>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+			<background_color>
+				<color name="Mid Red" red="192" green="0" blue="0"></color>
+			</background_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>24</y>
+			<width>13</width>
+			<height>6</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>17</y>
+			<width>13</width>
+			<height>5</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>11</x>
+			<y>10</y>
+			<width>13</width>
+			<height>4</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="12.0" y="0.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>27</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>24</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>15</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+		<widget type="polyline" version="2.0.0">
+			<name>EDM Line</name>
+			<x>6</x>
+			<y>6</y>
+			<width>3</width>
+			<height>7</height>
+			<points>
+				<point x="0.0" y="0.0"></point>
+				<point x="0.0" y="5.0"></point>
+			</points>
+			<line_width>1</line_width>
+			<line_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</line_color>
+		</widget>
+	</widget>
+</display>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>Motor Drive - $(motor)</name>
+	<x>240</x>
+	<y>385</y>
+	<width>363</width>
+	<height>253</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle</name>
+		<width>356</width>
+		<height>53</height>
+		<line_width>1</line_width>
+		<line_color>
+			<color name="Grey 65%" red="166" green="166" blue="166"></color>
+		</line_color>
+		<background_color>
+			<color name="Grey 65%" red="166" green="166" blue="166"></color>
+		</background_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>$(motor)
+Drive Fields</text>
+		<width>363</width>
+		<height>54</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="18.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 65%" red="166" green="166" blue="166"></color>
+		</background_color>
+		<transparent>false</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.VAL - User Desired Value</text>
+		<x>10</x>
+		<y>67</y>
+		<width>194</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.DVAL - Dial Desired Value</text>
+		<x>10</x>
+		<y>105</y>
+		<width>200</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM Text Entry</name>
+		<pv_name>$(motor)</pv_name>
+		<x>220</x>
+		<y>55</y>
+		<width>131</width>
+		<height>41</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Blue" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.RVAL - Raw Desired Value</text>
+		<x>10</x>
+		<y>143</y>
+		<width>202</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.RLV - Relative Value</text>
+		<x>10</x>
+		<y>181</y>
+		<width>154</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM Text Entry</name>
+		<pv_name>$(motor).RVAL</pv_name>
+		<x>220</x>
+		<y>131</y>
+		<width>131</width>
+		<height>41</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Blue" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM Text Entry</name>
+		<pv_name>$(motor).RLV</pv_name>
+		<x>220</x>
+		<y>169</y>
+		<width>131</width>
+		<height>41</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Blue" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM Text Entry</name>
+		<pv_name>$(motor).DVAL</pv_name>
+		<x>220</x>
+		<y>93</y>
+		<width>131</width>
+		<height>41</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Blue" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>EDM Exit Button</name>
+		<actions>
+			<action type="close_display">
+				<description>Close display</description>
+			</action>
+		</actions>
+		<text>Exit</text>
+		<x>220</x>
+		<y>208</y>
+		<width>131</width>
+		<height>29</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Exit: FG" red="192" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+</display>

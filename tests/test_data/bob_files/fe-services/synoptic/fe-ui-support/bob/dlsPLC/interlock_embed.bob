@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<width>260</width>
+	<height>390</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<rules>
+		<rule name="Set Height" prop_id="height" out_exp="true">
+			<exp bool_exp="pv0 &gt; 0">
+				<expression>75+20*pv0</expression>
+			</exp>
+			<pv_name>="$(count)"</pv_name>
+		</rule>
+	</rules>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="action_button" version="3.0.0">
+		<name>Reset</name>
+		<actions>
+			<action type="write_pv">
+				<description>Write PV</description>
+				<pv_name>$(pv_name)</pv_name>
+				<value>1</value>
+			</action>
+		</actions>
+		<pv_name>$(device):RESET.PROC</pv_name>
+		<text>Reset</text>
+		<x>165</x>
+		<y>20</y>
+		<width>80</width>
+		<height>20</height>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status</name>
+		<pv_name>$(device):ILK0</pv_name>
+		<x>80</x>
+		<y>60</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="byte_monitor" version="2.0.0">
+		<name>auto(statusbits|Interlocks Latched)</name>
+		<pv_name>$(device):ILK</pv_name>
+		<y>60</y>
+		<width>21</width>
+		<height>325</height>
+		<numBits>16</numBits>
+		<bitReverse>true</bitReverse>
+		<horizontal>false</horizontal>
+		<off_color>
+			<color name="Red LED: On" red="255" green="0" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Red LED: Off" red="128" green="0" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<labels>
+			<text>$(ilk0)</text>
+			<text>$(ilk1)</text>
+			<text>$(ilk2)</text>
+			<text>$(ilk3)</text>
+			<text>$(ilk4)</text>
+			<text>$(ilk5)</text>
+			<text>$(ilk6)</text>
+			<text>$(ilk7)</text>
+			<text>$(ilk8)</text>
+			<text>$(ilk9)</text>
+			<text>$(ilk10)</text>
+			<text>$(ilk11)</text>
+			<text>$(ilk12)</text>
+			<text>$(ilk13)</text>
+			<text>$(ilk14)</text>
+			<text>$(ilk15)</text>
+		</labels>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="byte_monitor" version="2.0.0">
+		<name>auto(statusbits|Interlocks Initial)</name>
+		<pv_name>$(device):INIILK</pv_name>
+		<x>25</x>
+		<y>60</y>
+		<width>21</width>
+		<height>325</height>
+		<numBits>16</numBits>
+		<bitReverse>true</bitReverse>
+		<horizontal>false</horizontal>
+		<off_color>
+			<color name="Yellow LED: On" red="255" green="255" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Yellow LED: Off" red="128" green="128" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<labels>
+			<text>$(ilk0)</text>
+			<text>$(ilk1)</text>
+			<text>$(ilk2)</text>
+			<text>$(ilk3)</text>
+			<text>$(ilk4)</text>
+			<text>$(ilk5)</text>
+			<text>$(ilk6)</text>
+			<text>$(ilk7)</text>
+			<text>$(ilk8)</text>
+			<text>$(ilk9)</text>
+			<text>$(ilk10)</text>
+			<text>$(ilk11)</text>
+			<text>$(ilk12)</text>
+			<text>$(ilk13)</text>
+			<text>$(ilk14)</text>
+			<text>$(ilk15)</text>
+		</labels>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="byte_monitor" version="2.0.0">
+		<name>auto(statusbits|Interlocks Current)</name>
+		<pv_name>$(device):RAWILK</pv_name>
+		<x>50</x>
+		<y>60</y>
+		<width>21</width>
+		<height>325</height>
+		<numBits>16</numBits>
+		<bitReverse>true</bitReverse>
+		<horizontal>false</horizontal>
+		<off_color>
+			<color name="Green LED: Off" red="0" green="128" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<labels>
+			<text>$(ilk0)</text>
+			<text>$(ilk1)</text>
+			<text>$(ilk2)</text>
+			<text>$(ilk3)</text>
+			<text>$(ilk4)</text>
+			<text>$(ilk5)</text>
+			<text>$(ilk6)</text>
+			<text>$(ilk7)</text>
+			<text>$(ilk8)</text>
+			<text>$(ilk9)</text>
+			<text>$(ilk10)</text>
+			<text>$(ilk11)</text>
+			<text>$(ilk12)</text>
+			<text>$(ilk13)</text>
+			<text>$(ilk14)</text>
+			<text>$(ilk15)</text>
+		</labels>
+		<actions></actions>
+		<rules>
+			<rule name="Set Bits" prop_id="numBits" out_exp="true">
+				<exp bool_exp="1">
+					<expression>pv0</expression>
+				</exp>
+				<pv_name>="$(count)"</pv_name>
+			</rule>
+		</rules>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_1</name>
+		<pv_name>$(device):ILK1</pv_name>
+		<x>80</x>
+		<y>80</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_2</name>
+		<pv_name>$(device):ILK2</pv_name>
+		<x>80</x>
+		<y>100</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_3</name>
+		<pv_name>$(device):ILK3</pv_name>
+		<x>80</x>
+		<y>120</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_4</name>
+		<pv_name>$(device):ILK4</pv_name>
+		<x>80</x>
+		<y>140</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_5</name>
+		<pv_name>$(device):ILK5</pv_name>
+		<x>80</x>
+		<y>160</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_6</name>
+		<pv_name>$(device):ILK6</pv_name>
+		<x>80</x>
+		<y>180</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_7</name>
+		<pv_name>$(device):ILK7</pv_name>
+		<x>80</x>
+		<y>200</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_8</name>
+		<pv_name>$(device):ILK8</pv_name>
+		<x>80</x>
+		<y>220</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_9</name>
+		<pv_name>$(device):ILK9</pv_name>
+		<x>80</x>
+		<y>240</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_10</name>
+		<pv_name>$(device):ILK10</pv_name>
+		<x>80</x>
+		<y>260</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_11</name>
+		<pv_name>$(device):ILK11</pv_name>
+		<x>80</x>
+		<y>280</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_12</name>
+		<pv_name>$(device):ILK12</pv_name>
+		<x>80</x>
+		<y>300</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_13</name>
+		<pv_name>$(device):ILK13</pv_name>
+		<x>80</x>
+		<y>320</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_14</name>
+		<pv_name>$(device):ILK14</pv_name>
+		<x>80</x>
+		<y>340</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status_15</name>
+		<pv_name>$(device):ILK15</pv_name>
+		<x>80</x>
+		<y>360</y>
+		<width>180</width>
+		<font>
+			<font family="Sans" style="BOLD" size="8.910891089108912"></font>
+		</font>
+		<foreground_color>
+			<color name="Top Shadow" red="236" green="236" blue="236"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label</name>
+		<text>latched</text>
+		<x>85</x>
+		<y>10</y>
+		<width>41</width>
+		<height>13</height>
+		<font>
+			<font family="Sans" style="REGULAR" size="7.920792079207921"></font>
+		</font>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_1</name>
+		<text>initial</text>
+		<x>85</x>
+		<y>25</y>
+		<width>30</width>
+		<height>13</height>
+		<font>
+			<font family="Sans" style="REGULAR" size="7.920792079207921"></font>
+		</font>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>Label_2</name>
+		<text>current</text>
+		<x>85</x>
+		<y>40</y>
+		<width>39</width>
+		<height>13</height>
+		<font>
+			<font family="Sans" style="REGULAR" size="7.920792079207921"></font>
+		</font>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="polyline" version="2.0.0">
+		<name>Polyline</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>10</x>
+		<y>15</y>
+		<width>69</width>
+		<height>39</height>
+		<points>
+			<point x="68.0" y="0.0"></point>
+			<point x="0.0" y="0.0"></point>
+			<point x="0.0" y="38.0"></point>
+			<point x="0.0" y="38.0"></point>
+			<point x="0.0" y="38.0"></point>
+		</points>
+		<line_width>1</line_width>
+		<line_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</line_color>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="polyline" version="2.0.0">
+		<name>Polyline_1</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>35</x>
+		<y>30</y>
+		<width>45</width>
+		<height>25</height>
+		<points>
+			<point x="44.0" y="0.0"></point>
+			<point x="0.0" y="0.0"></point>
+			<point x="0.0" y="24.0"></point>
+			<point x="0.0" y="24.0"></point>
+			<point x="0.0" y="24.0"></point>
+		</points>
+		<line_width>1</line_width>
+		<line_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</line_color>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="polyline" version="2.0.0">
+		<name>Polyline_2</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>60</x>
+		<y>45</y>
+		<width>20</width>
+		<height>10</height>
+		<points>
+			<point x="19.0" y="0.0"></point>
+			<point x="0.0" y="0.0"></point>
+			<point x="0.0" y="9.0"></point>
+			<point x="0.0" y="9.0"></point>
+			<point x="0.0" y="9.0"></point>
+		</points>
+		<line_width>1</line_width>
+		<line_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</line_color>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+</display>

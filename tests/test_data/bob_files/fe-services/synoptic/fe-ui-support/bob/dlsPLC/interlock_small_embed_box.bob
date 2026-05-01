@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<width>178</width>
+	<height>86</height>
+	<background_color>
+		<color red="240" green="240" blue="240"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="group" version="3.0.0">
+		<width>178</width>
+		<height>86</height>
+		<widget type="embedded" version="2.0.0">
+			<name>_Content</name>
+			<file>interlock_small_embed.opi</file>
+			<width>148</width>
+			<height>56</height>
+			<resize>4</resize>
+			<transparent>true</transparent>
+			<actions></actions>
+		</widget>
+	</widget>
+</display>
