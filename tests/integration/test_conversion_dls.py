@@ -9,10 +9,10 @@ from pathlib import Path
 
 import pytest
 
+from conftest import OUTPUT_SRC, REFERENCE_DIR
+
 # Stores the converted screens
-OUTPUT_DIR = Path("output/")
-# Stores screens downloaded from the webserver
-REFERENCE_DIR = Path("output2/")
+OUTPUT_DIR = OUTPUT_SRC
 # Url to fetch the reference screens from
 WEBSERVER_URL = "https://screen-tests-opis.diamond.ac.uk/screen-tests-synoptic/"
 
@@ -52,7 +52,7 @@ def compare_dirs(out_dir, ref_dir):
 
 
 @pytest.mark.skip(reason="Takes 30 mins, should only be run in specific situations")
-def test_front_ends():
+def test_front_ends(ref_output_directory):
     """Run the conversion for front_ends.yaml. This requires access to /dls_sw.
     Compare the output to the files saved in the webserver. This can take 30 minutes."""
 
@@ -61,6 +61,8 @@ def test_front_ends():
         sys.executable,
         "-m",
         "dls_phoebus_converter",
+        "-o",
+        "test_output/",
         "config/front_ends.yaml",
     ]
     proc = subprocess.Popen(cmd)

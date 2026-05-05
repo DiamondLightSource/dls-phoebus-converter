@@ -6,8 +6,10 @@ import subprocess
 import sys
 from pathlib import Path
 
+from conftest import OUTPUT_SRC
+
 REFERENCE_DIR = Path("tests/test_data/bob_files/fe-services/synoptic/")
-OUTPUT_DIR = Path("output/fe-services/synoptic/")
+OUTPUT_DIR = OUTPUT_SRC / Path("fe-services/synoptic/")
 
 
 def test_single_conversion():
@@ -17,6 +19,8 @@ def test_single_conversion():
         sys.executable,
         "-m",
         "dls_phoebus_converter",
+        "-o",
+        OUTPUT_SRC,
         "config/example1.yaml",
     ]
     proc = subprocess.Popen(cmd)
@@ -44,6 +48,8 @@ def test_representative_conversion():
         sys.executable,
         "-m",
         "dls_phoebus_converter",
+        "-o",
+        OUTPUT_SRC,
         "config/example3.yaml",
     ]
     proc = subprocess.Popen(cmd)
