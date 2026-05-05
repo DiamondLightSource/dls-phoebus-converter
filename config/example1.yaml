@@ -1,3 +1,4 @@
+# Used by integration/test_conversion_ci.py
 meta_data:
   - domain: fe
     domain_synoptic_dst: fe-services/synoptic
