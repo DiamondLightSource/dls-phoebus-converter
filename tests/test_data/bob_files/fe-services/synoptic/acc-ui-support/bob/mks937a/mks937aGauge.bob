@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>MKS 937A Gauge - $(dom)-VA-GAUGE-$(id)</name>
+	<x>52</x>
+	<y>697</y>
+	<width>264</width>
+	<height>349</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>8</grid_step_x>
+	<grid_step_y>8</grid_step_y>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>8</x>
+		<y>48</y>
+		<width>249</width>
+		<height>201</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Grey 65%" red="166" green="166" blue="166"></color>
+		</background_color>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>$(dom)-VA-GAUGE-$(id)</text>
+		<width>264</width>
+		<height>32</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="VA title" red="202" green="223" blue="159"></color>
+		</background_color>
+		<transparent>false</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>EDM Exit Button</name>
+		<actions>
+			<action type="close_display">
+				<description>Close display</description>
+			</action>
+		</actions>
+		<text>Exit</text>
+		<x>200</x>
+		<y>312</y>
+		<width>57</width>
+		<height>25</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Exit: FG" red="196" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>EDM related display</name>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>mks937aPirg.bob</file>
+				<macros>
+					<device>$(dom)-VA-PIRG-$(id)</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<text>Pirani</text>
+		<x>72</x>
+		<y>312</y>
+		<width>57</width>
+		<height>25</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Dark Brown" red="128" green="96" blue="32"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>EDM shell command</name>
+		<actions>
+			<action type="command">
+				<description>Launch databrowser</description>
+				<script file="EmbeddedPy">
+					<text>from org.csstudio.opibuilder.scriptUtil import ScriptUtil
+
+command_id="org.csstudio.trends.databrowser2.newWindow"
+ScriptUtil.executeEclipseCommand(command_id, ['pvnames', '$(dom)-VA-GAUGE-$(id):PLOG,$(dom)-VA-IMG-$(id):PLOG,$(dom)-VA-PIRG-$(id):PLOG'])</text>
+				</script>
+				<command>$(phoebus.install)/../phoebus.sh -resource "pv://?$(dom)-VA-GAUGE-$(id):PLOG&amp;$(dom)-VA-IMG-$(id):PLOG&amp;$(dom)-VA-PIRG-$(id):PLOG&amp;app=databrowser</command>
+			</action>
+		</actions>
+		<text>Graph</text>
+		<x>200</x>
+		<y>184</y>
+		<width>49</width>
+		<height>25</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Related Display: FG" red="128" green="64" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>Details</text>
+		<x>8</x>
+		<y>40</y>
+		<width>48</width>
+		<height>16</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="12.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 50%" red="128" green="128" blue="128"></color>
+		</background_color>
+		<transparent>false</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle</name>
+		<macros>
+			<pv_name></pv_name>
+		</macros>
+		<x>8</x>
+		<y>40</y>
+		<width>49</width>
+		<height>17</height>
+		<line_width>0</line_width>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Grey 75%" red="192" green="192" blue="192"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>Pressure (mbar)</text>
+		<x>16</x>
+		<y>184</y>
+		<width>112</width>
+		<height>24</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>Gauge</text>
+		<x>16</x>
+		<y>216</y>
+		<width>112</width>
+		<height>24</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(dom)-VA-GAUGE-$(id):GAUGE</pv_name>
+		<x>128</x>
+		<y>216</y>
+		<width>121</width>
+		<height>25</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(dom)-VA-GAUGE-$(id):P</pv_name>
+		<x>127</x>
+		<y>183</y>
+		<width>72</width>
+		<height>26</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 25%" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>2</format>
+		<precision>1</precision>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="meter" version="3.0.0">
+		<name>EDM meter Hulei</name>
+		<pv_name>$(dom)-VA-GAUGE-$(id):P</pv_name>
+		<x>24</x>
+		<y>64</y>
+		<width>216</width>
+		<height>112</height>
+		<foreground_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 25%" red="64" green="64" blue="64"></color>
+		</background_color>
+		<show_value>false</show_value>
+		<show_limits>false</show_limits>
+		<log_scale>true</log_scale>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<minimum>1.0E-11</minimum>
+		<maximum>1000.0</maximum>
+		<needle_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</needle_color>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>EDM related display</name>
+		<actions>
+			<action type="open_display">
+				<description>Open Display</description>
+				<file>mks937a.bob</file>
+				<macros>
+					<device>$(GCTLR)</device>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<text>GCTLR</text>
+		<x>8</x>
+		<y>312</y>
+		<width>57</width>
+		<height>25</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Dark Brown" red="128" green="96" blue="32"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>0</name>
+		<x>136</x>
+		<y>312</y>
+		<width>57</width>
+		<height>25</height>
+		<style>3</style>
+		<foreground_color>
+			<color red="0" green="128" blue="255"></color>
+		</foreground_color>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color red="240" green="240" blue="240"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<actions></actions>
+		<rules>
+			<rule name="visibleRule" prop_id="visible" out_exp="false">
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp; pv0&lt;2.0">
+					<value>false</value>
+				</exp>
+				<exp bool_exp="true">
+					<value>true</value>
+				</exp>
+				<pv_name>=(`loc://$(DID)noImg&lt;VDouble&gt;($(NOIMG))`)</pv_name>
+			</rule>
+		</rules>
+		<widget type="action_button" version="3.0.0">
+			<name>EDM related display</name>
+			<actions>
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>mks937aImg.bob</file>
+					<macros>
+						<device>$(dom)-VA-IMG-$(id)</device>
+					</macros>
+					<target>standalone</target>
+				</action>
+			</actions>
+			<text>IMG</text>
+			<width>57</width>
+			<height>25</height>
+			<font>
+				<font family="liberation sans" style="REGULAR" size="14.0"></font>
+			</font>
+			<foreground_color>
+				<color name="Dark Brown" red="128" green="96" blue="32"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Controller: BG" red="205" green="205" blue="205"></color>
+			</background_color>
+			<tooltip>$(actions)</tooltip>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>Setpoints
+overwrite</text>
+		<x>13</x>
+		<y>266</y>
+		<width>59</width>
+		<height>34</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="choice" version="2.0.0">
+		<name>EDM choice  Button</name>
+		<pv_name>$(dom)-VA-GAUGE-$(id):ILKSETSP:NOWRITE</pv_name>
+		<x>152</x>
+		<y>268</y>
+		<width>104</width>
+		<height>24</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<selected_color>
+			<color name="Grey 75%" red="192" green="192" blue="192"></color>
+		</selected_color>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<items>
+			<item>Item 1</item>
+			<item>Item 2</item>
+		</items>
+	</widget>
+	<widget type="symbol" version="2.0.0">
+		<name>DLS symbol</name>
+		<pv_name>$(dom)-VA-GAUGE-$(id):ILKSETSP:NOWRITE</pv_name>
+		<symbols>
+			<symbol>../mks937a/mks937aLock-symbol-61.png</symbol>
+		</symbols>
+		<x>97</x>
+		<y>269</y>
+		<width>24</width>
+		<height>24</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions></actions>
+		<rules>
+			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
+				<exp bool_exp="pvSev0==3">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=-1.0&amp;&amp;pv0&lt;0.0">
+					<expression>0</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;99.0">
+					<expression>1</expression>
+				</exp>
+				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
+					<expression>2</expression>
+				</exp>
+				<exp bool_exp="true">
+					<expression>0</expression>
+				</exp>
+				<pv_name>$(pv_name)</pv_name>
+			</rule>
+		</rules>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+</display>

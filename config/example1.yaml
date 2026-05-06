@@ -1,3 +1,4 @@
+# Used by integration/test_conversion_ci.py
 meta_data:
   - domain: fe
     domain_synoptic_dst: fe-services/synoptic
@@ -8,12 +9,13 @@ meta_data:
 files:
   # region synoptic screens
   # Convert FE22B.opi
-  - src: examples/FE22B.opi
+  - src: tests/test_data/opi_files/FE12I.opi
     dst: synoptic
     template_file: FE22B_template.xml
     macros:
-      dom: FE22B
-      cell: 22
+      dom: FE12I
+      cell: 12
       mks_type: a
-      type: B
-      srvalve: 03
+      type: I
+      srvalve: 02
+      ISBL: ""

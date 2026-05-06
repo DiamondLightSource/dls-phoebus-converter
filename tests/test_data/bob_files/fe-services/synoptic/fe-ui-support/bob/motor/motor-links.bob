@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>Motor Links - $(motor)</name>
+	<x>172</x>
+	<y>351</y>
+	<width>550</width>
+	<height>398</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<widget type="rectangle" version="2.0.0">
+		<name>EDM Rectangle</name>
+		<width>536</width>
+		<height>53</height>
+		<line_width>1</line_width>
+		<line_color>
+			<color name="Grey 65%" red="166" green="166" blue="166"></color>
+		</line_color>
+		<background_color>
+			<color name="Grey 65%" red="166" green="166" blue="166"></color>
+		</background_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>$(motor)
+Link-Related Fields</text>
+		<y>2</y>
+		<width>550</width>
+		<height>54</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="18.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 65%" red="166" green="166" blue="166"></color>
+		</background_color>
+		<transparent>false</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.OUT - Output Specification</text>
+		<x>10</x>
+		<y>67</y>
+		<width>200</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.RDBL - Readback Location</text>
+		<x>10</x>
+		<y>105</y>
+		<width>204</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM Text Entry</name>
+		<pv_name>$(motor).OUT</pv_name>
+		<x>230</x>
+		<y>55</y>
+		<width>301</width>
+		<height>41</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Blue" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.DOL - Desired Output Loc</text>
+		<x>10</x>
+		<y>141</y>
+		<width>195</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.OMSL - Output Mode Select</text>
+		<x>10</x>
+		<y>177</y>
+		<width>208</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.DINP - DMOV Input Link</text>
+		<x>10</x>
+		<y>249</y>
+		<width>184</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.RINP - RMP Input Link</text>
+		<x>10</x>
+		<y>286</y>
+		<width>170</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.RLNK - Readback Out Link</text>
+		<x>10</x>
+		<y>212</y>
+		<width>201</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM Text Entry</name>
+		<pv_name>$(motor).DINP</pv_name>
+		<x>230</x>
+		<y>238</y>
+		<width>301</width>
+		<height>41</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Blue" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(motor).RDBL</pv_name>
+		<x>230</x>
+		<y>98</y>
+		<width>301</width>
+		<height>31</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Mid Green" red="0" green="192" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 75%" red="192" green="192" blue="192"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Mid Green" red="0" green="192" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>.STOO - STOP OutLink</text>
+		<x>10</x>
+		<y>323</y>
+		<width>168</width>
+		<height>19</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(motor).DOL</pv_name>
+		<x>230</x>
+		<y>134</y>
+		<width>301</width>
+		<height>31</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Mid Green" red="0" green="192" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 75%" red="192" green="192" blue="192"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Mid Green" red="0" green="192" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(motor).RLNK</pv_name>
+		<x>230</x>
+		<y>205</y>
+		<width>301</width>
+		<height>31</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Mid Green" red="0" green="192" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 75%" red="192" green="192" blue="192"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Mid Green" red="0" green="192" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM Text Entry</name>
+		<pv_name>$(motor).RINP</pv_name>
+		<x>230</x>
+		<y>275</y>
+		<width>301</width>
+		<height>41</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Blue" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM Text Entry</name>
+		<pv_name>$(motor).STOO</pv_name>
+		<x>230</x>
+		<y>312</y>
+		<width>301</width>
+		<height>41</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Blue" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="combo" version="2.0.0">
+		<name>EDM menu button</name>
+		<pv_name>$(motor).OMSL</pv_name>
+		<x>230</x>
+		<y>169</y>
+		<width>151</width>
+		<height>32</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>EDM Exit Button</name>
+		<actions>
+			<action type="close_display">
+				<description>Close display</description>
+			</action>
+		</actions>
+		<text>Exit</text>
+		<x>230</x>
+		<y>352</y>
+		<width>301</width>
+		<height>29</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Exit: FG" red="192" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+</display>

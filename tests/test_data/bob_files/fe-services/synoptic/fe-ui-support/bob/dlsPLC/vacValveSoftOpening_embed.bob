@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>$(name)</name>
+	<width>460</width>
+	<height>480</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="symbol" version="2.0.0">
+		<name>Symbol</name>
+		<pv_name>$(device):STA</pv_name>
+		<symbols>
+			<symbol>symbol/$(valvetype) 1.svg</symbol>
+		</symbols>
+		<width>20</width>
+		<height>20</height>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<actions execute_as_one="true">
+			<action type="open_display">
+				<description>Open detail screen</description>
+				<file>vacValveSoftOpening_detail.bob</file>
+				<macros>
+					<device>$(device)</device>
+				</macros>
+				<target>tab</target>
+			</action>
+		</actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>Status</name>
+		<pv_name>$(device):STA</pv_name>
+		<x>25</x>
+		<width>131</width>
+		<font>
+			<font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="combo" version="2.0.0">
+		<name>auto(enum|Control)</name>
+		<pv_name>$(device):CON</pv_name>
+		<x>155</x>
+		<width>171</width>
+		<height>20</height>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+</display>

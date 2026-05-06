@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>Diamond Vacuum Overview</name>
+	<x>752</x>
+	<y>196</y>
+	<width>500</width>
+	<height>200</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>8</grid_step_x>
+	<grid_step_y>8</grid_step_y>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>$(interlock) Threshold</text>
+		<width>500</width>
+		<height>32</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="16.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="VA title" red="202" green="223" blue="159"></color>
+		</background_color>
+		<transparent>false</transparent>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>EDM Exit Button</name>
+		<actions>
+			<action type="close_display">
+				<description>Close display</description>
+			</action>
+		</actions>
+		<text>Exit</text>
+		<x>417</x>
+		<y>164</y>
+		<width>61</width>
+		<height>25</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Exit: FG" red="196" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<tooltip>$(actions)</tooltip>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label_3</name>
+		<text>THRESHOLD NON-DEFAULT VALUE</text>
+		<x>124</x>
+		<y>145</y>
+		<width>252</width>
+		<height>18</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<rules>
+			<rule name="threshold_warning_visibility_rule" prop_id="visible" out_exp="false">
+				<exp bool_exp="pv0==1">
+					<value>true</value>
+				</exp>
+				<exp bool_exp="pv0==0">
+					<value>false</value>
+				</exp>
+				<pv_name>$(threshold):NOT_DEFAULT</pv_name>
+			</rule>
+			<rule name="Rule" prop_id="foreground_color" out_exp="false">
+				<exp bool_exp="pv0==0">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pv0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>sim://ramp(0,1,1,0.5)</pv_name>
+			</rule>
+		</rules>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label_4</name>
+		<text>Pressure</text>
+		<x>17</x>
+		<y>53</y>
+		<width>58</width>
+		<height>18</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update_2</name>
+		<pv_name>SR$(cell)C-VA-WINGR-$(id):$(interlock):RBV</pv_name>
+		<x>194</x>
+		<y>51</y>
+		<width>90</width>
+		<height>23</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>2</format>
+		<precision>1</precision>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update_3</name>
+		<pv_name>SR$(cell)C-VA-WINGR-$(id):$(interlock):STATUS_B0</pv_name>
+		<x>324</x>
+		<y>56</y>
+		<width>171</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="byte_monitor" version="2.0.0">
+		<name>EDM Byte</name>
+		<pv_name>SR$(cell)C-VA-WINGR-$(id):$(interlock):STATUS</pv_name>
+		<x>290</x>
+		<y>50</y>
+		<width>30</width>
+		<height>83</height>
+		<numBits>3</numBits>
+		<bitReverse>true</bitReverse>
+		<horizontal>false</horizontal>
+		<square>true</square>
+		<off_color>
+			<color name="Green LED: Off" red="0" green="96" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color red="192" green="192" blue="192"></color>
+		</foreground_color>
+		<actions></actions>
+		<rules>
+			<rule name="onColorAlarm" prop_id="on_color" out_exp="false">
+				<exp bool_exp="pvSev0==3">
+					<value>
+						<color name="Invalid" red="255" green="255" blue="255"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==2">
+					<value>
+						<color name="Major" red="255" green="0" blue="0"></color>
+					</value>
+				</exp>
+				<exp bool_exp="pvSev0==1">
+					<value>
+						<color name="Minor" red="255" green="241" blue="0"></color>
+					</value>
+				</exp>
+				<pv_name>SR$(cell)C-VA-WINGR-$(id):$(interlock):STATUS</pv_name>
+			</rule>
+		</rules>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update_4</name>
+		<pv_name>SR$(cell)C-VA-WINGR-$(id):$(interlock):STATUS_B1</pv_name>
+		<x>324</x>
+		<y>82</y>
+		<width>171</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update_5</name>
+		<pv_name>SR$(cell)C-VA-WINGR-$(id):$(interlock):STATUS_B2</pv_name>
+		<x>324</x>
+		<y>108</y>
+		<width>171</width>
+		<height>17</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update</name>
+		<pv_name>$(threshold):RBV</pv_name>
+		<x>194</x>
+		<y>79</y>
+		<width>90</width>
+		<height>23</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>2</format>
+		<precision>1</precision>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM TextInput</name>
+		<pv_name>$(threshold):VAL</pv_name>
+		<x>97</x>
+		<y>79</y>
+		<width>90</width>
+		<height>24</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="196"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 90%" red="230" green="230" blue="230"></color>
+		</background_color>
+		<format>2</format>
+		<precision>1</precision>
+		<horizontal_alignment>1</horizontal_alignment>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color red="0" green="128" blue="255"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>Threshold</text>
+		<x>17</x>
+		<y>83</y>
+		<width>64</width>
+		<height>18</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label_2</name>
+		<text>Default</text>
+		<x>17</x>
+		<y>110</y>
+		<width>46</width>
+		<height>18</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="White" red="255" green="255" blue="255"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<auto_size>true</auto_size>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textupdate" version="2.0.0">
+		<name>EDM Text Update_1</name>
+		<pv_name>$(threshold):DEFAULT</pv_name>
+		<x>194</x>
+		<y>108</y>
+		<width>90</width>
+		<height>23</height>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Monitor: FG" red="96" green="255" blue="96"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Monitor: BG" red="64" green="64" blue="64"></color>
+		</background_color>
+		<format>2</format>
+		<precision>1</precision>
+		<show_units>false</show_units>
+		<horizontal_alignment>1</horizontal_alignment>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Mid Green" red="0" green="196" blue="0"></color>
+		</border_color>
+	</widget>
+</display>

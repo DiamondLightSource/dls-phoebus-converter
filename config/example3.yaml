@@ -1,3 +1,4 @@
+# Used by integration/test_conversion_ci.py
 meta_data:
   - domain: fe
     domain_synoptic_dst: fe-services/synoptic
@@ -5,7 +6,36 @@ meta_data:
     acc_ui_support_dst: acc-ui-support/bob
 
 files:
-  # Convert all support module screens in the common directory and sub directories
-  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/common
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE09I.opi
+    dst: synoptic
+    macros:
+      dom: FE09I
+      cell: 09
+      mks_type: b
+      type: I
+      srvalve: 02
+      ISBL: ""
+
+  - src: tests/test_data/opi_files/FE22B.opi
+    dst: synoptic
+    template_file: FE22B_template.xml
+    macros:
+      dom: FE22B
+      cell: 22
+      mks_type: a
+      type: B
+      srvalve: 03
+
+  - src: tests/test_data/opi_files/FE24B.opi
+    dst: synoptic
+    macros:
+      dom: FE24B
+      cell: 24
+      mks_type: b
+      type: B
+      srvalve: 03
+      ISBL:
+
+  - src: tests/test_data/opi_files/common
     dst: fe-ui-support
     include_subdirs: true

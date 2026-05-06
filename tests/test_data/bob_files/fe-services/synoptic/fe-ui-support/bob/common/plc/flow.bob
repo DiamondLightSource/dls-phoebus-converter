@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<name>$(dom)</name>
+	<x>543</x>
+	<y>581</y>
+	<width>1000</width>
+	<height>200</height>
+	<background_color>
+		<color name="Grey 75%" red="192" green="192" blue="192"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>8</grid_step_x>
+	<grid_step_y>8</grid_step_y>
+	<widget type="label" version="2.0.0">
+		<name>Label_4</name>
+		<text>$(desc)</text>
+		<y>3</y>
+		<width>101</width>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Grey 75%" red="192" green="192" blue="192"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<wrap_words>false</wrap_words>
+		<actions></actions>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="led" version="2.0.0">
+		<name>LED_1</name>
+		<pv_name>$(device):H2OALM01_DB</pv_name>
+		<x>111</x>
+		<width>12</width>
+		<height>25</height>
+		<off_color>
+			<color name="Red LED: On" red="255" green="0" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</line_color>
+		<square>true</square>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="led" version="2.0.0">
+		<name>LED_2</name>
+		<pv_name>$(device):H2OALM01</pv_name>
+		<x>100</x>
+		<width>12</width>
+		<height>25</height>
+		<off_color>
+			<color name="Red LED: On" red="255" green="0" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</line_color>
+		<square>true</square>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="led" version="2.0.0">
+		<name>LED_1</name>
+		<pv_name>$(device):H2OALM02_DB</pv_name>
+		<x>148</x>
+		<width>12</width>
+		<height>25</height>
+		<off_color>
+			<color name="Red LED: On" red="255" green="0" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</line_color>
+		<square>true</square>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+	<widget type="led" version="2.0.0">
+		<name>LED_2</name>
+		<pv_name>$(device):H2OALM02</pv_name>
+		<x>137</x>
+		<width>12</width>
+		<height>25</height>
+		<off_color>
+			<color name="Red LED: On" red="255" green="0" blue="0"></color>
+		</off_color>
+		<on_color>
+			<color name="Green LED: On" red="0" green="255" blue="0"></color>
+		</on_color>
+		<foreground_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<line_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</line_color>
+		<square>true</square>
+		<actions></actions>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+	</widget>
+</display>

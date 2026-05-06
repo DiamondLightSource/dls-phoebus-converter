@@ -3,14 +3,17 @@ repos:
     rev: v5.0.0
     hooks:
       - id: check-added-large-files
-        exclude: ^uv.lock
+        exclude: ^uv.lock|tests/test_data
+
       - id: check-yaml
       - id: check-merge-conflict
       - id: end-of-file-fixer
+        exclude: "tests/test_data"
 
   - repo: local
     hooks:
       - id: ruff
+        exclude: "tests/test_data"
         name: lint with ruff
         language: system
         entry: ruff check --force-exclude --fix
@@ -18,6 +21,7 @@ repos:
         require_serial: true
 
       - id: ruff-format
+        exclude: "tests/test_data"
         name: format with ruff
         language: system
         entry: ruff format --force-exclude

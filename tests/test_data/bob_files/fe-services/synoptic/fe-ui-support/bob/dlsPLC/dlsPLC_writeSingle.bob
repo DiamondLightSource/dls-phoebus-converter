@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<x>302</x>
+	<y>265</y>
+	<width>190</width>
+	<height>20</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="label" version="2.0.0">
+		<name>EDM Label</name>
+		<text>$(label)</text>
+		<width>75</width>
+		<font>
+			<font family="liberation sans" style="BOLD" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Text: FG" red="0" green="0" blue="0"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<vertical_alignment>1</vertical_alignment>
+		<border_color>
+			<color name="Black" red="0" green="0" blue="0"></color>
+		</border_color>
+	</widget>
+	<widget type="textentry" version="3.0.0">
+		<name>EDM Text Entry</name>
+		<pv_name>$(P)$(Q)</pv_name>
+		<x>75</x>
+		<width>116</width>
+		<height>21</height>
+		<font>
+			<font family="liberation sans" style="REGULAR" size="14.0"></font>
+		</font>
+		<foreground_color>
+			<color name="Controller: FG" red="0" green="0" blue="192"></color>
+		</foreground_color>
+		<background_color>
+			<color name="Controller: BG" red="205" green="205" blue="205"></color>
+		</background_color>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
+		<border_color>
+			<color name="Blue" red="0" green="0" blue="255"></color>
+		</border_color>
+	</widget>
+</display>

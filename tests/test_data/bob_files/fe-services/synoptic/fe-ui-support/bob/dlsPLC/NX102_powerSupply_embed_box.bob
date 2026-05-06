@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<width>345</width>
+	<height>265</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="group" version="3.0.0">
+		<name>PLC PSU Status</name>
+		<width>352</width>
+		<height>272</height>
+		<widget type="embedded" version="2.0.0">
+			<name>PLC PSU Status_Content</name>
+			<file>NX102_powerSupply_embed.opi</file>
+			<width>322</width>
+			<height>242</height>
+			<resize>2</resize>
+			<transparent>true</transparent>
+			<actions></actions>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+	</widget>
+</display>

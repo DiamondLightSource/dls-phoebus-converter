@@ -1,0 +1,934 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display version="2.0.0">
+	<width>250</width>
+	<height>200</height>
+	<background_color>
+		<color name="Canvas" red="200" green="200" blue="200"></color>
+	</background_color>
+	<actions></actions>
+	<grid_step_x>5</grid_step_x>
+	<grid_step_y>5</grid_step_y>
+	<widget type="symbol" version="2.0.0">
+		<name>Image Boolean Indicator</name>
+		<symbols>
+			<symbol></symbol>
+			<symbol></symbol>
+		</symbols>
+		<x>466</x>
+		<y>269</y>
+		<width>25</width>
+		<height>22</height>
+		<background_color>
+			<color red="240" green="240" blue="240"></color>
+		</background_color>
+		<actions></actions>
+		<tooltip>$(pv_name)
+$(pv_value)</tooltip>
+		<auto_size>true</auto_size>
+	</widget>
+	<widget type="group" version="3.0.0">
+		<name>Grouping Container</name>
+		<x>10</x>
+		<y>5</y>
+		<width>231</width>
+		<height>180</height>
+		<style>3</style>
+		<foreground_color>
+			<color red="0" green="128" blue="255"></color>
+		</foreground_color>
+		<line_color>
+			<color red="0" green="128" blue="255"></color>
+		</line_color>
+		<background_color>
+			<color name="Canvas" red="200" green="200" blue="200"></color>
+		</background_color>
+		<transparent>true</transparent>
+		<actions></actions>
+		<widget type="label" version="2.0.0">
+			<name>Label_1</name>
+			<text>+</text>
+			<x>5</x>
+			<width>36</width>
+			<height>16</height>
+			<foreground_color>
+				<color name="Text: FG" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<vertical_alignment>1</vertical_alignment>
+			<wrap_words>false</wrap_words>
+			<actions></actions>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+		<widget type="label" version="2.0.0">
+			<name>Label_2</name>
+			<text>-</text>
+			<x>36</x>
+			<width>36</width>
+			<height>16</height>
+			<foreground_color>
+				<color name="Text: FG" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<vertical_alignment>1</vertical_alignment>
+			<wrap_words>false</wrap_words>
+			<actions></actions>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_2</name>
+			<y>39</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:PLIM2</interlock>
+						<name>Axis 2 +VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):PLIM2:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_1</name>
+			<x>30</x>
+			<y>39</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:NLIM2</interlock>
+						<name>Axis 2 -VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):NLIM2:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_2</name>
+			<y>19</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:PLIM1</interlock>
+						<name>Axis 1 +VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):PLIM1:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_1</name>
+			<x>30</x>
+			<y>19</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:NLIM1</interlock>
+						<name>Axis 1 -VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):NLIM1:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_2</name>
+			<y>59</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:PLIM3</interlock>
+						<name>Axis 3 +VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):PLIM3:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_1</name>
+			<x>30</x>
+			<y>59</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:NLIM3</interlock>
+						<name>Axis 3 -VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):NLIM3:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_2</name>
+			<y>79</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:PLIM4</interlock>
+						<name>Axis 4 +VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):PLIM4:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_1</name>
+			<x>30</x>
+			<y>79</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:NLIM4</interlock>
+						<name>Axis 4 -VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):NLIM4:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_2</name>
+			<y>99</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:PLIM5</interlock>
+						<name>Axis 5 +VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):PLIM5:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_1</name>
+			<x>30</x>
+			<y>99</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:NLIM5</interlock>
+						<name>Axis 5 -VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):NLIM5:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_2</name>
+			<y>119</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:PLIM6</interlock>
+						<name>Axis 6 +VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):PLIM6:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_1</name>
+			<x>30</x>
+			<y>119</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:NLIM6</interlock>
+						<name>Axis 6 -VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):NLIM6:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_2</name>
+			<y>139</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:PLIM7</interlock>
+						<name>Axis 7 +VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):PLIM7:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_1</name>
+			<x>30</x>
+			<y>139</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:NLIM7</interlock>
+						<name>Axis 7 -VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):NLIM7:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_2</name>
+			<y>159</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:PLIM8</interlock>
+						<name>Axis 8 +VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):PLIM8:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="led" version="2.0.0">
+			<name>LED_1</name>
+			<x>30</x>
+			<y>159</y>
+			<off_color>
+				<color name="Red LED: On" red="255" green="0" blue="0"></color>
+			</off_color>
+			<on_color>
+				<color name="Green LED: On" red="0" green="255" blue="0"></color>
+			</on_color>
+			<foreground_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<line_color>
+				<color red="150" green="150" blue="150"></color>
+			</line_color>
+			<actions execute_as_one="true">
+				<action type="open_display">
+					<description>Open Display</description>
+					<file>interlock_small_detail.opi</file>
+					<macros>
+						<interlock>:NLIM8</interlock>
+						<name>Axis 8 -VE</name>
+						<device>$(device)</device>
+					</macros>
+					<target>tab</target>
+				</action>
+			</actions>
+			<rules>
+				<rule name="LEDState" prop_id="pv_value" out_exp="true">
+					<exp bool_exp="pv0==65535 ">
+						<expression>1</expression>
+					</exp>
+					<exp bool_exp="pv0!=65535">
+						<expression>0</expression>
+					</exp>
+					<pv_name>$(device):NLIM8:RAWILK</pv_name>
+				</rule>
+			</rules>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+		</widget>
+		<widget type="textupdate" version="2.0.0">
+			<name>Text Update</name>
+			<pv_name>$(device):PLIM1:NAME</pv_name>
+			<x>55</x>
+			<y>19</y>
+			<width>176</width>
+			<height>21</height>
+			<font>
+				<font name="Label Small" family="Liberation Sans" style="REGULAR" size="12.871287128712872"></font>
+			</font>
+			<foreground_color>
+				<color name="Text: FG" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<vertical_alignment>1</vertical_alignment>
+			<wrap_words>false</wrap_words>
+			<actions></actions>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+		<widget type="textupdate" version="2.0.0">
+			<name>Text Update_1</name>
+			<pv_name>$(device):PLIM2:NAME</pv_name>
+			<x>55</x>
+			<y>39</y>
+			<width>176</width>
+			<height>21</height>
+			<font>
+				<font name="Label Small" family="Liberation Sans" style="REGULAR" size="12.871287128712872"></font>
+			</font>
+			<foreground_color>
+				<color name="Text: FG" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<vertical_alignment>1</vertical_alignment>
+			<wrap_words>false</wrap_words>
+			<actions></actions>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+		<widget type="textupdate" version="2.0.0">
+			<name>Text Update_2</name>
+			<pv_name>$(device):PLIM3:NAME</pv_name>
+			<x>55</x>
+			<y>59</y>
+			<width>176</width>
+			<height>21</height>
+			<font>
+				<font name="Label Small" family="Liberation Sans" style="REGULAR" size="12.871287128712872"></font>
+			</font>
+			<foreground_color>
+				<color name="Text: FG" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<vertical_alignment>1</vertical_alignment>
+			<wrap_words>false</wrap_words>
+			<actions></actions>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+		<widget type="textupdate" version="2.0.0">
+			<name>Text Update_3</name>
+			<pv_name>$(device):PLIM4:NAME</pv_name>
+			<x>55</x>
+			<y>79</y>
+			<width>176</width>
+			<height>21</height>
+			<font>
+				<font name="Label Small" family="Liberation Sans" style="REGULAR" size="12.871287128712872"></font>
+			</font>
+			<foreground_color>
+				<color name="Text: FG" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<vertical_alignment>1</vertical_alignment>
+			<wrap_words>false</wrap_words>
+			<actions></actions>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+		<widget type="textupdate" version="2.0.0">
+			<name>Text Update_4</name>
+			<pv_name>$(device):PLIM5:NAME</pv_name>
+			<x>55</x>
+			<y>99</y>
+			<width>176</width>
+			<height>21</height>
+			<font>
+				<font name="Label Small" family="Liberation Sans" style="REGULAR" size="12.871287128712872"></font>
+			</font>
+			<foreground_color>
+				<color name="Text: FG" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<vertical_alignment>1</vertical_alignment>
+			<wrap_words>false</wrap_words>
+			<actions></actions>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+		<widget type="textupdate" version="2.0.0">
+			<name>Text Update_5</name>
+			<pv_name>$(device):PLIM6:NAME</pv_name>
+			<x>55</x>
+			<y>119</y>
+			<width>176</width>
+			<height>21</height>
+			<font>
+				<font name="Label Small" family="Liberation Sans" style="REGULAR" size="12.871287128712872"></font>
+			</font>
+			<foreground_color>
+				<color name="Text: FG" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<vertical_alignment>1</vertical_alignment>
+			<wrap_words>false</wrap_words>
+			<actions></actions>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+		<widget type="textupdate" version="2.0.0">
+			<name>Text Update_6</name>
+			<pv_name>$(device):PLIM7:NAME</pv_name>
+			<x>55</x>
+			<y>139</y>
+			<width>176</width>
+			<height>21</height>
+			<font>
+				<font name="Label Small" family="Liberation Sans" style="REGULAR" size="12.871287128712872"></font>
+			</font>
+			<foreground_color>
+				<color name="Text: FG" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<vertical_alignment>1</vertical_alignment>
+			<wrap_words>false</wrap_words>
+			<actions></actions>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+		<widget type="textupdate" version="2.0.0">
+			<name>Text Update_7</name>
+			<pv_name>$(device):PLIM8:NAME</pv_name>
+			<x>55</x>
+			<y>159</y>
+			<width>176</width>
+			<height>21</height>
+			<font>
+				<font name="Label Small" family="Liberation Sans" style="REGULAR" size="12.871287128712872"></font>
+			</font>
+			<foreground_color>
+				<color name="Text: FG" red="0" green="0" blue="0"></color>
+			</foreground_color>
+			<background_color>
+				<color name="Canvas" red="200" green="200" blue="200"></color>
+			</background_color>
+			<transparent>true</transparent>
+			<vertical_alignment>1</vertical_alignment>
+			<wrap_words>false</wrap_words>
+			<actions></actions>
+			<border_alarm_sensitive>false</border_alarm_sensitive>
+			<border_color>
+				<color name="Black" red="0" green="0" blue="0"></color>
+			</border_color>
+		</widget>
+	</widget>
+</display>
