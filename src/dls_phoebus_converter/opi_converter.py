@@ -54,7 +54,7 @@ class OpiConverter:
 
     synoptic: bool = False
     replace_tab: bool = False
-    fix_group: bool = False
+    fix_group: bool = True
     no_modify: bool = False
 
     # This stores the initial contents of the bob/opi file
@@ -81,9 +81,14 @@ class OpiConverter:
         self.opi_data = etree.parse(self.src_file_path)
         self.const_opi_data = copy.deepcopy(self.opi_data)
 
-    def read_bob_file_contents(self, output_file):
+    def read_bob_file_contents(self, output_file=None):
+        if output_file is None:
+            output_file = self.output_file
         self.bob_data = etree.parse(output_file)
         self.const_bob_data = copy.deepcopy(self.bob_data)
+
+    def write_opi_file_contents(self):
+        self.opi_data.write(self.tmp_file_path)
 
     def write_bob_file_contents(self):
 

@@ -20,74 +20,50 @@ def pre_conversion_steps(oc: OpiConverter):
     use_modified_opi = replace_edm_symbol_widget(oc)
     if oc.fix_group:
         # Fix missing border items from grouping container
-        if use_modified_opi:
-            fix_grouping_container(oc.tmp_file_path)
-        else:
-            use_modified_opi = fix_grouping_container(oc.src_file_path)
+        use_modified_opi = fix_grouping_container(oc) or use_modified_opi
+    oc.write_opi_file_contents()
     return use_modified_opi
 
 
 def replace_edm_symbol_widget(oc: OpiConverter):
-    result = []
-    with open(oc.opi_data) as f:
-        lines = f.readlines()
-        fixed = False
-        for line in lines:
-            if "org.csstudio.opibuilder.widgets.edm.symbolwidget" in line:
-                line = line.replace(
-                    "org.csstudio.opibuilder.widgets.edm.symbolwidget",
-                    "org.csstudio.opibuilder.widgets.symbol.multistate.MultistateMonitorWidget",
+    fixed = False
+    for element in oc.opi_data.iter():
+        for key, value in element.attrib.items():
+            if value == "org.csstudio.opibuilder.widgets.edm.symbolwidget":
+                logger.debug("Replacing CSS EDM Widgets in OPI before conversion")
+                element.attrib[key] = (
+                    "org.csstudio.opibuilder.widgets.symbol.multistate.MultistateMonitorWidget"
                 )
                 fixed = True
-            result.append(line)
-    if fixed:
-        oc.replace_edm_sym = True
-        logger.debug("Replacing CSS EDM Widgets in OPI before conversion")
-        with open(oc.tmp_file_path, "w") as f:
-            f.writelines(result)
-
+                oc.conversion_steps.replace_edm_sym = True
     return fixed
 
 
 def fix_grouping_container(oc: OpiConverter):
-    result = []
-    with open(oc.src_file_path) as f:
-        lines = f.readlines()
-        check_for_border_prop = False
-        found_border_prop = False
-        fixed = False
-        for line in lines:
-            if (
-                "org.csstudio.opibuilder.widgets.groupingContainer" in line
-                and not check_for_border_prop
-            ):
-                check_for_border_prop = True
-            elif "<widget typeId" in line:
-                if check_for_border_prop and not found_border_prop:
-                    fixed = True
-                    result.append("   <border_color>\n")
-                    result.append(
-                        '     <color name="Canvas" red="200" green="200" blue="200"></color>\n'  # noqa: E501
-                    )
-                    result.append("   </border_color>\n")
-                    result.append("   <border_style>0</border_style>\n")
-                    # Reset
-                    check_for_border_prop = False
-                    found_border_prop = False
-                    if (
-                        "org.csstudio.opibuilder.widgets.groupingContainer" in line
-                        and not check_for_border_prop
-                    ):
-                        check_for_border_prop = True
-            if check_for_border_prop:
-                if "border_color" in line:
-                    check_for_border_prop = False
-                    found_border_prop = True
-            result.append(line)
-    if fixed:
-        oc.fix_group_cont = True
-        logger.debug("OPI ERROR: Missing border property in 'Group' widget... fixing")
-        with open(oc.tmp_file_path, "w") as f:
-            f.writelines(result)
+    fixed = False
+    check_for_border_prop = False
+    found_border_prop = False
+    for element in oc.opi_data.iter():
+        if (
+            "org.csstudio.opibuilder.widgets.groupingContainer"
+            in element.attrib.values()
+            and not check_for_border_prop
+        ):
+            check_for_border_prop = True
 
+        elif element.tag == "widget" and "typeId" in element.attrib.keys():
+            if check_for_border_prop and not found_border_prop:
+                logger.debug("Fixing missing border property in 'Group' widget")
+                fixed = True
+                element.append(
+                    '<border_color>\n<color name="Canvas" red="200" green="200" blue="200"></color>\n</border_color>\n<border_style>0</border_style>\n'  # noqa: E501
+                )
+                # Reset
+                check_for_border_prop = False
+                found_border_prop = False
+
+        if check_for_border_prop:
+            if element.tag == "border_color":
+                check_for_border_prop = False
+                found_border_prop = True
     return fixed
