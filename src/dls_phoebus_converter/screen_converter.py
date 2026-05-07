@@ -8,8 +8,8 @@ from dataclasses import dataclass, field
 from importlib import import_module
 from pathlib import Path, PosixPath
 
-import xmltodict
 import yaml
+from lxml import etree
 
 import dls_phoebus_converter.opi_converter as opi_converter
 from dls_phoebus_converter.logconfig import setup_logging
@@ -37,10 +37,30 @@ class ConversionConfig:
     support_module_name: str | None = None
     synoptic: bool = False
     macros: dict[str, str] = field(default_factory=lambda: {})
-    # This stores the entire contents of the bob file
-    all_phoebus_data: dict = field(default_factory=lambda: {})
-    # This just stores the widget data from the bob file
-    widget_data: dict = field(default_factory=lambda: {})
+
+    # This stores the initial contents of the bob/opi file
+    const_bob_data: etree.Element | None = None
+    const_opi_data: etree.Element | None = None
+
+    # This stores the working etree for the bob/opi data
+    bob_data: etree.Element | None = None
+    opi_data: etree.Element | None = None
+
+    def __post_init__(self):
+        if self.dst_filename is None:
+            self.dst_filename = self.src_file_path.name.replace(".opi", ".bob")
+        self.read_opi_file_contents()
+
+    def read_opi_file_contents(self):
+        self.opi_data = etree.parse(self.src_file_path)
+        self.const_opi_data = copy.deepcopy(self.opi_data)
+
+    def read_bob_file_contents(self):
+        self.bob_data = etree.parse(self.dst_dir_path / self.dst_filename)
+        self.const_bob_data = copy.deepcopy(self.bob_data)
+
+    def write_bob_file_contents(self):
+        self.bob_data.write(self.dst_dir_path / self.dst_filename)
 
 
 class Converter:
