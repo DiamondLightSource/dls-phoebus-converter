@@ -1,66 +1,17 @@
 """Handles the entire conversion of a set of screens from a config.yaml file"""
 
-import copy
 import logging
-import re
-import typing
-from dataclasses import dataclass, field
 from importlib import import_module
 from pathlib import Path, PosixPath
 
 import yaml
-from lxml import etree
 
-import dls_phoebus_converter.opi_converter as opi_converter
 from dls_phoebus_converter.logconfig import setup_logging
-
-ACC_UI_SUPPORT_MODULE_LIST = [
-    "devIocStats",
-    "digitelMpc",
-    "mks937a",
-    "mks937b",
-    "mpsPermit",
-    "rga",
-    "TimingTemplates",
-]
+from dls_phoebus_converter.opi_converter import OpiConverter
+from dls_phoebus_converter.support_modules import convert_extra_support_modules
 
 setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
-
-
-@dataclass
-class ConversionConfig:
-    src_file_path: Path = Path()
-    dst_dir_path: Path = Path()
-    dst_filename: str | None = None
-    template_file_path: Path | None = None
-    support_module_name: str | None = None
-    synoptic: bool = False
-    macros: dict[str, str] = field(default_factory=lambda: {})
-
-    # This stores the initial contents of the bob/opi file
-    const_bob_data: etree.Element | None = None
-    const_opi_data: etree.Element | None = None
-
-    # This stores the working etree for the bob/opi data
-    bob_data: etree.Element | None = None
-    opi_data: etree.Element | None = None
-
-    def __post_init__(self):
-        if self.dst_filename is None:
-            self.dst_filename = self.src_file_path.name.replace(".opi", ".bob")
-        self.read_opi_file_contents()
-
-    def read_opi_file_contents(self):
-        self.opi_data = etree.parse(self.src_file_path)
-        self.const_opi_data = copy.deepcopy(self.opi_data)
-
-    def read_bob_file_contents(self):
-        self.bob_data = etree.parse(self.dst_dir_path / self.dst_filename)
-        self.const_bob_data = copy.deepcopy(self.bob_data)
-
-    def write_bob_file_contents(self):
-        self.bob_data.write(self.dst_dir_path / self.dst_filename)
 
 
 class Converter:
@@ -72,7 +23,7 @@ class Converter:
         self.config_file = config_file_path
         self.convert_dependencies = False
         # Mapping between a screens src path and destination dir
-        self.conversion_data: list[ConversionConfig] = []
+        self.conversion_data: list[OpiConverter] = []
         # Mapping between a support module name and its screen location dir
         self.domain_support_module_locations: list[tuple] = []
         self.acc_support_module_locations: list[tuple] = []
@@ -149,7 +100,7 @@ class Converter:
 
     def parse_file_data(
         self, file_data: dict, processed_files: list
-    ) -> list[ConversionConfig]:
+    ) -> list[OpiConverter]:
         new_conversions = []
         src_file_paths = []
         dst_dir_paths = []
@@ -237,11 +188,12 @@ class Converter:
         for src_file_path, dst_dir_path in zip(
             src_file_paths, dst_dir_paths, strict=True
         ):
-            new_conversion = ConversionConfig()
-            new_conversion.src_file_path = src_file_path
-            new_conversion.dst_dir_path = dst_dir_path
+            dst_filename = None
             if "new_filename" in file_data:
-                new_conversion.dst_filename = file_data["new_filename"]
+                dst_filename = file_data["new_filename"]
+
+            new_conversion = OpiConverter(src_file_path, dst_dir_path, dst_filename)
+
             if "macros" in file_data:
                 new_conversion.macros = file_data["macros"]
             if "support_module_name" in file_data:
@@ -272,9 +224,9 @@ class Converter:
             # Create directories to place screens
             conversion.dst_dir_path.mkdir(parents=True, exist_ok=True)
 
-            # Convert .boy to .bob
-            opi_converter.convert_opi(conversion)
+            # Convert .opi to .bob
+            conversion.convert()
 
         # Get missing support module screens
         if self.convert_dependencies:
-            self.convert_extra_support_modules()
+            convert_extra_support_modules()

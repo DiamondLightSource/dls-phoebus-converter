@@ -1,17 +1,19 @@
 """Handles the conversion of an individual file from opi to bob"""
 
 import argparse
+import copy
 import logging
 import os
 import shutil
 import subprocess
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
+
+from lxml import etree
 
 from dls_phoebus_converter.logconfig import setup_logging
 from dls_phoebus_converter.post_converter import post_conversion_steps
 from dls_phoebus_converter.pre_converter import pre_conversion_steps
-from dls_phoebus_converter.screen_converter import ConversionConfig
 
 PHOEBUS_SH_FILE_PATH = "/dls_sw/deploy-tools/modules/phoebus/dev/entrypoints/phoebus"
 PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
@@ -37,119 +39,219 @@ class ConversionSteps:
     replace_action_tab = False
 
 
+@dataclass
 class OpiConverter:
-    def __init__(
-        self,
-        src_file_path,
-        dst_filename,
-        dst_dir_path,
-        tmp_file_path,
-        template_file_path,
-        replace_tab,
-    ):
-        self.src_file_path = src_file_path
-        self.dst_filename = dst_filename
-        self.dst_dir_path = dst_dir_path
-        self.tmp_file_path = tmp_file_path
-        self.template_file_path = template_file_path
-        self.replace_tab = replace_tab
-        self.cs = ConversionSteps()
+    src_file_path: Path
+    dst_dir_path: Path
+    dst_filename: str | None = None
+    output_file: Path | None = None
+    tmp_file_path: Path | None = None
+    template_file_path: Path | None = None
+    support_module_name: str | None = None
+    no_edit_file: Path | None = None
+    macros: dict[str, str] = field(default_factory=lambda: {})
+    conversion_steps = ConversionSteps()
+
+    synoptic: bool = False
+    replace_tab: bool = False
+    fix_group: bool = False
+    no_modify: bool = False
+
+    # This stores the initial contents of the bob/opi file
+    const_bob_data: etree.ElementTree | None = None
+    const_opi_data: etree.ElementTree | None = None
+
+    # This stores the working etree for the bob/opi data
+    bob_data: etree.ElementTree | None = None
+    opi_data: etree.ElementTree | None = None
+
+    def __post_init__(self):
+        if self.dst_filename is None:
+            self.dst_filename = self.src_file_path.name.replace(".opi", ".bob")
+        if self.output_file is None:
+            self.output_file = self.dst_dir_path / self.dst_filename
+        if self.tmp_file_path is None:
+            self.tmp_file_path = self.dst_dir_path / "tmp.opi"
+
+        self.read_opi_file_contents()
+        # If conversion has already been run, delete previous BOB conversion
+        self.delete_old_file()
+
+    def read_opi_file_contents(self):
+        self.opi_data = etree.parse(self.src_file_path)
+        self.const_opi_data = copy.deepcopy(self.opi_data)
+
+    def read_bob_file_contents(self, output_file):
+        self.bob_data = etree.parse(output_file)
+        self.const_bob_data = copy.deepcopy(self.bob_data)
+
+    def write_bob_file_contents(self):
+
+        # etree.indent(self.bob_data, space="    ")
+        # for el in self.bob_data.iter():
+        #     if el.attrib.items() and not list(el):
+        #         if "\n" in el.text:
+        #             el.text = el.text.strip()
+
+        self.bob_data.write(
+            self.output_file,
+            pretty_print=True,
+            xml_declaration=True,
+            encoding="utf-8",
+        )
 
     def delete_old_file(self):
         try:
-            old_file = os.path.join(self.dst_dir_path, self.dst_filename)
+            old_file = self.output_file
             os.remove(old_file)
             logger.info(f"Removing old converted file: {old_file}")
         except OSError:
             pass
 
-    def run_converter(self, opi_file_path):
+    def dont_edit_file(self):
+        # Check the no_edit file to see if we should even run the conversion
+        # Instead of doing it like this, we could read a comment at the top of the bob file
+        if self.no_edit_file is not None:
+            with open(self.no_edit_file) as f:
+                lines = f.readlines()
+                for line in lines:
+                    if self.src_file_path == line.strip():
+                        logging.warning(
+                            "!!! OPI file to be converted is in the 'no_edit' list"
+                            "suggesting that it has had manual changes that should not be"
+                            "overwritten.\n"
+                            "If this is incorrect then remove this file from the "
+                            f"{self.no_edit_file}.\n"
+                            "Skipping this conversion"
+                        )
+                        return True
+        return False
+
+    def log_conversion_steps(self):
+        # Log what was done
+        if self.conversion_steps.replace_edm_sym:
+            logger.info("Replaced EDMSymbol widgets in OPI before running converter")
+        if self.conversion_steps.fix_group_cont:
+            logger.info(
+                "Fixed Grouping Container widget is OPI that is missing required properties"
+            )
+        if self.conversion_steps.update_leg_sev:
+            logger.info("Updating legacy PV severity status")
+        if self.conversion_steps.fix_exit_but:
+            logger.info(
+                "Converting EXIT to script to an EXIT action button to close display"
+            )
+        if self.conversion_steps.replace_opi_ext:
+            logger.info(
+                "Replaced .OPI file extensions with .BOB for "
+                "EmbeddedDisplay/LinkingContainers/Open Display actions"
+            )
+        if self.conversion_steps.non_ab_action:
+            logger.warning(
+                "Found an action on a widget that is NOT an ActionButton or Symbol widget. "
+                "Debug for more"
+            )
+        if self.conversion_steps.replace_with_ab:
+            logger.info(
+                "Replaced a Rectangle/BooleanButton widget with an action with an Action "
+                "Button widget"
+            )
+        if self.conversion_steps.replace_db_script:
+            logger.info(
+                "Replaced script to open databrowser with an action to open a DataBrowser "
+                "plt file"
+            )
+        if self.conversion_steps.fix_action_macro_name:
+            logger.info(
+                "Fixed Open Display action that contains the $name macro that does not get "
+                "parsed"
+            )
+        if self.conversion_steps.create_sym_images:
+            logger.info("Created new images for Symbol widget from original")
+        if self.conversion_steps.replace_action_tab:
+            logger.info("Replace open display target=tab with target=standalone")
+
+    def run_converter(self):
         convert_command = (
             PHOEBUS_SH_FILE_PATH
             + "\
         -main org.csstudio.display.builder.model.Converter -output "
             + str(self.dst_dir_path)
             + " "
-            + str(opi_file_path)
+            + str(self.tmp_file_path)
         )
         process = subprocess.Popen(
             convert_command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
-        output_file = self.dst_dir_path / "tmp.bob"
+        tmp_bob_file_path = self.dst_dir_path / "tmp.bob"
 
         # Captures the stdout and stderr from the converter process.
         # This can be very verbose, so we log it at the DEBUG level
         stdout, stderr = process.communicate()
-        if not output_file.is_file():
+
+        # Delete input file (tmp.opi)
+        os.remove(self.tmp_file_path)
+
+        if not tmp_bob_file_path.is_file():
             logger.error(f"Phoebus conversion command failed: {convert_command}")
         for line in stderr.decode("utf-8").split("\n"):
-            if not output_file.is_file():
+            if not tmp_bob_file_path.is_file():
                 logger.error(line)
             logger.debug(line)
 
-        if not output_file.is_file():
-            return False
-        else:
+        if tmp_bob_file_path.is_file():
+            # Read tmp.bob
+            self.read_bob_file_contents(tmp_bob_file_path)
+            # Delete tmp.bob
+            os.remove(tmp_bob_file_path)
             return True
+        else:
+            return False
 
-    def run_pre_conversion_steps(self, fix_group):
+    def run_pre_conversion_steps(self):
         """Perform modifications to the .opi file before doing the main conversion
         to .bob using the Phoebus converter."""
-        return pre_conversion_steps()
+        return pre_conversion_steps(self)
 
-    def run_post_conversion_steps(self, no_modify):
-        """
+    def run_post_conversion_steps(self, conversion, no_modify):
+        """Perform modifications to the .bob file.
         - Replaces EXIT scripts with an ActionButton to Exit
         - Action Buttons to open displays are modified to open .bob extensions
         - Rules using legacy severity are replaced
         - Flag that actions are running on non-action buttons
+        - Change filepaths to reference new support module screen locations
+        - Add macros as needed
         """
-        return post_conversion_steps()
+        return post_conversion_steps(conversion, no_modify)
 
+    def convert(self) -> Path | None:
+        if self.dont_edit_file():
+            return True
 
-def log_conversion_steps(log_data):
-    # Log what was done
-    if log_data.replace_edm_sym:
-        logger.info("Replaced EDMSymbol widgets in OPI before running converter")
-    if log_data.fix_group_cont:
-        logger.info(
-            "Fixed Grouping Container widget is OPI that is missing required properties"
-        )
-    if log_data.update_leg_sev:
-        logger.info("Updating legacy PV severity status")
-    if log_data.fix_exit_but:
-        logger.info(
-            "Converting EXIT to script to an EXIT action button to close display"
-        )
-    if log_data.replace_opi_ext:
-        logger.info(
-            "Replaced .OPI file extensions with .BOB for "
-            "EmbeddedDisplay/LinkingContainers/Open Display actions"
-        )
-    if log_data.non_ab_action:
-        logger.warning(
-            "Found an action on a widget that is NOT an ActionButton or Symbol widget. "
-            "Debug for more"
-        )
-    if log_data.replace_with_ab:
-        logger.info(
-            "Replaced a Rectangle/BooleanButton widget with an action with an Action "
-            "Button widget"
-        )
-    if log_data.replace_db_script:
-        logger.info(
-            "Replaced script to open databrowser with an action to open a DataBrowser "
-            "plt file"
-        )
-    if log_data.fix_action_macro_name:
-        logger.info(
-            "Fixed Open Display action that contains the $name macro that does not get "
-            "parsed"
-        )
-    if log_data.create_sym_images:
-        logger.info("Created new images for Symbol widget from original")
-    if log_data.replace_action_tab:
-        logger.info("Replace open display target=tab with target=standalone")
+        # Modify the OPI file before running conversion
+        use_modified_opi = self.run_pre_conversion_steps()
+
+        # Should we use the modified OPI files
+        if not use_modified_opi:
+            # Copy the src file to the tmp location overwriting any existing tmp.opi. This
+            # is done as autoconverting directly from the src file sometimes fails due to
+            # read permission issues
+            shutil.copy(self.src_file_path, self.tmp_file_path)
+
+        # Run Phoebus converter
+        success = self.run_converter()
+        if not success:
+            return False
+
+        # Make modifications to converted .bob file
+        # self.run_post_conversion_steps()
+
+        self.log_conversion_steps()
+
+        # Write the final xml to the bob file
+        self.write_bob_file_contents()
+
+        logger.info(f"Conversion saved to {self.output_file}\n")
 
 
 def parse_args():
@@ -210,105 +312,6 @@ def parse_args():
     )
 
 
-def convert_opi(
-    conversion: ConversionConfig,
-    fix_group=True,
-    no_modify=False,
-    replace_tab=False,
-    no_edit_file=None,
-) -> Path | None:
-
-    tmp_file_path = conversion.dst_dir_path / "tmp.opi"
-
-    sc = OpiConverter(
-        conversion.src_file_path,
-        conversion.dst_filename,
-        conversion.dst_dir_path,
-        tmp_file_path,
-        conversion.template_file_path,
-        replace_tab,
-    )
-
-    # Check the no_edit file to see if we should even run the conversion
-    # Instead of doing it like this, we could read a comment at the top of the bob file
-    if no_edit_file is not None:
-        with open(no_edit_file) as f:
-            lines = f.readlines()
-            for line in lines:
-                if conversion.src_file_path == line.strip():
-                    logging.warning(
-                        "!!! OPI file to be converted is in the 'no_edit' list"
-                        "suggesting that it has had manual changes that should not be"
-                        "overwritten.\n"
-                        "If this is incorrect then remove this file from the "
-                        f"{no_edit_file}.\n"
-                        "Skipping this conversion"
-                    )
-                    return None
-
-    # If conversion has already been run, delete previous BOB conversion
-    sc.delete_old_file()
-
-    # Modify the OPI file before running conversion
-    use_modified_opi = sc.run_pre_conversion_steps(fix_group)
-
-    # Should we use the modified OPI files
-    if not use_modified_opi:
-        # Copy the src file to the tmp location overwriting any existing tmp.opi. This
-        # is done as autoconverting directly from the src file sometimes fails due to
-        # read permission issues
-        shutil.copy(conversion.src_file_path, tmp_file_path)
-
-    # Run Phoebus converter
-    conversion_success = sc.run_converter(tmp_file_path)
-
-    # Delete tmp.opi
-    os.remove(tmp_file_path)
-
-    if not conversion_success:
-        return None
-
-    # Rename tmp.bob to the required name
-    new_file = os.path.join(conversion.dst_dir_path, conversion.dst_filename)
-    tmp_file_path.with_suffix(".bob").rename(new_file)
-
-    # Make modifications to converted .bob file
-    sc.run_post_conversion_steps(no_modify)
-
-    log_data = sc.cs
-    log_conversion_steps(log_data)
-
-    # Conversion failed, skip to next file
-    if converted_file is None:
-        continue
-
-    # We need to define macros which were previously passed into the synoptic as
-    # script arguments
-    if conversion.synoptic:
-        self.handle_macros(converted_file, conversion)
-
-    # Figure out which filepaths within bob files need updating and
-    # update them to the new paths.
-    self.get_required_support_modules(conversion, converted_file)
-    # Support module paths are relative and so don't need to have their paths
-    # updated
-    if conversion.support_module_name is None:
-        self.update_filepaths(conversion)
-
-    # Special cases are tweaks which are not handled by the
-    # normal conversion process and are often unique to a specific screen.
-    # These are optionally defined in a domain-specific special case module.
-    try:
-        self.special_case_module.run(converted_file, conversion)
-    except AttributeError:
-        pass
-
-    # Overwrite the bob file with the modified xml data
-    conversion.write_bob_file_contents()
-
-    logger.info(f"Conversion saved to {converted_file}\n")
-    return Path(new_file)
-
-
 if __name__ == "__main__":
-    convert_opi(*parse_args())
+    oc = OpiConverter(*parse_args())
+    oc.convert()

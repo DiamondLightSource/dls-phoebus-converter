@@ -1,22 +1,30 @@
 """Extra conversion steps which arent handled by the phoebus converter"""
 
+from __future__ import annotations
+
 import logging
 import os
 import re
 import subprocess
+from typing import TYPE_CHECKING
 
 import xmltodict
 
 from dls_phoebus_converter.logconfig import setup_logging
+from dls_phoebus_converter.macros import handle_macros
+
+if TYPE_CHECKING:
+    from dls_phoebus_converter.opi_converter import OpiConverter
+from dls_phoebus_converter.support_modules import handle_support_modules
 
 if not logging.getLogger("dls_phoebus_converter"):
     setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-def post_conversion_steps(no_modify):
-    if not no_modify:
-        xml_dict = modify_bob_xml()
+def post_conversion_steps(oc: OpiConverter):
+    if not oc.no_modify:
+        xml_dict = modify_bob_xml(oc)
         # Write out modified xml
         if xml_dict is not None:
             write_dict(xml_dict)
@@ -24,12 +32,25 @@ def post_conversion_steps(no_modify):
             # Dictionary could not be parsed
             return None
 
+    # We need to define macros which were previously passed into the synoptic as
+    # script arguments
+    if oc.synoptic:
+        handle_macros(oc)
 
-def modify_bob_xml():
+    handle_support_modules(oc)
+
+    # Special cases are tweaks which are not handled by the
+    # normal conversion process and are often unique to a specific screen.
+    # These are optionally defined in a domain-specific special case module.
+    try:
+        oc.special_case_module.run(oc)
+    except AttributeError:
+        pass
+
+
+def modify_bob_xml(oc: OpiConverter):
     as_dict = {}
-    with open(
-        os.path.join(self.dst_dir_path, self.dst_filename), encoding="utf-8"
-    ) as file:
+    with open(os.path.join(oc.dst_dir_path, oc.dst_filename), encoding="utf-8") as file:
         fxml = file.read()
 
         as_dict = xmltodict.parse(fxml)
@@ -37,7 +58,7 @@ def modify_bob_xml():
             widgets = as_dict["display"]["widget"]
         except KeyError as e:
             logger.error(
-                f"Failed to parse xml for file: {self.src_file_path} with error:\n{e}"
+                f"Failed to parse xml for file: {oc.src_file_path} with error:\n{e}"
             )
             return None
 
@@ -48,7 +69,7 @@ def modify_bob_xml():
 
 
 # TODO: This will move to utilities and be made common. It will also switch to lxml
-def parse_widget(widget, spacing, level, parent):
+def parse_widget(oc: OpiConverter, widget, spacing, level, parent):
 
     if not isinstance(widget, dict):
         return
@@ -103,9 +124,9 @@ def parse_widget(widget, spacing, level, parent):
                 or widget["text"] == "Exit"
                 or widget["text"] == "Cancel"
             ):
-                widget["actions"]["action"] = fix_exit_button()
+                widget["actions"]["action"] = fix_exit_button(oc)
         if widget["actions"] is not None:
-            process_widget_actions(widget)
+            process_widget_actions(oc, widget)
 
     elif widget["@type"] == "symbol":
         if "actions" in widget:
@@ -141,22 +162,22 @@ def parse_widget(widget, spacing, level, parent):
     check_actions_in_non_action_buttons(widget)
 
 
-def fix_exit_button():
-    self.cs.fix_exit_but = True
+def fix_exit_button(oc):
+    oc.fix_exit_but = True
     new_action = {}
     new_action["@type"] = "close_display"
     new_action["description"] = "Close display"
     return new_action
 
 
-def process_widget_actions(widget):
+def process_widget_actions(oc, widget):
     actions = widget["actions"]["action"]
     if type(actions) is not list:
         actions = [actions]
 
     for action in actions:
         replace_opi_extension(action)
-        if self.replace_tab:
+        if oc.replace_tab:
             replace_open_in_tab(action)
 
         # Currently we are only looking at databrowser/StripTool related actions
@@ -168,7 +189,7 @@ def process_widget_actions(widget):
                     logger.warning(
                         "Screen contains an executeEclipseCommand script which is"
                         "not supported by Phoebus. Found script: "
-                        f"{action['script']['text']} in file {self.src_file_path}"
+                        f"{action['script']['text']} in file {oc.src_file_path}"
                     )
 
         elif action["@type"] == "command":
@@ -176,9 +197,9 @@ def process_widget_actions(widget):
                 set_new_databrowser_action_from_strip_command(action)
 
 
-def replace_opi_extension(action):
+def replace_opi_extension(oc: OpiConverter, action):
     if "file" in action:
-        self.cs.replace_opi_ext = True
+        oc.conversion_steps.replace_opi_ext = True
         logger.debug(
             "Replacing file open action: " + str(action["file"]) + " to open .BOB file"
         )
@@ -187,7 +208,7 @@ def replace_opi_extension(action):
         action["file"] = bob
 
 
-def fix_action_open_macro(widget):
+def fix_action_open_macro(oc: OpiConverter, widget):
     actions = widget["actions"]["action"]
     if type(actions) is not list:
         actions = [actions]
@@ -196,25 +217,25 @@ def fix_action_open_macro(widget):
             if "macros" in action.keys():
                 for i in action["macros"]:
                     if action["macros"][i] == "$(name)":
-                        self.cs.fix_action_macro_name = True
+                        oc.conversion_steps.fix_action_macro_name = True
                         action["macros"][i] = widget["name"]
 
 
-def create_symbol_from_edm(widget):
+def create_symbol_from_edm(oc: OpiConverter, widget):
     setup_dict = {}
-    if self.template_file_path is None:
+    if oc.template_file_path is None:
         logger.warning(
             "Found edm symbol widget but could not convert it due to no template"
             "file being supplied."
         )
         return
 
-    if not os.path.isfile(self.template_file_path):
+    if not os.path.isfile(oc.template_file_path):
         error_msg = "No template file provided"
         logger.error(error_msg, exc_info=True)
         raise FileNotFoundError(error_msg)
 
-    with open(self.template_file_path, encoding="utf-8") as file:
+    with open(oc.template_file_path, encoding="utf-8") as file:
         fxml = file.read()
 
         setup_dict = xmltodict.parse(fxml)
@@ -246,7 +267,7 @@ def create_symbol_from_edm(widget):
                 if os.path.isfile(out_image[0] + "_0" + ext):
                     logger.info("   ... images already exist - skipping")
                 else:
-                    self.cs.create_sym_images = True
+                    oc.conversion_steps.create_sym_images = True
                     for n in range(n_images):
                         output = out_image[0] + "_" + str(n) + ext
                         x = 0 + width * n
@@ -328,21 +349,21 @@ def create_symbol_from_edm(widget):
                     widget["rules"]["rule"] = rules
 
 
-def fix_embedded_screen_ext(widget):
+def fix_embedded_screen_ext(oc: OpiConverter, widget):
     if "file" not in widget:
         return
-    self.cs.replace_opi_ext = True
+    oc.conversion_steps.replace_opi_ext = True
     opi_file = widget["file"]
     bob_file = opi_file.replace(".opi", ".bob")
     widget["file"] = bob_file
 
 
-def get_alarm_sensitive_progress_bars():
+def get_alarm_sensitive_progress_bars(oc: OpiConverter):
     alarm_sensitive_progress_bars = []
     in_progress_bar = False
     alarm_sensitive = False
     name_ids = ["", ""]
-    with open(self.src_file_path) as f:
+    with open(oc.src_file_path) as f:
         lines = f.readlines()
         for line in lines:
             if "org.csstudio.opibuilder.widgets.progressbar" in line:
@@ -370,12 +391,12 @@ def get_alarm_sensitive_progress_bars():
     return alarm_sensitive_progress_bars
 
 
-def get_transparent_background_tank_widget():
+def get_transparent_background_tank_widget(oc: OpiConverter):
     in_tank_widget = False
     transparent_background = False
     transparent_backgrounds = []
     name_ids = ["", ""]
-    with open(self.src_file_path) as f:
+    with open(oc.src_file_path) as f:
         lines = f.readlines()
         for line in lines:
             if "org.csstudio.opibuilder.widgets.tank" in line:
@@ -425,7 +446,7 @@ def check_rule(widget):
                     fix_rule_expression(e)
 
 
-def check_actions_in_non_action_buttons(widget):
+def check_actions_in_non_action_buttons(oc: OpiConverter, widget):
     if "actions" in widget:
         if (
             widget["actions"] is not None
@@ -433,7 +454,7 @@ def check_actions_in_non_action_buttons(widget):
             and widget["@type"] != "action_button"
             and widget["@type"] != "symbol"
         ):
-            self.cs.non_ab_action = True
+            oc.conversion_steps.non_ab_action = True
             logger.debug(
                 "Action contained in widget that isn't an action button: "
                 + str(widget["@type"])
@@ -445,7 +466,7 @@ def check_actions_in_non_action_buttons(widget):
                 if widget["@type"] == "bool_button":
                     if widget["on_label"] != widget["off_label"]:
                         return
-                self.cs.replace_with_ab = True
+                oc.conversion_steps.replace_with_ab = True
                 logger.debug("    Attempting to fix by converting to an action_button")
                 widget["@type"] = "action_button"
 
@@ -463,14 +484,14 @@ def check_actions_in_non_action_buttons(widget):
                             widget["rules"]["rule"].remove(r)
 
 
-def replace_open_in_tab(action):
+def replace_open_in_tab(oc: OpiConverter, action):
     if action["@type"] == "open_display":
         if action["target"] == "tab":
             action["target"] = "standalone"
-            self.cs.replace_action_tab = True
+            oc.conversion_steps.replace_action_tab = True
 
 
-def set_new_databrowser_action_from_execute_eclipse(self, action):
+def set_new_databrowser_action_from_execute_eclipse(action):
     # We will be implementing a new Phoebus action which opens PV(s) in the
     # databrowser, so eventually this code will be replaced with that, for now we
     # use a command action.
@@ -494,7 +515,7 @@ def set_new_databrowser_action_from_execute_eclipse(self, action):
     )
 
 
-def set_new_databrowser_action_from_strip_command(self, action):
+def set_new_databrowser_action_from_strip_command(action):
     # We will be implementing a new Phoebus action which opens PV(s) in the
     # databrowser, so eventually this code will be replaced with that, for now we
     # use a command action.
@@ -526,7 +547,7 @@ def reorder_widgets_from_rules(symbols, rule):
     # - pvX >= Y && pvX < Z
 
     # Contains a list of tuples of (pv_val, symbol_index)
-    reorder_map: list(tuple) = []
+    reorder_map: list[tuple] = []
     try:
         if "exp" in rule:
             for e in rule["exp"]:
@@ -632,9 +653,9 @@ def check_legacy_sev(input_field):
     return result
 
 
-def update_legacy_sev_status(input_field, leg_sev, new_sev):
+def update_legacy_sev_status(oc: OpiConverter, input_field, leg_sev, new_sev):
     if leg_sev in input_field:
-        self.cs.update_leg_sev = True
+        oc.conversion_steps.update_leg_sev = True
         result = input_field.replace(leg_sev, new_sev)
         logger.debug("Fixing " + leg_sev + " to " + new_sev)
         return result

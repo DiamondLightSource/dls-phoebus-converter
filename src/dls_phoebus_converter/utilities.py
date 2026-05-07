@@ -1,5 +1,15 @@
 """Helper functions for non specific conversion use"""
 
+import logging
+import typing
+from pathlib import Path
+
+from dls_phoebus_converter.logconfig import setup_logging
+
+if not logging.getLogger("dls_phoebus_converter"):
+    setup_logging()
+logger = logging.getLogger("dls_phoebus_converter")
+
 
 def search_widget_filepaths_recursive(
     widget, func: typing.Callable, widget_file_paths=None, macros=None

@@ -1,6 +1,44 @@
 """Handles moving support modules screens from distributed locations to
 the deployment locations."""
 
+from __future__ import annotations
+
+import logging
+from pathlib import Path, PosixPath
+from typing import TYPE_CHECKING
+
+import yaml
+
+from dls_phoebus_converter.logconfig import setup_logging
+from dls_phoebus_converter.macros import fill_in_file_path_macros
+
+if TYPE_CHECKING:
+    from dls_phoebus_converter.opi_converter import OpiConverter
+
+ACC_UI_SUPPORT_MODULE_LIST = [
+    "devIocStats",
+    "digitelMpc",
+    "mks937a",
+    "mks937b",
+    "mpsPermit",
+    "rga",
+    "TimingTemplates",
+]
+
+if not logging.getLogger("dls_phoebus_converter"):
+    setup_logging()
+logger = logging.getLogger("dls_phoebus_converter")
+
+
+def handle_support_modules(oc: OpiConverter):
+    # Figure out which filepaths within bob files need updating and
+    # update them to the new paths.
+    get_required_support_modules(oc)
+    # Support module paths are relative and so don't need to have their paths
+    # updated
+    if oc.support_module_name is None:
+        update_filepaths(oc)
+
 
 def get_widget_filepaths(self, widget, widget_file_paths):
     def append_new_filepath(path_string, widget_file_paths, symbol=False):
@@ -16,20 +54,16 @@ def update_widget_filepaths(self, widget, macros):
     self.search_widget_filepaths_recursive(widget, self.switch_filepaths, macros)
 
 
-def get_required_support_modules(
-    self, conversion: ConversionConfig, file_path: Path
-) -> None:
+def get_required_support_modules(self, oc: OpiConverter) -> None:
     widget_file_paths: list[Path] = []
     # Look for filepaths in xml
-    for widget in conversion.widget_data:
-        self.get_widget_filepaths(widget, widget_file_paths)
+    for widget in oc.widget_data:
+        get_widget_filepaths(widget, widget_file_paths)
 
     # Only keep unique filepaths and fill in macros
     file_paths_unique = set()
     for file_path in set(widget_file_paths):
-        file_paths_unique.add(
-            Path(self.fill_in_file_path_macros(str(file_path), conversion.macros))
-        )
+        file_paths_unique.add(Path(fill_in_file_path_macros(str(file_path), oc.macros)))
 
     # If a support module has been requested and we are not already converting it,
     # then add it to the list of extra required support modules which we will

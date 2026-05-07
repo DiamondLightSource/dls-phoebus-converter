@@ -1,29 +1,35 @@
 """Conversion steps which are required before running the phoebus converter"""
 
+from __future__ import annotations
+
 import logging
+from typing import TYPE_CHECKING
 
 from dls_phoebus_converter.logconfig import setup_logging
+
+if TYPE_CHECKING:
+    from dls_phoebus_converter.opi_converter import OpiConverter
 
 if not logging.getLogger("dls_phoebus_converter"):
     setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-def pre_conversion_steps(fix_group, tmp_file_path, src_file_path):
+def pre_conversion_steps(oc: OpiConverter):
     use_modified_opi = False
-    use_modified_opi = replace_edm_symbol_widget(src_file_path)
-    if fix_group:
+    use_modified_opi = replace_edm_symbol_widget(oc)
+    if oc.fix_group:
         # Fix missing border items from grouping container
         if use_modified_opi:
-            fix_grouping_container(tmp_file_path)
+            fix_grouping_container(oc.tmp_file_path)
         else:
-            use_modified_opi = fix_grouping_container(src_file_path)
+            use_modified_opi = fix_grouping_container(oc.src_file_path)
     return use_modified_opi
 
 
-def replace_edm_symbol_widget(src_file_path):
+def replace_edm_symbol_widget(oc: OpiConverter):
     result = []
-    with open(src_file_path) as f:
+    with open(oc.opi_data) as f:
         lines = f.readlines()
         fixed = False
         for line in lines:
@@ -35,17 +41,17 @@ def replace_edm_symbol_widget(src_file_path):
                 fixed = True
             result.append(line)
     if fixed:
-        self.cs.replace_edm_sym = True
+        oc.replace_edm_sym = True
         logger.debug("Replacing CSS EDM Widgets in OPI before conversion")
-        with open(self.tmp_file_path, "w") as f:
+        with open(oc.tmp_file_path, "w") as f:
             f.writelines(result)
 
     return fixed
 
 
-def fix_grouping_container(opi_file_path):
+def fix_grouping_container(oc: OpiConverter):
     result = []
-    with open(opi_file_path) as f:
+    with open(oc.src_file_path) as f:
         lines = f.readlines()
         check_for_border_prop = False
         found_border_prop = False
@@ -79,9 +85,9 @@ def fix_grouping_container(opi_file_path):
                     found_border_prop = True
             result.append(line)
     if fixed:
-        self.cs.fix_group_cont = True
+        oc.fix_group_cont = True
         logger.debug("OPI ERROR: Missing border property in 'Group' widget... fixing")
-        with open(self.tmp_file_path, "w") as f:
+        with open(oc.tmp_file_path, "w") as f:
             f.writelines(result)
 
     return fixed

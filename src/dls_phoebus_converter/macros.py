@@ -1,9 +1,24 @@
 """Manages the conversion of existing macros and addition of new macros"""
 
+from __future__ import annotations
+
+import logging
+import re
+from typing import TYPE_CHECKING
+
+from dls_phoebus_converter.logconfig import setup_logging
+
+if TYPE_CHECKING:
+    from dls_phoebus_converter.opi_converter import OpiConverter
+
 MACRO_EXCEPTION_LIST = ["pv_name", "pv_value", "name", "actions"]
 
+if not logging.getLogger("dls_phoebus_converter"):
+    setup_logging()
+logger = logging.getLogger("dls_phoebus_converter")
 
-def fill_in_file_path_macros(self, string: str, macros) -> str:
+
+def fill_in_file_path_macros(string: str, macros) -> str:
     def replace(match):
         key = match.group(1)  # the ‘x’ inside ${x}
         return macros.get(key, match.group(0))  # default: leave unchanged
@@ -13,17 +28,16 @@ def fill_in_file_path_macros(self, string: str, macros) -> str:
 
 
 def add_new_macros(
-    self,
-    conversion: ConversionConfig,
+    oc: OpiConverter,
     macro_names: list[str],
     macro_values: list[str],
 ) -> None:
     """Add a list of macro name/values to the top level of the bob file."""
 
-    if "macros" not in conversion.all_phoebus_data["display"]:
-        conversion.all_phoebus_data["display"]["macros"] = {}
+    if "macros" not in oc.all_phoebus_data["display"]:
+        oc.all_phoebus_data["display"]["macros"] = {}
 
-    macro_data = conversion.all_phoebus_data["display"]["macros"]
+    macro_data = oc.all_phoebus_data["display"]["macros"]
 
     for new_macro_name, new_macro_value in zip(macro_names, macro_values, strict=True):
         for existing_macro_name, existing_macro_value in macro_data.items():
@@ -35,10 +49,10 @@ def add_new_macros(
                 )
         macro_data[new_macro_name] = new_macro_value
 
-    conversion.widget_data = conversion.all_phoebus_data["display"]["widget"]
+    oc.widget_data = oc.all_phoebus_data["display"]["widget"]
 
 
-def handle_macros(self, file_path: Path, conversion: ConversionConfig) -> None:
+def handle_macros(oc: OpiConverter) -> None:
     """Look for unique instances of a macro eg ${string} in the bob file. We ignore
     a small number of macros which are defined from other widget fields
     (MACRO_EXCEPTION_LIST). If a macro is found in a file but has not been defined
@@ -47,7 +61,7 @@ def handle_macros(self, file_path: Path, conversion: ConversionConfig) -> None:
     new_macro_names = []
     new_macro_values = []
 
-    with file_path.open("r", encoding="utf-8") as fh:
+    with oc.output_file.open("r", encoding="utf-8") as fh:
         content = fh.read()
 
     identified_macros = re.findall(r"\$[\{\(]([^\}\)\s]+)[\}\)]", content)
@@ -58,9 +72,9 @@ def handle_macros(self, file_path: Path, conversion: ConversionConfig) -> None:
     for macro in unique_identified_macros:
         # Some macros refer to internal Phoebus objects, so we dont resolve these
         if macro not in MACRO_EXCEPTION_LIST:
-            if macro in conversion.macros.keys():
+            if macro in oc.macros.keys():
                 new_macro_names.append(macro)
-                new_macro_values.append(conversion.macros[macro])
+                new_macro_values.append(oc.macros[macro])
             else:
                 # This macro has not been defined!
                 logger.warning(
@@ -69,9 +83,9 @@ def handle_macros(self, file_path: Path, conversion: ConversionConfig) -> None:
                 )
 
     # Add macros defined in config even if they are not used in the parent display
-    for m_name, m_key in conversion.macros.items():
+    for m_name, m_key in oc.macros.items():
         if m_name not in new_macro_names:
             new_macro_names.append(m_name)
             new_macro_values.append(m_key)
 
-    self.add_new_macros(conversion, new_macro_names, new_macro_values)
+    add_new_macros(oc, new_macro_names, new_macro_values)
