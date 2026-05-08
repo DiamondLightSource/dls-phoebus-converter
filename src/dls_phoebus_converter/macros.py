@@ -6,6 +6,8 @@ import logging
 import re
 from typing import TYPE_CHECKING
 
+from lxml import etree
+
 from dls_phoebus_converter.logconfig import setup_logging
 
 if TYPE_CHECKING:
@@ -34,10 +36,10 @@ def add_new_macros(
 ) -> None:
     """Add a list of macro name/values to the top level of the bob file."""
 
-    if "macros" not in oc.all_phoebus_data["display"]:
-        oc.all_phoebus_data["display"]["macros"] = {}
+    if "macros" not in oc.bob_data.getroot():
+        oc.bob_data.getroot().append(etree.Element("macros"))
 
-    macro_data = oc.all_phoebus_data["display"]["macros"]
+    macro_data = oc.bob_data.find("macros")
 
     for new_macro_name, new_macro_value in zip(macro_names, macro_values, strict=True):
         for existing_macro_name, existing_macro_value in macro_data.items():
@@ -47,9 +49,9 @@ def add_new_macros(
                     f"{existing_macro_name}:{existing_macro_value} -> "
                     f"{new_macro_name}:{new_macro_value}"
                 )
-        macro_data[new_macro_name] = new_macro_value
-
-    oc.widget_data = oc.all_phoebus_data["display"]["widget"]
+        new_macro = etree.Element(new_macro_name)
+        new_macro.text = str(new_macro_value)
+        macro_data.append(new_macro)
 
 
 def handle_macros(oc: OpiConverter) -> None:
@@ -60,10 +62,7 @@ def handle_macros(oc: OpiConverter) -> None:
 
     new_macro_names = []
     new_macro_values = []
-
-    with oc.output_file.open("r", encoding="utf-8") as fh:
-        content = fh.read()
-
+    content = etree.tostring(oc.bob_data, encoding="unicode")
     identified_macros = re.findall(r"\$[\{\(]([^\}\)\s]+)[\}\)]", content)
 
     unique_identified_macros = list(dict.fromkeys(identified_macros))

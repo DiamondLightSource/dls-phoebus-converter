@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import logging
 import os
 import re
@@ -9,180 +10,121 @@ import subprocess
 from typing import TYPE_CHECKING
 
 import xmltodict
+from lxml.etree import Element
 
 from dls_phoebus_converter.logconfig import setup_logging
 from dls_phoebus_converter.macros import handle_macros
 
 if TYPE_CHECKING:
-    from dls_phoebus_converter.opi_converter import OpiConverter
+    from dls_phoebus_converter.screen_converter import ScreenConverter
 from dls_phoebus_converter.support_modules import handle_support_modules
+
+if TYPE_CHECKING:
+    from dls_phoebus_converter.opi_converter import OpiConverter
 
 if not logging.getLogger("dls_phoebus_converter"):
     setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-def post_conversion_steps(oc: OpiConverter):
+def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
     if not oc.no_modify:
-        xml_dict = modify_bob_xml(oc)
-        # Write out modified xml
-        if xml_dict is not None:
-            write_dict(xml_dict)
-        else:
-            # Dictionary could not be parsed
-            return None
+        parse_widgets(oc)
 
-    # We need to define macros which were previously passed into the synoptic as
-    # script arguments
+    # # We need to define macros which were previously passed into the synoptic as
+    # # script arguments
     if oc.synoptic:
         handle_macros(oc)
 
-    handle_support_modules(oc)
+    handle_support_modules(sc, oc)
 
-    # Special cases are tweaks which are not handled by the
-    # normal conversion process and are often unique to a specific screen.
-    # These are optionally defined in a domain-specific special case module.
+    # # Special cases are tweaks which are not handled by the
+    # # normal conversion process and are often unique to a specific screen.
+    # # These are optionally defined in a domain-specific special case module.
     try:
-        oc.special_case_module.run(oc)
+        sc.special_case_module.run(oc)
     except AttributeError:
         pass
 
 
-def modify_bob_xml(oc: OpiConverter):
-    as_dict = {}
-    with open(os.path.join(oc.dst_dir_path, oc.dst_filename), encoding="utf-8") as file:
-        fxml = file.read()
-
-        as_dict = xmltodict.parse(fxml)
-        try:
-            widgets = as_dict["display"]["widget"]
-        except KeyError as e:
-            logger.error(
-                f"Failed to parse xml for file: {oc.src_file_path} with error:\n{e}"
+def parse_widgets(oc: OpiConverter):
+    for widget in oc.bob_data.findall(".//widget"):
+        if "@typeId" in widget.attrib.keys():
+            logging.error(
+                "Detected old CSS index '@typeid' - suggests that the Phoebus converter"
+                "failed to convert the GroupContainer widget.\n"
+                "Try running converter with --fixGroup option."
             )
-            return None
+            return
 
-        for w in widgets:
-            parse_widget(w, "", 0, as_dict["display"])
+        if widget.attrib.get("type") == "action_button":
+            for child in widget:
+                if child.tag == "text":
+                    if (
+                        child.text == "EXIT"
+                        or child.text == "Exit"
+                        or child.text == "Cancel"
+                    ):
+                        fix_exit_button(oc, widget.find(".//actions"))
+                if child.tag == "actions":
+                    process_widget_actions(oc, widget.find(".//actions"))
 
-    return as_dict
+        elif widget.attrib.get("type") == "symbol":
+            for child in widget:
+                if child.tag == "actions":
+                    process_widget_actions(oc, widget.find(".//actions"))
+            create_symbol_from_edm(oc, widget)
 
+        # elif widget["@type"] == "symbol":
+        #     if "actions" in widget:
+        #         if widget["actions"] is not None and "action" in widget["actions"]:
+        #             replace_opi_extension(widget["actions"]["action"])
+        #             fix_action_open_macro(widget)
+        #     create_symbol_from_edm(widget)
+        # elif widget["@type"] == "embedded":
+        #     fix_embedded_screen_ext(widget)
+        # elif widget["@type"] == "progressbar":
+        #     # Look for any progress bar widgets with alarm borders enabled
+        #     alarm_sensitive_progress_bars = get_alarm_sensitive_progress_bars()
+        #     if "name" in widget and "pv_name" in widget:
+        #         if [widget["name"], widget["pv_name"]] in alarm_sensitive_progress_bars:
+        #             widget["border_alarm_sensitive"] = "true"
+        # elif widget["@type"] == "tank":
+        #     # Phoebus is missing the <transparent_background> option, so we just set the
+        #     # background colour to transparent
+        #     transparent_tank_backgrounds = get_transparent_background_tank_widget()
+        #     if "name" in widget and "pv_name" in widget:
+        #         if [widget["name"], widget["pv_name"]] in transparent_tank_backgrounds:
+        #             widget["background_color"] = {
+        #                 "color": {
+        #                     "@name": "Transparent",
+        #                     "@red": "255",
+        #                     "@green": "255",
+        #                     "@blue": "255",
+        #                 }
+        #             }
 
-# TODO: This will move to utilities and be made common. It will also switch to lxml
-def parse_widget(oc: OpiConverter, widget, spacing, level, parent):
-
-    if not isinstance(widget, dict):
-        return
-
-    if "@typeId" in widget:
-        logging.error(
-            "Detected old CSS index '@typeid' - suggests that the Phoebus converter"
-            "failed to convert the GroupContainer widget.\n"
-            "Try running converter with --fixGroup option."
-        )
-        return
-
-    if widget["@type"] == "group":
-        if "widget" in widget:
-            if type(widget["widget"]) is not list:
-                parse_widget(widget["widget"], spacing + " ", level + 1, widget)
-            else:
-                for w in widget["widget"]:
-                    parse_widget(w, spacing + " ", level + 1, widget)
-    elif widget["@type"] == "tabs":
-        if "tabs" in widget:
-            if "tab" in widget["tabs"]:
-                if type(widget["tabs"]["tab"]) is not list:
-                    if type(widget["tabs"]["tab"]["children"]["widget"]) is not list:
-                        parse_widget(
-                            widget["tabs"]["tab"]["children"]["widget"],
-                            spacing + " ",
-                            level + 1,
-                            widget,
-                        )
-                    else:
-                        for child_widget in widget["tabs"]["tab"]["children"]["widget"]:
-                            parse_widget(child_widget, spacing + " ", level + 1, widget)
-                else:
-                    for tab in widget["tabs"]["tab"]:
-                        if type(tab["children"]["widget"]) is not list:
-                            parse_widget(
-                                tab["children"]["widget"],
-                                spacing + " ",
-                                level + 1,
-                                widget,
-                            )
-                        else:
-                            for child_widget in tab["children"]["widget"]:
-                                parse_widget(
-                                    child_widget, spacing + " ", level + 1, widget
-                                )
-    elif widget["@type"] == "action_button":
-        if "text" in widget:
-            if (
-                widget["text"] == "EXIT"
-                or widget["text"] == "Exit"
-                or widget["text"] == "Cancel"
-            ):
-                widget["actions"]["action"] = fix_exit_button(oc)
-        if widget["actions"] is not None:
-            process_widget_actions(oc, widget)
-
-    elif widget["@type"] == "symbol":
-        if "actions" in widget:
-            if widget["actions"] is not None and "action" in widget["actions"]:
-                replace_opi_extension(widget["actions"]["action"])
-                fix_action_open_macro(widget)
-        create_symbol_from_edm(widget)
-    elif widget["@type"] == "embedded":
-        fix_embedded_screen_ext(widget)
-    elif widget["@type"] == "progressbar":
-        # Look for any progress bar widgets with alarm borders enabled
-        alarm_sensitive_progress_bars = get_alarm_sensitive_progress_bars()
-        if "name" in widget and "pv_name" in widget:
-            if [widget["name"], widget["pv_name"]] in alarm_sensitive_progress_bars:
-                widget["border_alarm_sensitive"] = "true"
-    elif widget["@type"] == "tank":
-        # Phoebus is missing the <transparent_background> option, so we just set the
-        # background colour to transparent
-        transparent_tank_backgrounds = get_transparent_background_tank_widget()
-        if "name" in widget and "pv_name" in widget:
-            if [widget["name"], widget["pv_name"]] in transparent_tank_backgrounds:
-                widget["background_color"] = {
-                    "color": {
-                        "@name": "Transparent",
-                        "@red": "255",
-                        "@green": "255",
-                        "@blue": "255",
-                    }
-                }
-
-    parse_all_fields_in_dict(widget)
-    check_rule(widget)
-    check_actions_in_non_action_buttons(widget)
+        # parse_all_fields_in_dict(widget)
+        # check_rule(widget)
+        # check_actions_in_non_action_buttons(widget)
 
 
-def fix_exit_button(oc):
-    oc.fix_exit_but = True
-    new_action = {}
-    new_action["@type"] = "close_display"
-    new_action["description"] = "Close display"
-    return new_action
+def fix_exit_button(oc: OpiConverter, action: Element):
+    oc.conversion_steps.fix_exit_but = True
+    action.attrib["type"] = "close_display"
+    action.attrib["description"] = "Close display"
 
 
-def process_widget_actions(oc, widget):
-    actions = widget["actions"]["action"]
-    if type(actions) is not list:
-        actions = [actions]
-
+def process_widget_actions(oc: OpiConverter, actions: Element):
     for action in actions:
-        replace_opi_extension(action)
+        fix_action_open_macro(oc, action)
+        replace_opi_extension(oc, action)
         if oc.replace_tab:
-            replace_open_in_tab(action)
+            replace_open_in_tab(oc, action)
 
         # Currently we are only looking at databrowser/StripTool related actions
-        if action["@type"] == "execute":
-            if "executeEclipseCommand" in action["script"]["text"]:
+        if action.attrib["type"] == "execute":
+            if "executeEclipseCommand" in action.find("script/text"):
                 if "org.csstudio.trends.databrowser2" in action["script"]["text"]:
                     set_new_databrowser_action_from_execute_eclipse(action)
                 else:
@@ -192,37 +134,34 @@ def process_widget_actions(oc, widget):
                         f"{action['script']['text']} in file {oc.src_file_path}"
                     )
 
-        elif action["@type"] == "command":
-            if "strip.py" in action["command"]:
+        elif action.attrib["type"] == "command":
+            if "strip.py" in action.find("command"):
                 set_new_databrowser_action_from_strip_command(action)
 
 
-def replace_opi_extension(oc: OpiConverter, action):
-    if "file" in action:
-        oc.conversion_steps.replace_opi_ext = True
-        logger.debug(
-            "Replacing file open action: " + str(action["file"]) + " to open .BOB file"
-        )
-        opi = action["file"]
-        bob = opi.replace(".opi", ".bob")
-        action["file"] = bob
+def replace_opi_extension(oc: OpiConverter, action: Element):
+    for child in action:
+        if child.find("file"):
+            oc.conversion_steps.replace_opi_ext = True
+            logger.debug(
+                "Replacing file open action: " + child.text + " to open .BOB file"
+            )
+            child.text.replace(".opi", ".bob")
 
 
-def fix_action_open_macro(oc: OpiConverter, widget):
-    actions = widget["actions"]["action"]
-    if type(actions) is not list:
-        actions = [actions]
-    for action in actions:
-        if action["@type"] == "open_display":
-            if "macros" in action.keys():
-                for i in action["macros"]:
-                    if action["macros"][i] == "$(name)":
+def fix_action_open_macro(oc: OpiConverter, action: Element):
+    """Replace the macro $(name) with the actions parent widgets name"""
+
+    if action.attrib["type"] == "open_display":
+        for child in action:
+            if child.tag == "macros":
+                for macro in child:
+                    if macro.text == "$(name)":
                         oc.conversion_steps.fix_action_macro_name = True
-                        action["macros"][i] = widget["name"]
+                        macro.text = action.getparent().getparent().find("name").text
 
 
-def create_symbol_from_edm(oc: OpiConverter, widget):
-    setup_dict = {}
+def create_symbol_from_edm(oc: OpiConverter, widget: Element):
     if oc.template_file_path is None:
         logger.warning(
             "Found edm symbol widget but could not convert it due to no template"
@@ -230,123 +169,120 @@ def create_symbol_from_edm(oc: OpiConverter, widget):
         )
         return
 
-    if not os.path.isfile(oc.template_file_path):
+    if oc.template_data is None:
         error_msg = "No template file provided"
         logger.error(error_msg, exc_info=True)
         raise FileNotFoundError(error_msg)
 
-    with open(oc.template_file_path, encoding="utf-8") as file:
-        fxml = file.read()
+    template_symbols = oc.template_data.getroot()
+    for s in template_symbols:
+        if s.find("name").text == widget.find("name").text:
+            logger.info("Fixing Symbol widget with name: " + s.find("name").text)
+            image = s.find("image").text
+            location = s.find("location").text
+            width = int(s.find("width").text)
+            height = int(s.find("height").text)
+            n_images = int(s.find("nimages").text)
+            start_index = s.find("startindex").text
+            invalid_image_index = int(s.find("invalidimageindex").text)
 
-        setup_dict = xmltodict.parse(fxml)
+            # Run action of left click
+            if widget.find("actions") is not None:
+                widget.append(Element("run_actions_on_mouse_click"))
+                widget.find("run_actions_on_mouse_click").text = "true"
 
-        sym_list = []
-        if type(setup_dict["symbols"]["symbol"]) is not list:
-            sym_list = [setup_dict["symbols"]["symbol"]]
-        else:
-            sym_list = setup_dict["symbols"]["symbol"]
-        for s in sym_list:
-            if s["name"] == widget["name"]:
-                logger.info("Fixing Symbol widget with name: " + s["name"])
-                image = s["image"]
-                location = s["location"]
-                width = int(s["width"])
-                height = int(s["height"])
-                n_images = int(s["nimages"])
-                start_index = s["startindex"]
-                invalid_image_index = int(s["invalidimageindex"])
+            # Set up symbols
+            out_image = location.split(".")[:-1]
+            ext = "." + location.split(".")[-1]
+            logger.info("Creating new images for symbol from: " + location)
+            if os.path.isfile(out_image[0] + "_0" + ext):
+                logger.info("   ... images already exist - skipping")
+            else:
+                oc.conversion_steps.create_sym_images = True
+                for n in range(n_images):
+                    output = out_image[0] + "_" + str(n) + ext
+                    x = 0 + width * n
+                    cmd = (
+                        "convert "
+                        + location
+                        + " -crop "
+                        + str(width)
+                        + "x"
+                        + str(height)
+                        + "+"
+                        + str(x)
+                        + "+0 "
+                        + output
+                    )
+                    process = subprocess.Popen(
+                        cmd.split(),
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                    )
 
-                # Run action of left click
-                if "actions" in widget:
-                    widget["run_actions_on_mouse_click"] = "true"
+                    stdout, stderr = process.communicate()
 
-                # Set up symbols
-                out_image = location.split(".")[:-1]
-                ext = "." + location.split(".")[-1]
-                logger.info("Creating new images for symbol from: " + location)
-                if os.path.isfile(out_image[0] + "_0" + ext):
-                    logger.info("   ... images already exist - skipping")
-                else:
-                    oc.conversion_steps.create_sym_images = True
-                    for n in range(n_images):
-                        output = out_image[0] + "_" + str(n) + ext
-                        x = 0 + width * n
-                        cmd = (
-                            "convert "
-                            + location
-                            + " -crop "
-                            + str(width)
-                            + "x"
-                            + str(height)
-                            + "+"
-                            + str(x)
-                            + "+0 "
-                            + output
-                        )
-                        process = subprocess.Popen(
-                            cmd.split(),
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                        )
+            out_image = ".".join(image.split(".")[:-1])
+            ext = "." + image.split(".")[-1]
+            symbol_files = []
+            start_index_list = start_index.split(",")
+            if len(start_index_list) > 1:
+                for n in start_index_list:
+                    symbol_files.append(out_image + "_" + n + ext)
+            else:
+                for n in range(n_images - int(start_index_list[0])):
+                    index = n + int(start_index_list[0])
+                    symbol_files.append(out_image + "_" + str(index) + ext)
 
-                        stdout, stderr = process.communicate()
+            # Remove old combined symbol file
+            symbols_el = widget.find("symbols")
+            symbols_el.remove(symbols_el.find("symbol"))
+            # Add new symbols
+            for symbol_file in symbol_files:
+                new_symbol = Element("symbol")
+                new_symbol.text = symbol_file
+                symbols_el.append(new_symbol)
 
-                out_image = ".".join(image.split(".")[:-1])
-                ext = "." + image.split(".")[-1]
-                symbols = []
-                start_index_list = start_index.split(",")
-                if len(start_index_list) > 1:
-                    for n in start_index_list:
-                        symbols.append(out_image + "_" + n + ext)
-                else:
-                    for n in range(n_images - int(start_index_list[0])):
-                        index = n + int(start_index_list[0])
-                        symbols.append(out_image + "_" + str(index) + ext)
+            if widget.find("rules") is not None:
+                rules = widget.find("rules")
+                additional_rules = []
 
-                widget["symbols"]["symbol"] = symbols
+                for rule in rules:
+                    # We look through the rules and see if we need to re-order
+                    # any symbols
+                    if (
+                        "prop_id" in rule.attrib
+                        and rule.attrib["prop_id"] == "image_index"
+                    ):
+                        symbol_files = reorder_widgets_from_rules(symbol_files, rule)
 
-                if "rules" in widget:
-                    additional_rules = []
-                    rules = widget["rules"]["rule"]
+                    # Look for a rule which is used to change the displayed
+                    # symbol to a symbol signifying an invalid state.
+                    if rule.attrib["prop_id"] == "image_index":
+                        rule.attrib["prop_id"] = "symbols[0]"
+                        rule.attrib["out_exp"] = "false"
+                        for exp in rule.findall("exp"):
+                            if exp.attrib["bool_exp"] == "pvLegacySev0==-1":
+                                exp.attrib["bool_exp"] = "pvSev0==3 || pvSev0==4"
+                                exp.append(Element("value"))
+                                exp.find("value").text = (
+                                    out_image + "_" + str(invalid_image_index) + ext
+                                )
 
-                    if type(rules) is not list:
-                        rules = [rules]
-
-                    for rule in rules:
-                        # We look through the rules and see if we need to re-order
-                        # any symbols
-                        if rule["@prop_id"] == "image_index":
-                            widget["symbols"]["symbol"] = reorder_widgets_from_rules(
-                                symbols, rule
+                        # We must create a rule for each symbol specified for
+                        # the widget which overwrites the displayed symbol
+                        # widget with the special invalid state symbol.
+                        for i in range(len(widget.find("symbols"))):
+                            # Copy dictionary to get a unique copy
+                            additional_rule = copy.deepcopy(rule)
+                            additional_rule.attrib["name"] = (
+                                rule.attrib["name"] + f"_{i}"
                             )
+                            additional_rule.attrib["prop_id"] = f"symbols[{i}]"
+                            additional_rules.append(additional_rule)
 
-                        # Look for a rule which is used to change the displayed
-                        # symbol to a symbol signifying an invalid state.
-                        if rule["@prop_id"] == "image_index":
-                            rule["@prop_id"] = "symbols[0]"
-                            rule["@out_exp"] = "false"
-                            expression = {}
-                            for e in rule["exp"]:
-                                if e["@bool_exp"] == "pvLegacySev0==-1":
-                                    expression["@bool_exp"] = "pvSev0==3 || pvSev0==4"
-                                    expression["value"] = (
-                                        out_image + "_" + str(invalid_image_index) + ext
-                                    )
-                            rule["exp"] = expression
-
-                            # We must create a rule for each symbol specified for
-                            # the widget which overwrites the displayed symbol
-                            # widget with the special invalid state symbol.
-                            for i in range(1, len(widget["symbols"]["symbol"])):
-                                # Copy dictionary to get a unique copy
-                                additional_rule = rule.copy()
-                                additional_rule["@name"] = rule["@name"] + f"_{i}"
-                                additional_rule["@prop_id"] = f"symbols[{i}]"
-                                additional_rules.append(additional_rule)
-
-                    # Extend the rules for this widget with the new rules we created
-                    rules.extend(additional_rules)
-                    widget["rules"]["rule"] = rules
+                # Extend the rules for this widget with the new rules we created
+                rules.extend(additional_rules)
 
 
 def fix_embedded_screen_ext(oc: OpiConverter, widget):
@@ -484,11 +420,12 @@ def check_actions_in_non_action_buttons(oc: OpiConverter, widget):
                             widget["rules"]["rule"].remove(r)
 
 
-def replace_open_in_tab(oc: OpiConverter, action):
-    if action["@type"] == "open_display":
-        if action["target"] == "tab":
-            action["target"] = "standalone"
-            oc.conversion_steps.replace_action_tab = True
+def replace_open_in_tab(oc: OpiConverter, action: Element):
+    if action.attrib["type"] == "open_display":
+        for child in action:
+            if child.tag == "target" and child.text == "tab":
+                child.text = "standalone"
+                oc.conversion_steps.replace_action_tab = True
 
 
 def set_new_databrowser_action_from_execute_eclipse(action):
@@ -539,7 +476,7 @@ def set_new_databrowser_action_from_strip_command(action):
     )
 
 
-def reorder_widgets_from_rules(symbols, rule):
+def reorder_widgets_from_rules(symbols: list[str], rule: Element) -> Element:
     # Search through all boolean expressions and create a map between the PV value
     # and the symbol index to use.
     # We only bother to handle 2 cases,
@@ -549,27 +486,24 @@ def reorder_widgets_from_rules(symbols, rule):
     # Contains a list of tuples of (pv_val, symbol_index)
     reorder_map: list[tuple] = []
     try:
-        if "exp" in rule:
-            for e in rule["exp"]:
-                pv_val = None
-                result = int(e["expression"])
-                bool_logic = e["@bool_exp"]
-                bool_logic = bool_logic.replace(" ", "")
-                # Match for pvX in string
-                if re.findall(r"pv\d+", bool_logic):
-                    if "==" in bool_logic:
-                        match = re.search(r"==\s*(\d+)", bool_logic)
-                        if match:
-                            pv_val = int(match.group(1))
-                    elif (
-                        ">=" in bool_logic and "<" in bool_logic and "&&" in bool_logic
-                    ):
-                        # Gets the integer between >= and &&. This could be made
-                        # smarter if required
-                        match = re.search(r">=\s*(.+?)\s*&&", bool_logic)
-                        if match:
-                            pv_val = int(float(match.group(1)))
-                    reorder_map.append((pv_val, result))
+        for exp in rule.findall("exp"):
+            pv_val = None
+            result = int(exp.find("expression").text)
+            bool_logic = exp.attrib["bool_exp"]
+            bool_logic = bool_logic.replace(" ", "")
+            # Match for pvX in string
+            if re.findall(r"pv\d+", bool_logic):
+                if "==" in bool_logic:
+                    match = re.search(r"==\s*(\d+)", bool_logic)
+                    if match:
+                        pv_val = int(match.group(1))
+                elif ">=" in bool_logic and "<" in bool_logic and "&&" in bool_logic:
+                    # Gets the integer between >= and &&. This could be made
+                    # smarter if required
+                    match = re.search(r">=\s*(.+?)\s*&&", bool_logic)
+                    if match:
+                        pv_val = int(float(match.group(1)))
+                reorder_map.append((pv_val, result))
 
     except (LookupError, ValueError):
         logger.warning("Failed to parse rule when attempting to reorder symbol widget.")

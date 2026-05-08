@@ -8,9 +8,14 @@ from pathlib import Path, PosixPath
 from typing import TYPE_CHECKING
 
 import yaml
+from lxml.etree import Element
 
 from dls_phoebus_converter.logconfig import setup_logging
 from dls_phoebus_converter.macros import fill_in_file_path_macros
+
+if TYPE_CHECKING:
+    from dls_phoebus_converter.screen_converter import ScreenConverter
+from dls_phoebus_converter.utilities import search_widget_filepaths_recursive
 
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
@@ -30,34 +35,34 @@ if not logging.getLogger("dls_phoebus_converter"):
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-def handle_support_modules(oc: OpiConverter):
+def handle_support_modules(sc: ScreenConverter, oc: OpiConverter):
     # Figure out which filepaths within bob files need updating and
     # update them to the new paths.
-    get_required_support_modules(oc)
+    get_required_support_modules(sc, oc)
     # Support module paths are relative and so don't need to have their paths
     # updated
     if oc.support_module_name is None:
         update_filepaths(oc)
 
 
-def get_widget_filepaths(self, widget, widget_file_paths):
+def get_widget_filepaths(widget: Element, widget_file_paths):
     def append_new_filepath(path_string, widget_file_paths, symbol=False):
         widget_file_paths.append(path_string)
         return False
 
-    return self.search_widget_filepaths_recursive(
+    return search_widget_filepaths_recursive(
         widget, append_new_filepath, widget_file_paths
     )
 
 
-def update_widget_filepaths(self, widget, macros):
-    self.search_widget_filepaths_recursive(widget, self.switch_filepaths, macros)
+def update_widget_filepaths(widget, macros):
+    search_widget_filepaths_recursive(widget, switch_filepaths, macros)
 
 
-def get_required_support_modules(self, oc: OpiConverter) -> None:
+def get_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
     widget_file_paths: list[Path] = []
     # Look for filepaths in xml
-    for widget in oc.widget_data:
+    for widget in oc.bob_data.findall("widget"):
         get_widget_filepaths(widget, widget_file_paths)
 
     # Only keep unique filepaths and fill in macros
@@ -85,23 +90,23 @@ def get_required_support_modules(self, oc: OpiConverter) -> None:
             if support_module_name in ACC_UI_SUPPORT_MODULE_LIST:
                 new_entry = (
                     support_module_name,
-                    self.acc_ui_support_dst_part / support_module_name,
+                    sc.acc_ui_support_dst_part / support_module_name,
                 )
-                if new_entry not in self.acc_support_module_locations:
-                    self.acc_support_module_locations.append(new_entry)
+                if new_entry not in sc.acc_support_module_locations:
+                    sc.acc_support_module_locations.append(new_entry)
             else:
                 new_entry = (
                     support_module_name,
-                    self.domain_ui_support_dst_part / support_module_name,
+                    sc.domain_ui_support_dst_part / support_module_name,
                 )
-                if new_entry not in self.domain_support_module_locations:
-                    self.domain_support_module_locations.append(new_entry)
+                if new_entry not in sc.domain_support_module_locations:
+                    sc.domain_support_module_locations.append(new_entry)
 
-    logger.info(f"Required domain modules: {self.domain_support_module_locations}")
-    logger.info(f"Required acc modules: {self.acc_support_module_locations}")
+    logger.info(f"Required domain modules: {sc.domain_support_module_locations}")
+    logger.info(f"Required acc modules: {sc.acc_support_module_locations}")
 
 
-def switch_filepaths(self, file_path, macros, symbol=False) -> str:
+def switch_filepaths(oc, file_path, macros, symbol=False) -> str:
     "Takes an old file_path string and returns what the new file_path should be."
     "This is done by getting the name of the support module from the old path and"
     "matching it with our data."
@@ -152,15 +157,13 @@ def switch_filepaths(self, file_path, macros, symbol=False) -> str:
     return file_path_string
 
 
-def update_filepaths(self, conversion):
+def update_filepaths(oc: OpiConverter):
     # Look for filepaths in xml
-    for widget in conversion.widget_data:
-        self.update_widget_filepaths(widget, conversion.macros)
-
-    conversion.all_phoebus_data["display"]["widget"] = conversion.widget_data
+    for widget in oc.bob_data.findall("widget"):
+        update_widget_filepaths(widget, oc.macros)
 
 
-def get_existing_support_module_filepath(self, support_module_name) -> str | None:
+def get_existing_support_module_filepath(support_module_name) -> str | None:
     dls_sw_support_modules = Path("/dls_sw/prod/R3.14.12.7/support/")
     version_list = []
     latest_file = Path("")
@@ -182,20 +185,20 @@ def get_existing_support_module_filepath(self, support_module_name) -> str | Non
         return None
 
 
-def convert_extra_support_modules(self):
+def convert_extra_support_modules(sc: ScreenConverter):
     all_support_modules = (
-        self.domain_support_module_locations + self.acc_support_module_locations
+        sc.domain_support_module_locations + sc.acc_support_module_locations
     )
 
-    if type(self.config_file) is PosixPath:
-        with open(self.config_file) as file:
+    if type(sc.config_file) is PosixPath:
+        with open(sc.config_file) as file:
             data = yaml.safe_load(file)
     else:
-        data = self.config_file
+        data = sc.config_file
     data["files"] = []
 
-    existing_modules_paths = list(self.acc_ui_support_dst_full.iterdir()) + list(
-        self.domain_ui_support_dst_full.iterdir()
+    existing_modules_paths = list(sc.acc_ui_support_dst_full.iterdir()) + list(
+        sc.domain_ui_support_dst_full.iterdir()
     )
     existing_module_names = [path.name for path in existing_modules_paths]
     # sm -> support module
@@ -203,7 +206,7 @@ def convert_extra_support_modules(self):
         if sm_name not in existing_module_names:
             # Filter out any files which have been mistaken for support modules
             if sm_file_path.suffix == "":
-                sm_src_file_path = self.get_existing_support_module_filepath(sm_name)
+                sm_src_file_path = get_existing_support_module_filepath(sm_name)
                 if sm_src_file_path is not None:
                     if sm_name in ACC_UI_SUPPORT_MODULE_LIST:
                         data["files"].append(
@@ -225,7 +228,7 @@ def convert_extra_support_modules(self):
                         )
                 logger.info(f"Converting extra support module: {sm_name}")
     if len(data["files"]) > 0:
-        self.get_config(data)
-        self.convert()
+        sc.get_config(data)
+        sc.convert()
     else:
         logger.info("Creating extra modules finished!")

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from dls_phoebus_converter._version import __version__
 from dls_phoebus_converter.logconfig import setup_logging
-from dls_phoebus_converter.screen_converter import Converter
+from dls_phoebus_converter.screen_converter import ScreenConverter
 
 __all__ = ["main"]
 
@@ -61,7 +61,7 @@ def parse_arguments(args: Sequence[str] | None = None) -> None:
 def main(args: Sequence[str] | None = None) -> None:
     args = parse_arguments()
     logger.debug(f"Running screen conversion with arguments: {args}")
-    converter = Converter(config_file_path=args[0], output_dir_path=args[1])
+    converter = ScreenConverter(config_file_path=args[0], output_dir_path=args[1])
     converter.convert()
 
 

@@ -14,7 +14,7 @@ setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-class Converter:
+class ScreenConverter:
     def __init__(
         self, config_file_path: Path, output_dir_path: Path, debug: bool = False
     ) -> None:
@@ -189,30 +189,43 @@ class Converter:
             src_file_paths, dst_dir_paths, strict=True
         ):
             dst_filename = None
+            template_file_path = None
+            macros = None
+            synoptic = None
+
             if "new_filename" in file_data:
                 dst_filename = file_data["new_filename"]
 
-            new_conversion = OpiConverter(src_file_path, dst_dir_path, dst_filename)
-
             if "macros" in file_data:
-                new_conversion.macros = file_data["macros"]
+                macros = file_data["macros"]
+
             if "support_module_name" in file_data:
-                new_conversion.support_module_name = support_module_name
+                support_module_name = support_module_name
+            else:
+                support_module_name = None
+
             if "template_file" in file_data:
                 template_file_path = Path(file_data["template_file"])
                 if template_file_path.is_file():
-                    new_conversion.template_file_path = template_file_path
+                    template_file_path = template_file_path
                 else:
                     template_file_path = (
                         Path.cwd() / "config/templates" / template_file_path
                     )
-                if not template_file_path.is_file():
-                    raise FileNotFoundError(
-                        f"Could not find template file {str(template_file_path)}"
-                    )
-                new_conversion.template_file_path = template_file_path
+
             if file_data["dst"] == "synoptic":
-                new_conversion.synoptic = True
+                synoptic = True
+
+            new_conversion = OpiConverter(
+                src_file_path=src_file_path,
+                dst_dir_path=dst_dir_path,
+                dst_filename=dst_filename,
+                template_file_path=template_file_path,
+                support_module_name=support_module_name,
+                synoptic=synoptic,
+                macros=macros,
+            )
+
             new_conversions.append(new_conversion)
 
         return new_conversions
@@ -225,8 +238,8 @@ class Converter:
             conversion.dst_dir_path.mkdir(parents=True, exist_ok=True)
 
             # Convert .opi to .bob
-            conversion.convert()
+            conversion.convert(self)
 
         # Get missing support module screens
         if self.convert_dependencies:
-            convert_extra_support_modules()
+            convert_extra_support_modules(self)

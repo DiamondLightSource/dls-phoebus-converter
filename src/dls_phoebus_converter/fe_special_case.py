@@ -1,25 +1,22 @@
 import logging
-import re
 
 import lxml.etree as et
-import xmltodict
+
+from dls_phoebus_converter.opi_converter import OpiConverter
 
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-def replace_visible_script(bob_file, conversion):
+def replace_visible_script(oc: OpiConverter):
     """Replace this complex script with a rule"""
 
-    logger.info(f"Special case: Removing references to visible.py from {bob_file}")
-
-    xml = xmltodict.unparse(conversion.all_phoebus_data)
-    xml_stripped = re.sub(r"<\?xml[^?]*\?>", "", xml)
-    # Parse the XML file
-    root = et.fromstring(xml_stripped)
+    logger.info(
+        f"Special case: Removing references to visible.py from {oc.output_file}"
+    )
 
     # Find and remove all <script> elements which use visible.py. Replace it with a new
     # rule
-    for script in root.findall('.//script[@file="visible.py"]'):
+    for script in oc.bob_data.findall('.//script[@file="visible.py"]'):
         parent = script.getparent()
         if parent is not None:
             parent.remove(script)
@@ -55,14 +52,8 @@ def replace_visible_script(bob_file, conversion):
                     )
                     widget.insert(-1, et.fromstring(rules_xml))
 
-    # Write the modified XML back to our dict
-    as_dict = xmltodict.parse(et.tostring(root))
-    conversion.all_phoebus_data = as_dict
-    if "widget" in as_dict["display"]:
-        conversion.widget_data = as_dict["display"]["widget"]
 
-
-def remove_fe_temp_indicator_script(bob_file, conversion):
+def remove_fe_temp_indicator_script(oc: OpiConverter):
     """This script was being used to colour ProgressBars based on hihi and hi values.
     Instead we now just use an alarm border which changes the border based on alarm.
     Assuming hihi and hi are configured to generate Major and Minor alarms, the
@@ -70,55 +61,46 @@ def remove_fe_temp_indicator_script(bob_file, conversion):
     anyway"""
 
     logger.info(
-        f"Special case: Removing references to feTempIndicator.py from {bob_file}"
+        f"Special case: Removing references to feTempIndicator.py from {oc.output_file}"
     )
 
-    xml = xmltodict.unparse(conversion.all_phoebus_data)
-    xml_stripped = re.sub(r"<\?xml[^?]*\?>", "", xml)
-    # Parse the XML file
-    root = et.fromstring(xml_stripped)
-
     # Find and remove all <script> elements which use feTempIndicator.py
-    for script in root.findall('.//script[@file="feTempIndicator.py"]'):
+    for script in oc.bob_data.findall('.//script[@file="feTempIndicator.py"]'):
         parent = script.getparent()
         if parent is not None:
             parent.remove(script)
 
-    for script in root.findall('.//script[@file="common/plc/feTempIndicator.py"]'):
+    for script in oc.bob_data.findall(
+        './/script[@file="common/plc/feTempIndicator.py"]'
+    ):
         parent = script.getparent()
         if parent is not None:
             parent.remove(script)
 
-    # Write the modified XML back to our dict
-    as_dict = xmltodict.parse(et.tostring(root))
-    conversion.all_phoebus_data = as_dict
-    if "widget" in as_dict["display"]:
-        conversion.widget_data = as_dict["display"]["widget"]
 
-
-def resize_absb_temps_fe22b(bob_file, conversion):
+def resize_absb_temps_fe22b(oc: OpiConverter):
     """
     HLA-1061: This is a special case for FE22B where the size of the screen does not
     properly encompass the widgets within it. This results in the screen being cut off
     when embedded via a linking container, so we manually fix it here.
     """
-    logger.info(f"Special case: Resizing screen for {bob_file}")
+    logger.info(f"Special case: Resizing screen for {oc.output_file}")
 
     new_height = 120
     new_width = 400
 
-    conversion.all_phoebus_data["display"]["height"] = new_height
-    conversion.all_phoebus_data["display"]["width"] = new_width
+    oc.bob_data.getroot().find("height").text = str(new_height)
+    oc.bob_data.getroot().find("width").text = str(new_width)
 
 
 # Generic function to be inlcluded in each domain-specific special case module.
 # This is dynamically imported and then called by the main conversion process.
-def run(bob_file, conversion):
+def run(oc: OpiConverter):
     """Make any case-by-case adjustments to FE specific screens which are not handled
     by the normal conversion process."""
 
-    if "absb_temps_fe22b.bob" in str(bob_file):
-        resize_absb_temps_fe22b(bob_file, conversion)
+    if "absb_temps_fe22b.bob" in str(oc.output_file):
+        resize_absb_temps_fe22b(oc)
 
     for name in [
         "FE24B.bob",
@@ -127,8 +109,8 @@ def run(bob_file, conversion):
         "absb_temps.bob",
         "absb.bob",
     ]:
-        if name in str(bob_file):
-            remove_fe_temp_indicator_script(bob_file, conversion)
+        if name in str(oc.output_file):
+            remove_fe_temp_indicator_script(oc)
 
-    if "motor.bob" in str(bob_file):
-        replace_visible_script(bob_file, conversion)
+    if "motor.bob" in str(oc.output_file):
+        replace_visible_script(oc)

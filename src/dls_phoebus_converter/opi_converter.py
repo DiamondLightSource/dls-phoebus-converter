@@ -53,9 +53,12 @@ class OpiConverter:
     conversion_steps = ConversionSteps()
 
     synoptic: bool = False
-    replace_tab: bool = False
+    replace_tab: bool = True
     fix_group: bool = True
     no_modify: bool = False
+
+    # This stores template file data
+    template_data: etree.ElementTree | None = None
 
     # This stores the initial contents of the bob/opi file
     const_bob_data: etree.ElementTree | None = None
@@ -73,9 +76,14 @@ class OpiConverter:
         if self.tmp_file_path is None:
             self.tmp_file_path = self.dst_dir_path / "tmp.opi"
 
+        self.read_template_file_contents()
         self.read_opi_file_contents()
         # If conversion has already been run, delete previous BOB conversion
         self.delete_old_file()
+
+    def read_template_file_contents(self):
+        if self.template_file_path is not None:
+            self.template_data = etree.parse(self.template_file_path)
 
     def read_opi_file_contents(self):
         self.opi_data = etree.parse(self.src_file_path)
@@ -218,7 +226,7 @@ class OpiConverter:
         to .bob using the Phoebus converter."""
         return pre_conversion_steps(self)
 
-    def run_post_conversion_steps(self, conversion, no_modify):
+    def run_post_conversion_steps(self, sc):
         """Perform modifications to the .bob file.
         - Replaces EXIT scripts with an ActionButton to Exit
         - Action Buttons to open displays are modified to open .bob extensions
@@ -227,9 +235,9 @@ class OpiConverter:
         - Change filepaths to reference new support module screen locations
         - Add macros as needed
         """
-        return post_conversion_steps(conversion, no_modify)
+        return post_conversion_steps(self, sc)
 
-    def convert(self) -> Path | None:
+    def convert(self, sc) -> Path | None:
         if self.dont_edit_file():
             return True
 
@@ -249,13 +257,12 @@ class OpiConverter:
             return False
 
         # Make modifications to converted .bob file
-        # self.run_post_conversion_steps()
-
-        self.log_conversion_steps()
+        self.run_post_conversion_steps(sc)
 
         # Write the final xml to the bob file
         self.write_bob_file_contents()
 
+        self.log_conversion_steps()
         logger.info(f"Conversion saved to {self.output_file}\n")
 
 
