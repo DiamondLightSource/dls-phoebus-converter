@@ -5,6 +5,8 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
+from lxml import etree
+
 from dls_phoebus_converter.logconfig import setup_logging
 
 if TYPE_CHECKING:
@@ -56,8 +58,11 @@ def fix_grouping_container(oc: OpiConverter):
                 logger.debug("Fixing missing border property in 'Group' widget")
                 fixed = True
                 element.append(
-                    '<border_color>\n<color name="Canvas" red="200" green="200" blue="200"></color>\n</border_color>\n<border_style>0</border_style>\n'  # noqa: E501
+                    etree.fromstring(
+                        '<border_color>\n<color name="Canvas" red="200" green="200" blue="200"></color>\n</border_color>\n'  # noqa: E501
+                    )
                 )
+                element.append(etree.fromstring("<border_style>0</border_style>\n"))
                 # Reset
                 check_for_border_prop = False
                 found_border_prop = False

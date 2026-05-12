@@ -15,7 +15,7 @@ from dls_phoebus_converter.macros import fill_in_file_path_macros
 
 if TYPE_CHECKING:
     from dls_phoebus_converter.screen_converter import ScreenConverter
-from dls_phoebus_converter.utilities import search_widget_filepaths_recursive
+from dls_phoebus_converter.utilities import search_widget_filepaths
 
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
@@ -42,28 +42,26 @@ def handle_support_modules(sc: ScreenConverter, oc: OpiConverter):
     # Support module paths are relative and so don't need to have their paths
     # updated
     if oc.support_module_name is None:
-        update_filepaths(oc)
+        update_filepaths(sc, oc)
 
 
-def get_widget_filepaths(widget: Element, widget_file_paths):
-    def append_new_filepath(path_string, widget_file_paths, symbol=False):
+def get_widget_filepaths(sc, widget: Element, widget_file_paths):
+    def append_new_filepath(sc, path_string, widget_file_paths, symbol=False):
         widget_file_paths.append(path_string)
         return False
 
-    return search_widget_filepaths_recursive(
-        widget, append_new_filepath, widget_file_paths
-    )
+    return search_widget_filepaths(sc, widget, append_new_filepath, widget_file_paths)
 
 
-def update_widget_filepaths(widget, macros):
-    search_widget_filepaths_recursive(widget, switch_filepaths, macros)
+def update_widget_filepaths(sc, widget, macros):
+    search_widget_filepaths(sc, widget, switch_filepaths, macros)
 
 
 def get_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
     widget_file_paths: list[Path] = []
     # Look for filepaths in xml
-    for widget in oc.bob_data.findall("widget"):
-        get_widget_filepaths(widget, widget_file_paths)
+    for widget in oc.bob_data.findall("//widget"):
+        get_widget_filepaths(sc, widget, widget_file_paths)
 
     # Only keep unique filepaths and fill in macros
     file_paths_unique = set()
@@ -106,13 +104,13 @@ def get_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
     logger.info(f"Required acc modules: {sc.acc_support_module_locations}")
 
 
-def switch_filepaths(oc, file_path, macros, symbol=False) -> str:
+def switch_filepaths(sc: ScreenConverter, file_path, macros=None, symbol=False) -> str:
     "Takes an old file_path string and returns what the new file_path should be."
     "This is done by getting the name of the support module from the old path and"
     "matching it with our data."
     file_path_string = str(file_path)
     all_support_modules = (
-        self.domain_support_module_locations + self.acc_support_module_locations
+        sc.domain_support_module_locations + sc.acc_support_module_locations
     )
     # If the pathstring is in the current directory, eg file.bob, then no need to
     # change it
@@ -121,13 +119,14 @@ def switch_filepaths(oc, file_path, macros, symbol=False) -> str:
 
     # If we have already updated the paths, dont do it again:
     if (
-        self.acc_ui_support_dst_part.parts[0] in file_path_string
-        or self.domain_ui_support_dst_part.parts[0] in file_path_string
-        or self.domain_synoptic_dst_part.parts[0] in file_path_string
+        sc.acc_ui_support_dst_part.parts[0] in file_path_string
+        or sc.domain_ui_support_dst_part.parts[0] in file_path_string
+        or sc.domain_synoptic_dst_part.parts[0] in file_path_string
     ):
         return file_path_string
 
-    file_path_string = self.fill_in_file_path_macros(file_path_string, macros)
+    if macros is not None:
+        file_path_string = fill_in_file_path_macros(file_path_string, macros)
     file_path = Path(file_path_string)
     if file_path.suffix == ".opi":
         file_name = file_path.with_suffix(".bob").name
@@ -157,10 +156,10 @@ def switch_filepaths(oc, file_path, macros, symbol=False) -> str:
     return file_path_string
 
 
-def update_filepaths(oc: OpiConverter):
+def update_filepaths(sc, oc: OpiConverter):
     # Look for filepaths in xml
-    for widget in oc.bob_data.findall("widget"):
-        update_widget_filepaths(widget, oc.macros)
+    for widget in oc.bob_data.findall("//widget"):
+        update_widget_filepaths(sc, widget, oc.macros)
 
 
 def get_existing_support_module_filepath(support_module_name) -> str | None:
@@ -186,6 +185,9 @@ def get_existing_support_module_filepath(support_module_name) -> str | None:
 
 
 def convert_extra_support_modules(sc: ScreenConverter):
+    # wipe old conversion data as these are all finished
+    sc.conversion_data = []
+
     all_support_modules = (
         sc.domain_support_module_locations + sc.acc_support_module_locations
     )

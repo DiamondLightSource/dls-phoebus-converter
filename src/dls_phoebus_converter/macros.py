@@ -25,8 +25,11 @@ def fill_in_file_path_macros(string: str, macros) -> str:
         key = match.group(1)  # the ‘x’ inside ${x}
         return macros.get(key, match.group(0))  # default: leave unchanged
 
-    resolved_path = re.sub(r"\$[\{\(]([^\}\)\s]+)[\}\)]", replace, str(string))
-    return resolved_path
+    if macros is not None:
+        resolved_path = re.sub(r"\$[\{\(]([^\}\)\s]+)[\}\)]", replace, str(string))
+        return resolved_path
+    else:
+        return string
 
 
 def add_new_macros(

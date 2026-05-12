@@ -10,6 +10,7 @@ import subprocess
 from typing import TYPE_CHECKING
 
 import xmltodict
+from lxml import etree
 from lxml.etree import Element
 
 from dls_phoebus_converter.logconfig import setup_logging
@@ -49,7 +50,7 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
 
 def parse_widgets(oc: OpiConverter):
     for widget in oc.bob_data.findall(".//widget"):
-        if "@typeId" in widget.attrib.keys():
+        if "typeId" in widget.attrib.keys():
             logging.error(
                 "Detected old CSS index '@typeid' - suggests that the Phoebus converter"
                 "failed to convert the GroupContainer widget.\n"
@@ -57,7 +58,8 @@ def parse_widgets(oc: OpiConverter):
             )
             return
 
-        if widget.attrib.get("type") == "action_button":
+        widget_type = widget.attrib.get("type")
+        if widget_type == "action_button":
             for child in widget:
                 if child.tag == "text":
                     if (
@@ -69,44 +71,42 @@ def parse_widgets(oc: OpiConverter):
                 if child.tag == "actions":
                     process_widget_actions(oc, widget.find(".//actions"))
 
-        elif widget.attrib.get("type") == "symbol":
+        elif widget_type == "symbol":
             for child in widget:
                 if child.tag == "actions":
                     process_widget_actions(oc, widget.find(".//actions"))
             create_symbol_from_edm(oc, widget)
 
-        # elif widget["@type"] == "symbol":
-        #     if "actions" in widget:
-        #         if widget["actions"] is not None and "action" in widget["actions"]:
-        #             replace_opi_extension(widget["actions"]["action"])
-        #             fix_action_open_macro(widget)
-        #     create_symbol_from_edm(widget)
-        # elif widget["@type"] == "embedded":
-        #     fix_embedded_screen_ext(widget)
-        # elif widget["@type"] == "progressbar":
-        #     # Look for any progress bar widgets with alarm borders enabled
-        #     alarm_sensitive_progress_bars = get_alarm_sensitive_progress_bars()
-        #     if "name" in widget and "pv_name" in widget:
-        #         if [widget["name"], widget["pv_name"]] in alarm_sensitive_progress_bars:
-        #             widget["border_alarm_sensitive"] = "true"
-        # elif widget["@type"] == "tank":
-        #     # Phoebus is missing the <transparent_background> option, so we just set the
-        #     # background colour to transparent
-        #     transparent_tank_backgrounds = get_transparent_background_tank_widget()
-        #     if "name" in widget and "pv_name" in widget:
-        #         if [widget["name"], widget["pv_name"]] in transparent_tank_backgrounds:
-        #             widget["background_color"] = {
-        #                 "color": {
-        #                     "@name": "Transparent",
-        #                     "@red": "255",
-        #                     "@green": "255",
-        #                     "@blue": "255",
-        #                 }
-        #             }
+        elif widget_type == "embedded":
+            fix_embedded_screen_ext(oc, widget)
 
-        # parse_all_fields_in_dict(widget)
-        # check_rule(widget)
-        # check_actions_in_non_action_buttons(widget)
+        elif widget_type == "progressbar":
+            # Look for any progress bar widgets with alarm borders enabled
+            alarm_sensitive_progress_bars = get_alarm_sensitive_progress_bars(oc)
+            if widget.find("name") is not None and widget.find("pv_name") is not None:
+                if [
+                    widget.find("name").text,
+                    widget.find("pv_name").text,
+                ] in alarm_sensitive_progress_bars:
+                    widget.append(Element("border_alarm_sensitive"))
+                    widget.find("border_alarm_sensitive").text = "true"
+
+        elif widget_type == "tank":
+            # Phoebus is missing the <transparent_background> option, so we just set the
+            # background colour to transparent
+            transparent_tank_backgrounds = get_transparent_background_tank_widget(oc)
+            if widget.find("name") is not None and widget.find("pv_name") is not None:
+                if [
+                    widget.find("name").text,
+                    widget.find("pv_name").text,
+                ] in transparent_tank_backgrounds:
+                    new_el = etree.fromstring(
+                        "<background_color>\n<color name='Transparent' red='255' green='255' blue='255'></color>\n</background_color>\n"  # noqa: E501
+                    )
+                    widget.append(new_el)
+        convert_pv_function(widget)
+        check_rule(oc, widget)
+        check_actions_in_non_action_buttons(oc, widget)
 
 
 def fix_exit_button(oc: OpiConverter, action: Element):
@@ -124,14 +124,17 @@ def process_widget_actions(oc: OpiConverter, actions: Element):
 
         # Currently we are only looking at databrowser/StripTool related actions
         if action.attrib["type"] == "execute":
-            if "executeEclipseCommand" in action.find("script/text"):
-                if "org.csstudio.trends.databrowser2" in action["script"]["text"]:
+            if "executeEclipseCommand" in action.find("script/text").text:
+                if (
+                    "org.csstudio.trends.databrowser2"
+                    in action.find("script/text").text
+                ):
                     set_new_databrowser_action_from_execute_eclipse(action)
                 else:
                     logger.warning(
                         "Screen contains an executeEclipseCommand script which is"
                         "not supported by Phoebus. Found script: "
-                        f"{action['script']['text']} in file {oc.src_file_path}"
+                        f"{action.find('script/text').text} in file {oc.src_file_path}"
                     )
 
         elif action.attrib["type"] == "command":
@@ -234,6 +237,17 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
                     index = n + int(start_index_list[0])
                     symbol_files.append(out_image + "_" + str(index) + ext)
 
+            # reorder the symbol files based on rules
+            if widget.findall("rules") is not None:
+                rules = widget.find("rules")
+                additional_rules = []
+                for rule in rules:
+                    if (
+                        "prop_id" in rule.attrib
+                        and rule.attrib["prop_id"] == "image_index"
+                    ):
+                        symbol_files = reorder_widgets_from_rules(symbol_files, rule)
+
             # Remove old combined symbol file
             symbols_el = widget.find("symbols")
             symbols_el.remove(symbols_el.find("symbol"))
@@ -243,22 +257,16 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
                 new_symbol.text = symbol_file
                 symbols_el.append(new_symbol)
 
-            if widget.find("rules") is not None:
-                rules = widget.find("rules")
+            if widget.findall("rules") is not None:
+                rules = widget.findall("rules")
                 additional_rules = []
-
                 for rule in rules:
-                    # We look through the rules and see if we need to re-order
-                    # any symbols
-                    if (
-                        "prop_id" in rule.attrib
-                        and rule.attrib["prop_id"] == "image_index"
-                    ):
-                        symbol_files = reorder_widgets_from_rules(symbol_files, rule)
-
                     # Look for a rule which is used to change the displayed
                     # symbol to a symbol signifying an invalid state.
-                    if rule.attrib["prop_id"] == "image_index":
+                    if (
+                        "prop_id" in rule.attrib.keys()
+                        and rule.attrib["prop_id"] == "image_index"
+                    ):
                         rule.attrib["prop_id"] = "symbols[0]"
                         rule.attrib["out_exp"] = "false"
                         for exp in rule.findall("exp"):
@@ -272,7 +280,7 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
                         # We must create a rule for each symbol specified for
                         # the widget which overwrites the displayed symbol
                         # widget with the special invalid state symbol.
-                        for i in range(len(widget.find("symbols"))):
+                        for i in range(1, len(widget.find("symbols"))):
                             # Copy dictionary to get a unique copy
                             additional_rule = copy.deepcopy(rule)
                             additional_rule.attrib["name"] = (
@@ -285,139 +293,97 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
                 rules.extend(additional_rules)
 
 
-def fix_embedded_screen_ext(oc: OpiConverter, widget):
-    if "file" not in widget:
+def fix_embedded_screen_ext(oc: OpiConverter, widget: Element):
+    if "file" not in list(widget):
         return
     oc.conversion_steps.replace_opi_ext = True
-    opi_file = widget["file"]
+    opi_file = widget.get("file").text
     bob_file = opi_file.replace(".opi", ".bob")
-    widget["file"] = bob_file
+    widget.get("file").text = bob_file
 
 
 def get_alarm_sensitive_progress_bars(oc: OpiConverter):
+    # Get a list of ids defining each alarm sensitive progressbar
     alarm_sensitive_progress_bars = []
-    in_progress_bar = False
-    alarm_sensitive = False
-    name_ids = ["", ""]
-    with open(oc.src_file_path) as f:
-        lines = f.readlines()
-        for line in lines:
-            if "org.csstudio.opibuilder.widgets.progressbar" in line:
-                in_progress_bar = True
-            if "</widget>" in line:
-                if alarm_sensitive:
-                    alarm_sensitive_progress_bars.append(name_ids)
-                in_progress_bar = False
-                name_ids = ["", ""]
-                alarm_sensitive = False
-            if in_progress_bar:
-                if "<name>" in line:
-                    name_ids[0] = re.search(r"<name>(.*?)</name>", line).group(1)
-                if "<pv_name>" in line:
-                    name_ids[1] = re.search(r"<pv_name>(.*?)</pv_name>", line).group(1)
-                if (
-                    "<fillcolor_alarm_sensitive>true</fillcolor_alarm_sensitive>"
-                    in line
-                    or "<forecolor_alarm_sensitive>true</forecolor_alarm_sensitive>"
-                    in line
-                    or "<backcolor_alarm_sensitive>true</backcolor_alarm_sensitive>"
-                    in line
-                ):
-                    alarm_sensitive = True
+    xpath = ".//widget[@typeId='org.csstudio.opibuilder.widgets.progressbar']"
+    for widget in oc.const_opi_data.findall(xpath):
+        if (
+            (
+                widget.find("backcolor_alarm_sensitive") is not None
+                and widget.find("backcolor_alarm_sensitive").text == "true"
+            )
+            or (
+                widget.find("forecolor_alarm_sensitive") is not None
+                and widget.find("forecolor_alarm_sensitive").text == "true"
+            )
+            or (
+                widget.find("fillcolor_alarm_sensitive") is not None
+                and widget.find("fillcolor_alarm_sensitive").text == "true"
+            )
+        ):
+            name_ids = [widget.find("name").text, widget.find("pv_name").text]
+            alarm_sensitive_progress_bars.append(name_ids)
+
     return alarm_sensitive_progress_bars
 
 
 def get_transparent_background_tank_widget(oc: OpiConverter):
-    in_tank_widget = False
-    transparent_background = False
+    # Get a list of ids defining each alarm sensitive progressbar
     transparent_backgrounds = []
-    name_ids = ["", ""]
-    with open(oc.src_file_path) as f:
-        lines = f.readlines()
-        for line in lines:
-            if "org.csstudio.opibuilder.widgets.tank" in line:
-                in_tank_widget = True
-            if "</widget>" in line:
-                if transparent_background:
-                    transparent_backgrounds.append(name_ids)
-                in_tank_widget = False
-                name_ids = ["", ""]
-                transparent_background = False
-            if in_tank_widget:
-                if "<name>" in line:
-                    name_ids[0] = re.search(r"<name>(.*?)</name>", line).group(1)
-                if "<pv_name>" in line:
-                    name_ids[1] = re.search(r"<pv_name>(.*?)</pv_name>", line).group(1)
-                if "<transparent_background>true</transparent_background>" in line:
-                    transparent_background = True
+    xpath = ".//widget[@typeId='org.csstudio.opibuilder.widgets.tank']"
+    for widget in oc.const_opi_data.findall(xpath):
+        if widget.find("transparent_background").text == "true":
+            name_ids = [widget.find("name").text, widget.find("pv_name").text]
+            transparent_backgrounds.append(name_ids)
+
     return transparent_backgrounds
 
 
-def parse_all_fields_in_dict(input_dict):
-    for field in input_dict:
-        if type(input_dict[field]) is dict:
-            parse_all_fields_in_dict(input_dict[field])
-        elif type(input_dict[field]) is list:
-            for item in input_dict[field]:
-                if type(item) is dict:
-                    parse_all_fields_in_dict(item)
-                else:
-                    find_pv_function_in_field(input_dict, field)
-        else:
-            find_pv_function_in_field(input_dict, field)
+def check_rule(oc, widget):
+    expressions = widget.findall("rules/rule/exp")
+    for expression in expressions:
+        fix_rule_expression(oc, expression)
 
 
-def check_rule(widget):
-    if "rules" in widget and "rule" in widget["rules"]:
-        rules = widget["rules"]["rule"]
-        if type(rules) is not list:
-            rules = [rules]
-
-        for rule in rules:
-            if "exp" in rule:
-                rule_exprs = rule["exp"]
-                if type(rule_exprs) is not list:
-                    rule_exprs = [rule_exprs]
-                for e in rule_exprs:
-                    fix_rule_expression(e)
-
-
-def check_actions_in_non_action_buttons(oc: OpiConverter, widget):
-    if "actions" in widget:
+def check_actions_in_non_action_buttons(oc: OpiConverter, widget: Element):
+    if widget.find(".actions/action") is not None:
         if (
-            widget["actions"] is not None
-            and "action" in widget["actions"]
-            and widget["@type"] != "action_button"
-            and widget["@type"] != "symbol"
+            widget.attrib["type"] != "action_button"
+            and widget.attrib["type"] != "symbol"
         ):
             oc.conversion_steps.non_ab_action = True
             logger.debug(
                 "Action contained in widget that isn't an action button: "
-                + str(widget["@type"])
+                + str(widget.attrib["type"])
                 + ", name: "
-                + str(widget["name"])
+                + str(widget.find("name").text)
             )
-            logger.debug("    action: " + str(widget["actions"]["action"]))
-            if widget["@type"] == "rectangle" or widget["@type"] == "bool_button":
-                if widget["@type"] == "bool_button":
-                    if widget["on_label"] != widget["off_label"]:
+            logger.debug("    action: " + str(widget.find("actions/action").text))
+
+            if (
+                widget.attrib["type"] == "rectangle"
+                or widget.attrib["type"] == "bool_button"
+            ):
+                if widget.attrib["type"] == "bool_button":
+                    if widget.find("on_label").text != widget.find("off_label").text:
                         return
+
                 oc.conversion_steps.replace_with_ab = True
                 logger.debug("    Attempting to fix by converting to an action_button")
-                widget["@type"] = "action_button"
+                widget.attrib["type"] = "action_button"
 
-                if "on_label" in widget:
-                    widget["text"] = widget["on_label"]
+                if (
+                    widget.find("text") is not None
+                    and widget.find("off_label") is not None
+                ):
+                    widget.find("text").text = widget.find("off_label").text
                 else:
-                    widget["text"] = ""
-                if "rules" in widget:
-                    if type(widget["rules"]["rule"]) is list:
-                        for r in widget["rules"]["rule"]:
-                            if r["@prop_id"] == "line_color":
-                                widget["rules"]["rule"].remove(r)
-                    else:
-                        if widget["rules"]["rule"]["@prop_id"] == "line_color":
-                            widget["rules"]["rule"].remove(r)
+                    text_el = Element("text")
+                    text_el.text = ""
+                    widget.append(text_el)
+                for rule in widget.findall("rules/rule"):
+                    if rule.attrib["prop_id"] == "line_color":
+                        rule.getparent().remove(rule)
 
 
 def replace_open_in_tab(oc: OpiConverter, action: Element):
@@ -428,11 +394,11 @@ def replace_open_in_tab(oc: OpiConverter, action: Element):
                 oc.conversion_steps.replace_action_tab = True
 
 
-def set_new_databrowser_action_from_execute_eclipse(action):
+def set_new_databrowser_action_from_execute_eclipse(action: Element):
     # We will be implementing a new Phoebus action which opens PV(s) in the
     # databrowser, so eventually this code will be replaced with that, for now we
     # use a command action.
-    search_string = action["script"]["text"]
+    search_string = action.find("script/text").text
     match = re.search(r"'pvnames',\s*'([^']+)'", search_string)
     if match:
         pv_names = match.group(1)
@@ -445,11 +411,17 @@ def set_new_databrowser_action_from_execute_eclipse(action):
     for pv in pv_names:
         pv_command_str += f"{pv}&"
 
-    action["@type"] = "command"
-    action["description"] = "Launch databrowser"
-    action["command"] = (
-        f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'  # noqa: E501
+    action.attrib["type"] = "command"
+
+    desc_el = Element("description")
+    desc_el.text = "Launch databrowser"
+    action.append(desc_el)
+
+    command_el = Element("command")
+    command_el.text = (
+        f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'
     )
+    action.append(command_el)
 
 
 def set_new_databrowser_action_from_strip_command(action):
@@ -523,56 +495,51 @@ def reorder_widgets_from_rules(symbols: list[str], rule: Element) -> Element:
     return new_symbols_order
 
 
-def find_pv_function_in_field(widget, field):
-    # Some fields may contain lists
-    if type(widget[field]) is list:
-        for i in range(len(widget[field])):
-            widget[field][i] = convert_pv_function(widget[field][i])
-    else:
-        widget[field] = convert_pv_function(widget[field])
-
-
-def convert_pv_function(inp_string):
-    if inp_string is not None and "pv(" in inp_string:
-        pv_replacement = "".join(
-            [
-                g
-                if i == 0
-                else g
-                if (k := g.find('")')) < 0
-                else "`" + g[:k] + "`" + g[k + 2 :]
-                for (i, g) in enumerate(inp_string.split('pv("'))
-            ]
-        )
-        # Catch case where there is a function call nested within a pv(...) function
-        # In this case the above replacement will not have found pv(" and so it
-        # will still exist in the replacement. There is no way to handle this in
-        # Phoebus so just issue warning
-        if "pv(" in pv_replacement:
-            logger.warning("Cannot fix the following formula in Phoebus " + inp_string)
-        else:
-            logger.info("Replace pv() function with " + pv_replacement)
-            return pv_replacement
+def convert_pv_function(widget: Element):
+    for child in widget:
+        inp_string = child.text
+        if inp_string is not None and "pv(" in inp_string:
+            pv_replacement = "".join(
+                [
+                    g
+                    if i == 0
+                    else g
+                    if (k := g.find('")')) < 0
+                    else "`" + g[:k] + "`" + g[k + 2 :]
+                    for (i, g) in enumerate(inp_string.split('pv("'))
+                ]
+            )
+            # Catch case where there is a function call nested within a pv(...) function
+            # In this case the above replacement will not have found pv(" and so it
+            # will still exist in the replacement. There is no way to handle this in
+            # Phoebus so just issue warning
+            if "pv(" in pv_replacement:
+                logger.warning(
+                    "Cannot fix the following formula in Phoebus " + inp_string
+                )
+            else:
+                logger.info("Replace pv() function with " + pv_replacement)
+                return pv_replacement
 
     # Otherwise return the original
     return inp_string
 
 
-def fix_rule_expression(expression):
+def fix_rule_expression(oc, exp: Element):
     """Fix common issues that come up in cs-studio rules"""
 
     # Use new syntax for getting a PV alarm severity
-    expression["@bool_exp"] = check_legacy_sev(expression["@bool_exp"])
+    exp.attrib["bool_exp"] = check_legacy_sev(oc, exp.attrib.get("bool_exp"))
 
     # widget.getValue() is not available in Phoebus, we assume this is an attempt to
     # get the value of the widgets pv, so we replace it with pv0
-    if "widget.getValue()" in expression["@bool_exp"]:
-        expression["@bool_exp"] = expression["@bool_exp"].replace(
+    if "widget.getValue()" in exp.attrib["bool_exp"]:
+        exp.attrib["bool_exp"] = exp.attrib["bool_exp"].replace(
             "widget.getValue()", "pv0"
         )
 
 
-def check_legacy_sev(input_field):
+def check_legacy_sev(oc, input_field):
     # OK, Major, Minor, Invalid/undefined
     legacy = [
         "pvLegacySev0==0",
@@ -583,7 +550,7 @@ def check_legacy_sev(input_field):
     new_v = ["pvSev0==0", "pvSev0==2", "pvSev0==1", "pvSev0==3"]
     result = input_field
     for i in range(len(legacy)):
-        result = update_legacy_sev_status(result, legacy[i], new_v[i])
+        result = update_legacy_sev_status(oc, result, legacy[i], new_v[i])
     return result
 
 

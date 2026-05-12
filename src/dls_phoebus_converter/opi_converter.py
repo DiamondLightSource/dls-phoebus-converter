@@ -100,17 +100,20 @@ class OpiConverter:
 
     def write_bob_file_contents(self):
 
-        # etree.indent(self.bob_data, space="    ")
-        # for el in self.bob_data.iter():
-        #     if el.attrib.items() and not list(el):
-        #         if "\n" in el.text:
-        #             el.text = el.text.strip()
+        etree.indent(self.bob_data, space="    ")
+        for el in self.bob_data.iter():
+            if el.attrib.items() and not list(el):
+                if el.text is not None and "\n" in el.text:
+                    el.text = el.text.strip("\n")
+                    el.text = el.text.strip()
+        #     elif el.text is not None and el.text.strip().strip("\n") == "":
+        #         el.text = el.text.strip().strip("\n")
 
         self.bob_data.write(
             self.output_file,
             pretty_print=True,
             xml_declaration=True,
-            encoding="utf-8",
+            encoding="UTF-8",
         )
 
     def delete_old_file(self):
