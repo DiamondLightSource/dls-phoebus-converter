@@ -106,8 +106,9 @@ class OpiConverter:
                 if el.text is not None and "\n" in el.text:
                     el.text = el.text.strip("\n")
                     el.text = el.text.strip()
-        #     elif el.text is not None and el.text.strip().strip("\n") == "":
-        #         el.text = el.text.strip().strip("\n")
+            elif el.tag == "actions" and el.text is not None:
+                el.text = el.text.strip("\n")
+                el.text = el.text.strip()
 
         self.bob_data.write(
             self.output_file,
