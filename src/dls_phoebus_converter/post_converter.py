@@ -257,8 +257,8 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
                 new_symbol.text = symbol_file
                 symbols_el.append(new_symbol)
 
-            if widget.findall("rules") is not None:
-                rules = widget.findall("rules")
+            if widget.findall("rules/rule") is not None:
+                rules = widget.findall("rules/rule")
                 additional_rules = []
                 for rule in rules:
                     # Look for a rule which is used to change the displayed
@@ -271,11 +271,13 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
                         rule.attrib["out_exp"] = "false"
                         for exp in rule.findall("exp"):
                             if exp.attrib["bool_exp"] == "pvLegacySev0==-1":
+                                exp.remove(exp.find("expression"))
                                 exp.attrib["bool_exp"] = "pvSev0==3 || pvSev0==4"
-                                exp.append(Element("value"))
-                                exp.find("value").text = (
+                                val_el = Element("value")
+                                val_el.text = (
                                     out_image + "_" + str(invalid_image_index) + ext
                                 )
+                                exp.append(val_el)
 
                         # We must create a rule for each symbol specified for
                         # the widget which overwrites the displayed symbol
@@ -289,8 +291,8 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
                             additional_rule.attrib["prop_id"] = f"symbols[{i}]"
                             additional_rules.append(additional_rule)
 
-                # Extend the rules for this widget with the new rules we created
-                rules.extend(additional_rules)
+                        # Extend the rules for this widget with the new rules we created
+                        rule.getparent().extend(additional_rules)
 
 
 def fix_embedded_screen_ext(oc: OpiConverter, widget: Element):
