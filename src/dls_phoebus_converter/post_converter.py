@@ -273,12 +273,17 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
                                     out_image + "_" + str(invalid_image_index) + ext
                                 )
                                 exp.append(val_el)
+                            else:
+                                # Remove other "image_index" rule expressions. Usually
+                                # we dont want to keep these rules as for the most part
+                                # this functionality is now built into the widget.
+                                rule.remove(exp)
 
                         # We must create a rule for each symbol specified for
                         # the widget which overwrites the displayed symbol
                         # widget with the special invalid state symbol.
                         for i in range(1, len(widget.find("symbols"))):
-                            # Copy dictionary to get a unique copy
+                            # Get a unique copy of the rule
                             additional_rule = copy.deepcopy(rule)
                             additional_rule.attrib["name"] = (
                                 rule.attrib["name"] + f"_{i}"
