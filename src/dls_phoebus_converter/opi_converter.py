@@ -131,7 +131,8 @@ class OpiConverter:
 
     def dont_edit_file(self):
         # Check the no_edit file to see if we should even run the conversion
-        # Instead of doing it like this, we could read a comment at the top of the bob file
+        # Instead of doing it like this, we could read a comment at the top of the bob
+        # file?
         if self.no_edit_file is not None:
             with open(self.no_edit_file) as f:
                 lines = f.readlines()
@@ -139,8 +140,8 @@ class OpiConverter:
                     if self.src_file_path == line.strip():
                         logging.warning(
                             "!!! OPI file to be converted is in the 'no_edit' list"
-                            "suggesting that it has had manual changes that should not be"
-                            "overwritten.\n"
+                            "suggesting that it has had manual changes that should not"
+                            "be overwritten.\n"
                             "If this is incorrect then remove this file from the "
                             f"{self.no_edit_file}.\n"
                             "Skipping this conversion"
@@ -154,7 +155,8 @@ class OpiConverter:
             logger.info("Replaced EDMSymbol widgets in OPI before running converter")
         if self.conversion_steps.fix_group_cont:
             logger.info(
-                "Fixed Grouping Container widget is OPI that is missing required properties"
+                "Fixed Grouping Container widget in OPI that is missing required"
+                "properties"
             )
         if self.conversion_steps.update_leg_sev:
             logger.info("Updating legacy PV severity status")
@@ -169,23 +171,23 @@ class OpiConverter:
             )
         if self.conversion_steps.non_ab_action:
             logger.warning(
-                "Found an action on a widget that is NOT an ActionButton or Symbol widget. "
-                "Debug for more"
+                "Found an action on a widget that is NOT an ActionButton or Symbol"
+                "widget. Debug for more"
             )
         if self.conversion_steps.replace_with_ab:
             logger.info(
-                "Replaced a Rectangle/BooleanButton widget with an action with an Action "
-                "Button widget"
+                "Replaced a Rectangle/BooleanButton widget with an action, with an"
+                "Action Button widget"
             )
         if self.conversion_steps.replace_db_script:
             logger.info(
-                "Replaced script to open databrowser with an action to open a DataBrowser "
-                "plt file"
+                "Replaced script to open databrowser with an action to open a "
+                "DataBrowser plt file"
             )
         if self.conversion_steps.fix_action_macro_name:
             logger.info(
-                "Fixed Open Display action that contains the $name macro that does not get "
-                "parsed"
+                "Fixed Open Display action that contains the $name macro that does not"
+                "get parsed"
             )
         if self.conversion_steps.create_sym_images:
             logger.info("Created new images for Symbol widget from original")
@@ -254,9 +256,9 @@ class OpiConverter:
 
         # Should we use the modified OPI files
         if not use_modified_opi:
-            # Copy the src file to the tmp location overwriting any existing tmp.opi. This
-            # is done as autoconverting directly from the src file sometimes fails due to
-            # read permission issues
+            # Copy the src file to the tmp location overwriting any existing tmp.opi.
+            # This is done as autoconverting directly from the src file sometimes fails
+            # due to read permission issues
             shutil.copy(self.src_file_path, self.tmp_file_path)
 
         # Run Phoebus converter
