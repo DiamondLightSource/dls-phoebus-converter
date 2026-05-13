@@ -22,7 +22,7 @@ def conversion_test(config_file, files_to_convert):
         OUTPUT_SRC,
         f"config/{config_file}",
     ]
-    proc = subprocess.Popen(cmd)
+    proc = subprocess.Popen(cmd, stderr=subprocess.DEVNULL)
     proc.wait()
 
     for file in files_to_convert:

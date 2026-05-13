@@ -65,7 +65,7 @@ def test_front_ends(ref_output_directory):
         "test_output/",
         "config/front_ends.yaml",
     ]
-    proc = subprocess.Popen(cmd)
+    proc = subprocess.Popen(cmd, stderr=subprocess.DEVNULL)
     proc.wait()
 
     # Get the reference screens from kubernetes

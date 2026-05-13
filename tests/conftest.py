@@ -1,12 +1,18 @@
+import logging
 import shutil
 from pathlib import Path
 
 import pytest
 
+from dls_phoebus_converter.logconfig import setup_logging
+
 # The root directory into which the converter saves screens
 OUTPUT_SRC = Path("test_output")
 # Stores screens downloaded from the webserver
 REFERENCE_DIR = Path("test_output_ref")
+
+setup_logging()
+logging.getLogger("dls_phoebus_converter").setLevel(logging.ERROR)
 
 
 @pytest.fixture(autouse=True)
