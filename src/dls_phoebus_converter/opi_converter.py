@@ -1,6 +1,5 @@
 """Handles the conversion of an individual file from opi to bob"""
 
-import argparse
 import copy
 import logging
 import os
@@ -247,7 +246,7 @@ class OpiConverter:
         """
         return post_conversion_steps(self, sc)
 
-    def convert(self, sc) -> Path | None:
+    def convert(self, sc=None) -> Path | None:
         if self.dont_edit_file():
             return True
 
@@ -274,66 +273,3 @@ class OpiConverter:
 
         self.log_conversion_steps()
         logger.info(f"Conversion saved to {self.output_file}\n")
-
-
-def parse_args():
-    # Conversion options
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-s", "--src_file", required=True, help="Source opi file")
-    ap.add_argument(
-        "-d", "--dst_dir", required=True, help="Directory to place converted bob file"
-    )
-    ap.add_argument("-t", "--tfile", required=False, help="Template file")
-    ap.add_argument(
-        "-p", "--pname", required=False, help="Databrowser plot file to open in action"
-    )
-    ap.add_argument("--fix_group", action="store_true", help="Fix grouping container")
-    ap.add_argument(
-        "--no_modify",
-        action="store_true",
-        help="Don't modify anything after the Phoebus conversion",
-    )
-    ap.add_argument(
-        "--replace_tab",
-        action="store_true",
-        help="Replace actions that open in tabs to open in standalone",
-    )
-    ap.add_argument(
-        "--no_edit_file",
-        action="store_true",
-        help="File describing opi files that shouldnt be converted.",
-    )
-    ap.add_argument(
-        "--debug",
-        help="Enable debug logging",
-        action="store_true",
-        default=False,
-    )
-    args = ap.parse_args()
-
-    src_file_path = Path(args.src_file)
-    dst_dir_path = Path(args.dst_dir)
-
-    if args.tfile is not None:
-        template_file_path = Path(args["tfile"])
-
-    if args.debug:
-        logger.setLevel(logging.DEBUG)
-
-    # TODO: Here we create a ConversionConfig object and pass it to main
-
-    return (
-        src_file_path,
-        dst_dir_path,
-        template_file_path,
-        args.pname,
-        args.fix_group,
-        args.no_modify,
-        args.replace_tab,
-        args.no_edit_file,
-    )
-
-
-if __name__ == "__main__":
-    oc = OpiConverter(*parse_args())
-    oc.convert()

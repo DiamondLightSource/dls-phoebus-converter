@@ -30,25 +30,27 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
     if not oc.no_modify:
-        parse_widgets(oc)
+        fix_widget_issues(oc)
 
-    # # We need to define macros which were previously passed into the synoptic as
-    # # script arguments
-    if oc.synoptic:
-        handle_macros(oc)
+    # If sc is None, then we are just converting a single_file, so we dont
+    # do any of the changes for converting a technical area.
+    if sc is not None:
+        if oc.synoptic:
+            # We need to define macros which were previously passed into the synoptic as
+            # script arguments
+            handle_macros(oc)
+        handle_support_modules(sc, oc)
 
-    handle_support_modules(sc, oc)
-
-    # # Special cases are tweaks which are not handled by the
-    # # normal conversion process and are often unique to a specific screen.
-    # # These are optionally defined in a domain-specific special case module.
+    # Special cases are tweaks which are not handled by the
+    # normal conversion process and are often unique to a specific screen.
+    # These are optionally defined in a domain-specific special case module.
     try:
         sc.special_case_module.run(oc)
     except AttributeError:
         pass
 
 
-def parse_widgets(oc: OpiConverter):
+def fix_widget_issues(oc: OpiConverter):
     for widget in oc.bob_data.findall(".//widget"):
         if "typeId" in widget.attrib.keys():
             logging.error(
