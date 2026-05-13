@@ -47,6 +47,7 @@ class OpiConverter:
     output_file: Path | None = None
     tmp_file_path: Path | None = None
     template_file_path: Path | None = None
+
     support_module_name: str | None = None
     no_edit_file: Path | None = None
     macros: dict[str, str] = field(default_factory=lambda: {})
@@ -61,12 +62,12 @@ class OpiConverter:
     template_data: etree.ElementTree | None = None
 
     # This stores the initial contents of the bob/opi file
-    const_bob_data: etree.ElementTree | None = None
     const_opi_data: etree.ElementTree | None = None
+    const_bob_data: etree.ElementTree | None = None
 
     # This stores the working etree for the bob/opi data
-    bob_data: etree.ElementTree | None = None
     opi_data: etree.ElementTree | None = None
+    bob_data: etree.ElementTree | None = None
 
     def __post_init__(self):
         if self.dst_filename is None:
@@ -222,8 +223,8 @@ class OpiConverter:
             # Delete tmp.bob
             os.remove(tmp_bob_file_path)
             return True
-        else:
-            return False
+
+        return False
 
     def run_pre_conversion_steps(self):
         """Perform modifications to the .opi file before doing the main conversion
