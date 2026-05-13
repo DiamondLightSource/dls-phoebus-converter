@@ -172,11 +172,6 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
         )
         return
 
-    if oc.template_data is None:
-        error_msg = "No template file provided"
-        logger.error(error_msg, exc_info=True)
-        raise FileNotFoundError(error_msg)
-
     template_symbols = oc.template_data.getroot()
     for s in template_symbols:
         if s.find("name").text == widget.find("name").text:
