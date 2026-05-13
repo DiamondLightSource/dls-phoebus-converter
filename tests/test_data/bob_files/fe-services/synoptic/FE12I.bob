@@ -889,7 +889,7 @@ $(pv_value)</tooltip>
 						<actions execute_as_one="true">
 							<action type="open_display">
 								<description>Open Display</description>
-								<file>common/plc/i12LVDT.bob</file>
+								<file>common/plc/i12LVDT.opi</file>
 								<target>standalone</target>
 							</action>
 						</actions>
