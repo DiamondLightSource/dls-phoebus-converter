@@ -1,10 +1,11 @@
 """Convert the screens in tests/test_data/opi_files and compare the conversions to their
 previous conversions in tests/test_data/bob_files."""
 
-import difflib
 import subprocess
 import sys
 from pathlib import Path
+
+from xmldiff import formatting, main
 
 from conftest import OUTPUT_SRC
 
@@ -13,7 +14,7 @@ OUTPUT_DIR = OUTPUT_SRC / Path("fe-services/synoptic/")
 
 
 def conversion_test(config_file, files_to_convert):
-    diff_strings = []
+    diffs = []
     cmd = [
         sys.executable,
         "-m",
@@ -26,14 +27,18 @@ def conversion_test(config_file, files_to_convert):
     proc.wait()
 
     for file in files_to_convert:
-        with open(OUTPUT_DIR / file) as test, open(REFERENCE_DIR / file) as ref:
-            lines1 = test.readlines()
-            lines2 = ref.readlines()
-        diff = difflib.unified_diff(lines1, lines2, fromfile=str(test), tofile=str(ref))
-        diff_str = "".join(diff)
-        if diff_str != "":
-            diff_strings.append(diff_str)
-    return diff_strings
+        diff = main.diff_files(
+            REFERENCE_DIR / file,
+            OUTPUT_DIR / file,
+            formatter=formatting.XmlDiffFormatter(
+                normalize=formatting.WS_TAGS, pretty_print=True
+            ),
+        )
+        if diff != "":
+            diffs.append(
+                f"Diff for files: {REFERENCE_DIR / file}, {OUTPUT_DIR / file}:\n{diff}"
+            )
+    return diffs
 
 
 def test_single_conversion():
