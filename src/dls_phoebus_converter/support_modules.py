@@ -60,7 +60,7 @@ def update_widget_filepaths(sc, widget, macros):
 def get_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
     widget_file_paths: list[Path] = []
     # Look for filepaths in xml
-    for widget in oc.bob_data.findall("//widget"):
+    for widget in oc.bob_data.findall(".//widget"):
         get_widget_filepaths(sc, widget, widget_file_paths)
 
     # Only keep unique filepaths and fill in macros
@@ -158,7 +158,7 @@ def switch_filepaths(sc: ScreenConverter, file_path, macros=None, symbol=False) 
 
 def update_filepaths(sc, oc: OpiConverter):
     # Look for filepaths in xml
-    for widget in oc.bob_data.findall("//widget"):
+    for widget in oc.bob_data.findall(".//widget"):
         update_widget_filepaths(sc, widget, oc.macros)
 
 
