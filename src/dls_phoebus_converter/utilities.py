@@ -60,7 +60,7 @@ def search_widget_filepaths(
         if func(sc, Path(image_file_el.text), *args):
             image_file_el.text = func(sc, Path(image_file_el.text), *args)
 
-    action_els = widget.findall(".//action")
+    action_els = widget.findall("./actions/action")
     for action_el in action_els:
         path_el = action_el.find("path")
         file_el = action_el.find("file")
