@@ -23,7 +23,9 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 
 @dataclass
-class ConversionSteps:
+class CompletedSteps:
+    """Steps are marked as done if completed successfully, used for logging"""
+
     replace_edm_sym = False
     fix_group_cont = False
     update_leg_sev = False
@@ -50,7 +52,7 @@ class OpiConverter:
     support_module_name: str | None = None
     no_edit_file: Path | None = None
     macros: dict[str, str] = field(default_factory=lambda: {})
-    conversion_steps = ConversionSteps()
+    completed_conversion_steps = CompletedSteps()
 
     synoptic: bool = False
     replace_tab: bool = True
@@ -150,48 +152,32 @@ class OpiConverter:
 
     def log_conversion_steps(self):
         # Log what was done
-        if self.conversion_steps.replace_edm_sym:
-            logger.info("Replaced EDMSymbol widgets in OPI before running converter")
-        if self.conversion_steps.fix_group_cont:
-            logger.info(
-                "Fixed Grouping Container widget in OPI that is missing required"
-                "properties"
-            )
-        if self.conversion_steps.update_leg_sev:
-            logger.info("Updating legacy PV severity status")
-        if self.conversion_steps.fix_exit_but:
-            logger.info(
-                "Converting EXIT to script to an EXIT action button to close display"
-            )
-        if self.conversion_steps.replace_opi_ext:
-            logger.info(
-                "Replaced .OPI file extensions with .BOB for "
-                "EmbeddedDisplay/LinkingContainers/Open Display actions"
-            )
-        if self.conversion_steps.non_ab_action:
-            logger.warning(
-                "Found an action on a widget that is NOT an ActionButton or Symbol"
-                "widget. Debug for more"
-            )
-        if self.conversion_steps.replace_with_ab:
-            logger.info(
-                "Replaced a Rectangle/BooleanButton widget with an action, with an"
-                "Action Button widget"
-            )
-        if self.conversion_steps.replace_db_script:
-            logger.info(
-                "Replaced script to open databrowser with an action to open a "
-                "DataBrowser plt file"
-            )
-        if self.conversion_steps.fix_action_macro_name:
-            logger.info(
-                "Fixed Open Display action that contains the $name macro that does not"
-                "get parsed"
-            )
-        if self.conversion_steps.create_sym_images:
-            logger.info("Created new images for Symbol widget from original")
-        if self.conversion_steps.replace_action_tab:
-            logger.info("Replace open display target=tab with target=standalone")
+        ccs = self.completed_conversion_steps
+        log_map = {
+            ccs.replace_edm_sym: "Replaced EDMSymbol widgets in OPI before running "
+            "converter",
+            ccs.fix_group_cont: "Fixed Grouping Container widget in OPI that is missing"
+            "required properties",
+            ccs.update_leg_sev: "Updating legacy PV severity status",
+            ccs.fix_exit_but: "Converting EXIT to script to an EXIT action button to "
+            "close the display",
+            ccs.replace_opi_ext: "Replaced .OPI file extensions with .BOB for "
+            "EmbeddedDisplay/LinkingContainers/Open Display actions",
+            ccs.non_ab_action: "Found an action on a widget that is NOT an ActionButton"
+            " or Symbol widget. Debug for more",
+            ccs.replace_with_ab: "Replaced a Rectangle/BooleanButton widget with an "
+            "action, with an Action Button widget",
+            ccs.replace_db_script: "Replaced script to open databrowser with an action "
+            "to open a DataBrowser plt file",
+            ccs.fix_action_macro_name: "Fixed Open Display action that contains the "
+            "$name macro that does not get parsed",
+            ccs.create_sym_images: "Created new images for Symbol widget from original",
+            ccs.replace_action_tab: "Replace open display target=tab with "
+            "target=standalone",
+        }
+        for step, string in log_map.items():
+            if step:
+                logger.info(string)
 
     def run_converter(self):
         convert_command = (

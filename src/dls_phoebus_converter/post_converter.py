@@ -112,7 +112,7 @@ def fix_widget_issues(oc: OpiConverter):
 
 
 def fix_exit_button(oc: OpiConverter, action: Element):
-    oc.conversion_steps.fix_exit_but = True
+    oc.completed_conversion_steps.fix_exit_but = True
     action.attrib["type"] = "close_display"
     action.attrib["description"] = "Close display"
 
@@ -147,7 +147,7 @@ def process_widget_actions(oc: OpiConverter, actions: Element):
 def replace_opi_extension(oc: OpiConverter, action: Element):
     for child in action:
         if child.find("file"):
-            oc.conversion_steps.replace_opi_ext = True
+            oc.completed_conversion_steps.replace_opi_ext = True
             logger.debug(
                 "Replacing file open action: " + child.text + " to open .BOB file"
             )
@@ -162,7 +162,7 @@ def fix_action_open_macro(oc: OpiConverter, action: Element):
             if child.tag == "macros":
                 for macro in child:
                     if macro.text == "$(name)":
-                        oc.conversion_steps.fix_action_macro_name = True
+                        oc.completed_conversion_steps.fix_action_macro_name = True
                         macro.text = action.getparent().getparent().find("name").text
 
 
@@ -198,7 +198,7 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
             if os.path.isfile(out_image[0] + "_0" + ext):
                 logger.info("   ... images already exist - skipping")
             else:
-                oc.conversion_steps.create_sym_images = True
+                oc.completed_conversion_steps.create_sym_images = True
                 for n in range(n_images):
                     output = out_image[0] + "_" + str(n) + ext
                     x = 0 + width * n
@@ -300,7 +300,7 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
 def fix_embedded_screen_ext(oc: OpiConverter, widget: Element):
     if "file" not in list(widget):
         return
-    oc.conversion_steps.replace_opi_ext = True
+    oc.completed_conversion_steps.replace_opi_ext = True
     opi_file = widget.get("file").text
     bob_file = opi_file.replace(".opi", ".bob")
     widget.get("file").text = bob_file
@@ -355,7 +355,7 @@ def check_actions_in_non_action_buttons(oc: OpiConverter, widget: Element):
             widget.attrib["type"] != "action_button"
             and widget.attrib["type"] != "symbol"
         ):
-            oc.conversion_steps.non_ab_action = True
+            oc.completed_conversion_steps.non_ab_action = True
             logger.debug(
                 "Action contained in widget that isn't an action button: "
                 + str(widget.attrib["type"])
@@ -372,7 +372,7 @@ def check_actions_in_non_action_buttons(oc: OpiConverter, widget: Element):
                     if widget.find("on_label").text != widget.find("off_label").text:
                         return
 
-                oc.conversion_steps.replace_with_ab = True
+                oc.completed_conversion_steps.replace_with_ab = True
                 logger.debug("    Attempting to fix by converting to an action_button")
                 widget.attrib["type"] = "action_button"
 
@@ -395,7 +395,7 @@ def replace_open_in_tab(oc: OpiConverter, action: Element):
         for child in action:
             if child.tag == "target" and child.text == "tab":
                 child.text = "standalone"
-                oc.conversion_steps.replace_action_tab = True
+                oc.completed_conversion_steps.replace_action_tab = True
 
 
 def set_new_databrowser_action_from_execute_eclipse(action: Element):
@@ -560,7 +560,7 @@ def check_legacy_sev(oc, input_field):
 
 def update_legacy_sev_status(oc: OpiConverter, input_field, leg_sev, new_sev):
     if leg_sev in input_field:
-        oc.conversion_steps.update_leg_sev = True
+        oc.completed_conversion_steps.update_leg_sev = True
         result = input_field.replace(leg_sev, new_sev)
         logger.debug("Fixing " + leg_sev + " to " + new_sev)
         return result

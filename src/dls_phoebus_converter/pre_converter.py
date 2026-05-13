@@ -37,7 +37,7 @@ def replace_edm_symbol_widget(oc: OpiConverter):
                     "org.csstudio.opibuilder.widgets.symbol.multistate.MultistateMonitorWidget"
                 )
                 fixed = True
-                oc.conversion_steps.replace_edm_sym = True
+                oc.completed_conversion_steps.replace_edm_sym = True
     return fixed
 
 
