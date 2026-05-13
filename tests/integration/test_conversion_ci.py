@@ -21,6 +21,7 @@ def conversion_test(config_file, files_to_convert):
         "dls_phoebus_converter",
         "-o",
         OUTPUT_SRC,
+        "-c",
         f"config/{config_file}",
     ]
     proc = subprocess.Popen(cmd, stderr=subprocess.DEVNULL)
