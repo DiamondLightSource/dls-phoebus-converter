@@ -101,13 +101,16 @@ class OpiConverter:
 
     def write_bob_file_contents(self):
 
-        etree.indent(self.bob_data, space="    ")
+        etree.indent(self.bob_data, space="\t")
+
+        # We must remove some dodgey formatting from certain elements inherited from the
+        # opi file
         for el in self.bob_data.iter():
             if el.attrib.items() and not list(el):
                 if el.text is not None and "\n" in el.text:
                     el.text = el.text.strip("\n")
                     el.text = el.text.strip()
-            elif el.tag == "actions" and el.text is not None:
+            elif (el.tag == "actions" or el.tag == "scripts") and el.text is not None:
                 el.text = el.text.strip("\n")
                 el.text = el.text.strip()
 
