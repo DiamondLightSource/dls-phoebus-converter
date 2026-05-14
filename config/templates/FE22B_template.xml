@@ -2,7 +2,6 @@
 <symbols>
 	<symbol>
 	<name>$(dom)-VA-RGA-01</name>
-	<image>acc-ui-support/symbols/rga-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/rga/4-26/rgaApp/opi/opi/rga-symbol-34.png</location>
 	<nimages>11</nimages>
 	<width>34</width>
@@ -13,37 +12,33 @@
 
 	<symbol>
 	<name>$(dom)-VA-PIRG-01</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aPirg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
 	<height>34</height>
-	<startindex>1</startindex> 
+	<startindex>1</startindex>
 	<invalidimageindex>0</invalidimageindex>
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-PIRG-02</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aPirg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
 	<height>34</height>
-	<startindex>1</startindex> 
+	<startindex>1</startindex>
 	<invalidimageindex>0</invalidimageindex>
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-PIRG-03</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aPirg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
 	<height>34</height>
-	<startindex>1</startindex> 
+	<startindex>1</startindex>
 	<invalidimageindex>0</invalidimageindex>
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-PIRG-04</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aPirg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
@@ -53,7 +48,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-PIRG-05</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aPirg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
@@ -63,7 +57,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-PIRG-06</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Pirg-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aPirg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
@@ -74,7 +67,6 @@
 
 	<symbol>
 	<name>$(dom)-VA-IMG-01</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aImg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
@@ -84,7 +76,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-IMG-02</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aImg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
@@ -94,7 +85,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-IMG-03</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aImg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
@@ -104,7 +94,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-IMG-04</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aImg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
@@ -114,7 +103,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-IMG-05</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aImg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
@@ -124,7 +112,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-IMG-06</name>
-	<image>acc-ui-support/symbols/mks937$(mks_type)Img-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/mks937a/2-97/mks937aApp/opi/opi/mks937aImg-symbol-34.png</location>
 	<nimages>17</nimages>
 	<width>34</width>
@@ -135,7 +122,6 @@
 
 	<symbol>
 	<name>$(dom)-VA-IONP-01</name>
-	<image>acc-ui-support/symbols/digitelMpcIonp-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/digitelMpc/6-24/digitelMpcApp/opi/opi/digitelMpcIonp-symbol-34.png</location>
 	<nimages>12</nimages>
 	<width>34</width>
@@ -145,7 +131,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-IONP-02</name>
-	<image>acc-ui-support/symbols/digitelMpcIonp-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/digitelMpc/6-24/digitelMpcApp/opi/opi/digitelMpcIonp-symbol-34.png</location>
 	<nimages>12</nimages>
 	<width>34</width>
@@ -155,7 +140,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-IONP-03</name>
-	<image>acc-ui-support/symbols/digitelMpcIonp-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/digitelMpc/6-24/digitelMpcApp/opi/opi/digitelMpcIonp-symbol-34.png</location>
 	<nimages>12</nimages>
 	<width>34</width>
@@ -165,7 +149,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-IONP-04</name>
-	<image>acc-ui-support/symbols/digitelMpcIonp-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/digitelMpc/6-24/digitelMpcApp/opi/opi/digitelMpcIonp-symbol-34.png</location>
 	<nimages>12</nimages>
 	<width>34</width>
@@ -175,7 +158,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-IONP-05</name>
-	<image>acc-ui-support/symbols/digitelMpcIonp-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/digitelMpc/6-24/digitelMpcApp/opi/opi/digitelMpcIonp-symbol-34.png</location>
 	<nimages>12</nimages>
 	<width>34</width>
@@ -186,7 +168,6 @@
 
 	<symbol>
 	<name>$(dom)-RS-ABSB-01</name>
-	<image>fe-ui-support/symbols/absorber-symbol.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/images/absorber-symbol.png</location>
 	<nimages>6</nimages>
 	<width>30</width>
@@ -197,7 +178,6 @@
 
 	<symbol>
 	<name>$(dom)-VA-FVALV-01</name>
-	<image>fe-ui-support/symbols/fastFlap-symbol.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/images/fastFlap-symbol.png</location>
 	<nimages>7</nimages>
 	<width>18</width>
@@ -208,7 +188,6 @@
 
 	<symbol>
 	<name>$(dom)-PS-SHTR-01</name>
-	<image>fe-ui-support/symbols/fastFlap-symbol.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/images/fastFlap-symbol.png</location>
 	<nimages>7</nimages>
 	<width>18</width>
@@ -218,7 +197,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-PS-SHTR-02</name>
-	<image>fe-ui-support/symbols/fastFlap-symbol.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/images/fastFlap-symbol.png</location>
 	<nimages>7</nimages>
 	<width>18</width>
@@ -229,7 +207,6 @@
 
 	<symbol>
 	<name>$(dom)-VA-VALVE-01</name>
-	<image>fe-ui-support/symbols/vacuumValve-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/dlsPLC/3-0-68/dlsPLCApp/opi/opi/vacuumValve-symbol-34.png</location>
 	<nimages>6</nimages>
 	<width>34</width>
@@ -239,7 +216,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-VALVE-02</name>
-	<image>fe-ui-support/symbols/vacuumValve-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/dlsPLC/3-0-68/dlsPLCApp/opi/opi/vacuumValve-symbol-34.png</location>
 	<nimages>6</nimages>
 	<width>34</width>
@@ -249,7 +225,6 @@
 	</symbol>
 	<symbol>
 	<name>$(dom)-VA-VALVE-03</name>
-	<image>fe-ui-support/symbols/vacuumValve-symbol-34.png</image>
 	<location>/dls_sw/prod/R3.14.12.7/support/dlsPLC/3-0-68/dlsPLCApp/opi/opi/vacuumValve-symbol-34.png</location>
 	<nimages>6</nimages>
 	<width>34</width>
