@@ -429,9 +429,12 @@ def set_new_databrowser_action_from_execute_eclipse(
 
     action.attrib["type"] = "command"
 
-    desc_el = Element("description")
-    desc_el.text = "Launch databrowser"
-    action.append(desc_el)
+    if action.find("description") is None:
+        desc_el = Element("description")
+        desc_el.text = "Launch databrowser"
+        action.append(desc_el)
+    else:
+        action.find("description").text = "Launch databrowser"
 
     # Add new command to open databrowser
     command_el = Element("command")
