@@ -4,15 +4,16 @@ from __future__ import annotations
 
 import copy
 import logging
-import os
 import re
 import subprocess
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from lxml import etree
 from lxml.etree import Element
 
-from dls_phoebus_converter.macros import handle_macros
+from dls_phoebus_converter.macros import fill_in_file_path_macros, handle_macros
+from dls_phoebus_converter.support_modules import ACC_UI_SUPPORT_MODULE_LIST
 
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
@@ -24,7 +25,7 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 
 def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
-    fix_widget_issues(oc)
+    fix_widget_issues(oc, sc)
 
     # If sc is None, then we are just converting a single_file, so we dont
     # do any of the changes for converting a technical area.
@@ -50,7 +51,7 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
         pass
 
 
-def fix_widget_issues(oc: OpiConverter):
+def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
     for widget in oc.bob_data.findall(".//widget"):
         if "typeId" in widget.attrib.keys():
             logging.error(
@@ -80,7 +81,7 @@ def fix_widget_issues(oc: OpiConverter):
             for child in widget:
                 if child.tag == "actions":
                     fix_widget_actions(oc, widget.find(".//actions"))
-            create_symbol_from_edm(oc, widget)
+            fix_edm_symbol_widgets(oc, sc, widget)
 
         elif widget_type == "embedded":
             fix_embedded_screen_ext(oc, widget)
@@ -176,7 +177,129 @@ def fix_action_open_macro(oc: OpiConverter, action: Element):
                         macro.text = action.getparent().getparent().find("name").text
 
 
-def create_symbol_from_edm(oc: OpiConverter, widget: Element):
+def create_symbol_image_file(
+    oc: OpiConverter,
+    output_file,
+    output_file_full,
+    src_file: Path,
+    n_images,
+    width,
+    height,
+):
+    """Use the cli 'convert' tool to split the edm style single symbol image file
+    into a seperate symbol image file per symbol"""
+
+    symbol_files = []
+    oc.completed_conversion_steps.create_sym_images = True
+    logger.info(f"Creating new image for symbol from: {str(src_file)}")
+    for n in range(n_images):
+        x = 0 + width * n
+        new_symbol = str(output_file.with_stem(output_file.stem + "_" + str(n)))
+        new_output_file = str(
+            output_file_full.with_stem(output_file_full.stem + "_" + str(n))
+        )
+
+        cmd = [
+            "convert",
+            src_file,
+            "-crop",
+            f"{str(width)}x{str(height)}+{str(x)}+0",
+            new_output_file,
+        ]
+
+        process = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        # TODO: We should check the return code and log if there was
+        # an error
+        process.communicate()
+        symbol_files.append(new_symbol)
+
+    return symbol_files
+
+
+def get_symbol_file_destinations(sc: ScreenConverter, oc: OpiConverter, src_file):
+    """Get the destination path for the symbols, both the full path to save the image
+    files too and the relative path to use in the screen links."""
+
+    if sc is not None:
+        if oc.is_synoptic:
+            for sm in ACC_UI_SUPPORT_MODULE_LIST:
+                if sm in src_file.parts:
+                    output_file = sc.acc_ui_support_symbol_dst_part / src_file.name
+                    output_file_full = sc.acc_ui_support_symbol_dst_full / src_file.name
+                    break
+                else:
+                    output_file = sc.domain_ui_support_symbol_dst_part / src_file.name
+                    output_file_full = (
+                        sc.domain_ui_support_symbol_dst_full / src_file.name
+                    )
+        elif oc.support_module_name is not None:
+            if oc.support_module_name in ACC_UI_SUPPORT_MODULE_LIST:
+                output_file = sc.acc_ui_support_symbol_dst_part / src_file.name
+                output_file_full = sc.acc_ui_support_symbol_dst_full / src_file.name
+            else:
+                output_file = sc.domain_ui_support_symbol_dst_part / src_file.name
+                output_file_full = sc.domain_ui_support_symbol_dst_full / src_file.name
+    else:
+        output_file = oc.dst_dir_path / src_file.name
+
+    return output_file, output_file_full
+
+
+def update_symbol_widget_rules(widget, output_file, invalid_image_index):
+    """Modify/create rules to change the displayed symbol and overwrite the default
+    order"""
+
+    if widget.findall("rules/rule") is not None:
+        rules = widget.findall("rules/rule")
+        additional_rules = []
+        for rule in rules:
+            # Look for a rule which is used to change the displayed
+            # symbol to a symbol signifying an invalid state.
+            if (
+                "prop_id" in rule.attrib.keys()
+                and rule.attrib["prop_id"] == "image_index"
+            ):
+                rule.attrib["prop_id"] = "symbols[0]"
+                rule.attrib["out_exp"] = "false"
+                for exp in rule.findall("exp"):
+                    if exp.attrib["bool_exp"] == "pvLegacySev0==-1":
+                        exp.remove(exp.find("expression"))
+                        exp.attrib["bool_exp"] = "pvSev0==3 || pvSev0==4"
+                        val_el = Element("value")
+                        val_el.text = str(
+                            output_file.with_stem(
+                                output_file.stem + "_" + str(invalid_image_index)
+                            )
+                        )
+                        exp.append(val_el)
+                    else:
+                        # Remove other "image_index" rule expressions. Usually
+                        # we dont want to keep these rules as for the most part
+                        # this functionality is now built into the widget.
+                        rule.remove(exp)
+
+                # We must create a rule for each symbol specified for
+                # the widget which overwrites the displayed symbol
+                # widget with the special invalid state symbol.
+                for i in range(1, len(widget.find("symbols"))):
+                    # Get a unique copy of the rule
+                    additional_rule = copy.deepcopy(rule)
+                    additional_rule.attrib["name"] = rule.attrib["name"] + f"_{i}"
+                    additional_rule.attrib["prop_id"] = f"symbols[{i}]"
+                    additional_rules.append(additional_rule)
+
+                # Extend the rules for this widget with the new rules we created
+                rule.getparent().extend(additional_rules)
+
+
+def fix_edm_symbol_widgets(oc: OpiConverter, sc: ScreenConverter, widget: Element):
+    """Converts from an edm/cs-studio style symbol widget to a Pheobus style symbol
+    widget."""
+
     if oc.template_file_path is None:
         logger.warning(
             "Found edm symbol widget but could not convert it due to no template"
@@ -185,128 +308,60 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
         return
 
     template_symbols = oc.template_data.getroot()
-    for s in template_symbols:
-        if s.find("name").text == widget.find("name").text:
-            logger.info("Fixing Symbol widget with name: " + s.find("name").text)
-            image = s.find("image").text
-            location = s.find("location").text
-            width = int(s.find("width").text)
-            height = int(s.find("height").text)
-            n_images = int(s.find("nimages").text)
-            start_index = s.find("startindex").text
-            invalid_image_index = int(s.find("invalidimageindex").text)
+    for symbol in template_symbols:
+        if symbol.find("name").text == widget.find("name").text:
+            logger.info("Fixing Symbol widget with name: " + symbol.find("name").text)
+            src_file = Path(symbol.find("location").text)
+            width = int(symbol.find("width").text)
+            height = int(symbol.find("height").text)
+            n_images = int(symbol.find("nimages").text)
+            start_index = int(symbol.find("startindex").text)
+            invalid_image_index = int(symbol.find("invalidimageindex").text)
 
-            # Run action of left click
-            if widget.find("actions") is not None:
-                widget.append(Element("run_actions_on_mouse_click"))
-                widget.find("run_actions_on_mouse_click").text = "true"
+            # Symbols can have the same name, so check name and image name to be sure we
+            # have the correct widget. We also must fill in any macros in the image name
+            if src_file.name in fill_in_file_path_macros(
+                widget.find("symbols/symbol").text, oc.macros
+            ):
+                output_file, output_file_full = get_symbol_file_destinations(
+                    sc, oc, src_file
+                )
 
-            # Set up symbols
-            out_image = location.split(".")[:-1]
-            ext = "." + location.split(".")[-1]
-            logger.info("Creating new images for symbol from: " + location)
-            if os.path.isfile(out_image[0] + "_0" + ext):
-                logger.info("   ... images already exist - skipping")
-            else:
-                oc.completed_conversion_steps.create_sym_images = True
-                for n in range(n_images):
-                    output = out_image[0] + "_" + str(n) + ext
-                    x = 0 + width * n
-                    cmd = (
-                        "convert "
-                        + location
-                        + " -crop "
-                        + str(width)
-                        + "x"
-                        + str(height)
-                        + "+"
-                        + str(x)
-                        + "+0 "
-                        + output
-                    )
-                    process = subprocess.Popen(
-                        cmd.split(),
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                    )
+                # Run action off left click if the widget has actions
+                if widget.find("actions/action") is not None:
+                    widget.append(Element("run_actions_on_mouse_click"))
+                    widget.find("run_actions_on_mouse_click").text = "true"
 
-                    # TODO: We should check the return code and log if there was
-                    # an error
-                    process.communicate()
+                symbol_files = create_symbol_image_file(
+                    oc, output_file, output_file_full, src_file, n_images, width, height
+                )
 
-            out_image = ".".join(image.split(".")[:-1])
-            ext = "." + image.split(".")[-1]
-            symbol_files = []
-            start_index_list = start_index.split(",")
-            if len(start_index_list) > 1:
-                for n in start_index_list:
-                    symbol_files.append(out_image + "_" + n + ext)
-            else:
-                for n in range(n_images - int(start_index_list[0])):
-                    index = n + int(start_index_list[0])
-                    symbol_files.append(out_image + "_" + str(index) + ext)
+                # Remove the symbol files before the start index
+                symbol_files = symbol_files[start_index:]
 
-            # reorder the symbol files based on rules
-            if widget.findall("rules") is not None:
-                rules = widget.find("rules")
-                additional_rules = []
-                for rule in rules:
-                    if (
-                        "prop_id" in rule.attrib
-                        and rule.attrib["prop_id"] == "image_index"
-                    ):
-                        symbol_files = reorder_symbols_from_rule(symbol_files, rule)
-
-            # Remove old combined symbol file
-            symbols_el = widget.find("symbols")
-            symbols_el.remove(symbols_el.find("symbol"))
-            # Add new symbols
-            for symbol_file in symbol_files:
-                new_symbol = Element("symbol")
-                new_symbol.text = symbol_file
-                symbols_el.append(new_symbol)
-
-            if widget.findall("rules/rule") is not None:
-                rules = widget.findall("rules/rule")
-                additional_rules = []
-                for rule in rules:
-                    # Look for a rule which is used to change the displayed
-                    # symbol to a symbol signifying an invalid state.
-                    if (
-                        "prop_id" in rule.attrib.keys()
-                        and rule.attrib["prop_id"] == "image_index"
-                    ):
-                        rule.attrib["prop_id"] = "symbols[0]"
-                        rule.attrib["out_exp"] = "false"
-                        for exp in rule.findall("exp"):
-                            if exp.attrib["bool_exp"] == "pvLegacySev0==-1":
-                                exp.remove(exp.find("expression"))
-                                exp.attrib["bool_exp"] = "pvSev0==3 || pvSev0==4"
-                                val_el = Element("value")
-                                val_el.text = (
-                                    out_image + "_" + str(invalid_image_index) + ext
-                                )
-                                exp.append(val_el)
-                            else:
-                                # Remove other "image_index" rule expressions. Usually
-                                # we dont want to keep these rules as for the most part
-                                # this functionality is now built into the widget.
-                                rule.remove(exp)
-
-                        # We must create a rule for each symbol specified for
-                        # the widget which overwrites the displayed symbol
-                        # widget with the special invalid state symbol.
-                        for i in range(1, len(widget.find("symbols"))):
-                            # Get a unique copy of the rule
-                            additional_rule = copy.deepcopy(rule)
-                            additional_rule.attrib["name"] = (
-                                rule.attrib["name"] + f"_{i}"
+                # Reorder the symbol files based on rules
+                if widget.find("rules") is not None:
+                    rules = widget.find("rules")
+                    for rule in rules:
+                        if (
+                            "prop_id" in rule.attrib
+                            and rule.attrib["prop_id"] == "image_index"
+                        ):
+                            symbol_files = reorder_default_symbol_order_from_rule(
+                                symbol_files, rule
                             )
-                            additional_rule.attrib["prop_id"] = f"symbols[{i}]"
-                            additional_rules.append(additional_rule)
 
-                        # Extend the rules for this widget with the new rules we created
-                        rule.getparent().extend(additional_rules)
+                # Remove old combined symbol file
+                symbols_el = widget.find("symbols")
+                symbols_el.remove(symbols_el.find("symbol"))
+
+                # Add new symbols
+                for symbol_file in symbol_files:
+                    new_symbol = Element("symbol")
+                    new_symbol.text = symbol_file
+                    symbols_el.append(new_symbol)
+
+                update_symbol_widget_rules(widget, output_file, invalid_image_index)
 
 
 def fix_embedded_screen_ext(oc: OpiConverter, widget: Element):
@@ -522,7 +577,9 @@ def set_new_databrowser_action_from_strip_command(action):
     )
 
 
-def reorder_symbols_from_rule(symbols: list[str], rule: Element) -> list[str]:
+def reorder_default_symbol_order_from_rule(
+    symbols: list[str], rule: Element
+) -> list[str]:
     """Some rules in cs-studio were used to change the displayed symbol based on a
     PV value. In Phoebus we are able to do this more cleanly by directly associating
     a symbol file with a PV value by the order in which symbol files are defined.
