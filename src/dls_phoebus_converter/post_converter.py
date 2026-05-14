@@ -516,7 +516,7 @@ def reorder_widgets_from_rules(symbols: list[str], rule: Element) -> Element:
 
 
 def convert_pv_function(widget: Element):
-    for child in widget:
+    for child in widget.iter():
         inp_string = child.text
         if inp_string is not None and "pv(" in inp_string:
             pv_replacement = "".join(
@@ -539,10 +539,7 @@ def convert_pv_function(widget: Element):
                 )
             else:
                 logger.info("Replace pv() function with " + pv_replacement)
-                return pv_replacement
-
-    # Otherwise return the original
-    return inp_string
+                child.text = pv_replacement
 
 
 def fix_rule_expression(oc, exp: Element):
