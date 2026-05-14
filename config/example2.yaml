@@ -3,7 +3,7 @@ meta_data:
     domain_synoptic_dst: fe-services/synoptic
     domain_ui_support_dst: fe-ui-support
     acc_ui_support_dst:  acc-ui-support
-    convert_dependencies: False
+    convert_dependencies: True
 
 
 files:
