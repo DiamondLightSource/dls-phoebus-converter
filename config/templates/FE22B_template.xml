@@ -257,4 +257,32 @@
 	<startindex>1</startindex> 
 	<invalidimageindex>0</invalidimageindex>
 	</symbol>
+
+	<symbol>
+	<name>Edm Symbol Widget_1</name>
+	<location>/dls_sw/prod/R3.14.12.7/support/FE/9-68/FEApp/opi/opi/images/mirror1.png</location>
+	<nimages>1</nimages>
+	<width>333</width>
+	<height>189</height>
+	<startindex>0</startindex> 
+	<invalidimageindex>0</invalidimageindex>
+	</symbol>
+	<symbol>
+	<name>Edm Symbol Widget</name>
+	<location>/dls_sw/prod/R3.14.12.7/support/FE/9-68/FEApp/opi/opi/images/beam_direction.png</location>
+	<nimages>1</nimages>
+	<width>181</width>
+	<height>29</height>
+	<startindex>0</startindex> 
+	<invalidimageindex>0</invalidimageindex>
+	</symbol>
+	<symbol>
+	<name>Edm Symbol Widget</name>
+	<location>/dls_sw/prod/R3.14.12.7/support/FE/9-68/FEApp/opi/opi/images/absorber-xsection.png</location>
+	<nimages>1</nimages>
+	<width>568</width>
+	<height>144</height>
+	<startindex>0</startindex> 
+	<invalidimageindex>0</invalidimageindex>
+	</symbol>
 </symbols>

@@ -19,7 +19,6 @@ logging.getLogger("dls_phoebus_converter").setLevel(logging.ERROR)
 def output_directory():
     """Create output directory before each test and clean up after."""
     output_dir = OUTPUT_SRC
-
     if output_dir.exists():
         shutil.rmtree(output_dir)
 
