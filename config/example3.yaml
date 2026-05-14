@@ -2,8 +2,8 @@
 meta_data:
   - domain: fe
     domain_synoptic_dst: fe-services/synoptic
-    domain_ui_support_dst: fe-ui-support/bob
-    acc_ui_support_dst: acc-ui-support/bob
+    domain_ui_support_dst: fe-ui-support
+    acc_ui_support_dst: acc-ui-support
 
 files:
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE09I.opi
