@@ -62,16 +62,19 @@ def fix_widget_issues(oc: OpiConverter):
 
         widget_type = widget.attrib.get("type")
         if widget_type == "action_button":
-            for child in widget:
-                if child.tag == "text":
+            actions = widget.find("actions")
+            if actions is not None:
+                text = widget.find("text")
+                if text is not None:
                     if (
-                        child.text == "EXIT"
-                        or child.text == "Exit"
-                        or child.text == "Cancel"
+                        text.text == "EXIT"
+                        or text.text == "Exit"
+                        or text.text == "Cancel"
                     ):
-                        fix_exit_button(oc, widget.find(".//actions"))
-                if child.tag == "actions":
-                    process_widget_actions(oc, widget.find(".//actions"))
+                        # We are assuming that there is only one action on this widget
+                        # and so only update the first one we find.
+                        fix_exit_button(oc, actions.find("action"))
+                    process_widget_actions(oc, actions)
 
         elif widget_type == "symbol":
             for child in widget:
@@ -115,6 +118,13 @@ def fix_exit_button(oc: OpiConverter, action: Element):
     oc.completed_conversion_steps.fix_exit_but = True
     action.attrib["type"] = "close_display"
     action.attrib["description"] = "Close display"
+    description = action.find("description")
+    if description is not None:
+        description.text = "Close display"
+
+    old_script = action.find("script")
+    if old_script is not None:
+        action.remove(old_script)
 
 
 def process_widget_actions(oc: OpiConverter, actions: Element):
