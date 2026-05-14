@@ -83,9 +83,6 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
                     fix_widget_actions(oc, widget.find(".//actions"))
             fix_edm_symbol_widgets(oc, sc, widget)
 
-        elif widget_type == "embedded":
-            fix_embedded_screen_ext(oc, widget)
-
         elif widget_type == "progressbar":
             # Actions are not supported on progressBars in Phoebus, so
             # we instead layer a transparent action button on top.
@@ -362,13 +359,6 @@ def fix_edm_symbol_widgets(oc: OpiConverter, sc: ScreenConverter, widget: Elemen
                     symbols_el.append(new_symbol)
 
                 update_symbol_widget_rules(widget, output_file, invalid_image_index)
-
-
-def fix_embedded_screen_ext(oc: OpiConverter, widget: Element):
-    if "file" not in [child.tag for child in widget]:
-        return
-    oc.completed_conversion_steps.replace_opi_ext = True
-    widget.find("file").text.replace(".opi", ".bob")
 
 
 def move_action_to_transparent_button(widget: Element):
