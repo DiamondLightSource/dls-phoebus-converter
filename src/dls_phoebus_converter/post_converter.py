@@ -136,12 +136,12 @@ def process_widget_actions(oc: OpiConverter, actions: Element):
 
         # Currently we are only looking at databrowser/StripTool related actions
         if action.attrib["type"] == "execute":
-            if "executeEclipseCommand" in action.find("script/text").text:
-                if (
-                    "org.csstudio.trends.databrowser2"
-                    in action.find("script/text").text
-                ):
-                    set_new_databrowser_action_from_execute_eclipse(action)
+            script_text_el = action.find("script/text")
+            if "executeEclipseCommand" in script_text_el.text:
+                if "org.csstudio.trends.databrowser2" in script_text_el.text:
+                    set_new_databrowser_action_from_execute_eclipse(
+                        action, script_text_el
+                    )
                 else:
                     logger.warning(
                         "Screen contains an executeEclipseCommand script which is"
@@ -408,11 +408,13 @@ def replace_open_in_tab(oc: OpiConverter, action: Element):
                 oc.completed_conversion_steps.replace_action_tab = True
 
 
-def set_new_databrowser_action_from_execute_eclipse(action: Element):
+def set_new_databrowser_action_from_execute_eclipse(
+    action: Element, script_text_el: Element
+):
     # We will be implementing a new Phoebus action which opens PV(s) in the
     # databrowser, so eventually this code will be replaced with that, for now we
     # use a command action.
-    search_string = action.find("script/text").text
+    search_string = script_text_el.text
     match = re.search(r"'pvnames',\s*'([^']+)'", search_string)
     if match:
         pv_names = match.group(1)
@@ -431,11 +433,15 @@ def set_new_databrowser_action_from_execute_eclipse(action: Element):
     desc_el.text = "Launch databrowser"
     action.append(desc_el)
 
+    # Add new command to open databrowser
     command_el = Element("command")
     command_el.text = (
         f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'
     )
     action.append(command_el)
+
+    # Delete the old script
+    action.remove(script_text_el.getparent())
 
 
 def set_new_databrowser_action_from_strip_command(action):
