@@ -39,9 +39,11 @@ class ScreenConverter:
             )
 
     def make_top_dirs(self) -> None:
-        self.acc_ui_support_dst_full.mkdir(parents=True, exist_ok=True)
         self.domain_synoptic_dst_full.mkdir(parents=True, exist_ok=True)
-        self.domain_ui_support_dst_full.mkdir(parents=True, exist_ok=True)
+        self.acc_ui_support_bob_dst_full.mkdir(parents=True, exist_ok=True)
+        self.acc_ui_support_symbol_dst_full.mkdir(parents=True, exist_ok=True)
+        self.domain_ui_support_bob_dst_full.mkdir(parents=True, exist_ok=True)
+        self.domain_ui_support_symbol_dst_full.mkdir(parents=True, exist_ok=True)
 
     def get_config(self, config_file: Path | str) -> None:
         # get useful data out of json
@@ -76,23 +78,45 @@ class ScreenConverter:
         logger.info(f"Getting config data for domain: {self.domain}\n")
 
         self.domain_synoptic_dst_part = Path(meta_data["domain_synoptic_dst"])
-        self.acc_ui_support_dst_part = Path(meta_data["acc_ui_support_dst"])
-        self.domain_ui_support_dst_part = Path(meta_data["domain_ui_support_dst"])
+
+        self.acc_ui_support_bob_dst_part = Path(meta_data["acc_ui_support_dst"]) / "bob"
+        self.domain_ui_support_bob_dst_part = (
+            Path(meta_data["domain_ui_support_dst"]) / "bob"
+        )
+        self.acc_ui_support_symbol_dst_part = (
+            Path(meta_data["acc_ui_support_dst"]) / "symbols"
+        )
+        self.domain_ui_support_symbol_dst_part = (
+            Path(meta_data["domain_ui_support_dst"]) / "symbols"
+        )
 
         self.domain_synoptic_dst_full = (
             self.output_dir_path / meta_data["domain_synoptic_dst"]
         )
-        self.acc_ui_support_dst_full = (
+        self.acc_ui_support_bob_dst_full = (
             self.output_dir_path
             / meta_data["domain_synoptic_dst"]
             / meta_data["acc_ui_support_dst"]
+            / "bob"
         )
-        self.domain_ui_support_dst_full = (
+        self.domain_ui_support_bob_dst_full = (
             self.output_dir_path
             / meta_data["domain_synoptic_dst"]
             / meta_data["domain_ui_support_dst"]
+            / "bob"
         )
-
+        self.acc_ui_support_symbol_dst_full = (
+            self.output_dir_path
+            / meta_data["domain_synoptic_dst"]
+            / meta_data["acc_ui_support_dst"]
+            / "symbols"
+        )
+        self.domain_ui_support_symbol_dst_full = (
+            self.output_dir_path
+            / meta_data["domain_synoptic_dst"]
+            / meta_data["domain_ui_support_dst"]
+            / "symbols"
+        )
         if "convert_dependencies" in meta_data:
             self.convert_dependencies = bool(meta_data["convert_dependencies"])
 
@@ -111,12 +135,12 @@ class ScreenConverter:
 
         # Common support module area shared across Accelerator Controls
         if file_data["dst"] == "acc-ui-support":
-            dst_path_config = self.acc_ui_support_dst_full
-            dst_path_partial = self.acc_ui_support_dst_part
+            dst_path_config = self.acc_ui_support_bob_dst_full
+            dst_path_partial = self.acc_ui_support_bob_dst_part
         # Domain specific screens
         elif file_data["dst"] == f"{self.domain}-ui-support":
-            dst_path_config = self.domain_ui_support_dst_full
-            dst_path_partial = self.domain_ui_support_dst_part
+            dst_path_config = self.domain_ui_support_bob_dst_full
+            dst_path_partial = self.domain_ui_support_bob_dst_part
         # Top level screens
         elif file_data["dst"] == "synoptic":
             dst_path_config = self.domain_synoptic_dst_full

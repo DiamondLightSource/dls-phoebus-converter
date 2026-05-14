@@ -79,14 +79,14 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
             if support_module_name in ACC_UI_SUPPORT_MODULE_LIST:
                 new_entry = (
                     support_module_name,
-                    sc.acc_ui_support_dst_part / support_module_name,
+                    sc.acc_ui_support_bob_dst_part / support_module_name,
                 )
                 if new_entry not in sc.acc_support_module_locations:
                     sc.acc_support_module_locations.append(new_entry)
             else:
                 new_entry = (
                     support_module_name,
-                    sc.domain_ui_support_dst_part / support_module_name,
+                    sc.domain_ui_support_bob_dst_part / support_module_name,
                 )
                 if new_entry not in sc.domain_support_module_locations:
                     sc.domain_support_module_locations.append(new_entry)
@@ -121,8 +121,8 @@ def switch_filepaths(sc: ScreenConverter, file_path, macros=None, symbol=False) 
 
     # If we have already updated the paths, dont do it again:
     if (
-        sc.acc_ui_support_dst_part.parts[0] in file_path_string
-        or sc.domain_ui_support_dst_part.parts[0] in file_path_string
+        sc.acc_ui_support_bob_dst_part.parts[0] in file_path_string
+        or sc.domain_ui_support_bob_dst_part.parts[0] in file_path_string
         or sc.domain_synoptic_dst_part.parts[0] in file_path_string
     ):
         return file_path_string
@@ -197,8 +197,8 @@ def convert_extra_support_modules(sc: ScreenConverter):
         data = sc.config_file
     data["files"] = []
 
-    existing_modules_paths = list(sc.acc_ui_support_dst_full.iterdir()) + list(
-        sc.domain_ui_support_dst_full.iterdir()
+    existing_modules_paths = list(sc.acc_ui_support_bob_dst_full.iterdir()) + list(
+        sc.domain_ui_support_bob_dst_full.iterdir()
     )
     existing_module_names = [path.name for path in existing_modules_paths]
     # sm -> support module
