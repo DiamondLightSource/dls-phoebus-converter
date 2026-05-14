@@ -19,13 +19,11 @@ logging.getLogger("dls_phoebus_converter").setLevel(logging.ERROR)
 def output_directory():
     """Create output directory before each test and clean up after."""
     output_dir = OUTPUT_SRC
-    output_dir.mkdir(exist_ok=True)
 
-    yield
-
-    # Cleanup after test
     if output_dir.exists():
         shutil.rmtree(output_dir)
+
+    output_dir.mkdir()
 
 
 @pytest.fixture()
@@ -33,10 +31,7 @@ def ref_output_directory():
     """Create directory to copy dls reference data into before each test and clean up
     after."""
     output_dir = REFERENCE_DIR
-    output_dir.mkdir(exist_ok=True)
-
-    yield
-
-    # Cleanup after test
     if output_dir.exists():
         shutil.rmtree(output_dir)
+
+    output_dir.mkdir()
