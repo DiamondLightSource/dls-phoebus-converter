@@ -11,7 +11,7 @@ def replace_visible_script(oc: OpiConverter):
     """Replace this complex script with a rule"""
 
     logger.info(
-        f"Special case: Removing references to visible.py from {oc.output_file}"
+        f"Special case: Removing references to visible.py from {oc.dst_filepath}"
     )
 
     # Find and remove all <script> elements which use visible.py. Replace it with a new
@@ -61,7 +61,8 @@ def remove_fe_temp_indicator_script(oc: OpiConverter):
     anyway"""
 
     logger.info(
-        f"Special case: Removing references to feTempIndicator.py from {oc.output_file}"
+        "Special case: Removing references to feTempIndicator.py from "
+        f"{oc.dst_filepath}"
     )
 
     # Find and remove all <script> elements which use feTempIndicator.py
@@ -84,7 +85,7 @@ def resize_absb_temps_fe22b(oc: OpiConverter):
     properly encompass the widgets within it. This results in the screen being cut off
     when embedded via a linking container, so we manually fix it here.
     """
-    logger.info(f"Special case: Resizing screen for {oc.output_file}")
+    logger.info(f"Special case: Resizing screen for {oc.dst_filepath}")
 
     new_height = 120
     new_width = 400
@@ -99,7 +100,7 @@ def run(oc: OpiConverter):
     """Make any case-by-case adjustments to FE specific screens which are not handled
     by the normal conversion process."""
 
-    if "absb_temps_fe22b.bob" in str(oc.output_file):
+    if "absb_temps_fe22b.bob" in str(oc.dst_filepath):
         resize_absb_temps_fe22b(oc)
 
     for name in [
@@ -109,8 +110,8 @@ def run(oc: OpiConverter):
         "absb_temps.bob",
         "absb.bob",
     ]:
-        if name in str(oc.output_file):
+        if name in str(oc.dst_filepath):
             remove_fe_temp_indicator_script(oc)
 
-    if "motor.bob" in str(oc.output_file):
+    if "motor.bob" in str(oc.dst_filepath):
         replace_visible_script(oc)
