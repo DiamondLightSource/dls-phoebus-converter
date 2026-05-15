@@ -45,7 +45,7 @@ class OpiConverter:
     src_file_path: Path
     dst_dir_path: Path
     dst_filename: str | None = None
-    output_file: Path | None = None
+    dst_filepath: Path | None = None
     tmp_file_path: Path | None = None
     template_file_path: Path | None = None
 
@@ -72,9 +72,9 @@ class OpiConverter:
 
     def __post_init__(self):
         if self.dst_filename is None:
-            self.dst_filename = self.src_file_path.name.replace(".opi", ".bob")
-        if self.output_file is None:
-            self.output_file = self.dst_dir_path / self.dst_filename
+            self.dst_filename = self.src_file_path.with_suffix(".bob").name
+        if self.dst_filepath is None:
+            self.dst_filepath = self.dst_dir_path / self.dst_filename
         if self.tmp_file_path is None:
             self.tmp_file_path = self.dst_dir_path / "tmp.opi"
 
@@ -93,7 +93,7 @@ class OpiConverter:
 
     def read_bob_file_contents(self, output_file=None):
         if output_file is None:
-            output_file = self.output_file
+            output_file = self.dst_filepath
         self.bob_data = etree.parse(output_file)
         self.const_bob_data = copy.deepcopy(self.bob_data)
 
@@ -116,7 +116,7 @@ class OpiConverter:
                 el.text = el.text.strip()
 
         self.bob_data.write(
-            self.output_file,
+            self.dst_filepath,
             pretty_print=True,
             xml_declaration=True,
             encoding="UTF-8",
@@ -124,7 +124,7 @@ class OpiConverter:
 
     def delete_old_file(self):
         try:
-            old_file = self.output_file
+            old_file = self.dst_filepath
             os.remove(old_file)
             logger.info(f"Removing old converted file: {old_file}")
         except OSError:
@@ -258,4 +258,4 @@ class OpiConverter:
         self.write_bob_file_contents()
 
         self.log_conversion_steps()
-        logger.info(f"Conversion saved to {self.output_file}\n")
+        logger.info(f"Conversion saved to {self.dst_filepath}\n")
