@@ -111,7 +111,7 @@ def fix_widget_issues(oc: OpiConverter):
                     widget.append(new_el)
         convert_pv_function(widget)
         check_rule(oc, widget)
-        check_actions_in_non_action_buttons(oc, widget)
+        fix_actions_on_widgets_without_actions_functionality(oc, widget)
 
 
 def fix_exit_button(oc: OpiConverter, action: Element):
@@ -248,7 +248,7 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
                         "prop_id" in rule.attrib
                         and rule.attrib["prop_id"] == "image_index"
                     ):
-                        symbol_files = reorder_widgets_from_rules(symbol_files, rule)
+                        symbol_files = reorder_symbols_from_rule(symbol_files, rule)
 
             # Remove old combined symbol file
             symbols_el = widget.find("symbols")
@@ -312,7 +312,9 @@ def fix_embedded_screen_ext(oc: OpiConverter, widget: Element):
 
 
 def get_alarm_sensitive_progress_bars(oc: OpiConverter):
-    # Get a list of ids defining each alarm sensitive progressbar
+    """Get a list of identifying string pairs which are used to identify an
+    alarm sensitive progressbar."""
+
     alarm_sensitive_progress_bars = []
     xpath = ".//widget[@typeId='org.csstudio.opibuilder.widgets.progressbar']"
     for widget in oc.const_opi_data.findall(xpath):
@@ -337,7 +339,9 @@ def get_alarm_sensitive_progress_bars(oc: OpiConverter):
 
 
 def get_transparent_background_tank_widget(oc: OpiConverter):
-    # Get a list of ids defining each alarm sensitive progressbar
+    """Get a list of identifying string pairs which are used to identify a
+    tank widget with a transparent background."""
+
     transparent_backgrounds = []
     xpath = ".//widget[@typeId='org.csstudio.opibuilder.widgets.tank']"
     for widget in oc.const_opi_data.findall(xpath):
@@ -354,7 +358,13 @@ def check_rule(oc, widget):
         fix_rule_expression(oc, expression)
 
 
-def check_actions_in_non_action_buttons(oc: OpiConverter, widget: Element):
+def fix_actions_on_widgets_without_actions_functionality(
+    oc: OpiConverter, widget: Element
+):
+    """Some widgets which could have actions in CS-Studio, cannot have actions in
+    Phoebus. We look for these situations and try to fix them by converting the widget
+    to an action button which can have actions."""
+
     if widget.find(".actions/action") is not None:
         if (
             widget.attrib["type"] != "action_button"
@@ -466,12 +476,22 @@ def set_new_databrowser_action_from_strip_command(action):
     )
 
 
-def reorder_widgets_from_rules(symbols: list[str], rule: Element) -> Element:
-    # Search through all boolean expressions and create a map between the PV value
-    # and the symbol index to use.
-    # We only bother to handle 2 cases,
-    # - pvX == Y
-    # - pvX >= Y && pvX < Z
+def reorder_symbols_from_rule(symbols: list[str], rule: Element) -> list[str]:
+    """Some rules in cs-studio were used to change the displayed symbol based on a
+    PV value. In Phoebus we are able to do this more cleanly by directly associating
+    a symbol file with a PV value by the order in which symbol files are defined.
+
+    eg. symbols[0] is displayed for a pv value of 0, symbols[1] for a value of 1 etc.
+
+    Here we search through all the boolean expressions in the cs-studio rule and create
+    a map between the PV value and the symbol index to use (reorder_map).
+
+    We only bother to handle 2 cases,
+    - pvX == Y
+    - pvX >= Y && pvX < Z
+
+    This map is then used to reorder the list of symbol files which is returned and the
+    old rule is removed"""
 
     # Contains a list of tuples of (pv_val, symbol_index)
     reorder_map: list[tuple] = []

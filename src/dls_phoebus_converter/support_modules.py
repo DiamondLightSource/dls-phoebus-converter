@@ -163,10 +163,12 @@ def update_filepaths(sc, oc: OpiConverter):
 
 
 def get_existing_support_module_filepath(support_module_name) -> str | None:
+    """Look for a support module in /dls_sw and get the path to the latest release
+    of the support module."""
+
     dls_sw_support_modules = Path("/dls_sw/prod/R3.14.12.7/support/")
     version_list = []
     latest_file = Path("")
-    # Look for the support module on dls_sw and get the path to the latest release
     for path in dls_sw_support_modules.iterdir():
         if path.name == support_module_name:
             for version in path.iterdir():
