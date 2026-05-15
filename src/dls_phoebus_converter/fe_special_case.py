@@ -1,6 +1,6 @@
 import logging
 
-import lxml.etree as et
+from lxml import etree
 
 from dls_phoebus_converter.opi_converter import OpiConverter
 
@@ -36,7 +36,7 @@ def replace_visible_script(oc: OpiConverter):
                             "<value>false</value></exp><pv_name>"
                             "$(motor):ELOSS</pv_name></rule>"
                         )
-                        child.insert(-1, et.fromstring(rule_xml))
+                        child.insert(-1, etree.fromstring(rule_xml))
                         rules_found = True
                         continue
                 if not rules_found:
@@ -50,7 +50,7 @@ def replace_visible_script(oc: OpiConverter):
                         "</value></exp><pv_name>$(motor):ELOSS</pv_name>"
                         "</rule></rules>"
                     )
-                    widget.insert(-1, et.fromstring(rules_xml))
+                    widget.insert(-1, etree.fromstring(rules_xml))
 
 
 def remove_fe_temp_indicator_script(oc: OpiConverter):
