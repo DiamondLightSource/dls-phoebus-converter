@@ -48,9 +48,9 @@ class OpiConverter:
     dst_filepath: Path | None = None
     tmp_file_path: Path | None = None
     template_file_path: Path | None = None
+    conversions_to_skip_filepath: Path | None = None
 
     support_module_name: str | None = None
-    no_edit_file: Path | None = None
     macros: dict[str, str] = field(default_factory=lambda: {})
     completed_conversion_steps = CompletedSteps()
 
@@ -130,21 +130,21 @@ class OpiConverter:
         except OSError:
             pass
 
-    def dont_edit_file(self):
-        # Check the no_edit file to see if we should even run the conversion
-        # Instead of doing it like this, we could read a comment at the top of the bob
-        # file?
-        if self.no_edit_file is not None:
-            with open(self.no_edit_file) as f:
+    def is_conversion_allowed(self):
+        """Check the conversions_to_skip file to see if we should run the conversion for
+        this file. Is this even useful?"""
+
+        if self.conversions_to_skip_filepath is not None:
+            with open(self.conversions_to_skip_filepath) as f:
                 lines = f.readlines()
                 for line in lines:
                     if self.src_file_path == line.strip():
                         logging.warning(
-                            "!!! OPI file to be converted is in the 'no_edit' list"
-                            "suggesting that it has had manual changes that should not"
-                            "be overwritten.\n"
+                            "!OPI file to be converted is in the 'conversions_to_skip' "
+                            "list suggesting that it has had manual changes that should"
+                            " not be overwritten.\n"
                             "If this is incorrect then remove this file from the "
-                            f"{self.no_edit_file}.\n"
+                            f"{self.conversions_to_skip_filepath}.\n"
                             "Skipping this conversion"
                         )
                         return True
@@ -233,7 +233,7 @@ class OpiConverter:
         return post_conversion_steps(self, sc)
 
     def convert(self, sc=None) -> Path | None:
-        if self.dont_edit_file():
+        if self.is_conversion_allowed():
             return True
 
         # Modify the OPI file before running conversion
