@@ -109,7 +109,7 @@ def fix_widget_issues(oc: OpiConverter):
                     )
                     widget.append(new_el)
         convert_pv_function(widget)
-        check_rule(oc, widget)
+        fix_rule_expressions(oc, widget)
         fix_actions_on_widgets_without_actions_functionality(oc, widget)
 
 
@@ -351,12 +351,6 @@ def get_transparent_background_tank_widget(oc: OpiConverter):
     return transparent_backgrounds
 
 
-def check_rule(oc, widget):
-    expressions = widget.findall("rules/rule/exp")
-    for expression in expressions:
-        fix_rule_expression(oc, expression)
-
-
 def fix_actions_on_widgets_without_actions_functionality(
     oc: OpiConverter, widget: Element
 ):
@@ -559,18 +553,20 @@ def convert_pv_function(widget: Element):
                 child.text = pv_replacement
 
 
-def fix_rule_expression(oc, exp: Element):
+def fix_rule_expressions(oc, widget: Element):
     """Fix common issues that come up in cs-studio rules"""
 
-    # Use new syntax for getting a PV alarm severity
-    exp.attrib["bool_exp"] = check_legacy_sev(oc, exp.attrib.get("bool_exp"))
+    expressions = widget.findall("rules/rule/exp")
+    for exp in expressions:
+        # Use new syntax for getting a PV alarm severity
+        exp.attrib["bool_exp"] = check_legacy_sev(oc, exp.attrib.get("bool_exp"))
 
-    # widget.getValue() is not available in Phoebus, we assume this is an attempt to
-    # get the value of the widgets pv, so we replace it with pv0
-    if "widget.getValue()" in exp.attrib["bool_exp"]:
-        exp.attrib["bool_exp"] = exp.attrib["bool_exp"].replace(
-            "widget.getValue()", "pv0"
-        )
+        # widget.getValue() is not available in Phoebus, we assume this is an attempt to
+        # get the value of the widgets pv, so we replace it with pv0
+        if "widget.getValue()" in exp.attrib["bool_exp"]:
+            exp.attrib["bool_exp"] = exp.attrib["bool_exp"].replace(
+                "widget.getValue()", "pv0"
+            )
 
 
 def check_legacy_sev(oc, input_field):
