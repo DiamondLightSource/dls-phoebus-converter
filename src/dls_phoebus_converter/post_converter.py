@@ -74,12 +74,12 @@ def fix_widget_issues(oc: OpiConverter):
                         # We are assuming that there is only one action on this widget
                         # and so only update the first one we find.
                         fix_exit_button(oc, actions.find("action"))
-                    process_widget_actions(oc, actions)
+                    fix_widget_actions(oc, actions)
 
         elif widget_type == "symbol":
             for child in widget:
                 if child.tag == "actions":
-                    process_widget_actions(oc, widget.find(".//actions"))
+                    fix_widget_actions(oc, widget.find(".//actions"))
             create_symbol_from_edm(oc, widget)
 
         elif widget_type == "embedded":
@@ -130,6 +130,7 @@ def fix_exit_button(oc: OpiConverter, action: Element):
 def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
     """Fix custom scripts/commands used to launch the databrowser which dont work
     in Phoebus"""
+
     if action.attrib["type"] == "execute":
         script_text_el = action.find("script/text")
         if "executeEclipseCommand" in script_text_el.text:
@@ -147,24 +148,15 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
             set_new_databrowser_action_from_strip_command(action)
 
 
-def process_widget_actions(oc: OpiConverter, actions: Element):
+def fix_widget_actions(oc: OpiConverter, actions: Element):
+    """Fix issues with widget actions"""
+
     for action in actions:
         fix_action_open_macro(oc, action)
-        replace_opi_extension(oc, action)
         if oc.replace_tab:
             replace_open_in_tab(oc, action)
 
         fix_open_databrowser_actions(oc, action)
-
-
-def replace_opi_extension(oc: OpiConverter, action: Element):
-    for child in action:
-        if child.find("file"):
-            oc.completed_conversion_steps.replace_opi_ext = True
-            logger.debug(
-                "Replacing file open action: " + child.text + " to open .BOB file"
-            )
-            child.text.replace(".opi", ".bob")
 
 
 def fix_action_open_macro(oc: OpiConverter, action: Element):
