@@ -1,4 +1,5 @@
 import logging
+import os
 
 from lxml import etree
 
@@ -94,6 +95,70 @@ def resize_absb_temps_fe22b(oc: OpiConverter):
     oc.bob_data.getroot().find("width").text = str(new_width)
 
 
+def replace_progress_bar_with_linear_meter(
+    bob_file_data: et.ElementTree, output_file_path: str
+) -> None:
+    """
+    HLA-1077: This replaces the progress bars in FE22B with linear meters
+    to support alarm limits, which are not a feature of progress bars in Phoebus.
+    """
+    logger.info(
+        f"Special case: Replacing ProgressBar with LinearMeter in {output_file_path}"
+    )
+
+    def create_linear_meter_from_progress_bar(progress_bar: et.Element) -> et.Element:
+        linear_meter = et.Element("widget", type="linearmeter", version="3.0.0")
+
+        # Inherited from progress bar widget
+        linear_meter.append(progress_bar.find("x"))
+        linear_meter.append(progress_bar.find("y"))
+        linear_meter.append(progress_bar.find("width"))
+        linear_meter.append(progress_bar.find("height"))
+        linear_meter.append(progress_bar.find("pv_name"))
+        linear_meter.append(progress_bar.find("actions"))
+
+        # Additional linear meter properties
+        et.SubElement(linear_meter, "name").text = "linear meter"
+        et.SubElement(linear_meter, "display_mode").text = "1"  # BAR
+        et.SubElement(linear_meter, "show_units").text = "false"
+        et.SubElement(linear_meter, "scale_visible").text = "false"
+        et.SubElement(linear_meter, "border_alarm_sensitive").text = "false"
+        et.SubElement(linear_meter, "limits_from_pv").text = "3"  # No limits from PV
+        et.SubElement(linear_meter, "level_lolo").text = "0"
+        et.SubElement(linear_meter, "level_low").text = "0"
+
+        # Colours
+        colors = et.SubElement(linear_meter, "colors")
+        nsc = et.SubElement(colors, "normal_status_color")
+        et.SubElement(nsc, "color", red="210", green="210", blue="210", alpha="50")
+        mwc = et.SubElement(colors, "major_warning_color")
+        et.SubElement(mwc, "color", red="255", green="0", blue="0", alpha="30")
+        et.SubElement(colors, "is_gradient_enabled").text = "true"
+        et.SubElement(
+            colors, "is_highlighting_of_active_regions_enabled"
+        ).text = "false"
+
+        # Scripts
+        scripts = et.SubElement(linear_meter, "scripts")
+        script = et.SubElement(scripts, "script", file="EmbeddedPy")
+        file_path = os.path.join(
+            os.path.dirname(__file__),
+            "../../config/scripts/linear_meter_alarm_levels.txt",
+        )
+        with open(file_path) as f:
+            script_text = f.read()
+            et.SubElement(script, "text").text = et.CDATA(script_text)
+        et.SubElement(script, "pv_name").text = "$(pv_name)"
+        et.SubElement(script, "pv_name").text = "$(pv_name):GETCALC"
+        et.SubElement(script, "pv_name").text = "$(pv_name):HIGH"
+
+        return linear_meter
+
+    for progress_bar in bob_file_data.findall(".//widget[@type='progressbar']"):
+        new_linear_meter = create_linear_meter_from_progress_bar(progress_bar)
+        progress_bar.getparent().replace(progress_bar, new_linear_meter)
+
+
 # Generic function to be inlcluded in each domain-specific special case module.
 # This is dynamically imported and then called by the main conversion process.
 def run(oc: OpiConverter):
@@ -102,6 +167,7 @@ def run(oc: OpiConverter):
 
     if "absb_temps_fe22b.bob" in str(oc.dst_filepath):
         resize_absb_temps_fe22b(oc)
+        replace_progress_bar_with_linear_meter(oc.bob_data, str(oc.output_file))
 
     for name in [
         "FE24B.bob",
