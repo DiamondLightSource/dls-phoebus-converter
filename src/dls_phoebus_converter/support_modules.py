@@ -35,16 +35,25 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 
 def handle_support_modules(sc: ScreenConverter, oc: OpiConverter):
-    # Figure out which filepaths within bob files need updating and
-    # update them to the new paths.
-    get_required_support_modules(sc, oc)
+    """Figure out which filepaths within bob files need updating and
+    update them to the new paths for the DII screen deployment structure."""
+
+    find_required_support_modules(sc, oc)
+
     # Support module paths are relative and so don't need to have their paths
-    # updated
+    # updated except to convert from .opi to .bob
     if oc.support_module_name is None:
         update_filepaths(sc, oc)
+    else:
+        for el in oc.bob_data.getroot().iter():
+            if ".opi" in el.text:
+                el.text.replace(".opi", ".bob")
 
 
-def get_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
+def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
+    """Update the ScreenConverters list of required support modules based on
+    references to support modules found in the screen."""
+
     widget_file_paths: list[Path] = []
     # Look for filepaths in xml
     for widget in oc.bob_data.findall(".//widget"):
@@ -97,7 +106,7 @@ def append_new_filepath(sc, path_string, widget_file_paths, symbol=False):
 
 
 def update_filepaths(sc, oc: OpiConverter):
-    # Look for filepaths in xml
+    """Replace all filepaths in the element tree"""
     for widget in oc.bob_data.findall(".//widget"):
         search_widget_filepaths(sc, widget, switch_filepaths, oc.macros)
 
