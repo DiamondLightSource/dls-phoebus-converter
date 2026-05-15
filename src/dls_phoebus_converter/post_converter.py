@@ -225,7 +225,9 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
                         stderr=subprocess.PIPE,
                     )
 
-                    stdout, stderr = process.communicate()
+                    # TODO: We should check the return code and log if there was
+                    # an error
+                    process.communicate()
 
             out_image = ".".join(image.split(".")[:-1])
             ext = "." + image.split(".")[-1]
