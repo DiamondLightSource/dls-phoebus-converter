@@ -153,7 +153,7 @@ class OpiConverter:
     def log_conversion_steps(self):
         # Log what was done
         ccs = self.completed_conversion_steps
-        log_map = {
+        conversion_step_log_map = {
             ccs.replace_edm_sym: "Replaced EDMSymbol widgets in OPI before running "
             "converter",
             ccs.fix_group_cont: "Fixed Grouping Container widget in OPI that is missing"
@@ -175,9 +175,12 @@ class OpiConverter:
             ccs.replace_action_tab: "Replace open display target=tab with "
             "target=standalone",
         }
-        for step, string in log_map.items():
-            if step:
-                logger.info(string)
+        for (
+            conversion_step_complete,
+            conversion_step_log_msg,
+        ) in conversion_step_log_map.items():
+            if conversion_step_complete:
+                logger.info(conversion_step_log_msg)
 
     def run_converter(self):
         convert_command = (
