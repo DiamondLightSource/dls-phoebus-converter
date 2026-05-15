@@ -158,6 +158,11 @@ def replace_progress_bar_with_linear_meter(
         new_linear_meter = create_linear_meter_from_progress_bar(progress_bar)
         progress_bar.getparent().replace(progress_bar, new_linear_meter)
 
+    # Turn off alarm borders as we will be using the colours
+    # reported by the linear meter
+    for text_update in bob_file_data.findall(".//widget[@type='textupdate']"):
+        et.SubElement(text_update, "border_alarm_sensitive").text = "false"
+
 
 # Generic function to be inlcluded in each domain-specific special case module.
 # This is dynamically imported and then called by the main conversion process.
