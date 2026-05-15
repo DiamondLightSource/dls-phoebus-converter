@@ -220,7 +220,7 @@ class ScreenConverter:
                 dst_filename=dst_filename,
                 template_file_path=template_file_path,
                 support_module_name=support_module_name,
-                synoptic=synoptic,
+                is_synoptic=synoptic,
                 macros=macros,
             )
 

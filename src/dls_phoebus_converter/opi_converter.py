@@ -51,10 +51,9 @@ class OpiConverter:
     macros: dict[str, str] = field(default_factory=lambda: {})
     completed_conversion_steps = CompletedSteps()
 
-    synoptic: bool = False
+    is_synoptic: bool = False
     replace_tab: bool = True
     fix_group: bool = True
-    no_modify: bool = False
 
     # This stores template file data
     template_data: etree.ElementTree | None = None

@@ -24,13 +24,12 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 
 def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
-    if not oc.no_modify:
-        fix_widget_issues(oc)
+    fix_widget_issues(oc)
 
     # If sc is None, then we are just converting a single_file, so we dont
     # do any of the changes for converting a technical area.
     if sc is not None:
-        if oc.synoptic:
+        if oc.is_synoptic:
             # We need to define macros which were previously passed into the synoptic as
             # script arguments
             handle_macros(oc)
