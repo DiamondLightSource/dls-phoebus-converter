@@ -11,39 +11,135 @@
 	<actions></actions>
 	<grid_step_x>8</grid_step_x>
 	<grid_step_y>8</grid_step_y>
-	<widget type="progressbar" version="2.0.0">
-		<name>Progress Bar</name>
-		<pv_name>$(dom)-RS-ABSB-01:TMON01$(suffix)</pv_name>
+	<widget type="linearmeter" version="3.0.0">
 		<x>100</x>
 		<y>70</y>
 		<width>120</width>
 		<height>28</height>
-		<fill_color>
-			<color red="0" green="0" blue="255"></color>
-		</fill_color>
-		<background_color>
-			<color red="200" green="200" blue="200"></color>
-		</background_color>
-		<scripts></scripts>
+		<pv_name>$(dom)-RS-ABSB-01:TMON01$(suffix)</pv_name>
+		<actions><action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
+				<macros>
+					<temp>$(pv_name)</temp>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<name>linear meter</name>
+		<display_mode>1</display_mode>
+		<show_units>false</show_units>
+		<scale_visible>false</scale_visible>
 		<border_alarm_sensitive>false</border_alarm_sensitive>
-		<limits_from_pv>false</limits_from_pv>
+		<limits_from_pv>3</limits_from_pv>
+		<level_lolo>0</level_lolo>
+		<level_low>0</level_low>
+		<colors>
+			<normal_status_color>
+				<color red="210" green="210" blue="210" alpha="50"/>
+			</normal_status_color>
+			<major_warning_color>
+				<color red="255" green="0" blue="0" alpha="30"/>
+			</major_warning_color>
+			<is_gradient_enabled>true</is_gradient_enabled>
+			<is_highlighting_of_active_regions_enabled>false</is_highlighting_of_active_regions_enabled>
+		</colors>
+		<scripts><script file="EmbeddedPy">
+				<text><![CDATA[from org.csstudio.display.builder.model.properties import WidgetColor
+from org.csstudio.opibuilder.scriptUtil import PVUtil
+
+currentTemp = PVUtil.getDouble(pvs[0])
+hihiRaw = PVUtil.getDouble(pvs[1])
+highRaw = PVUtil.getDouble(pvs[2])
+
+
+widget.setPropertyValue("level_hihi", hihiRaw)
+if highRaw == 0:
+    widget.setPropertyValue("level_high", hihiRaw)
+else:
+    widget.setPropertyValue("level_high", highRaw)
+
+alpha = 200
+
+if currentTemp < hihiRaw:
+    widget.setPropertyValue("colors.needle_color", WidgetColor(96, 255, 96, alpha))
+
+if currentTemp >= hihiRaw * 0.75:
+    widget.setPropertyValue("colors.needle_color", WidgetColor(255, 241, 0, alpha))
+
+if currentTemp >= hihiRaw:
+    widget.setPropertyValue("colors.needle_color", WidgetColor(255, 0, 0, alpha))
+]]></text>
+				<pv_name>$(pv_name)</pv_name>
+				<pv_name>$(pv_name):GETCALC</pv_name>
+				<pv_name>$(pv_name):HIGH</pv_name>
+			</script>
+		</scripts>
 	</widget>
-	<widget type="progressbar" version="2.0.0">
-		<name>Progress Bar_1</name>
-		<pv_name>$(dom)-RS-ABSB-01:TMON02$(suffix)</pv_name>
+	<widget type="linearmeter" version="3.0.0">
 		<x>250</x>
 		<y>70</y>
 		<width>120</width>
 		<height>28</height>
-		<fill_color>
-			<color red="0" green="0" blue="255"></color>
-		</fill_color>
-		<background_color>
-			<color red="200" green="200" blue="200"></color>
-		</background_color>
-		<scripts></scripts>
+		<pv_name>$(dom)-RS-ABSB-01:TMON02$(suffix)</pv_name>
+		<actions><action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
+				<macros>
+					<temp>$(pv_name)</temp>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+		<name>linear meter</name>
+		<display_mode>1</display_mode>
+		<show_units>false</show_units>
+		<scale_visible>false</scale_visible>
 		<border_alarm_sensitive>false</border_alarm_sensitive>
-		<limits_from_pv>false</limits_from_pv>
+		<limits_from_pv>3</limits_from_pv>
+		<level_lolo>0</level_lolo>
+		<level_low>0</level_low>
+		<colors>
+			<normal_status_color>
+				<color red="210" green="210" blue="210" alpha="50"/>
+			</normal_status_color>
+			<major_warning_color>
+				<color red="255" green="0" blue="0" alpha="30"/>
+			</major_warning_color>
+			<is_gradient_enabled>true</is_gradient_enabled>
+			<is_highlighting_of_active_regions_enabled>false</is_highlighting_of_active_regions_enabled>
+		</colors>
+		<scripts><script file="EmbeddedPy">
+				<text><![CDATA[from org.csstudio.display.builder.model.properties import WidgetColor
+from org.csstudio.opibuilder.scriptUtil import PVUtil
+
+currentTemp = PVUtil.getDouble(pvs[0])
+hihiRaw = PVUtil.getDouble(pvs[1])
+highRaw = PVUtil.getDouble(pvs[2])
+
+
+widget.setPropertyValue("level_hihi", hihiRaw)
+if highRaw == 0:
+    widget.setPropertyValue("level_high", hihiRaw)
+else:
+    widget.setPropertyValue("level_high", highRaw)
+
+alpha = 200
+
+if currentTemp < hihiRaw:
+    widget.setPropertyValue("colors.needle_color", WidgetColor(96, 255, 96, alpha))
+
+if currentTemp >= hihiRaw * 0.75:
+    widget.setPropertyValue("colors.needle_color", WidgetColor(255, 241, 0, alpha))
+
+if currentTemp >= hihiRaw:
+    widget.setPropertyValue("colors.needle_color", WidgetColor(255, 0, 0, alpha))
+]]></text>
+				<pv_name>$(pv_name)</pv_name>
+				<pv_name>$(pv_name):GETCALC</pv_name>
+				<pv_name>$(pv_name):HIGH</pv_name>
+			</script>
+		</scripts>
 	</widget>
 	<widget type="label" version="2.0.0">
 		<name>Label</name>
@@ -112,6 +208,7 @@
 		<height>53</height>
 		<transparent>true</transparent>
 		<horizontal_alignment>1</horizontal_alignment>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
 	</widget>
 	<widget type="textupdate" version="2.0.0">
 		<name>Progress Bar_1 Label</name>
@@ -122,6 +219,7 @@
 		<height>53</height>
 		<transparent>true</transparent>
 		<horizontal_alignment>1</horizontal_alignment>
+		<border_alarm_sensitive>false</border_alarm_sensitive>
 	</widget>
 	<widget type="action_button" version="3.0.0">
 		<name>PB Action Button</name>
