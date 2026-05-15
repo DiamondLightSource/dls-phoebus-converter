@@ -127,6 +127,26 @@ def fix_exit_button(oc: OpiConverter, action: Element):
         action.remove(old_script)
 
 
+def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
+    """Fix custom scripts/commands used to launch the databrowser which dont work
+    in Phoebus"""
+    if action.attrib["type"] == "execute":
+        script_text_el = action.find("script/text")
+        if "executeEclipseCommand" in script_text_el.text:
+            if "org.csstudio.trends.databrowser2" in script_text_el.text:
+                set_new_databrowser_action_from_execute_eclipse(action, script_text_el)
+            else:
+                logger.warning(
+                    "Screen contains an executeEclipseCommand script which is"
+                    "not supported by Phoebus. Found script: "
+                    f"{action.find('script/text').text} in file {oc.src_file_path}"
+                )
+
+    elif action.attrib["type"] == "command":
+        if "strip.py" in action.find("command"):
+            set_new_databrowser_action_from_strip_command(action)
+
+
 def process_widget_actions(oc: OpiConverter, actions: Element):
     for action in actions:
         fix_action_open_macro(oc, action)
@@ -134,24 +154,7 @@ def process_widget_actions(oc: OpiConverter, actions: Element):
         if oc.replace_tab:
             replace_open_in_tab(oc, action)
 
-        # Currently we are only looking at databrowser/StripTool related actions
-        if action.attrib["type"] == "execute":
-            script_text_el = action.find("script/text")
-            if "executeEclipseCommand" in script_text_el.text:
-                if "org.csstudio.trends.databrowser2" in script_text_el.text:
-                    set_new_databrowser_action_from_execute_eclipse(
-                        action, script_text_el
-                    )
-                else:
-                    logger.warning(
-                        "Screen contains an executeEclipseCommand script which is"
-                        "not supported by Phoebus. Found script: "
-                        f"{action.find('script/text').text} in file {oc.src_file_path}"
-                    )
-
-        elif action.attrib["type"] == "command":
-            if "strip.py" in action.find("command"):
-                set_new_databrowser_action_from_strip_command(action)
+        fix_open_databrowser_actions(oc, action)
 
 
 def replace_opi_extension(oc: OpiConverter, action: Element):
@@ -467,7 +470,7 @@ def set_new_databrowser_action_from_strip_command(action):
     action["@type"] = "command"
     action["description"] = "Launch databrowser"
     action["command"] = (
-        f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'  # noqa: E501
+        f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'
     )
 
 
