@@ -10,15 +10,12 @@ from pathlib import Path
 
 from lxml import etree
 
-from dls_phoebus_converter.logconfig import setup_logging
 from dls_phoebus_converter.post_converter import post_conversion_steps
 from dls_phoebus_converter.pre_converter import pre_conversion_steps
 
 PHOEBUS_SH_FILE_PATH = "/dls_sw/deploy-tools/modules/phoebus/dev/entrypoints/phoebus"
 PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
 
-if not logging.getLogger("dls_phoebus_converter"):
-    setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
 
 

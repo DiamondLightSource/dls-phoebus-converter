@@ -12,18 +12,14 @@ from typing import TYPE_CHECKING
 from lxml import etree
 from lxml.etree import Element
 
-from dls_phoebus_converter.logconfig import setup_logging
 from dls_phoebus_converter.macros import handle_macros
 
 if TYPE_CHECKING:
+    from dls_phoebus_converter.opi_converter import OpiConverter
     from dls_phoebus_converter.screen_converter import ScreenConverter
+
 from dls_phoebus_converter.support_modules import handle_support_modules
 
-if TYPE_CHECKING:
-    from dls_phoebus_converter.opi_converter import OpiConverter
-
-if not logging.getLogger("dls_phoebus_converter"):
-    setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
 
 

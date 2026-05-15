@@ -7,13 +7,10 @@ import typing
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from dls_phoebus_converter.logconfig import setup_logging
-
 if TYPE_CHECKING:
     from dls_phoebus_converter.screen_converter import ScreenConverter
 
-if not logging.getLogger("dls_phoebus_converter"):
-    setup_logging()
+
 logger = logging.getLogger("dls_phoebus_converter")
 
 

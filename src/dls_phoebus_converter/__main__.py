@@ -12,9 +12,6 @@ from dls_phoebus_converter.screen_converter import ScreenConverter
 
 __all__ = ["main"]
 
-setup_logging()
-logger = logging.getLogger("dls_phoebus_converter")
-
 
 def parse_arguments(args: Sequence[str] | None = None) -> None:
     """Parse command line arguments sent to virtac"""
@@ -64,7 +61,11 @@ def parse_arguments(args: Sequence[str] | None = None) -> None:
 
 
 def main(args: Sequence[str] | None = None) -> None:
+    setup_logging()
+    logger = logging.getLogger("dls_phoebus_converter")
+
     args = parse_arguments()
+
     logger.debug(f"Running screen conversion with arguments: {args}")
 
     if args.debug:

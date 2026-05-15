@@ -7,13 +7,10 @@ from typing import TYPE_CHECKING
 
 from lxml import etree
 
-from dls_phoebus_converter.logconfig import setup_logging
-
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
 
-if not logging.getLogger("dls_phoebus_converter"):
-    setup_logging()
+
 logger = logging.getLogger("dls_phoebus_converter")
 
 

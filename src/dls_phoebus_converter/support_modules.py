@@ -9,15 +9,12 @@ from typing import TYPE_CHECKING
 
 import yaml
 
-from dls_phoebus_converter.logconfig import setup_logging
 from dls_phoebus_converter.macros import fill_in_file_path_macros
 
 if TYPE_CHECKING:
+    from dls_phoebus_converter.opi_converter import OpiConverter
     from dls_phoebus_converter.screen_converter import ScreenConverter
 from dls_phoebus_converter.utilities import search_widget_filepaths
-
-if TYPE_CHECKING:
-    from dls_phoebus_converter.opi_converter import OpiConverter
 
 ACC_UI_SUPPORT_MODULE_LIST = [
     "devIocStats",
@@ -29,8 +26,6 @@ ACC_UI_SUPPORT_MODULE_LIST = [
     "TimingTemplates",
 ]
 
-if not logging.getLogger("dls_phoebus_converter"):
-    setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
 
 

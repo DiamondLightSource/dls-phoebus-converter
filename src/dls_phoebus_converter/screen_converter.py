@@ -6,11 +6,9 @@ from pathlib import Path, PosixPath
 
 import yaml
 
-from dls_phoebus_converter.logconfig import setup_logging
 from dls_phoebus_converter.opi_converter import OpiConverter
 from dls_phoebus_converter.support_modules import convert_extra_support_modules
 
-setup_logging()
 logger = logging.getLogger("dls_phoebus_converter")
 
 
