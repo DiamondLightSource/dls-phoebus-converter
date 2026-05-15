@@ -8,7 +8,7 @@ from dls_phoebus_converter.opi_converter import OpiConverter
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-def replace_visible_script(oc: OpiConverter):
+def replace_visible_script(oc: OpiConverter) -> None:
     """Replace this complex script with a rule"""
 
     logger.info(
@@ -54,7 +54,7 @@ def replace_visible_script(oc: OpiConverter):
                     widget.insert(-1, etree.fromstring(rules_xml))
 
 
-def remove_fe_temp_indicator_script(oc: OpiConverter):
+def remove_fe_temp_indicator_script(oc: OpiConverter) -> None:
     """This script was being used to colour ProgressBars based on hihi and hi values.
     Instead we now just use an alarm border which changes the border based on alarm.
     Assuming hihi and hi are configured to generate Major and Minor alarms, the
@@ -80,7 +80,7 @@ def remove_fe_temp_indicator_script(oc: OpiConverter):
             parent.remove(script)
 
 
-def resize_absb_temps_fe22b(oc: OpiConverter):
+def resize_absb_temps_fe22b(oc: OpiConverter) -> None:
     """
     HLA-1061: This is a special case for FE22B where the size of the screen does not
     properly encompass the widgets within it. This results in the screen being cut off
@@ -166,7 +166,7 @@ def replace_progress_bar_with_linear_meter(
 
 # Generic function to be inlcluded in each domain-specific special case module.
 # This is dynamically imported and then called by the main conversion process.
-def run(oc: OpiConverter):
+def run(oc: OpiConverter) -> None:
     """Make any case-by-case adjustments to FE specific screens which are not handled
     by the normal conversion process."""
 
