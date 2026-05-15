@@ -412,9 +412,10 @@ def replace_open_in_tab(oc: OpiConverter, action: Element):
 def set_new_databrowser_action_from_execute_eclipse(
     action: Element, script_text_el: Element
 ):
-    # We will be implementing a new Phoebus action which opens PV(s) in the
-    # databrowser, so eventually this code will be replaced with that, for now we
-    # use a command action.
+    """We will be implementing a new Phoebus action which opens PV(s) in the
+    databrowser, so eventually this code will be replaced with that, for now we
+    use a command action."""
+
     search_string = script_text_el.text
     match = re.search(r"'pvnames',\s*'([^']+)'", search_string)
     if match:
@@ -449,9 +450,10 @@ def set_new_databrowser_action_from_execute_eclipse(
 
 
 def set_new_databrowser_action_from_strip_command(action):
-    # We will be implementing a new Phoebus action which opens PV(s) in the
-    # databrowser, so eventually this code will be replaced with that, for now we
-    # use a command action.
+    """We will be implementing a new Phoebus action which opens PV(s) in the
+    databrowser, so eventually this code will be replaced with that, for now we
+    use a command action."""
+
     search_string = action["command"]
     str_list = search_string.split(" ")
     for i, string in enumerate(str_list):
