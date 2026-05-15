@@ -565,7 +565,7 @@ def fix_rule_expressions(oc, widget: Element):
     expressions = widget.findall("rules/rule/exp")
     for exp in expressions:
         # Use new syntax for getting a PV alarm severity
-        exp.attrib["bool_exp"] = check_legacy_sev(oc, exp.attrib.get("bool_exp"))
+        fix_pv_severity_expression(oc, exp)
 
         # widget.getValue() is not available in Phoebus, we assume this is an attempt to
         # get the value of the widgets pv, so we replace it with pv0
@@ -575,26 +575,34 @@ def fix_rule_expressions(oc, widget: Element):
             )
 
 
-def check_legacy_sev(oc, input_field):
+def fix_pv_severity_expression(oc: OpiConverter, exp_el: Element):
     # OK, Major, Minor, Invalid/undefined
-    legacy = [
+    css_sev_expressions = [
         "pvLegacySev0==0",
         "pvLegacySev0==1",
         "pvLegacySev0==2",
         "pvLegacySev0==-1",
     ]
-    new_v = ["pvSev0==0", "pvSev0==2", "pvSev0==1", "pvSev0==3"]
-    result = input_field
-    for i in range(len(legacy)):
-        result = update_legacy_sev_status(oc, result, legacy[i], new_v[i])
-    return result
+    phoebus_sev_expressions = ["pvSev0==0", "pvSev0==2", "pvSev0==1", "pvSev0==3"]
+    initial_attrib = exp_el.attrib["bool_exp"]
+    modified_attrib = initial_attrib
+
+    for css_exp, phoebus_exp in zip(
+        css_sev_expressions, phoebus_sev_expressions, strict=True
+    ):
+        if css_exp in initial_attrib:
+            oc.completed_conversion_steps.update_leg_sev = True
+            modified_attrib = initial_attrib.replace(css_exp, phoebus_exp)
+            logger.debug(f"Fixing {css_exp} to {phoebus_exp} in rule")
+
+    exp_el.attrib["bool_exp"] = modified_attrib
 
 
 def update_legacy_sev_status(oc: OpiConverter, input_field, leg_sev, new_sev):
     if leg_sev in input_field:
         oc.completed_conversion_steps.update_leg_sev = True
         result = input_field.replace(leg_sev, new_sev)
-        logger.debug("Fixing " + leg_sev + " to " + new_sev)
+        logger.debug(f"Fixing {leg_sev} to {new_sev}")
         return result
     else:
         return input_field
