@@ -9,7 +9,6 @@ import re
 import subprocess
 from typing import TYPE_CHECKING
 
-import xmltodict
 from lxml import etree
 from lxml.etree import Element
 
@@ -597,9 +596,3 @@ def update_legacy_sev_status(oc: OpiConverter, input_field, leg_sev, new_sev):
         return result
     else:
         return input_field
-
-
-def write_dict(self, as_dict):
-    with open(os.path.join(self.dst_dir_path, self.dst_filename), "w") as f:
-        new_xml = xmltodict.unparse(as_dict, pretty=True)
-        f.write(new_xml)
