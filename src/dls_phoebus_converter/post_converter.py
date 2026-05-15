@@ -491,42 +491,45 @@ def reorder_symbols_from_rule(symbols: list[str], rule: Element) -> list[str]:
 
     # Contains a list of tuples of (pv_val, symbol_index)
     reorder_map: list[tuple] = []
-    try:
-        for exp in rule.findall("exp"):
-            pv_val = None
-            result = int(exp.find("expression").text)
-            bool_logic = exp.attrib["bool_exp"]
-            bool_logic = bool_logic.replace(" ", "")
-            # Match for pvX in string
-            if re.findall(r"pv\d+", bool_logic):
-                if "==" in bool_logic:
-                    match = re.search(r"==\s*(\d+)", bool_logic)
-                    if match:
-                        pv_val = int(match.group(1))
-                elif ">=" in bool_logic and "<" in bool_logic and "&&" in bool_logic:
-                    # Gets the integer between >= and &&. This could be made
-                    # smarter if required
-                    match = re.search(r">=\s*(.+?)\s*&&", bool_logic)
-                    if match:
-                        pv_val = int(float(match.group(1)))
-                reorder_map.append((pv_val, result))
+    for exp in rule.findall("exp"):
+        pv_val = None
+        result = int(exp.find("expression").text)
+        bool_logic = exp.attrib["bool_exp"]
+        bool_logic = bool_logic.replace(" ", "")
+        # Match for pvX in string
+        if re.findall(r"pv\d+", bool_logic):
+            if "==" in bool_logic:
+                match = re.search(r"==\s*(\d+)", bool_logic)
+                if match:
+                    pv_val = int(match.group(1))
+            elif ">=" in bool_logic and "<" in bool_logic and "&&" in bool_logic:
+                # Gets the integer between >= and &&. This could be made
+                # smarter if required
+                match = re.search(r">=\s*(.+?)\s*&&", bool_logic)
+                if match:
+                    pv_val = int(float(match.group(1)))
+            reorder_map.append((pv_val, result))
 
-    except (LookupError, ValueError):
-        logger.warning("Failed to parse rule when attempting to reorder symbol widget.")
+    if len(reorder_map) == 0:
+        logger.warning(
+            "Failed to parse symbol widget index modification rule when "
+            "attempting to reorder symbol widget. Rule is being ignored."
+        )
+        return symbols
+    else:
+        # Sort the map by ascending pv_val
+        reorder_map = sorted(reorder_map, key=lambda x: x[0])
+        new_symbols_order = list(symbols)
+        for pv_val, index in reorder_map:
+            for symbol in symbols:
+                if pv_val >= len(new_symbols_order):
+                    # Sometimes rules can specify a symbol to use for a pv_value outside
+                    # the number of images, we handle this by adding it to the end
+                    new_symbols_order.append(symbol)
+                elif f"_{index}." in symbol:
+                    new_symbols_order[pv_val] = symbol
 
-    # Sort the map by ascending pv_val
-    reorder_map = sorted(reorder_map, key=lambda x: x[0])
-    new_symbols_order = list(symbols)
-    for pv_val, index in reorder_map:
-        for symbol in symbols:
-            if pv_val >= len(new_symbols_order):
-                # Sometimes rules can specify a symbol to use for a pv_value outside
-                # the number of images, we handle this by adding it to the end
-                new_symbols_order.append(symbol)
-            elif f"_{index}." in symbol:
-                new_symbols_order[pv_val] = symbol
-
-    return new_symbols_order
+        return new_symbols_order
 
 
 def convert_pv_function(widget: Element):
