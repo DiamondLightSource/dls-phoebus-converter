@@ -24,10 +24,10 @@ def search_widget_filepaths(
     widget_file_paths=None,
     macros=None,
 ):
-    """This generic, recursive function takes a widget and searches for any
-    references to filepaths these can be in multiple different widget fields and
-    also in widgets within the widget etc. When a filepath is found, it is passed
-    into the passed func callable."""
+    """This generic function takes a widget and searches for any references to
+    filepaths. Filepaths are used in different ways for different widgets and so
+    there are serveral tpyes of filepath tag that we search for. When a filepath is
+    found, it is passed into the passed func callable."""
 
     args = [arg for arg in [widget_file_paths, macros] if arg is not None]
 
@@ -70,4 +70,3 @@ def search_widget_filepaths(
         elif file_el is not None and file_el.text is not None:
             if func(sc, Path(file_el.text), *args):
                 file_el.text = func(sc, Path(file_el.text), *args)
-    return widget_file_paths

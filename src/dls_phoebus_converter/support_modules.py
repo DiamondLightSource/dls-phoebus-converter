@@ -8,7 +8,6 @@ from pathlib import Path, PosixPath
 from typing import TYPE_CHECKING
 
 import yaml
-from lxml.etree import Element
 
 from dls_phoebus_converter.logconfig import setup_logging
 from dls_phoebus_converter.macros import fill_in_file_path_macros
@@ -45,23 +44,11 @@ def handle_support_modules(sc: ScreenConverter, oc: OpiConverter):
         update_filepaths(sc, oc)
 
 
-def get_widget_filepaths(sc, widget: Element, widget_file_paths):
-    def append_new_filepath(sc, path_string, widget_file_paths, symbol=False):
-        widget_file_paths.append(path_string)
-        return False
-
-    return search_widget_filepaths(sc, widget, append_new_filepath, widget_file_paths)
-
-
-def update_widget_filepaths(sc, widget, macros):
-    search_widget_filepaths(sc, widget, switch_filepaths, macros)
-
-
 def get_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
     widget_file_paths: list[Path] = []
     # Look for filepaths in xml
     for widget in oc.bob_data.findall(".//widget"):
-        get_widget_filepaths(sc, widget, widget_file_paths)
+        search_widget_filepaths(sc, widget, append_new_filepath, widget_file_paths)
 
     # Only keep unique filepaths and fill in macros
     file_paths_unique = set()
@@ -102,6 +89,17 @@ def get_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
 
     logger.info(f"Required domain modules: {sc.domain_support_module_locations}")
     logger.info(f"Required acc modules: {sc.acc_support_module_locations}")
+
+
+def append_new_filepath(sc, path_string, widget_file_paths, symbol=False):
+    widget_file_paths.append(path_string)
+    return False
+
+
+def update_filepaths(sc, oc: OpiConverter):
+    # Look for filepaths in xml
+    for widget in oc.bob_data.findall(".//widget"):
+        search_widget_filepaths(sc, widget, switch_filepaths, oc.macros)
 
 
 def switch_filepaths(sc: ScreenConverter, file_path, macros=None, symbol=False) -> str:
@@ -154,12 +152,6 @@ def switch_filepaths(sc: ScreenConverter, file_path, macros=None, symbol=False) 
         "unchanged."
     )
     return file_path_string
-
-
-def update_filepaths(sc, oc: OpiConverter):
-    # Look for filepaths in xml
-    for widget in oc.bob_data.findall(".//widget"):
-        update_widget_filepaths(sc, widget, oc.macros)
 
 
 def get_existing_support_module_filepath(support_module_name) -> str | None:
