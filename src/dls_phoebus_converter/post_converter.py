@@ -305,12 +305,10 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
 
 
 def fix_embedded_screen_ext(oc: OpiConverter, widget: Element):
-    if "file" not in list(widget):
+    if "file" not in [child.tag for child in list(widget)]:
         return
     oc.completed_conversion_steps.replace_opi_ext = True
-    opi_file = widget.get("file").text
-    bob_file = opi_file.replace(".opi", ".bob")
-    widget.get("file").text = bob_file
+    widget.find("file").text.replace(".opi", ".bob")
 
 
 def get_alarm_sensitive_progress_bars(oc: OpiConverter):
