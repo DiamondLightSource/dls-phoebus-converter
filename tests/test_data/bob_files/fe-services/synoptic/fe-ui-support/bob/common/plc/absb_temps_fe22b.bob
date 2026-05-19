@@ -24,16 +24,6 @@
 		<background_color>
 			<color red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
-				<description>Open Display</description>
-				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
-				<macros>
-					<temp>$(pv_name)</temp>
-				</macros>
-				<target>standalone</target>
-			</action>
-		</actions>
 		<scripts></scripts>
 		<border_alarm_sensitive>false</border_alarm_sensitive>
 		<limits_from_pv>false</limits_from_pv>
@@ -51,16 +41,6 @@
 		<background_color>
 			<color red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
-				<description>Open Display</description>
-				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
-				<macros>
-					<temp>$(pv_name)</temp>
-				</macros>
-				<target>standalone</target>
-			</action>
-		</actions>
 		<scripts></scripts>
 		<border_alarm_sensitive>false</border_alarm_sensitive>
 		<limits_from_pv>false</limits_from_pv>
@@ -142,5 +122,51 @@
 		<height>53</height>
 		<transparent>true</transparent>
 		<horizontal_alignment>1</horizontal_alignment>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>PB Action Button</name>
+		<text></text>
+		<width>120</width>
+		<height>28</height>
+		<x>100</x>
+		<y>70</y>
+		<foreground_color>
+			<color red="0" green="0" blue="0" alpha="0"/>
+		</foreground_color>
+		<background_color>
+			<color red="0" green="0" blue="0" alpha="0"/>
+		</background_color>
+		<actions><action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
+				<macros>
+					<temp>$(pv_name)</temp>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
+	</widget>
+	<widget type="action_button" version="3.0.0">
+		<name>PB Action Button</name>
+		<text></text>
+		<width>120</width>
+		<height>28</height>
+		<x>250</x>
+		<y>70</y>
+		<foreground_color>
+			<color red="0" green="0" blue="0" alpha="0"/>
+		</foreground_color>
+		<background_color>
+			<color red="0" green="0" blue="0" alpha="0"/>
+		</background_color>
+		<actions><action type="open_display">
+				<description>Open Display</description>
+				<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
+				<macros>
+					<temp>$(pv_name)</temp>
+				</macros>
+				<target>standalone</target>
+			</action>
+		</actions>
 	</widget>
 </display>
