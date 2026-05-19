@@ -305,7 +305,7 @@ def create_symbol_from_edm(oc: OpiConverter, widget: Element):
 
 
 def fix_embedded_screen_ext(oc: OpiConverter, widget: Element):
-    if "file" not in [child.tag for child in list(widget)]:
+    if "file" not in [child.tag for child in widget]:
         return
     oc.completed_conversion_steps.replace_opi_ext = True
     widget.find("file").text.replace(".opi", ".bob")
