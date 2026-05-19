@@ -34,7 +34,7 @@ files:
       mks_type: b
       type: B
       srvalve: 03
-      ISBL:
+      ISBL: ""
 
   - src: tests/test_data/opi_files/common
     dst: fe-ui-support

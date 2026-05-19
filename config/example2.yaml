@@ -8,7 +8,7 @@ meta_data:
 
 files:
   # Convert FE22B.opi and its dependencies
-  - src: examples/FE22B.opi
+  - src: tests/test_data/opi_files/FE22B.opi
     dst: synoptic
     template_file: FE22B_template.xml
     macros:

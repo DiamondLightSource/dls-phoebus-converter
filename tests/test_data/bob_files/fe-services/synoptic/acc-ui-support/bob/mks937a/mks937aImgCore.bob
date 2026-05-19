@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <display version="2.0.0">
 	<name>MKS 937A Inverted Magenetron Gauge - $(device)</name>
 	<x>64</x>
@@ -14,7 +14,7 @@
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>8</x>
 		<y>344</y>
@@ -56,8 +56,7 @@ $(pv_value)</tooltip>
 	</widget>
 	<widget type="action_button" version="3.0.0">
 		<name>EDM Exit Button</name>
-		<actions>
-			<action type="close_display">
+		<actions><action type="close_display" description="Close display">
 				<description>Close display</description>
 			</action>
 		</actions>
@@ -80,15 +79,8 @@ $(pv_value)</tooltip>
 	</widget>
 	<widget type="action_button" version="3.0.0">
 		<name>EDM shell command</name>
-		<actions>
-			<action type="command">
+		<actions><action type="command">
 				<description>Launch databrowser</description>
-				<script file="EmbeddedPy">
-					<text>from org.csstudio.opibuilder.scriptUtil import ScriptUtil
-
-command_id="org.csstudio.trends.databrowser2.newWindow"
-ScriptUtil.executeEclipseCommand(command_id, ['pvnames', '$(device):PLOG'])</text>
-				</script>
 				<command>$(phoebus.install)/../phoebus.sh -resource "pv://?$(device):PLOG&amp;app=databrowser</command>
 			</action>
 		</actions>
@@ -112,7 +104,7 @@ ScriptUtil.executeEclipseCommand(command_id, ['pvnames', '$(device):PLOG'])</tex
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>8</x>
 		<y>48</y>
@@ -362,7 +354,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>8</x>
 		<y>40</y>
@@ -408,7 +400,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>8</x>
 		<y>336</y>
@@ -585,10 +577,9 @@ $(pv_value)</tooltip>
 		</rules>
 		<widget type="action_button" version="3.0.0">
 			<name>EDM related display</name>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Switch on/off</description>
-					<file>mks937aImgWarning.bob</file>
+					<file>mks937aImgWarning.opi</file>
 					<target>standalone</target>
 				</action>
 			</actions>

@@ -63,9 +63,10 @@ def test_front_ends(ref_output_directory):
         "dls_phoebus_converter",
         "-o",
         "test_output/",
+        "-c",
         "config/front_ends.yaml",
     ]
-    proc = subprocess.Popen(cmd)
+    proc = subprocess.Popen(cmd, stderr=subprocess.DEVNULL)
     proc.wait()
 
     # Get the reference screens from kubernetes
