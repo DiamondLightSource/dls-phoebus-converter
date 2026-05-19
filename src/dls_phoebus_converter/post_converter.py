@@ -330,11 +330,12 @@ def move_action_to_invisible_button(widget: Element):
         etree.SubElement(action_button, "name").text = "PB Action Button"
         etree.SubElement(action_button, "text").text = ""
 
-        # Inherited from widget
-        action_button.append(widget.find("width"))
-        action_button.append(widget.find("height"))
-        widget_x = widget.find("x")
-        widget_y = widget.find("y")
+        # Inherited from widget.
+        # Deepcopies ensure elements aren't removed from the original widget
+        action_button.append(copy.deepcopy(widget.find("width")))
+        action_button.append(copy.deepcopy(widget.find("height")))
+        widget_x = copy.deepcopy(widget.find("x"))
+        widget_y = copy.deepcopy(widget.find("y"))
         # Sometimes x and y are not defined in the .bob file and will default to 0.
         if widget_x is not None:
             action_button.append(widget_x)
