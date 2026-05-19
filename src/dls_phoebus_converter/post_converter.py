@@ -325,8 +325,8 @@ def move_action_to_invisible_button(widget: Element):
     a left click. In these cases, we move the action to an invisible action button
     and layer it on top of the original widget"""
 
-    def create_action_button_from_widget() -> Element:
-        action_button = etree.Element("widget", type="action_button", version="3.0.0")
+    def create_action_button_from_widget(widget: Element) -> Element:
+        action_button = Element("widget", type="action_button", version="3.0.0")
         etree.SubElement(action_button, "name").text = "PB Action Button"
         etree.SubElement(action_button, "text").text = ""
 
@@ -352,7 +352,7 @@ def move_action_to_invisible_button(widget: Element):
         return action_button
 
     # Inject the actions.
-    new_action_button = create_action_button_from_widget()
+    new_action_button = create_action_button_from_widget(widget)
     action_sub_element = etree.SubElement(new_action_button, "actions")
     widget_actions = widget.find(".//actions")
 
