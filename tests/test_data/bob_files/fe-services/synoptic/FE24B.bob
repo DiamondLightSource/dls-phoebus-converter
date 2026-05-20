@@ -2363,16 +2363,6 @@ $(pv_value)</tooltip>
 						<background_color>
 							<color red="200" green="200" blue="200"></color>
 						</background_color>
-						<actions>
-							<action type="open_display">
-								<description>Open Display</description>
-								<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
-								<macros>
-									<temp>$(pv_name)</temp>
-								</macros>
-								<target>standalone</target>
-							</action>
-						</actions>
 						<scripts></scripts>
 						<border_alarm_sensitive>false</border_alarm_sensitive>
 						<limits_from_pv>false</limits_from_pv>
@@ -2586,6 +2576,24 @@ $(pv_value)</tooltip>
 						<height>53</height>
 						<transparent>true</transparent>
 						<horizontal_alignment>1</horizontal_alignment>
+					</widget>
+					<widget type="action_button" version="3.0.0">
+							<name>PB Action Button</name>
+							<text></text>
+							<transparent>true</transparent>
+							<width>120</width>
+							<height>28</height>
+							<x>100</x>
+							<y>80</y>
+							<actions><action type="open_display">
+											<description>Open Display</description>
+											<file>fe-ui-support/bob/dlsPLC/temperature-config.bob</file>
+											<macros>
+													<temp>$(pv_name)</temp>
+											</macros>
+											<target>standalone</target>
+									</action>
+							</actions>
 					</widget>
 				</children>
 			</tab>
