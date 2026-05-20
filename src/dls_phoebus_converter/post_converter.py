@@ -360,6 +360,8 @@ def move_action_to_invisible_button(widget: Element):
         new_action = copy.deepcopy(action)
         action_sub_element.append(new_action)
 
+    # Placing the action button at the end of the file ensures
+    # it is rendered on top of the original widget
     widget.getparent().append(new_action_button)
     widget.remove(widget_actions)
 
