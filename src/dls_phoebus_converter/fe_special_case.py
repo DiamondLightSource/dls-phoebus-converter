@@ -1,6 +1,5 @@
 import logging
-import os
-from zipfile import Path
+from pathlib import Path
 
 from lxml import etree
 
@@ -148,8 +147,8 @@ def replace_progress_bar_with_linear_meter(
         # Scripts
         scripts = etree.SubElement(linear_meter, "scripts")
         script = etree.SubElement(scripts, "script", file="EmbeddedPy")
-        file_path = os.path.join(
-            os.path.dirname(__file__),
+        file_path = Path.joinpath(
+            Path(__file__).parent,
             "../../config/scripts_to_embed/linear_meter_alarm_levels.py",
         )
         with open(file_path) as f:
