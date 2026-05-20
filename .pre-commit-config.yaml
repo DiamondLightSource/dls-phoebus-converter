@@ -21,7 +21,7 @@ repos:
         require_serial: true
 
       - id: ruff-format
-        exclude: "tests/test_data, config/scripts_to_embed"
+        exclude: "tests/test_data"
         name: format with ruff
         language: system
         entry: ruff format --force-exclude
