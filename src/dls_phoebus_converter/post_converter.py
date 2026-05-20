@@ -349,7 +349,7 @@ def move_action_to_transparent_button(widget: Element):
     # Inject the actions.
     new_action_button = create_action_button_from_widget(widget)
     action_sub_element = etree.SubElement(new_action_button, "actions")
-    widget_actions = widget.find(".//actions")
+    widget_actions = widget.find("./actions")
 
     for action in widget_actions:
         new_action = copy.deepcopy(action)
