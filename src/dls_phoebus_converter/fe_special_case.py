@@ -113,16 +113,16 @@ def replace_progress_bar_with_linear_meter(
         linear_meter = etree.Element("widget", type="linearmeter", version="3.0.0")
 
         # Inherited from progress bar widget
-        etree.SubElement(linear_meter, "x").text = progress_bar.find("x").text
-        etree.SubElement(linear_meter, "y").text = progress_bar.find("y").text
-        etree.SubElement(linear_meter, "width").text = progress_bar.find("width").text
-        etree.SubElement(linear_meter, "height").text = progress_bar.find("height").text
-        etree.SubElement(linear_meter, "pv_name").text = progress_bar.find(
+        etree.SubElement(linear_meter, "x").text = progress_bar.findtext("x")
+        etree.SubElement(linear_meter, "y").text = progress_bar.findtext("y")
+        etree.SubElement(linear_meter, "width").text = progress_bar.findtext("width")
+        etree.SubElement(linear_meter, "height").text = progress_bar.findtext("height")
+        etree.SubElement(linear_meter, "pv_name").text = progress_bar.findtext(
             "pv_name"
-        ).text
-        etree.SubElement(linear_meter, "actions").text = progress_bar.find(
+        )
+        etree.SubElement(linear_meter, "actions").text = progress_bar.findtext(
             "actions"
-        ).text
+        )
 
         # Additional linear meter properties
         etree.SubElement(linear_meter, "name").text = "linear meter"
@@ -166,7 +166,7 @@ def replace_progress_bar_with_linear_meter(
         progress_bar.getparent().replace(progress_bar, new_linear_meter)
 
         # Turn off alarm borders for the corresponding text update widget
-        expected_text_update_widget_name = progress_bar.find("name").text + " Label"
+        expected_text_update_widget_name = progress_bar.findtext("name") + " Label"
         for text_update in bob_file_data.findall(".//widget[@type='textupdate']"):
             if text_update.findtext("name") == expected_text_update_widget_name:
                 etree.SubElement(text_update, "border_alarm_sensitive").text = "false"
