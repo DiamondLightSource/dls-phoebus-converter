@@ -165,9 +165,11 @@ def replace_progress_bar_with_linear_meter(
         new_linear_meter = create_linear_meter_from_progress_bar(progress_bar)
         progress_bar.getparent().replace(progress_bar, new_linear_meter)
 
-    # Turn off alarm borders as we will be using the colours shown by the linear meter
-    for text_update in bob_file_data.findall(".//widget[@type='textupdate']"):
-        etree.SubElement(text_update, "border_alarm_sensitive").text = "false"
+        # Turn off alarm borders for the corresponding text update widget
+        expected_text_update_widget_name = progress_bar.find("name").text + " Label"
+        for text_update in bob_file_data.findall(".//widget[@type='textupdate']"):
+            if text_update.findtext("name") == expected_text_update_widget_name:
+                etree.SubElement(text_update, "border_alarm_sensitive").text = "false"
 
 
 # Generic function to be inlcluded in each domain-specific special case module.
