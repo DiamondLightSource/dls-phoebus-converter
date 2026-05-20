@@ -97,14 +97,14 @@ def resize_absb_temps_fe22b(oc: OpiConverter) -> None:
 
 
 def replace_progress_bar_with_linear_meter(
-    bob_file_data: etree.ElementTree, output_file_path: Path
+    bob_file_data: etree.ElementTree, dst_filepath: Path
 ) -> None:
     """
     HLA-1077: This replaces the progress bars in FE22B with linear meters
     to support alarm limits, which are not a feature of progress bars in Phoebus.
     """
     logger.info(
-        f"Special case: Replacing ProgressBar with LinearMeter in {output_file_path}"
+        f"Special case: Replacing ProgressBar with LinearMeter in {dst_filepath}"
     )
 
     def create_linear_meter_from_progress_bar(
@@ -178,7 +178,7 @@ def run(oc: OpiConverter) -> None:
 
     if "absb_temps_fe22b.bob" in str(oc.dst_filepath):
         resize_absb_temps_fe22b(oc)
-        replace_progress_bar_with_linear_meter(oc.bob_data, oc.output_file)
+        replace_progress_bar_with_linear_meter(oc.bob_data, oc.dst_filepath)
 
     for name in [
         "FE24B.bob",
