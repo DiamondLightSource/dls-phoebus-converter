@@ -1,5 +1,6 @@
 import logging
 import os
+from zipfile import Path
 
 from lxml import etree
 
@@ -96,7 +97,7 @@ def resize_absb_temps_fe22b(oc: OpiConverter) -> None:
 
 
 def replace_progress_bar_with_linear_meter(
-    bob_file_data: etree.ElementTree, output_file_path: str
+    bob_file_data: etree.ElementTree, output_file_path: Path
 ) -> None:
     """
     HLA-1077: This replaces the progress bars in FE22B with linear meters
@@ -177,7 +178,7 @@ def run(oc: OpiConverter) -> None:
 
     if "absb_temps_fe22b.bob" in str(oc.dst_filepath):
         resize_absb_temps_fe22b(oc)
-        replace_progress_bar_with_linear_meter(oc.bob_data, str(oc.output_file))
+        replace_progress_bar_with_linear_meter(oc.bob_data, oc.output_file)
 
     for name in [
         "FE24B.bob",
