@@ -176,13 +176,13 @@ def fix_action_open_macro(oc: OpiConverter, action: Element):
 
 def create_symbol_image_file(
     oc: OpiConverter,
-    output_file,
-    output_file_full,
+    output_file: Path,
+    output_file_full: Path,
     src_file: Path,
-    n_images,
-    width,
-    height,
-):
+    n_images: int,
+    width: int,
+    height: int,
+) -> list[str]:
     """Use the cli 'convert' tool to split the edm style single symbol image file
     into a seperate symbol image file per symbol"""
 
@@ -217,7 +217,9 @@ def create_symbol_image_file(
     return symbol_files
 
 
-def get_symbol_file_destinations(sc: ScreenConverter, oc: OpiConverter, src_file):
+def get_symbol_file_destinations(
+    sc: ScreenConverter, oc: OpiConverter, src_file: Path
+) -> tuple[Path, Path]:
     """Get the destination path for the symbols, both the full path to save the image
     files too and the relative path to use in the screen links."""
 
@@ -246,7 +248,9 @@ def get_symbol_file_destinations(sc: ScreenConverter, oc: OpiConverter, src_file
     return output_file, output_file_full
 
 
-def update_symbol_widget_rules(widget, output_file, invalid_image_index):
+def update_symbol_widget_rules(
+    widget: Element, output_file: Path, invalid_image_index: int
+) -> None:
     """Modify/create rules to change the displayed symbol and overwrite the default
     order"""
 
@@ -293,7 +297,9 @@ def update_symbol_widget_rules(widget, output_file, invalid_image_index):
                 rule.getparent().extend(additional_rules)
 
 
-def fix_edm_symbol_widgets(oc: OpiConverter, sc: ScreenConverter, widget: Element):
+def fix_edm_symbol_widgets(
+    oc: OpiConverter, sc: ScreenConverter, widget: Element
+) -> None:
     """Converts from an edm/cs-studio style symbol widget to a Pheobus style symbol
     widget."""
 
