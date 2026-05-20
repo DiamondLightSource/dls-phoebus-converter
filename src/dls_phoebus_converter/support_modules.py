@@ -41,7 +41,7 @@ def handle_support_modules(sc: ScreenConverter, oc: OpiConverter):
         update_filepaths(sc, oc)
     else:
         for el in oc.bob_data.getroot().iter():
-            if ".opi" in el.text:
+            if el.text is not None and ".opi" in el.text:
                 el.text.replace(".opi", ".bob")
 
 
