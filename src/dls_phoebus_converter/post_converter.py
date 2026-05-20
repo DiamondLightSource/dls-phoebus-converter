@@ -86,6 +86,11 @@ def fix_widget_issues(oc: OpiConverter):
             fix_embedded_screen_ext(oc, widget)
 
         elif widget_type == "progressbar":
+            # Actions are not supported on progressBars in Phoebus, so
+            # we instead layer a transparent action button on top.
+            for child in widget:
+                if child.tag == "actions":
+                    move_action_to_transparent_button(widget)
             # Look for any progress bar widgets with alarm borders enabled
             alarm_sensitive_progress_bars = get_alarm_sensitive_progress_bars(oc)
             if widget.find("name") is not None and widget.find("pv_name") is not None:
@@ -309,6 +314,51 @@ def fix_embedded_screen_ext(oc: OpiConverter, widget: Element):
         return
     oc.completed_conversion_steps.replace_opi_ext = True
     widget.find("file").text.replace(".opi", ".bob")
+
+
+def move_action_to_transparent_button(widget: Element):
+    """Move the action on the target widget to a transparent button and place over the
+    base widget.
+
+    Widgets in Phoebus sometimes do not support actions being attached to them
+    where CS-Studio did. Additionally, not all actions in phoebus can be triggered by
+    a left click. In these cases, we move the action to a transparent action button
+    and layer it on top of the original widget"""
+
+    def create_action_button_from_widget(widget: Element) -> Element:
+        action_button = Element("widget", type="action_button", version="3.0.0")
+        etree.SubElement(action_button, "name").text = "PB Action Button"
+        etree.SubElement(action_button, "text").text = ""
+        etree.SubElement(action_button, "transparent").text = "true"
+
+        # Inherited from widget.
+        etree.SubElement(action_button, "width").text = widget.findtext("width")
+        etree.SubElement(action_button, "height").text = widget.findtext("height")
+        # Sometimes x and y are not defined in the .bob file and will default to 0.
+        if widget.find("x") is not None:
+            etree.SubElement(action_button, "x").text = widget.findtext("x")
+        else:
+            etree.SubElement(action_button, "x").text = "0"
+        if widget.find("y") is not None:
+            etree.SubElement(action_button, "y").text = widget.findtext("y")
+        else:
+            etree.SubElement(action_button, "y").text = "0"
+
+        return action_button
+
+    # Inject the actions.
+    new_action_button = create_action_button_from_widget(widget)
+    action_sub_element = etree.SubElement(new_action_button, "actions")
+    widget_actions = widget.find("./actions")
+
+    for action in widget_actions:
+        new_action = copy.deepcopy(action)
+        action_sub_element.append(new_action)
+
+    # Placing the action button at the end of the file ensures
+    # it is layered on top of the original widget
+    widget.getparent().append(new_action_button)
+    widget.remove(widget_actions)
 
 
 def get_alarm_sensitive_progress_bars(oc: OpiConverter):
