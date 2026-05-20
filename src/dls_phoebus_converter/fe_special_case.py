@@ -150,7 +150,7 @@ def replace_progress_bar_with_linear_meter(
         script = etree.SubElement(scripts, "script", file="EmbeddedPy")
         file_path = os.path.join(
             os.path.dirname(__file__),
-            "../../config/scripts/linear_meter_alarm_levels.txt",
+            "../../config/scripts_to_embed/linear_meter_alarm_levels.py",
         )
         with open(file_path) as f:
             script_text = f.read()
