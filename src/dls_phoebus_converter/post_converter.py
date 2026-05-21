@@ -192,16 +192,16 @@ def create_symbol_image_file(
     for n in range(n_images):
         x = 0 + width * n
         new_symbol = str(output_file.with_stem(output_file.stem + "_" + str(n)))
-        new_output_file = str(
-            output_file_full.with_stem(output_file_full.stem + "_" + str(n))
+        new_output_file = output_file_full.with_stem(
+            output_file_full.stem + "_" + str(n)
         )
 
         cmd = [
             "convert",
-            src_file,
+            str(src_file),
             "-crop",
             f"{str(width)}x{str(height)}+{str(x)}+0",
-            new_output_file,
+            str(new_output_file),
         ]
 
         process = subprocess.Popen(
@@ -209,9 +209,19 @@ def create_symbol_image_file(
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        # TODO: We should check the return code and log if there was
-        # an error
-        process.communicate()
+        _, stderr = process.communicate()
+
+        if not new_output_file.is_file():
+            logger.error(
+                f"Failed to create new symbol images with command: {' '.join(cmd)}"
+            )
+        for line in stderr.decode("utf-8").split("\n"):
+            if line != "":
+                if not new_output_file.is_file():
+                    logger.error(f"convert - {line}")
+                else:
+                    logger.debug(f"convert - {line}")
+
         symbol_files.append(new_symbol)
 
     return symbol_files
