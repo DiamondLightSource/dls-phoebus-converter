@@ -318,19 +318,19 @@ def fix_edm_symbol_widgets(
 
     template_symbols = oc.template_data.getroot()
     for symbol in template_symbols:
-        if symbol.find("name").text == widget.find("name").text:
-            logger.info("Fixing Symbol widget with name: " + symbol.find("name").text)
-            src_file = Path(symbol.find("location").text)
-            width = int(symbol.find("width").text)
-            height = int(symbol.find("height").text)
-            n_images = int(symbol.find("nimages").text)
-            start_index = int(symbol.find("startindex").text)
-            invalid_image_index = int(symbol.find("invalidimageindex").text)
+        if symbol.findtext("name") == widget.findtext("name"):
+            logger.info("Fixing Symbol widget with name: " + symbol.findtext("name"))
+            src_file = Path(symbol.findtext("location"))
+            width = int(symbol.findtext("width"))
+            height = int(symbol.findtext("height"))
+            n_images = int(symbol.findtext("nimages"))
+            start_index = int(symbol.findtext("startindex"))
+            invalid_image_index = int(symbol.findtext("invalidimageindex"))
 
             # Symbols can have the same name, so check name and image name to be sure we
             # have the correct widget. We also must fill in any macros in the image name
             if src_file.name in fill_in_file_path_macros(
-                widget.find("symbols/symbol").text, oc.macros
+                widget.findtext("symbols/symbol"), oc.macros
             ):
                 output_file, output_file_full = get_symbol_file_destinations(
                     sc, oc, src_file
