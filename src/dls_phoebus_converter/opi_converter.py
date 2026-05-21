@@ -181,8 +181,7 @@ class OpiConverter:
     def run_converter(self):
         convert_command = (
             PHOEBUS_SH_FILE_PATH
-            + "\
-        -main org.csstudio.display.builder.model.Converter -output "
+            + " -main org.csstudio.display.builder.model.Converter -output "
             + str(self.dst_dir_path)
             + " "
             + str(self.tmp_file_path)
@@ -194,17 +193,21 @@ class OpiConverter:
 
         # Captures the stdout and stderr from the converter process.
         # This can be very verbose, so we log it at the DEBUG level
-        stdout, stderr = process.communicate()
+        _, stderr = process.communicate()
 
         # Delete input file (tmp.opi)
         os.remove(self.tmp_file_path)
 
         if not tmp_bob_file_path.is_file():
-            logger.error(f"Phoebus conversion command failed: {convert_command}")
+            logger.error(
+                f"Phoebus conversion failed for command: {''.join(convert_command)}"
+            )
         for line in stderr.decode("utf-8").split("\n"):
-            if not tmp_bob_file_path.is_file():
-                logger.error(line)
-            logger.debug(line)
+            if line != "":
+                if not tmp_bob_file_path.is_file():
+                    logger.error(f"Phoebus - {line}")
+                else:
+                    logger.debug(f"Phoebus - {line}")
 
         if tmp_bob_file_path.is_file():
             # Read tmp.bob

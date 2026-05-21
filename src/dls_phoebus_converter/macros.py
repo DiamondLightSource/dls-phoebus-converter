@@ -16,7 +16,7 @@ MACRO_EXCEPTION_LIST = ["pv_name", "pv_value", "name", "actions"]
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-def fill_in_file_path_macros(string: str, macros) -> str:
+def fill_in_file_path_macros(string: str, macros: dict[str, str]) -> str:
     def replace(match):
         key = match.group(1)  # the ‘x’ inside ${x}
         return macros.get(key, match.group(0))  # default: leave unchanged
