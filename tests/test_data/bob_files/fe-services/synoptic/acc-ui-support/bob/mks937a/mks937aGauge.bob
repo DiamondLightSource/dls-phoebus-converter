@@ -107,9 +107,10 @@ $(pv_value)</tooltip>
 	</widget>
 	<widget type="action_button" version="3.0.0">
 		<name>EDM shell command</name>
-		<actions><action type="command">
-				<description>Launch databrowser</description>
-				<command>$(phoebus.install)/../phoebus.sh -resource "pv://?$(dom)-VA-GAUGE-$(id):PLOG&amp;$(dom)-VA-IMG-$(id):PLOG&amp;$(dom)-VA-PIRG-$(id):PLOG&amp;app=databrowser</command>
+		<actions><action type="open_data_browser">
+				<description>Open Data Browser</description>
+				<pv_name>$(dom)-VA-GAUGE-$(id):PLOG $(dom)-VA-IMG-$(id):PLOG $(dom)-VA-PIRG-$(id):PLOG</pv_name>
+				<timeframe>1 hour</timeframe>
 			</action>
 		</actions>
 		<text>Graph</text>
