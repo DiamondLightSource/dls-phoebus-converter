@@ -138,7 +138,18 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
         script_text_el = action.find("script/text")
         if "executeEclipseCommand" in script_text_el.text:
             if "org.csstudio.trends.databrowser2" in script_text_el.text:
-                set_new_databrowser_action_from_execute_eclipse(action, script_text_el)
+                search_string = script_text_el.text
+                match = re.search(r"'pvnames',\s*'([^']+)'", search_string)
+                if match:
+                    pv_names = match.group(1)
+                    pv_names = pv_names.split(",")
+                    switch_to_new_databrowser_action(action, list(pv_names))
+                else:
+                    logger.error(
+                        "Could not find any PV names to add to the open_data_browser"
+                        f"action when converting the script: {search_string}"
+                    )
+
             else:
                 logger.warning(
                     "Screen contains an executeEclipseCommand script which is"
@@ -147,8 +158,29 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                 )
 
     elif action.attrib["type"] == "command":
-        if "strip.py" in action.find("command"):
-            set_new_databrowser_action_from_strip_command(action)
+        if "strip.py" in action.find("command").text:
+            search_string = action.find("command").text
+            str_list = search_string.split(" ")
+            pv_names = []
+            for i, string in enumerate(str_list):
+                if "strip.py" in string:
+                    pv_names.extend(str_list[i + 1 : -1])
+                    break
+            switch_to_new_databrowser_action(action, list(pv_names))
+
+
+def switch_to_new_databrowser_action(action: Element, pv_names: list[str]):
+    """Remove the old action and replace with the new open_data_browser action."""
+
+    new_action = Element("action", type="open_data_browser")
+    etree.SubElement(new_action, "description").text = "Open Data Browser"
+    etree.SubElement(new_action, "pv_name").text = " ".join(pv_names)
+    etree.SubElement(new_action, "timeframe").text = "1 hour"
+
+    # Add the new action
+    action.getparent().append(new_action)
+    # Delete the old action
+    action.getparent().remove(action)
 
 
 def fix_widget_actions(oc: OpiConverter, actions: Element):
@@ -522,71 +554,6 @@ def replace_open_in_tab(oc: OpiConverter, action: Element):
             if child.tag == "target" and child.text == "tab":
                 child.text = "standalone"
                 oc.completed_conversion_steps.replace_action_tab = True
-
-
-def set_new_databrowser_action_from_execute_eclipse(
-    action: Element, script_text_el: Element
-):
-    """We will be implementing a new Phoebus action which opens PV(s) in the
-    databrowser, so eventually this code will be replaced with that, for now we
-    use a command action."""
-
-    search_string = script_text_el.text
-    match = re.search(r"'pvnames',\s*'([^']+)'", search_string)
-    if match:
-        pv_names = match.group(1)
-        pv_names = pv_names.split(",")
-    else:
-        logger.error(f"Could not find PV name from script text: {search_string}")
-        pass
-
-    pv_command_str = "pv://?"
-    for pv in pv_names:
-        pv_command_str += f"{pv}&"
-
-    action.attrib["type"] = "command"
-
-    if action.find("description") is None:
-        desc_el = Element("description")
-        desc_el.text = "Launch databrowser"
-        action.append(desc_el)
-    else:
-        action.find("description").text = "Launch databrowser"
-
-    # Add new command to open databrowser
-    command_el = Element("command")
-    command_el.text = (
-        f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'
-    )
-    action.append(command_el)
-
-    # Delete the old script
-    action.remove(script_text_el.getparent())
-
-
-def set_new_databrowser_action_from_strip_command(action):
-    """We will be implementing a new Phoebus action which opens PV(s) in the
-    databrowser, so eventually this code will be replaced with that, for now we
-    use a command action."""
-
-    search_string = action["command"]
-    str_list = search_string.split(" ")
-    for i, string in enumerate(str_list):
-        if "strip.py" in string:
-            pv_names = str_list[i + 1 : -1]
-            break
-
-    if type(pv_names) is not list:
-        pv_names = [pv_names]
-    pv_command_str = "pv://?"
-    for pv in pv_names:
-        pv_command_str += f"{pv}&"
-
-    action["@type"] = "command"
-    action["description"] = "Launch databrowser"
-    action["command"] = (
-        f'$(phoebus.install)/../phoebus.sh -resource "{pv_command_str}app=databrowser'
-    )
 
 
 def reorder_default_symbol_order_from_rule(
