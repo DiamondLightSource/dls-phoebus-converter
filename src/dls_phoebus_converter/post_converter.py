@@ -158,12 +158,15 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                 )
 
     elif action.attrib["type"] == "command":
-        if "strip.py" in action.find("command").text:
+        if (
+            "strip.py" in action.find("command").text
+            or "strip.sh" in action.find("command").text
+        ):
             search_string = action.find("command").text
             str_list = search_string.split(" ")
             pv_names = []
             for i, string in enumerate(str_list):
-                if "strip.py" in string:
+                if "strip.py" in string or "strip.sh" in string:
                     pv_names.extend(str_list[i + 1 : -1])
                     break
             switch_to_new_databrowser_action(action, list(pv_names))
