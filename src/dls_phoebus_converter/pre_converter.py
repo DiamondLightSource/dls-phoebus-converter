@@ -39,33 +39,23 @@ def replace_edm_symbol_widget(oc: OpiConverter):
 
 
 def fix_grouping_container(oc: OpiConverter):
-    fixed = False
-    check_for_border_prop = False
-    found_border_prop = False
-    for element in oc.opi_data.iter():
-        if (
-            "org.csstudio.opibuilder.widgets.groupingContainer"
-            in element.attrib.values()
-            and not check_for_border_prop
-        ):
-            check_for_border_prop = True
+    """Sometimes group containers are missing border_color or border_style elements,
+    if this is the case then add them with sensible defaults."""
 
-        elif element.tag == "widget" and "typeId" in element.attrib.keys():
-            if check_for_border_prop and not found_border_prop:
-                logger.debug("Fixing missing border property in 'Group' widget")
-                fixed = True
-                element.append(
-                    etree.fromstring(
-                        '<border_color>\n<color name="Canvas" red="200" green="200" blue="200"></color>\n</border_color>\n'  # noqa: E501
-                    )
+    for widget in oc.opi_data.findall(
+        ".//widget[@typeId='org.csstudio.opibuilder.widgets.groupingContainer']"
+    ):
+        oc.completed_conversion_steps.fix_group_cont = True
+        logger.debug("Fixing missing border property in 'Group' widget")
+
+        if widget.find("border_color") is None:
+            widget.append(
+                etree.fromstring(
+                    '<border_color>\n<color name="Canvas" red="200" green="200" blue="200"></color>\n</border_color>\n'  # noqa: E501
                 )
-                element.append(etree.fromstring("<border_style>0</border_style>\n"))
-                # Reset
-                check_for_border_prop = False
-                found_border_prop = False
+            )
 
-        if check_for_border_prop:
-            if element.tag == "border_color":
-                check_for_border_prop = False
-                found_border_prop = True
-    return fixed
+        if widget.find("border_style") is None:
+            widget.append(etree.fromstring("<border_style>0</border_style>\n"))
+
+    return oc.completed_conversion_steps.fix_group_cont
