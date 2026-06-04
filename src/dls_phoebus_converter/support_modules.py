@@ -56,7 +56,9 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
     # Only keep unique filepaths and fill in macros
     file_paths_unique = set()
     for file_path in set(widget_file_paths):
-        file_paths_unique.add(Path(fill_in_file_path_macros(str(file_path), oc.macros)))
+        resolved_path = fill_in_macros(str(file_path), oc.macros)
+        if resolved_path is not None:
+            file_paths_unique.add(Path(resolved_path))
 
     # If a support module has been requested and we are not already converting it,
     # then add it to the list of extra required support modules which we will
