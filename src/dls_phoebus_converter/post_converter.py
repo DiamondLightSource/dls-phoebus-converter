@@ -214,6 +214,36 @@ def fix_action_open_macro(oc: OpiConverter, action: Element):
                         macro.text = action.getparent().getparent().find("name").text
 
 
+def get_symbol_image_dims(src_file: Path) -> tuple[int, int]:
+    """Returns the width and height of an image file."""
+
+    cmd = [
+        "identify",
+        "-format",
+        "'%w %h'",
+        str(src_file),
+    ]
+
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    stdout, stderr = process.communicate()
+
+    for line in stderr.decode("utf-8").split("\n"):
+        if line != "":
+            if stdout == "":
+                logger.error(f"identify - {line}")
+            else:
+                logger.debug(f"identify - {line}")
+
+    dims = stdout.decode().strip("'").split(" ")
+    width = int(dims[0])
+    height = int(dims[1])
+    return width, height
+
+
 def create_symbol_image_file(
     oc: OpiConverter,
     output_file: Path,
@@ -413,6 +443,7 @@ def fix_edm_symbol_widgets(
                 # Remove old combined symbol file
                 symbols_el = widget.find("symbols")
                 symbols_el.remove(symbols_el.find("symbol"))
+    full_width, height = get_symbol_image_dims(src_file)
 
                 # Add new symbols
                 for symbol_file in symbol_files:
