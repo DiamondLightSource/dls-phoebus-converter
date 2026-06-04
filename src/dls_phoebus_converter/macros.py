@@ -16,16 +16,26 @@ MACRO_EXCEPTION_LIST = ["pv_name", "pv_value", "name", "actions"]
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-def fill_in_file_path_macros(string: str, macros: dict[str, str]) -> str:
+def fill_in_macros(string: str, macros: dict[str, str]) -> str | None:
+    """Fill in macros in a string. If there is no macros in the string
+    then return the initial string. If there are macros which cant be
+    resolved return None. If the macros are correctly resolved, return
+    the resolved string."""
+
     def replace(match):
         key = match.group(1)  # the ‘x’ inside ${x}
-        return macros.get(key, match.group(0))  # default: leave unchanged
+        return macros.get(key, match.group(0))  # If no macro matches, leave unchanged
 
+    resolved_path = string
     if macros is not None:
         resolved_path = re.sub(r"\$[\{\(]([^\}\)\s]+)[\}\)]", replace, str(string))
-        return resolved_path
+
+    if re.search(r"\$\{\}", resolved_path):
+        # There is still an unresolved macro, return None
+        logging.error(f"Failed to resolve macros for string {string}")
+        return None
     else:
-        return string
+        return resolved_path
 
 
 def add_new_macros(

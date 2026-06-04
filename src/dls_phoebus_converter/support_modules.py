@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 import yaml
 
-from dls_phoebus_converter.macros import fill_in_file_path_macros
+from dls_phoebus_converter.macros import fill_in_macros
 
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
@@ -128,7 +128,7 @@ def switch_filepaths(sc: ScreenConverter, file_path, macros=None, symbol=False) 
         return file_path_string
 
     if macros is not None:
-        file_path_string = fill_in_file_path_macros(file_path_string, macros)
+        file_path_string = fill_in_macros(file_path_string, macros)
     file_path = Path(file_path_string)
     if file_path.suffix == ".opi":
         file_name = file_path.with_suffix(".bob").name

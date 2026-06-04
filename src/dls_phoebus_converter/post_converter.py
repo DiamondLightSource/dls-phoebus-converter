@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING
 from lxml import etree
 from lxml.etree import Element
 
-from dls_phoebus_converter.macros import fill_in_file_path_macros, handle_macros
+from dls_phoebus_converter.macros import fill_in_macros, handle_macros
 from dls_phoebus_converter.support_modules import ACC_UI_SUPPORT_MODULE_LIST
 
 if TYPE_CHECKING:
