@@ -33,12 +33,11 @@ def handle_support_modules(sc: ScreenConverter, oc: OpiConverter):
     """Figure out which filepaths within bob files need updating and
     update them to the new paths for the DII screen deployment structure."""
 
-    find_required_support_modules(sc, oc)
-
-    # Support module paths are relative and so don't need to have their paths
-    # updated except to convert from .opi to .bob
+    # Only files outside of support modules need their file paths updating
     if oc.support_module_name is None:
         update_filepaths(sc, oc)
+    # Within the support module, all paths are kept relative and so arent
+    # updated, we only need to switch from .opi to .bob
     else:
         for el in oc.bob_data.getroot().iter():
             if el.text is not None and ".opi" in el.text:

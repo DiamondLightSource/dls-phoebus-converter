@@ -12,19 +12,24 @@ from typing import TYPE_CHECKING
 from lxml import etree
 from lxml.etree import Element
 
-from dls_phoebus_converter.macros import fill_in_macros, handle_macros
+from dls_phoebus_converter.macros import handle_macros
 from dls_phoebus_converter.support_modules import ACC_UI_SUPPORT_MODULE_LIST
 
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
     from dls_phoebus_converter.screen_converter import ScreenConverter
 
-from dls_phoebus_converter.support_modules import handle_support_modules
+from dls_phoebus_converter.support_modules import (
+    find_required_support_modules,
+    get_existing_support_module_filepath,
+    handle_support_modules,
+)
 
 logger = logging.getLogger("dls_phoebus_converter")
 
 
 def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
+    find_required_support_modules(sc, oc)
     fix_widget_issues(oc, sc)
 
     # If sc is None, then we are just converting a single_file, so we dont
