@@ -208,25 +208,21 @@ def convert_extra_support_modules(sc: ScreenConverter):
             if sm_file_path.suffix == "":
                 sm_src_file_path = get_existing_support_module_filepath(sm_name)
                 if sm_src_file_path is not None:
+                    dst = "fe-ui-support"
                     if sm_name in ACC_UI_SUPPORT_MODULE_LIST:
-                        data["files"].append(
-                            {
-                                "src": sm_src_file_path,
-                                "dst": "acc-ui-support",
-                                "support_module_name": sm_name,
-                                "include_subdirs": True,
-                            }
-                        )
-                    else:
-                        data["files"].append(
-                            {
-                                "src": sm_src_file_path,
-                                "dst": "fe-ui-support",
-                                "support_module_name": sm_name,
-                                "include_subdirs": True,
-                            }
-                        )
-                logger.info(f"Converting extra support module: {sm_name}")
+                        dst = "acc-ui-support"
+
+                    data["files"].append(
+                        {
+                            "src": sm_src_file_path,
+                            "dst": dst,
+                            "support_module_name": sm_name,
+                            "include_subdirs": True,
+                        }
+                    )
+
+                    logger.info(f"Converting extra support module: {sm_name}")
+
     if len(data["files"]) > 0:
         sc.get_config(data)
         sc.convert()
