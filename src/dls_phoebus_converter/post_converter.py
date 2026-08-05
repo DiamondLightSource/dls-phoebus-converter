@@ -30,10 +30,7 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
     # If sc is None, then we are just converting a single_file, so we dont
     # do any of the changes for converting a technical area.
     if sc is not None:
-        if oc.is_synoptic:
-            # We need to define macros which were previously passed into the synoptic as
-            # script arguments
-            handle_macros(oc)
+        handle_macros(oc)
         handle_support_modules(sc, oc)
     else:
         # We do however update filepath extensions as we assume the same files exist for
@@ -269,30 +266,13 @@ def get_symbol_file_destinations(
     files too and the relative path to use in the screen links."""
 
     if sc is not None:
-        # If we are a synoptic, we look at each symbol file and decide where it should
-        # go based on the symbol filepath and what support module the file is from.
-        if oc.is_synoptic:
-            is_acc_sm = False
-            for sm in ACC_UI_SUPPORT_MODULE_LIST:
-                if sm in src_file.parts:
-                    is_acc_sm = True
-                    break
-            if is_acc_sm:
-                output_file = sc.acc_ui_support_symbol_dst_part / src_file.name
-                output_file_full = sc.acc_ui_support_symbol_dst_full / src_file.name
-            else:
-                output_file = sc.domain_ui_support_symbol_dst_part / src_file.name
-                output_file_full = sc.domain_ui_support_symbol_dst_full / src_file.name
-
-        # If the conversion is within a support module, we decide where to put the
-        # symbol based on the name of our support module.
-        elif oc.support_module_name is not None:
-            if oc.support_module_name in ACC_UI_SUPPORT_MODULE_LIST:
-                output_file = sc.acc_ui_support_symbol_dst_part / src_file.name
-                output_file_full = sc.acc_ui_support_symbol_dst_full / src_file.name
-            else:
-                output_file = sc.domain_ui_support_symbol_dst_part / src_file.name
-                output_file_full = sc.domain_ui_support_symbol_dst_full / src_file.name
+        # Decide where to put the symbol files based on the name of our support module.
+        if oc.support_module_name in ACC_UI_SUPPORT_MODULE_LIST:
+            output_file = sc.acc_ui_support_symbol_dst_part / src_file.name
+            output_file_full = sc.acc_ui_support_symbol_dst_full / src_file.name
+        else:
+            output_file = sc.domain_ui_support_symbol_dst_part / src_file.name
+            output_file_full = sc.domain_ui_support_symbol_dst_full / src_file.name
     else:
         output_file = oc.dst_dir_path / src_file.name
 

@@ -39,7 +39,6 @@ class ScreenConverter:
             )
 
     def make_top_dirs(self) -> None:
-        self.domain_synoptic_dst_full.mkdir(parents=True, exist_ok=True)
         self.acc_ui_support_bob_dst_full.mkdir(parents=True, exist_ok=True)
         self.acc_ui_support_symbol_dst_full.mkdir(parents=True, exist_ok=True)
         self.domain_ui_support_bob_dst_full.mkdir(parents=True, exist_ok=True)
@@ -77,8 +76,6 @@ class ScreenConverter:
         self.domain = meta_data["domain"]
         logger.info(f"Getting config data for domain: {self.domain}\n")
 
-        self.domain_synoptic_dst_part = Path(meta_data["domain_synoptic_dst"])
-
         self.acc_ui_support_bob_dst_part = Path(meta_data["acc_ui_support_dst"]) / "bob"
         self.domain_ui_support_bob_dst_part = (
             Path(meta_data["domain_ui_support_dst"]) / "bob"
@@ -90,32 +87,17 @@ class ScreenConverter:
             Path(meta_data["domain_ui_support_dst"]) / "symbols"
         )
 
-        self.domain_synoptic_dst_full = (
-            self.output_dir_path / meta_data["domain_synoptic_dst"]
-        )
         self.acc_ui_support_bob_dst_full = (
-            self.output_dir_path
-            / meta_data["domain_synoptic_dst"]
-            / meta_data["acc_ui_support_dst"]
-            / "bob"
+            self.output_dir_path / meta_data["acc_ui_support_dst"] / "bob"
         )
         self.domain_ui_support_bob_dst_full = (
-            self.output_dir_path
-            / meta_data["domain_synoptic_dst"]
-            / meta_data["domain_ui_support_dst"]
-            / "bob"
+            self.output_dir_path / meta_data["domain_ui_support_dst"] / "bob"
         )
         self.acc_ui_support_symbol_dst_full = (
-            self.output_dir_path
-            / meta_data["domain_synoptic_dst"]
-            / meta_data["acc_ui_support_dst"]
-            / "symbols"
+            self.output_dir_path / meta_data["acc_ui_support_dst"] / "symbols"
         )
         self.domain_ui_support_symbol_dst_full = (
-            self.output_dir_path
-            / meta_data["domain_synoptic_dst"]
-            / meta_data["domain_ui_support_dst"]
-            / "symbols"
+            self.output_dir_path / meta_data["domain_ui_support_dst"] / "symbols"
         )
         if "convert_dependencies" in meta_data:
             self.convert_dependencies = bool(meta_data["convert_dependencies"])
@@ -128,23 +110,16 @@ class ScreenConverter:
         dst_dir_paths = []
         src_path_config = Path(file_data["src"])
         dst_path_config = Path()
-        support_module_name = None
-
-        if "support_module_name" in file_data:
-            support_module_name = file_data["support_module_name"]
+        support_module_name = file_data["support_module_name"]
 
         # Common support module area shared across Accelerator Controls
         if file_data["dst"] == "acc-ui-support":
-            dst_path_config = self.acc_ui_support_bob_dst_full
-            dst_path_partial = self.acc_ui_support_bob_dst_part
+            dst_path_config = self.acc_ui_support_bob_dst_full / support_module_name
+            dst_path_partial = self.acc_ui_support_bob_dst_part / support_module_name
         # Domain specific screens
         elif file_data["dst"] == f"{self.domain}-ui-support":
-            dst_path_config = self.domain_ui_support_bob_dst_full
-            dst_path_partial = self.domain_ui_support_bob_dst_part
-        # Top level screens
-        elif file_data["dst"] == "synoptic":
-            dst_path_config = self.domain_synoptic_dst_full
-            dst_path_partial = self.domain_synoptic_dst_part
+            dst_path_config = self.domain_ui_support_bob_dst_full / support_module_name
+            dst_path_partial = self.domain_ui_support_bob_dst_part / support_module_name
         else:
             error_msg = f"Invalid dst field in config file: {file_data['dst']}"
             logger.error(error_msg, exc_info=True)
@@ -165,11 +140,7 @@ class ScreenConverter:
             if "include_subdirs" in file_data and file_data["include_subdirs"] is True:
                 for file_paths in src_path_config.rglob("*.opi"):
                     src_file_paths.append(file_paths)
-
-                    if support_module_name is not None:
-                        recursive_dir = Path(support_module_name)
-                    else:
-                        recursive_dir = Path(src_path_config.name)
+                    recursive_dir = Path()
 
                     # We need to do some fancy path manipulation to recreate the old
                     # directory structure in the destination directory
@@ -213,18 +184,12 @@ class ScreenConverter:
             dst_filename = None
             template_file_path = None
             macros = None
-            synoptic = None
 
             if "new_filename" in file_data:
                 dst_filename = file_data["new_filename"]
 
             if "macros" in file_data:
                 macros = file_data["macros"]
-
-            if "support_module_name" in file_data:
-                support_module_name = support_module_name
-            else:
-                support_module_name = None
 
             if "template_file" in file_data:
                 template_file_path = Path(file_data["template_file"])
@@ -235,16 +200,12 @@ class ScreenConverter:
                         Path.cwd() / "config/templates" / template_file_path
                     )
 
-            if file_data["dst"] == "synoptic":
-                synoptic = True
-
             new_conversion = OpiConverter(
                 src_file_path=src_file_path,
                 dst_dir_path=dst_dir_path,
                 dst_filename=dst_filename,
                 template_file_path=template_file_path,
                 support_module_name=support_module_name,
-                is_synoptic=synoptic,
                 macros=macros,
             )
 

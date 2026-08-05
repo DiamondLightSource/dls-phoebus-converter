@@ -34,15 +34,7 @@ def handle_support_modules(sc: ScreenConverter, oc: OpiConverter):
     update them to the new paths for the DII screen deployment structure."""
 
     find_required_support_modules(sc, oc)
-
-    # Support module paths are relative and so don't need to have their paths
-    # updated except to convert from .opi to .bob
-    if oc.support_module_name is None:
-        update_filepaths(sc, oc)
-    else:
-        for el in oc.bob_data.getroot().iter():
-            if el.text is not None and ".opi" in el.text:
-                el.text.replace(".opi", ".bob")
+    update_filepaths(sc, oc)
 
 
 def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
@@ -123,7 +115,6 @@ def switch_filepaths(sc: ScreenConverter, file_path, macros=None, symbol=False) 
     if (
         sc.acc_ui_support_bob_dst_part.parts[0] in file_path_string
         or sc.domain_ui_support_bob_dst_part.parts[0] in file_path_string
-        or sc.domain_synoptic_dst_part.parts[0] in file_path_string
     ):
         return file_path_string
 

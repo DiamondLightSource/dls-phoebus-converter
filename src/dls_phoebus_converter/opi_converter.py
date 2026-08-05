@@ -51,7 +51,6 @@ class OpiConverter:
     macros: dict[str, str] = field(default_factory=lambda: {})
     completed_conversion_steps = CompletedSteps()
 
-    is_synoptic: bool = False
     replace_tab: bool = True
     fix_group: bool = True
 
