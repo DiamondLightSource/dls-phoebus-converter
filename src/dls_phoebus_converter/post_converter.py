@@ -268,13 +268,29 @@ def get_symbol_file_destinations(
     if sc is not None:
         # Decide where to put the symbol files based on the name of our support module.
         if oc.support_module_name in ACC_UI_SUPPORT_MODULE_LIST:
-            output_file = sc.acc_ui_support_symbol_dst_part / src_file.name
-            output_file_full = sc.acc_ui_support_symbol_dst_full / src_file.name
+            output_file = (
+                sc.acc_ui_support_symbol_dst_part
+                / oc.support_module_name
+                / src_file.name
+            )
+            output_file_full = (
+                sc.acc_ui_support_symbol_dst_full
+                / oc.support_module_name
+                / src_file.name
+            )
         else:
-            output_file = sc.domain_ui_support_symbol_dst_part / src_file.name
-            output_file_full = sc.domain_ui_support_symbol_dst_full / src_file.name
+            output_file = (
+                sc.domain_ui_support_symbol_dst_part
+                / oc.support_module_name
+                / src_file.name
+            )
+            output_file_full = (
+                sc.domain_ui_support_symbol_dst_full
+                / oc.support_module_name
+                / src_file.name
+            )
     else:
-        output_file = oc.dst_dir_path / src_file.name
+        output_file = oc.dst_bob_dir_path / src_file.name
 
     return output_file, output_file_full
 
