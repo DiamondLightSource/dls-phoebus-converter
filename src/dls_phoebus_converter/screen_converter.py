@@ -143,43 +143,46 @@ class ScreenConverter:
                 logger.error(message)
                 raise ValueError(message)
 
-            if "include_subdirs" in file_data and file_data["include_subdirs"] is True:
-                for file_paths in src_path_config.rglob("*.opi"):
-                    src_file_paths.append(file_paths)
-                    recursive_dir = Path()
-
-                    # We need to do some fancy path manipulation to recreate the old
-                    # directory structure in the destination directory
-                    if len(file_paths.parent.parts) > len(src_path_config.parts):
-                        for subdir in file_paths.parent.parts[
-                            len(src_path_config.parts) :
-                        ]:
-                            recursive_dir = recursive_dir / subdir
-
-                        qualified_module_name = "-".join(recursive_dir.parts)
-                        if (
-                            qualified_module_name,
-                            dst_path_partial / recursive_dir,
-                        ) not in self.domain_support_module_locations:
-                            self.domain_support_module_locations.append(
-                                (
-                                    qualified_module_name,
-                                    dst_path_partial / recursive_dir,
-                                )
-                            )
-
-                    new_dst = dst_path_config / recursive_dir
-                    dst_dir_paths.append(new_dst)
-            else:
-                for file_paths in src_path_config.glob("*.opi"):
-                    if file_paths not in processed_files:
+            for file_paths in src_path_config.rglob("*.opi"):
+                if file_paths not in processed_files:
+                    if (
+                        "include_subdirs" in file_data
+                        and file_data["include_subdirs"] is True
+                    ):
                         src_file_paths.append(file_paths)
-                        dst_dir_paths.append(dst_path_config)
+                        recursive_dir = Path()
+
+                        # We need to do some fancy path manipulation to recreate the old
+                        # directory structure in the destination directory
+                        if len(file_paths.parent.parts) > len(src_path_config.parts):
+                            for subdir in file_paths.parent.parts[
+                                len(src_path_config.parts) :
+                            ]:
+                                recursive_dir = recursive_dir / subdir
+
+                            qualified_module_name = "-".join(recursive_dir.parts)
+                            if (
+                                qualified_module_name,
+                                dst_path_partial / recursive_dir,
+                            ) not in self.domain_support_module_locations:
+                                self.domain_support_module_locations.append(
+                                    (
+                                        qualified_module_name,
+                                        dst_path_partial / recursive_dir,
+                                    )
+                                )
+
+                        new_dst = dst_path_config / recursive_dir
+                        dst_dir_paths.append(new_dst)
                     else:
-                        logger.warning(
-                            f"File {file_paths} has already been processed, skipping "
-                            "conversion."
-                        )
+                        if file_paths not in processed_files:
+                            src_file_paths.append(file_paths)
+                            dst_dir_paths.append(dst_path_config)
+                else:
+                    logger.warning(
+                        f"File {file_paths} has already been processed, skipping "
+                        "conversion."
+                    )
         else:
             src_file_paths = [src_path_config]
             dst_dir_paths = [dst_path_config]
