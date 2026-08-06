@@ -116,10 +116,16 @@ class ScreenConverter:
         if file_data["dst"] == "acc-ui-support":
             dst_path_config = self.acc_ui_support_bob_dst_full / support_module_name
             dst_path_partial = self.acc_ui_support_bob_dst_part / support_module_name
+            dst_symbols_dir_path = (
+                self.acc_ui_support_symbol_dst_full / support_module_name
+            )
         # Domain specific screens
         elif file_data["dst"] == f"{self.domain}-ui-support":
             dst_path_config = self.domain_ui_support_bob_dst_full / support_module_name
             dst_path_partial = self.domain_ui_support_bob_dst_part / support_module_name
+            dst_symbols_dir_path = (
+                self.domain_ui_support_symbol_dst_full / support_module_name
+            )
         else:
             error_msg = f"Invalid dst field in config file: {file_data['dst']}"
             logger.error(error_msg, exc_info=True)
@@ -178,15 +184,15 @@ class ScreenConverter:
             src_file_paths = [src_path_config]
             dst_dir_paths = [dst_path_config]
 
-        for src_file_path, dst_dir_path in zip(
+        for src_opi_file_path, dst_bob_dir_path in zip(
             src_file_paths, dst_dir_paths, strict=True
         ):
-            dst_filename = None
+            dst_bob_filename = None
             template_file_path = None
             macros = None
 
             if "new_filename" in file_data:
-                dst_filename = file_data["new_filename"]
+                dst_bob_filename = file_data["new_filename"]
 
             if "macros" in file_data:
                 macros = file_data["macros"]
@@ -201,9 +207,10 @@ class ScreenConverter:
                     )
 
             new_conversion = OpiConverter(
-                src_file_path=src_file_path,
-                dst_dir_path=dst_dir_path,
-                dst_filename=dst_filename,
+                src_file_path=src_opi_file_path,
+                dst_bob_dir_path=dst_bob_dir_path,
+                dst_symbols_dir_path=dst_symbols_dir_path,
+                dst_bob_filename=dst_bob_filename,
                 template_file_path=template_file_path,
                 support_module_name=support_module_name,
                 macros=macros,
@@ -218,7 +225,9 @@ class ScreenConverter:
             logger.info(f"Converting {conversion.src_file_path}")
 
             # Create directories to place screens
-            conversion.dst_dir_path.mkdir(parents=True, exist_ok=True)
+            conversion.dst_bob_dir_path.mkdir(parents=True, exist_ok=True)
+            # Create directory to place symbols
+            conversion.dst_symbols_dir_path.mkdir(parents=True, exist_ok=True)
 
             # Convert .opi to .bob
             conversion.convert(self)

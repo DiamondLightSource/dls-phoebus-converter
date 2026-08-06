@@ -121,6 +121,7 @@ def switch_filepaths(sc: ScreenConverter, file_path, macros=None, symbol=False) 
     if macros is not None:
         file_path_string = fill_in_file_path_macros(file_path_string, macros)
     file_path = Path(file_path_string)
+
     if file_path.suffix == ".opi":
         file_name = file_path.with_suffix(".bob").name
     else:
