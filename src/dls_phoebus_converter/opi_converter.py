@@ -42,6 +42,7 @@ class OpiConverter:
     src_file_path: Path
     dst_bob_dir_path: Path
     dst_symbols_dir_path: Path
+    path_to_top: Path = Path()
     dst_bob_filename: str | None = None
     dst_bob_filepath: Path | None = None
     tmp_file_path: Path | None = None

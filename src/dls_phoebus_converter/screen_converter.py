@@ -209,10 +209,13 @@ class ScreenConverter:
                         Path.cwd() / "config/templates" / template_file_path
                     )
 
+            file_depth = len(dst_bob_dir_path.parts) - len(self.output_dir_path.parts)
+            path_to_top = path_to_top = Path(*["../"] * file_depth)
             new_conversion = OpiConverter(
                 src_file_path=src_opi_file_path,
                 dst_bob_dir_path=dst_bob_dir_path,
                 dst_symbols_dir_path=dst_symbols_dir_path,
+                path_to_top=path_to_top,
                 dst_bob_filename=dst_bob_filename,
                 template_file_path=template_file_path,
                 support_module_name=support_module_name,

@@ -44,7 +44,7 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
     widget_file_paths: list[Path] = []
     # Look for filepaths in xml
     for widget in oc.bob_data.findall(".//widget"):
-        search_widget_filepaths(sc, widget, append_new_filepath, widget_file_paths)
+        search_widget_filepaths(sc, oc, widget, append_new_filepath, widget_file_paths)
 
     # Only keep unique filepaths and fill in macros
     file_paths_unique = set()
@@ -87,21 +87,24 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
     logger.info(f"Required acc modules: {sc.acc_support_module_locations}")
 
 
-def append_new_filepath(sc, path_string, widget_file_paths, symbol=False):
+def append_new_filepath(sc, oc, path_string, widget_file_paths, symbol=False):
     widget_file_paths.append(path_string)
     return False
 
 
-def update_filepaths(sc, oc: OpiConverter):
+def update_filepaths(sc: ScreenConverter, oc: OpiConverter):
     """Replace all filepaths in the element tree"""
     for widget in oc.bob_data.findall(".//widget"):
-        search_widget_filepaths(sc, widget, switch_filepaths, oc.macros)
+        search_widget_filepaths(sc, oc, widget, switch_filepaths, oc.macros)
 
 
-def switch_filepaths(sc: ScreenConverter, file_path, macros=None, symbol=False) -> str:
+def switch_filepaths(
+    sc: ScreenConverter, oc: OpiConverter, file_path, macros=None, symbol=False
+) -> str:
     "Takes an old file_path string and returns what the new file_path should be."
     "This is done by getting the name of the support module from the old path and"
     "matching it with our data."
+
     file_path_string = str(file_path)
     all_support_modules = (
         sc.domain_support_module_locations + sc.acc_support_module_locations
@@ -139,9 +142,11 @@ def switch_filepaths(sc: ScreenConverter, file_path, macros=None, symbol=False) 
     for data in all_support_modules:
         if data[0] == support_module_name:
             if symbol:
-                return str(Path(*data[1].parts[:-2]) / "symbols" / file_name)
+                return str(
+                    oc.path_to_top / Path(*data[1].parts[:-2]) / "symbols" / file_name
+                )
             else:
-                return str(data[1] / file_name)
+                return str(oc.path_to_top / data[1] / file_name)
 
     logger.warning(
         f"Could not find support module for old path: {file_path_string}. Filepath "

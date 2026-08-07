@@ -90,7 +90,9 @@ def main(args: Sequence[str] | None = None) -> None:
         converter.convert()
 
     elif args.single_screen is not None:
-        converter = OpiConverter(Path(args.single_screen), Path(args.output_dir))
+        converter = OpiConverter(
+            Path(args.single_screen), Path(args.output_dir), Path(args.output_dir)
+        )
         logger.info(f"Converting {converter.src_file_path}")
         # Create directories to place screens and symbols
         converter.dst_bob_dir_path.mkdir(parents=True, exist_ok=True)

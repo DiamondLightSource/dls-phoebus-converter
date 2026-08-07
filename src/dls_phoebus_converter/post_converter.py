@@ -292,7 +292,7 @@ def get_symbol_file_destinations(
     else:
         output_file = oc.dst_bob_dir_path / src_file.name
 
-    return output_file, output_file_full
+    return oc.path_to_top / output_file, output_file_full
 
 
 def update_symbol_widget_rules(
