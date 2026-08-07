@@ -58,7 +58,7 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
         # Search through the filepath and remove any strings which dont look useful
         new_filepath = Path()
         for part in file_path.parts:
-            strings_to_skip = ["..", ".", "images", "symbols"]
+            strings_to_skip = ["..", ".", "images", "symbols", "symbol"]
             if part not in strings_to_skip:
                 new_filepath = new_filepath / part
         file_path = new_filepath
