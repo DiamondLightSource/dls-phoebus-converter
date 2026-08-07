@@ -32,12 +32,10 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
     if sc is not None:
         handle_macros(oc)
         handle_support_modules(sc, oc)
-    else:
-        # We do however update filepath extensions as we assume the same files exist for
-        # the conversion in the same place but as bob files.
-        for el in oc.bob_data.getroot().iter():
-            if ".opi" in el.text:
-                el.text.replace(".opi", ".bob")
+
+    for el in oc.bob_data.getroot().iter():
+        if el.text is not None and ".opi" in el.text:
+            el.text = el.text.replace(".opi", ".bob")
 
     # Special cases are tweaks which are not handled by the
     # normal conversion process and are often unique to a specific screen.
