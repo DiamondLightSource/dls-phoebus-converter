@@ -1,6 +1,5 @@
 meta_data:
   - domain: fe
-    domain_synoptic_dst: fe-services/synoptic
     domain_ui_support_dst: fe-ui-support
     acc_ui_support_dst:  acc-ui-support
     convert_dependencies: True
@@ -408,7 +407,7 @@ files:
 
   # region device level screens
   # Convert device screens and put them in the fe-ui-support repository
-  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/common
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/
     support_module_name: FE
     dst: fe-ui-support
     include_subdirs: true

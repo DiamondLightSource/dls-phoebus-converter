@@ -66,8 +66,13 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
         # If we only have 1 part left, it is probably the file itself which isnt a
         # support module so we move to the next one
         if len(file_path.parts) > 1:
-            # The support module should be the second to last part
-            support_module_name = file_path.parts[-2]
+            support_module_name = file_path.parts[0]
+            # check if our "support_module" is actually just a folder at the same level
+            if support_module_name in [
+                f.name for f in oc.src_file_path.parent.iterdir() if f.is_dir()
+            ]:
+                continue
+
             if support_module_name in ACC_UI_SUPPORT_MODULE_LIST:
                 new_entry = (
                     support_module_name,
@@ -137,16 +142,43 @@ def switch_filepaths(
             new_filepath = new_filepath / part
         elif part in ["images", "symbols"]:
             symbol = True
-    support_module_name = "-".join(new_filepath.parts[:-1])
+    support_module_name = new_filepath.parts[0]
+
+    if len(new_filepath.parts) <= 1:
+        # In this situation, our filepath is not to a support module, but to
+        # a file within our own support module, so leave it unchanged
+        return file_path_string
 
     for data in all_support_modules:
         if data[0] == support_module_name:
             if symbol:
                 return str(
-                    oc.path_to_top / Path(*data[1].parts[:-2]) / "symbols" / file_name
+                    oc.path_to_top
+                    / Path(*data[1].parts[:-2])
+                    / "symbols"
+                    / support_module_name
+                    / file_name
                 )
             else:
-                return str(oc.path_to_top / data[1] / file_name)
+                return str(oc.path_to_top / data[1].parent / new_filepath)
+
+    for data in all_support_modules:
+        if data[0] == oc.support_module_name:
+            if symbol:
+                return str(
+                    oc.path_to_top
+                    / Path(*data[1].parts[:-2])
+                    / "symbols"
+                    / oc.support_module_name
+                    / file_name
+                )
+            else:
+                return str(
+                    oc.path_to_top
+                    / data[1].parent
+                    / oc.support_module_name
+                    / new_filepath
+                )
 
     logger.warning(
         f"Could not find support module for old path: {file_path_string}. Filepath "

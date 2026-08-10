@@ -160,15 +160,15 @@ class ScreenConverter:
                             ]:
                                 recursive_dir = recursive_dir / subdir
 
-                            qualified_module_name = "-".join(recursive_dir.parts)
+                            qualified_module_name = support_module_name
                             if (
                                 qualified_module_name,
-                                dst_path_partial / recursive_dir,
+                                dst_path_partial,
                             ) not in self.domain_support_module_locations:
                                 self.domain_support_module_locations.append(
                                     (
                                         qualified_module_name,
-                                        dst_path_partial / recursive_dir,
+                                        dst_path_partial,
                                     )
                                 )
 
