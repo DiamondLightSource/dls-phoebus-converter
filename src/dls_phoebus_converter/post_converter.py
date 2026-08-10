@@ -429,9 +429,13 @@ def fix_edm_symbol_widgets(
         # Look for symbol file within our own support module
         if src_file is None or not src_file.is_file():
             if oc.support_module_name is not None:
+                # The old path is relative, but we want absolute so strip out ../
+                old_symbol_file_stripped = str(old_symbol_file_resolved).replace(
+                    "../", ""
+                )
                 src_file = Path(
                     get_existing_support_module_filepath(oc.support_module_name)
-                ) / Path(old_symbol_file_resolved)
+                ) / Path(old_symbol_file_stripped)
 
     if src_file is None or not src_file.is_file():
         logging.error(
