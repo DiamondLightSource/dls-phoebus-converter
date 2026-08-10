@@ -337,11 +337,14 @@ def get_symbol_file_destinations(
     return output_file, output_file_full
 
 
-def update_symbol_widget_rules(widget: Element, output_file: Path) -> None:
+def update_symbol_widget_rules(
+    widget: Element, output_file: Path
+) -> tuple[int, Element | None]:
     """Modify/create rules to change the displayed symbol and overwrite the default
     order"""
 
     invalid_image_index = None
+    old_rule = None
     if widget.findall("rules/rule") is not None:
         rules = widget.findall("rules/rule")
         additional_rules = []
@@ -352,6 +355,7 @@ def update_symbol_widget_rules(widget: Element, output_file: Path) -> None:
                 "prop_id" in rule.attrib.keys()
                 and rule.attrib["prop_id"] == "image_index"
             ):
+                old_rule = copy.deepcopy(rule)
                 rule.attrib["prop_id"] = "symbols[0]"
                 rule.attrib["out_exp"] = "false"
                 for exp in rule.findall("exp"):
@@ -386,9 +390,9 @@ def update_symbol_widget_rules(widget: Element, output_file: Path) -> None:
                 rule.getparent().extend(additional_rules)
 
     if invalid_image_index is None:
-        return 0
+        return 0, old_rule
     else:
-        return 1
+        return 1, old_rule
 
 
 def fix_edm_symbol_widgets(
@@ -460,7 +464,7 @@ def fix_edm_symbol_widgets(
     # Need to calculate from width of full image / width
     n_images = full_width // width
     # Fix rules and return the start_index
-    start_index = update_symbol_widget_rules(widget, output_file)
+    start_index, old_rule = update_symbol_widget_rules(widget, output_file)
 
     # Run action off left click if the widget has actions
     if widget.find("actions/action") is not None:
@@ -475,13 +479,8 @@ def fix_edm_symbol_widgets(
     symbol_files = symbol_files[start_index:]
 
     # Reorder the symbol files based on rules
-    if widget.find("rules") is not None:
-        rules = widget.find("rules")
-        for rule in rules:
-            if "prop_id" in rule.attrib and rule.attrib["prop_id"] == "image_index":
-                symbol_files = reorder_default_symbol_order_from_rule(
-                    symbol_files, rule
-                )
+    if old_rule is not None:
+        symbol_files = reorder_default_symbol_order_from_rule(symbol_files, old_rule)
 
     # Remove old combined symbol file
     symbols_el = widget.find("symbols")
