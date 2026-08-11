@@ -299,35 +299,50 @@ def create_symbol_image_file(
 
 
 def get_symbol_file_destinations(
-    sc: ScreenConverter, oc: OpiConverter, src_file: Path
+    sc: ScreenConverter, oc: OpiConverter, src_file: Path, src_sm: str
 ) -> tuple[Path, Path]:
     """Get the destination path for the symbols, both the full path to save the image
     files too and the relative path to use in the screen links."""
 
     if sc is not None:
-        # Decide where to put the symbol files based on the name of our support module.
-        if oc.support_module_name in ACC_UI_SUPPORT_MODULE_LIST:
-            output_file = (
-                sc.acc_ui_support_symbol_dst_part
-                / oc.support_module_name
-                / src_file.name
-            )
-            output_file_full = (
-                sc.acc_ui_support_symbol_dst_full
-                / oc.support_module_name
-                / src_file.name
-            )
+        # Decide where to put the symbol files based on the name of either the support
+        # module we got the image from (priority) or our own support module.
+        if src_sm is not None:
+            if src_sm in ACC_UI_SUPPORT_MODULE_LIST:
+                output_file = sc.acc_ui_support_symbol_dst_part / src_sm / src_file.name
+                output_file_full = (
+                    sc.acc_ui_support_symbol_dst_full / src_sm / src_file.name
+                )
+            else:
+                output_file = (
+                    sc.domain_ui_support_symbol_dst_part / src_sm / src_file.name
+                )
+                output_file_full = (
+                    sc.domain_ui_support_symbol_dst_full / src_sm / src_file.name
+                )
         else:
-            output_file = (
-                sc.domain_ui_support_symbol_dst_part
-                / oc.support_module_name
-                / src_file.name
-            )
-            output_file_full = (
-                sc.domain_ui_support_symbol_dst_full
-                / oc.support_module_name
-                / src_file.name
-            )
+            if oc.support_module_name in ACC_UI_SUPPORT_MODULE_LIST:
+                output_file = (
+                    sc.acc_ui_support_symbol_dst_part
+                    / oc.support_module_name
+                    / src_file.name
+                )
+                output_file_full = (
+                    sc.acc_ui_support_symbol_dst_full
+                    / oc.support_module_name
+                    / src_file.name
+                )
+            else:
+                output_file = (
+                    sc.domain_ui_support_symbol_dst_part
+                    / oc.support_module_name
+                    / src_file.name
+                )
+                output_file_full = (
+                    sc.domain_ui_support_symbol_dst_full
+                    / oc.support_module_name
+                    / src_file.name
+                )
     else:
         output_file = oc.dst_bob_dir_path / src_file.name
 
@@ -402,6 +417,7 @@ def fix_edm_symbol_widgets(
     all_support_modules = (
         sc.domain_support_module_locations + sc.acc_support_module_locations
     )
+    src_sm = None
     src_file = None
 
     # Get name of symbol file
@@ -421,7 +437,9 @@ def fix_edm_symbol_widgets(
                 if sm[0] == part:
                     sm_path = get_existing_support_module_filepath(part)
                     if sm_path is not None:
+                        src_sm = part
                         src_file = Path(sm_path) / Path(old_symbol_file_resolved.name)
+                        break
 
         # Look for symbol file within our own support module
         if src_file is None or not src_file.is_file():
@@ -443,7 +461,9 @@ def fix_edm_symbol_widgets(
     widget_name = widget.findtext("name")
     logger.info(f"Fixing Symbol widget with name: {widget_name}")
 
-    output_file, output_file_full = get_symbol_file_destinations(sc, oc, src_file)
+    output_file, output_file_full = get_symbol_file_destinations(
+        sc, oc, src_file, src_sm
+    )
 
     width = 0
     height = 0
