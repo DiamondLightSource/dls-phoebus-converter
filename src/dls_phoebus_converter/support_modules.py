@@ -137,9 +137,7 @@ def switch_filepaths(
     file_path = Path(file_path_string)
 
     if file_path.suffix == ".opi":
-        file_name = file_path.with_suffix(".bob").name
-    else:
-        file_name = file_path.name
+        file_path = file_path.with_suffix(".bob")
 
     new_filepath = Path()
     for part in file_path.parts:
@@ -163,10 +161,15 @@ def switch_filepaths(
                     / Path(*data[1].parts[:-2])
                     / "symbols"
                     / support_module_name
-                    / file_name
+                    / file_path.name
                 )
             else:
-                return str(oc.path_to_top / data[1].parent / new_filepath)
+                return str(
+                    oc.path_to_top
+                    / data[1].parent
+                    / new_filepath.parent
+                    / file_path.name
+                )
 
     for data in all_support_modules:
         if data[0] == oc.support_module_name:
@@ -176,14 +179,15 @@ def switch_filepaths(
                     / Path(*data[1].parts[:-2])
                     / "symbols"
                     / oc.support_module_name
-                    / file_name
+                    / file_path.name
                 )
             else:
                 return str(
                     oc.path_to_top
                     / data[1].parent
                     / oc.support_module_name
-                    / new_filepath
+                    / new_filepath.parent
+                    / file_path.name
                 )
 
     logger.warning(
