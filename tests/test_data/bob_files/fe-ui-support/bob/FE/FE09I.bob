@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <display version="2.0.0">
 	<name>$(dom)</name>
 	<x>543</x>
@@ -13,7 +13,7 @@
 	<grid_step_y>8</grid_step_y>
 	<widget type="embedded" version="2.0.0">
 		<name>Linking Container</name>
-		<file>fe-ui-support/bob/common/vacuum/fe09i_vac.bob</file>
+		<file>../../../fe-ui-support/bob/FE/common/vacuum/fe09i_vac.bob</file>
 		<x>5</x>
 		<y>40</y>
 		<width>977</width>
@@ -56,10 +56,9 @@
 				<children>
 					<widget type="action_button" version="3.0.0">
 						<name>Action Button</name>
-						<actions>
-							<action type="open_display">
+						<actions><action type="open_display">
 								<description>Open Display</description>
-								<file>acc-ui-support/bob/devIocStats/ioc_stats.bob</file>
+								<file>../../../acc-ui-support/bob/devIocStats/ioc_stats.bob</file>
 								<macros>
 									<ioc>$(dom)-CS-IOC-01</ioc>
 								</macros>
@@ -82,10 +81,9 @@
 					</widget>
 					<widget type="action_button" version="3.0.0">
 						<name>Action Button</name>
-						<actions>
-							<action type="open_display">
+						<actions><action type="open_display">
 								<description>Open Display</description>
-								<file>acc-ui-support/bob/TimingTemplates/evr.bob</file>
+								<file>../../../acc-ui-support/bob/TimingTemplates/evr.bob</file>
 								<macros>
 									<evr>$(dom)-CS-EVR-01:SET-HW</evr>
 								</macros>
@@ -113,7 +111,7 @@
 				<children>
 					<widget type="embedded" version="2.0.0">
 						<name>Linking Container_1</name>
-						<file>fe-ui-support/bob/common/ioc/pySeq.bob</file>
+						<file>../../../fe-ui-support/bob/FE/common/ioc/pySeq.bob</file>
 						<x>3</x>
 						<y>16</y>
 						<width>995</width>
@@ -137,7 +135,7 @@
 							<pmac_port>1025</pmac_port>
 							<brick_no>1</brick_no>
 						</macros>
-						<file>fe-ui-support/bob/common/motion/pmac.bob</file>
+						<file>../../../fe-ui-support/bob/FE/common/motion/pmac.bob</file>
 						<x>33</x>
 						<y>50</y>
 						<width>251</width>
@@ -157,7 +155,7 @@
 					<widget type="symbol" version="2.0.0">
 						<name>Edm Symbol Widget</name>
 						<symbols>
-							<symbol>images/fixed-aperture.png</symbol>
+							<symbol>../../../fe-ui-support/symbols/FE/fixed-aperture_0.png</symbol>
 						</symbols>
 						<x>48</x>
 						<y>48</y>
@@ -245,7 +243,7 @@ $(pv_value)</tooltip>
 					<widget type="symbol" version="2.0.0">
 						<name>Edm Symbol Widget_1</name>
 						<symbols>
-							<symbol>images/beamsplitter.png</symbol>
+							<symbol>../../../fe-ui-support/symbols/FE/beamsplitter_0.png</symbol>
 						</symbols>
 						<x>240</x>
 						<y>48</y>
@@ -332,10 +330,9 @@ $(pv_value)</tooltip>
 					</widget>
 					<widget type="action_button" version="3.0.0">
 						<name>Action Button_1</name>
-						<actions execute_as_one="true">
-							<action type="open_display">
+						<actions execute_as_one="true"><action type="open_display">
 								<description>Open Display</description>
-								<file>fe-ui-support/bob/pmacUtil/autohome.bob</file>
+								<file>../../../fe-ui-support/bob/pmacUtil/autohome.bob</file>
 								<macros>
 									<P>$(dom)-AL-APTR-03</P>
 								</macros>
@@ -496,7 +493,7 @@ $(pv_value)</tooltip>
 						<widget type="symbol" version="2.0.0">
 							<name>Edm Symbol Widget</name>
 							<symbols>
-								<symbol>images/customised-aperture.png</symbol>
+								<symbol>../../../fe-ui-support/symbols/FE/customised-aperture_0.png</symbol>
 							</symbols>
 							<y>21</y>
 							<width>120</width>
@@ -504,10 +501,9 @@ $(pv_value)</tooltip>
 							<background_color>
 								<color red="0" green="0" blue="255"></color>
 							</background_color>
-							<actions execute_as_one="true">
-								<action type="open_display">
+							<actions execute_as_one="true"><action type="open_display">
 									<description>Open Display</description>
-									<file>fe-ui-support/bob/common/motion/dual_motors.bob</file>
+									<file>../../../fe-ui-support/bob/FE/common/motion/dual_motors.bob</file>
 									<macros>
 										<device>$(dom)-AL-APTR-04</device>
 										<m1>$(device):X</m1>
@@ -518,6 +514,7 @@ $(pv_value)</tooltip>
 							</actions>
 							<tooltip>$(pv_name)
 $(pv_value)</tooltip>
+							<run_actions_on_mouse_click>true</run_actions_on_mouse_click>
 						</widget>
 					</widget>
 					<widget type="group" version="3.0.0">
@@ -660,7 +657,7 @@ $(pv_value)</tooltip>
 						<widget type="symbol" version="2.0.0">
 							<name>Edm Symbol Widget</name>
 							<symbols>
-								<symbol>images/customised-aperture.png</symbol>
+								<symbol>../../../fe-ui-support/symbols/FE/customised-aperture_0.png</symbol>
 							</symbols>
 							<y>21</y>
 							<width>120</width>
@@ -668,10 +665,9 @@ $(pv_value)</tooltip>
 							<background_color>
 								<color red="0" green="0" blue="255"></color>
 							</background_color>
-							<actions execute_as_one="true">
-								<action type="open_display">
+							<actions execute_as_one="true"><action type="open_display">
 									<description>Open Display</description>
-									<file>fe-ui-support/bob/common/motion/dual_motors.bob</file>
+									<file>../../../fe-ui-support/bob/FE/common/motion/dual_motors.bob</file>
 									<macros>
 										<device>$(dom)-AL-APTR-03</device>
 										<m1>$(device):X</m1>
@@ -682,14 +678,14 @@ $(pv_value)</tooltip>
 							</actions>
 							<tooltip>$(pv_name)
 $(pv_value)</tooltip>
+							<run_actions_on_mouse_click>true</run_actions_on_mouse_click>
 						</widget>
 					</widget>
 					<widget type="action_button" version="3.0.0">
 						<name>Action Button_2</name>
-						<actions execute_as_one="true">
-							<action type="open_display">
+						<actions execute_as_one="true"><action type="open_display">
 								<description>Open Display</description>
-								<file>fe-ui-support/bob/pmacUtil/autohome.bob</file>
+								<file>../../../fe-ui-support/bob/pmacUtil/autohome.bob</file>
 								<macros>
 									<P>$(dom)-AL-APTR-04</P>
 								</macros>
@@ -718,7 +714,7 @@ $(pv_value)</tooltip>
 					<widget type="rectangle" version="2.0.0">
 						<name>Rectangle</name>
 						<macros>
-							<pv_name></pv_name>
+							<pv_name/>
 						</macros>
 						<x>16</x>
 						<y>24</y>
@@ -801,7 +797,7 @@ $(pv_value)</tooltip>
 					<widget type="rectangle" version="2.0.0">
 						<name>Rectangle</name>
 						<macros>
-							<pv_name></pv_name>
+							<pv_name/>
 						</macros>
 						<x>216</x>
 						<y>24</y>
@@ -1100,7 +1096,7 @@ $(pv_value)</tooltip>
 					<widget type="symbol" version="2.0.0">
 						<name>Edm Symbol Widget</name>
 						<symbols>
-							<symbol>images/absorber-xsection.png</symbol>
+							<symbol>../../../fe-ui-support/symbols/FE/absorber-xsection_0.png</symbol>
 						</symbols>
 						<x>120</x>
 						<y>48</y>
@@ -1167,7 +1163,7 @@ $(pv_value)</tooltip>
 					<widget type="rectangle" version="2.0.0">
 						<name>Rectangle_2</name>
 						<macros>
-							<pv_name></pv_name>
+							<pv_name/>
 						</macros>
 						<x>16</x>
 						<y>24</y>
@@ -1473,10 +1469,9 @@ $(pv_value)</tooltip>
 				<children>
 					<widget type="action_button" version="3.0.0">
 						<name>Action Button_1</name>
-						<actions>
-							<action type="open_display">
+						<actions><action type="open_display">
 								<description>Open Display</description>
-								<file>fe-ui-support/bob/common/diagnositcs/xbpm.bob</file>
+								<file>../../../fe-ui-support/bob/FE/common/diagnositcs/xbpm.bob</file>
 								<target>standalone</target>
 							</action>
 						</actions>
@@ -1531,10 +1526,9 @@ $(pv_value)</tooltip>
 	</widget>
 	<widget type="action_button" version="3.0.0">
 		<name>Action Button</name>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>acc-ui-support/bob/mpsPermit/mpsPermit.bob</file>
+				<file>../../../acc-ui-support/bob/mpsPermit/mpsPermit.bob</file>
 				<macros>
 					<device>$(dom)-MP-PERMT-01</device>
 				</macros>
