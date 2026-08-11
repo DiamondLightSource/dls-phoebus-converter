@@ -180,8 +180,8 @@ class ScreenConverter:
                             dst_dir_paths.append(dst_path_config)
                 else:
                     logger.warning(
-                        f"File {file_paths} has already been processed, skipping "
-                        "conversion."
+                        f"File {file_paths} has already been processed, will not make "
+                        "new conversion configuration."
                     )
         else:
             src_file_paths = [src_path_config]
