@@ -408,8 +408,8 @@ files:
   # region device level screens
   # Convert device screens and put them in the fe-ui-support repository
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/
-    support_module_name: FE
     dst: fe-ui-support
+    support_module_name: FE
     include_subdirs: true
 
   # endregion device level screens

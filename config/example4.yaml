@@ -1,11 +1,11 @@
   # Used by integration/test_conversion_ci.py
 meta_data:
   - domain: fe
-    domain_synoptic_dst: fe-services/synoptic
     domain_ui_support_dst: fe-ui-support
     acc_ui_support_dst: acc-ui-support
 
 files:
   - src: tests/test_data/opi_files/mks937a
     dst: acc-ui-support
+    support_module_name: mks937a
     include_subdirs: true

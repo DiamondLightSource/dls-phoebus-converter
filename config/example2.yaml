@@ -1,6 +1,5 @@
 meta_data:
   - domain: fe
-    domain_synoptic_dst: fe-services/synoptic
     domain_ui_support_dst: fe-ui-support
     acc_ui_support_dst:  acc-ui-support
     convert_dependencies: True
@@ -8,7 +7,7 @@ meta_data:
 
 files:
   # Convert FE22B.opi and its dependencies
-  - src: tests/test_data/opi_files/FE22B.opi
+  - src: tests/test_data/opi_files/FE/FE22B.opi
     dst: fe-ui-support
     support_module_name: FE
     macros:
