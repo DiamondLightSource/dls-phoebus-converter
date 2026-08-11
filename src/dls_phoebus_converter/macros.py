@@ -59,6 +59,9 @@ def handle_macros(oc: OpiConverter) -> None:
     (MACRO_EXCEPTION_LIST). If a macro is found in a file but has not been defined
     in the ConversionConfig, then we log a warning."""
 
+    if oc.macros is None:
+        return
+
     new_macro_names = []
     new_macro_values = []
     content = etree.tostring(oc.bob_data, encoding="unicode")

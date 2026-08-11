@@ -1,6 +1,5 @@
 meta_data:
   - domain: fe
-    domain_synoptic_dst: fe-services/synoptic
     domain_ui_support_dst: fe-ui-support
     acc_ui_support_dst:  acc-ui-support
     convert_dependencies: True
@@ -9,7 +8,8 @@ files:
   # region synoptic screens
   # Convert all top level screens and put them in the fe-services repository
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE02I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE02I
       cell: 02
@@ -19,7 +19,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE02J.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE02J
       cell: 02
@@ -29,7 +30,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_B.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE03I.bob
     macros:
       dom: FE03I
@@ -40,7 +42,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_B.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE04I.bob
     macros:
       dom: FE04I
@@ -51,7 +54,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE05I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE05I
       cell: 05
@@ -61,7 +65,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE06I.bob
     macros:
       dom: FE06I
@@ -72,7 +77,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux_plcmotion.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE07I.bob
     macros:
       dom: FE07I
@@ -83,7 +89,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE07B.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE07B
       cell: 07
@@ -93,7 +100,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE08I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE08I
       cell: 08
@@ -103,7 +111,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE09I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE09I
       cell: 09
@@ -113,7 +122,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE10I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE10I
       cell: 10
@@ -123,7 +133,8 @@ files:
       ISBL: ""
   
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE10B.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE10B
       cell: 10
@@ -133,7 +144,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE11I.bob
     macros:
       dom: FE11I
@@ -144,7 +156,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE11K.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE11K
       cell: 11
@@ -154,7 +167,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE12I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE12I
       cell: 12
@@ -164,7 +178,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE13I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE13I
       cell: 13
@@ -174,7 +189,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE14I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE14I
       cell: 14
@@ -184,7 +200,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE15I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE15I
       cell: 15
@@ -194,7 +211,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE16I.bob
     macros:
       dom: FE16I
@@ -205,7 +223,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_linux.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE16B.bob
     macros:
       dom: FE16B
@@ -216,7 +235,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE18I.bob
     macros:
       dom: FE18I
@@ -227,7 +247,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_vx.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE18B.bob
     macros:
       dom: FE18B
@@ -238,7 +259,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE19I.bob
     macros:
       dom: FE19I
@@ -249,7 +271,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE20I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE20I
       cell: 20
@@ -259,7 +282,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE21I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE21I
       cell: 21
@@ -269,7 +293,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE21B.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE21B
       cell: 21
@@ -279,7 +304,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE22I.bob
     macros:
       dom: FE22I
@@ -290,8 +316,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE22B.opi
-    dst: synoptic
-    template_file: FE22B_template.xml
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE22B
       cell: 22
@@ -301,7 +327,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE23I.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE23I
       cell: 23
@@ -311,7 +338,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE23B.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE23B
       cell: 23
@@ -321,7 +349,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE24I.bob
     macros:
       dom: FE24I
@@ -332,7 +361,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE24B.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE24B
       cell: 24
@@ -342,7 +372,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_test.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE99I.bob
     macros:
       dom: FE99I
@@ -351,7 +382,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_bending_std_test.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE99B.bob
     macros:
       dom: FE99B
@@ -360,7 +392,8 @@ files:
       ISBL: ""
 
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/fe_single_std_one_absb_linux.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     new_filename: FE98I.bob
     macros:
       dom: FE98I
@@ -374,7 +407,8 @@ files:
 
   # region device level screens
   # Convert device screens and put them in the fe-ui-support repository
-  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/common
+  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/
+    support_module_name: FE
     dst: fe-ui-support
     include_subdirs: true
 

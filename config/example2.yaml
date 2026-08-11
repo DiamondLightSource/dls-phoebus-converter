@@ -9,7 +9,8 @@ meta_data:
 files:
   # Convert FE22B.opi and its dependencies
   - src: tests/test_data/opi_files/FE22B.opi
-    dst: synoptic
+    dst: fe-ui-support
+    support_module_name: FE
     template_file: FE22B_template.xml
     macros:
       dom: FE22B
@@ -18,8 +19,10 @@ files:
       type: B
       srvalve: 03
       ISBL: ""
+
   # Convert all support module screens in the common directory and sub directories
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/common
     dst: fe-ui-support
+    support_module_name: FE
     include_subdirs: true
       
