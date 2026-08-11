@@ -12,19 +12,24 @@ from typing import TYPE_CHECKING
 from lxml import etree
 from lxml.etree import Element
 
-from dls_phoebus_converter.macros import fill_in_file_path_macros, handle_macros
+from dls_phoebus_converter.macros import fill_in_macros, handle_macros
 from dls_phoebus_converter.support_modules import ACC_UI_SUPPORT_MODULE_LIST
 
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
     from dls_phoebus_converter.screen_converter import ScreenConverter
 
-from dls_phoebus_converter.support_modules import handle_support_modules
+from dls_phoebus_converter.support_modules import (
+    find_required_support_modules,
+    get_existing_support_module_filepath,
+    handle_support_modules,
+)
 
 logger = logging.getLogger("dls_phoebus_converter")
 
 
 def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
+    find_required_support_modules(sc, oc)
     fix_widget_issues(oc, sc)
 
     # If sc is None, then we are just converting a single_file, so we dont
@@ -204,6 +209,36 @@ def fix_action_open_macro(oc: OpiConverter, action: Element):
                         macro.text = action.getparent().getparent().find("name").text
 
 
+def get_symbol_image_dims(src_file: Path) -> tuple[int, int]:
+    """Returns the width and height of an image file."""
+
+    cmd = [
+        "identify",
+        "-format",
+        "'%w %h'",
+        str(src_file),
+    ]
+
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    stdout, stderr = process.communicate()
+
+    for line in stderr.decode("utf-8").split("\n"):
+        if line != "":
+            if stdout == "":
+                logger.error(f"identify - {line}")
+            else:
+                logger.debug(f"identify - {line}")
+
+    dims = stdout.decode().strip("'").split(" ")
+    width = int(dims[0])
+    height = int(dims[1])
+    return width, height
+
+
 def create_symbol_image_file(
     oc: OpiConverter,
     output_file: Path,
@@ -294,11 +329,13 @@ def get_symbol_file_destinations(
 
 
 def update_symbol_widget_rules(
-    widget: Element, output_file: Path, invalid_image_index: int
-) -> None:
+    widget: Element, output_file: Path
+) -> tuple[int, Element | None]:
     """Modify/create rules to change the displayed symbol and overwrite the default
     order"""
 
+    invalid_image_index = None
+    old_rule = None
     if widget.findall("rules/rule") is not None:
         rules = widget.findall("rules/rule")
         additional_rules = []
@@ -309,10 +346,12 @@ def update_symbol_widget_rules(
                 "prop_id" in rule.attrib.keys()
                 and rule.attrib["prop_id"] == "image_index"
             ):
+                old_rule = copy.deepcopy(rule)
                 rule.attrib["prop_id"] = "symbols[0]"
                 rule.attrib["out_exp"] = "false"
                 for exp in rule.findall("exp"):
                     if exp.attrib["bool_exp"] == "pvLegacySev0==-1":
+                        invalid_image_index = int(exp.findtext("expression"))
                         exp.remove(exp.find("expression"))
                         exp.attrib["bool_exp"] = "pvSev0==3 || pvSev0==4"
                         val_el = Element("value")
@@ -341,6 +380,11 @@ def update_symbol_widget_rules(
                 # Extend the rules for this widget with the new rules we created
                 rule.getparent().extend(additional_rules)
 
+    if invalid_image_index is None:
+        return 0, old_rule
+    else:
+        return 1, old_rule
+
 
 def fix_edm_symbol_widgets(
     oc: OpiConverter, sc: ScreenConverter, widget: Element
@@ -348,68 +392,100 @@ def fix_edm_symbol_widgets(
     """Converts from an edm/cs-studio style symbol widget to a Pheobus style symbol
     widget."""
 
-    if oc.template_file_path is None:
-        logger.warning(
-            "Found edm symbol widget but could not convert it due to no template"
-            "file being supplied."
+    # Get full list of support modules
+    all_support_modules = (
+        sc.domain_support_module_locations + sc.acc_support_module_locations
+    )
+    src_file = None
+
+    # Get name of symbol file
+    old_symbol_file = Path(widget.findtext("symbols/symbol"))
+    if old_symbol_file.suffix == ".gif":
+        logging.warning(
+            "gif symbol images are not currently supported {old_symbol_wdiget}"
         )
         return
 
-    template_symbols = oc.template_data.getroot()
-    for symbol in template_symbols:
-        if symbol.findtext("name") == widget.findtext("name"):
-            logger.info("Fixing Symbol widget with name: " + symbol.findtext("name"))
-            src_file = Path(symbol.findtext("location"))
-            width = int(symbol.findtext("width"))
-            height = int(symbol.findtext("height"))
-            n_images = int(symbol.findtext("nimages"))
-            start_index = int(symbol.findtext("startindex"))
-            invalid_image_index = int(symbol.findtext("invalidimageindex"))
+    resolved = fill_in_macros(str(old_symbol_file), oc.macros)
+    if resolved is not None:
+        old_symbol_file_resolved = Path(resolved)
+        # Look for image file in external support modules
+        for sm in all_support_modules:
+            for part in old_symbol_file_resolved.parts:
+                if sm[0] == part:
+                    sm_path = get_existing_support_module_filepath(part)
+                    if sm_path is not None:
+                        src_file = Path(sm_path) / Path(old_symbol_file_resolved.name)
 
-            # Symbols can have the same name, so check name and image name to be sure we
-            # have the correct widget. We also must fill in any macros in the image name
-            if src_file.name in fill_in_file_path_macros(
-                widget.findtext("symbols/symbol"), oc.macros
-            ):
-                output_file, output_file_full = get_symbol_file_destinations(
-                    sc, oc, src_file
+        # Look for symbol file within our own support module
+        if src_file is None or not src_file.is_file():
+            if oc.support_module_name is not None:
+                # The old path is relative, but we want absolute so strip out ../
+                old_symbol_file_stripped = str(old_symbol_file_resolved).replace(
+                    "../", ""
                 )
+                src_file = Path(
+                    get_existing_support_module_filepath(oc.support_module_name)
+                ) / Path(old_symbol_file_stripped)
 
-                # Run action off left click if the widget has actions
-                if widget.find("actions/action") is not None:
-                    widget.append(Element("run_actions_on_mouse_click"))
-                    widget.find("run_actions_on_mouse_click").text = "true"
+    if src_file is None or not src_file.is_file():
+        logging.error(
+            f"Could not find symbol image for symbol reference {old_symbol_file}"
+        )
+        return
 
-                symbol_files = create_symbol_image_file(
-                    oc, output_file, output_file_full, src_file, n_images, width, height
-                )
+    widget_name = widget.findtext("name")
+    logger.info(f"Fixing Symbol widget with name: {widget_name}")
 
-                # Remove the symbol files before the start index
-                symbol_files = symbol_files[start_index:]
+    output_file, output_file_full = get_symbol_file_destinations(sc, oc, src_file)
 
-                # Reorder the symbol files based on rules
-                if widget.find("rules") is not None:
-                    rules = widget.find("rules")
-                    for rule in rules:
-                        if (
-                            "prop_id" in rule.attrib
-                            and rule.attrib["prop_id"] == "image_index"
-                        ):
-                            symbol_files = reorder_default_symbol_order_from_rule(
-                                symbol_files, rule
-                            )
+    width = 0
+    height = 0
 
-                # Remove old combined symbol file
-                symbols_el = widget.find("symbols")
-                symbols_el.remove(symbols_el.find("symbol"))
+    old_symbols_children = oc.const_opi_data.findall(".//sub_image_width")
+    for symbol_child in old_symbols_children:
+        symbol = symbol_child.getparent()
+        if symbol.findtext("name") == widget_name and symbol.findtext(
+            "image_file"
+        ) == str(old_symbol_file):
+            width = int(float(symbol.findtext("sub_image_width")))
 
-                # Add new symbols
-                for symbol_file in symbol_files:
-                    new_symbol = Element("symbol")
-                    new_symbol.text = symbol_file
-                    symbols_el.append(new_symbol)
+    full_width, height = get_symbol_image_dims(src_file)
+    if width == 0:
+        logging.warning(
+            "Could not find symbol widget sub_image_width. Assuming width==height"
+        )
+        width = height
+    # Need to calculate from width of full image / width
+    n_images = full_width // width
+    # Fix rules and return the start_index
+    start_index, old_rule = update_symbol_widget_rules(widget, output_file)
 
-                update_symbol_widget_rules(widget, output_file, invalid_image_index)
+    # Run action off left click if the widget has actions
+    if widget.find("actions/action") is not None:
+        widget.append(Element("run_actions_on_mouse_click"))
+        widget.find("run_actions_on_mouse_click").text = "true"
+
+    symbol_files = create_symbol_image_file(
+        oc, output_file, output_file_full, src_file, n_images, width, height
+    )
+
+    # Remove the symbol files before the start index
+    symbol_files = symbol_files[start_index:]
+
+    # Reorder the symbol files based on rules
+    if old_rule is not None:
+        symbol_files = reorder_default_symbol_order_from_rule(symbol_files, old_rule)
+
+    # Remove old combined symbol file
+    symbols_el = widget.find("symbols")
+    symbols_el.remove(symbols_el.find("symbol"))
+
+    # Add new symbols
+    for symbol_file in symbol_files:
+        new_symbol = Element("symbol")
+        new_symbol.text = symbol_file
+        symbols_el.append(new_symbol)
 
 
 def move_action_to_transparent_button(widget: Element):

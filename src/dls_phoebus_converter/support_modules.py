@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 import yaml
 
-from dls_phoebus_converter.macros import fill_in_file_path_macros
+from dls_phoebus_converter.macros import fill_in_macros
 
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
@@ -53,7 +53,9 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
     # Only keep unique filepaths and fill in macros
     file_paths_unique = set()
     for file_path in set(widget_file_paths):
-        file_paths_unique.add(Path(fill_in_file_path_macros(str(file_path), oc.macros)))
+        resolved_path = fill_in_macros(str(file_path), oc.macros)
+        if resolved_path is not None:
+            file_paths_unique.add(Path(resolved_path))
 
     # If a support module has been requested and we are not already converting it,
     # then add it to the list of extra required support modules which we will
@@ -131,7 +133,7 @@ def switch_filepaths(
         return file_path_string
 
     if macros is not None:
-        file_path_string = fill_in_file_path_macros(file_path_string, macros)
+        file_path_string = fill_in_macros(file_path_string, macros)
     file_path = Path(file_path_string)
 
     if file_path.suffix == ".opi":
@@ -241,25 +243,21 @@ def convert_extra_support_modules(sc: ScreenConverter):
             if sm_file_path.suffix == "":
                 sm_src_file_path = get_existing_support_module_filepath(sm_name)
                 if sm_src_file_path is not None:
+                    dst = "fe-ui-support"
                     if sm_name in ACC_UI_SUPPORT_MODULE_LIST:
-                        data["files"].append(
-                            {
-                                "src": sm_src_file_path,
-                                "dst": "acc-ui-support",
-                                "support_module_name": sm_name,
-                                "include_subdirs": True,
-                            }
-                        )
-                    else:
-                        data["files"].append(
-                            {
-                                "src": sm_src_file_path,
-                                "dst": "fe-ui-support",
-                                "support_module_name": sm_name,
-                                "include_subdirs": True,
-                            }
-                        )
-                logger.info(f"Converting extra support module: {sm_name}")
+                        dst = "acc-ui-support"
+
+                    data["files"].append(
+                        {
+                            "src": sm_src_file_path,
+                            "dst": dst,
+                            "support_module_name": sm_name,
+                            "include_subdirs": True,
+                        }
+                    )
+
+                    logger.info(f"Converting extra support module: {sm_name}")
+
     if len(data["files"]) > 0:
         sc.get_config(data)
         sc.convert()
