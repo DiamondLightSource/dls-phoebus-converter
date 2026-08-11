@@ -256,6 +256,10 @@ def create_symbol_image_file(
     symbol_files = []
     oc.completed_conversion_steps.create_sym_images = True
     logger.info(f"Creating new image for symbol from: {str(src_file)}")
+
+    # make directory for symbols if it doesnt exist
+    output_file_full.parent.mkdir(exist_ok=True)
+
     for n in range(n_images):
         x = 0 + width * n
         new_symbol = str(output_file.with_stem(output_file.stem + "_" + str(n)))
