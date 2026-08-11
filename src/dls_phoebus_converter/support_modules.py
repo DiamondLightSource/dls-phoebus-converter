@@ -114,7 +114,9 @@ def switch_filepaths(
 ) -> str:
     "Takes an old file_path string and returns what the new file_path should be."
     "This is done by getting the name of the support module from the old path and"
-    "matching it with our data."
+    "matching it with our data. We first look for the support module by guessing"
+    "its name from the file_path string. If we cant deduce the support module from"
+    "the file_path, then we guess that the file is somewhere in our own support module"
 
     file_path_string = str(file_path)
     all_support_modules = (
@@ -148,11 +150,6 @@ def switch_filepaths(
             symbol = True
     support_module_name = new_filepath.parts[0]
 
-    if len(new_filepath.parts) <= 1:
-        # In this situation, our filepath is not to a support module, but to
-        # a file within our own support module, so leave it unchanged
-        return file_path_string
-
     for data in all_support_modules:
         if data[0] == support_module_name:
             if symbol:
@@ -171,6 +168,8 @@ def switch_filepaths(
                     / file_path.name
                 )
 
+    # If our support_module guess fails, then the file is probably in our own support
+    # module, so use oc.support_module_name
     for data in all_support_modules:
         if data[0] == oc.support_module_name:
             if symbol:

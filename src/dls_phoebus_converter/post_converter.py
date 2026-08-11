@@ -38,6 +38,8 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
         handle_macros(oc)
         handle_support_modules(sc, oc)
 
+    # Catch any conversion we may have missed, also used when converting a single
+    # opi file.
     for el in oc.bob_data.getroot().iter():
         if el.text is not None and ".opi" in el.text:
             el.text = el.text.replace(".opi", ".bob")
