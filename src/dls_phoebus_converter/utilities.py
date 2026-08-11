@@ -28,20 +28,13 @@ def search_widget_filepaths(
     found, it is passed into the passed func callable."""
 
     args = [arg for arg in [widget_file_paths, macros] if arg is not None]
-
     for symbol_widget in widget.findall("symbols/symbol"):
         if symbol_widget.text is not None:
-            # We only log when we find an edm widget not when we later
-            # switch it
+            # edm symbol widget filepaths are switched in the code which converts
+            # the symbol widgets, so we only need to parse them to look for support
+            # modules
             if func.__name__ == "append_new_filepath":
-                logger.warning(
-                    "Warning, edm style symbol widget detected: "
-                    f"{widget.find('name').text}"
-                )
-            if func(sc, oc, Path(symbol_widget.text), *args, symbol=True):
-                symbol_widget.text = func(
-                    sc, oc, Path(symbol_widget.text), *args, symbol=True
-                )
+                func(sc, oc, Path(symbol_widget.text), *args, symbol=True)
 
     file_el = widget.find("file")
     if file_el is not None and file_el.text is not None:
