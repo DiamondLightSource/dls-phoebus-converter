@@ -4,7 +4,7 @@ FROM ghcr.io/diamondlightsource/ubuntu-devcontainer:noble AS developer
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    graphviz tclsh tcl-dev imagemagick wget
+    graphviz tclsh tcl-dev imagemagick wget ca-certificates librsvg2-bin
 
 WORKDIR /tmp
 
@@ -44,7 +44,7 @@ FROM ubuntu:noble AS runtime
 
 # Add any system dependencies for the runtime environment here
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    graphviz imagemagick wget ca-certificates
+    graphviz tclsh tcl-dev imagemagick wget ca-certificates librsvg2-bin
 
 WORKDIR /tmp
 
