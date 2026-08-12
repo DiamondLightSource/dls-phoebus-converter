@@ -46,7 +46,6 @@ class OpiConverter:
     dst_bob_filename: str | None = None
     dst_bob_filepath: Path | None = None
     tmp_file_path: Path | None = None
-    template_file_path: Path | None = None
     conversions_to_skip_filepath: Path | None = None
 
     support_module_name: str | None = None
@@ -75,14 +74,9 @@ class OpiConverter:
         if self.tmp_file_path is None:
             self.tmp_file_path = self.dst_bob_dir_path / "tmp.opi"
 
-        self.read_template_file_contents()
         self.read_opi_file_contents()
         # If conversion has already been run, delete previous BOB conversion
         self.delete_old_file()
-
-    def read_template_file_contents(self):
-        if self.template_file_path is not None:
-            self.template_data = etree.parse(self.template_file_path)
 
     def read_opi_file_contents(self):
         self.opi_data = etree.parse(self.src_file_path)

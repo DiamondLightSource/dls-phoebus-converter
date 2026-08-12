@@ -191,7 +191,6 @@ class ScreenConverter:
             src_file_paths, dst_dir_paths, strict=True
         ):
             dst_bob_filename = None
-            template_file_path = None
             macros = None
 
             if "new_filename" in file_data:
@@ -199,15 +198,6 @@ class ScreenConverter:
 
             if "macros" in file_data:
                 macros = file_data["macros"]
-
-            if "template_file" in file_data:
-                template_file_path = Path(file_data["template_file"])
-                if template_file_path.is_file():
-                    template_file_path = template_file_path
-                else:
-                    template_file_path = (
-                        Path.cwd() / "config/templates" / template_file_path
-                    )
 
             file_depth = len(dst_bob_dir_path.parts) - len(self.output_dir_path.parts)
             path_to_top = path_to_top = Path(*["../"] * file_depth)
@@ -217,7 +207,6 @@ class ScreenConverter:
                 dst_symbols_dir_path=dst_symbols_dir_path,
                 path_to_top=path_to_top,
                 dst_bob_filename=dst_bob_filename,
-                template_file_path=template_file_path,
                 support_module_name=support_module_name,
                 macros=macros,
             )

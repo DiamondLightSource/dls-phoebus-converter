@@ -11,7 +11,6 @@ files:
   - src: tests/test_data/opi_files/FE22B.opi
     dst: fe-ui-support
     support_module_name: FE
-    template_file: FE22B_template.xml
     macros:
       dom: FE22B
       cell: 22

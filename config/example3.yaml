@@ -16,9 +16,9 @@ files:
       srvalve: 02
       ISBL: ""
 
-  - src: tests/test_data/opi_files/FE22B.opi
-    dst: synoptic
-    template_file: FE22B_template.xml
+  - src: tests/test_data/opi_files/FE/FE22B.opi
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE22B
       cell: 22
