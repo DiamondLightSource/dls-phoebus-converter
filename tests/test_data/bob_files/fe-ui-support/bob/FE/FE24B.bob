@@ -435,7 +435,7 @@ $(pv_value)</tooltip>
 					<widget type="symbol" version="2.0.0">
 						<name>Edm Symbol Widget_1</name>
 						<symbols>
-							<symbol>../../../fe-ui-support/symbols/FE/fixed-aperture_0.png</symbol>
+							<symbol>../../../fe-ui-support/symbols/FE/fixed-aperture.png</symbol>
 						</symbols>
 						<x>43</x>
 						<y>38</y>
@@ -517,7 +517,7 @@ $(pv_value)</tooltip>
 					<widget type="symbol" version="2.0.0">
 						<name>Edm Symbol Widget_3</name>
 						<symbols>
-							<symbol>../../../fe-ui-support/symbols/FE/slits_0.png</symbol>
+							<symbol>../../../fe-ui-support/symbols/FE/slits.png</symbol>
 						</symbols>
 						<x>644</x>
 						<y>38</y>
@@ -619,7 +619,7 @@ $(pv_value)</tooltip>
 					<widget type="symbol" version="2.0.0">
 						<name>Edm Symbol Widget_1</name>
 						<symbols>
-							<symbol>../../../fe-ui-support/symbols/FE/fixed-aperture_0.png</symbol>
+							<symbol>../../../fe-ui-support/symbols/FE/fixed-aperture.png</symbol>
 						</symbols>
 						<x>277</x>
 						<y>38</y>
@@ -2228,7 +2228,7 @@ $(pv_value)</tooltip>
 					<widget type="symbol" version="2.0.0">
 						<name>Edm Symbol Widget</name>
 						<symbols>
-							<symbol>../../../fe-ui-support/symbols/FE/absorber-xsection_0.png</symbol>
+							<symbol>../../../fe-ui-support/symbols/FE/absorber-xsection.png</symbol>
 						</symbols>
 						<x>120</x>
 						<y>48</y>
@@ -2264,7 +2264,7 @@ $(pv_value)</tooltip>
 					<widget type="symbol" version="2.0.0">
 						<name>Edm Symbol Widget_1</name>
 						<symbols>
-							<symbol>../../../fe-ui-support/symbols/FE/absorber-xsection_0.png</symbol>
+							<symbol>../../../fe-ui-support/symbols/FE/absorber-xsection.png</symbol>
 						</symbols>
 						<x>600</x>
 						<y>48</y>
@@ -2590,7 +2590,7 @@ $(pv_value)</tooltip>
 	<widget type="symbol" version="2.0.0">
 		<name>Edm Symbol Widget</name>
 		<symbols>
-			<symbol>../../../fe-ui-support/symbols/FE/beam_direction_0.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/beam_direction.png</symbol>
 		</symbols>
 		<x>559</x>
 		<y>40</y>

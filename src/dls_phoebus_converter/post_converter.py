@@ -262,10 +262,16 @@ def create_symbol_image_file(
 
     for n in range(n_images):
         x = 0 + width * n
-        new_symbol = str(output_file.with_stem(output_file.stem + "_" + str(n)))
-        new_output_file = output_file_full.with_stem(
-            output_file_full.stem + "_" + str(n)
-        )
+
+        # If there is only 1 image file, we dont need to add an index
+        if n_images == 1:
+            new_symbol = str(output_file)
+            new_output_file = output_file_full
+        else:
+            new_symbol = str(output_file.with_stem(output_file.stem + "_" + str(n)))
+            new_output_file = output_file_full.with_stem(
+                output_file_full.stem + "_" + str(n)
+            )
 
         cmd = [
             "convert",
