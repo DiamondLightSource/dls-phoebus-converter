@@ -20,12 +20,14 @@ if TYPE_CHECKING:
     from dls_phoebus_converter.screen_converter import ScreenConverter
 
 from dls_phoebus_converter.support_modules import (
-    find_required_support_modules,
-    get_existing_support_module_filepath,
-    handle_support_modules,
-)
+    find_required_support_modules, get_existing_support_module_filepath,
+    handle_support_modules)
 
 logger = logging.getLogger("dls_phoebus_converter")
+
+# These are the standard sizes set when creating a new .opi file
+DEFAULT_SCREEN_WIDTH = 800  # px
+DEFAULT_SCREEN_HEIGHT = 600  # px
 
 
 def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
@@ -35,6 +37,7 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
         find_required_support_modules(sc, oc)
 
     fix_widget_issues(oc, sc)
+    expand_screen_to_widgets(oc)
 
     if sc is not None:
         handle_macros(oc)
@@ -53,6 +56,76 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
         sc.special_case_module.run(oc)
     except AttributeError:
         pass
+
+
+def get_widget_dimension(widget: Element, size: str) -> None | int:
+    # Widgets without a size property defined in Phoebus are 0
+    if widget.findtext(size) is None:
+        return 0
+    else:
+        return int(widget.findtext(size))
+
+
+def get_screen_width(display: Element) -> None | int:
+    # screens without a width property defined in Phoebus are set to a default size
+    if display.findtext("width") is None:
+        return DEFAULT_SCREEN_WIDTH
+    else:
+        return int(display.findtext("width"))
+
+
+def get_screen_height(display: Element) -> None | int:
+    # screens without a height property defined in Phoebus are set to a default size
+    if display.findtext("height") is None:
+        return DEFAULT_SCREEN_HEIGHT
+    else:
+        return int(display.findtext("height"))
+
+
+def expand_screen_to_widgets(oc: OpiConverter):
+    """Resize the screen to fit the widgets on it. This is useful for screens which have
+    been converted from CS-Studio where the screen size was not set correctly."""
+
+    max_width = 0
+    max_height = 0
+
+    # padding is applied to account for factors outside of the height/width properties
+    # of a widget, such as border width and buttons expanding when highlighted.
+    padding = 5  # px
+
+    for widget in oc.bob_data.findall(".//widget"):
+        x = get_widget_dimension(widget, "x")
+        y = get_widget_dimension(widget, "y")
+        width = get_widget_dimension(widget, "width")
+        height = get_widget_dimension(widget, "height")
+
+        if x + width > max_width:
+            max_width = x + width
+        if y + height > max_height:
+            max_height = y + height
+
+    root = oc.bob_data.getroot()
+    screen_width = get_screen_width(root)
+    screen_height = get_screen_height(root)
+
+    new_width = max_width + padding
+    new_height = max_height + padding
+
+    # Only update the display dimensions if they are
+    # too small to show all of the widgets
+    if int(screen_width) < max_width:
+        if root.findtext("width") is None:
+            etree.SubElement(root, "width").text = str(new_width)
+        else:
+            root.find("width").text = str(new_width)
+        logging.info(f"Display width resized to: {new_width}")
+
+    if int(screen_height) < max_height:
+        if root.findtext("height") is None:
+            etree.SubElement(root, "height").text = str(new_height)
+        else:
+            root.find("height").text = str(new_height)
+        logging.info(f"Display height resized to: {new_height}")
 
 
 def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
