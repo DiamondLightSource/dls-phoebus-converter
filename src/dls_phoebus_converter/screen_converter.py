@@ -149,11 +149,10 @@ class ScreenConverter:
                         "include_subdirs" in file_data
                         and file_data["include_subdirs"] is True
                     ):
-                        src_file_paths.append(file_paths)
-                        recursive_dir = Path()
-
                         # We need to do some fancy path manipulation to recreate the old
                         # directory structure in the destination directory
+                        recursive_dir = Path()
+
                         if len(file_paths.parent.parts) > len(src_path_config.parts):
                             for subdir in file_paths.parent.parts[
                                 len(src_path_config.parts) :
@@ -172,12 +171,11 @@ class ScreenConverter:
                                     )
                                 )
 
-                        new_dst = dst_path_config / recursive_dir
-                        dst_dir_paths.append(new_dst)
+                        src_file_paths.append(file_paths)
+                        dst_dir_paths.append(dst_path_config / recursive_dir)
                     else:
-                        if file_paths not in processed_files:
-                            src_file_paths.append(file_paths)
-                            dst_dir_paths.append(dst_path_config)
+                        src_file_paths.append(file_paths)
+                        dst_dir_paths.append(dst_path_config)
                 else:
                     logger.warning(
                         f"File {file_paths} has already been processed, will not make "
