@@ -58,12 +58,12 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
         pass
 
 
-def get_widget_dimension(widget: Element, size: str) -> int:
+def get_widget_dimension(widget: Element, widget_property: str) -> int:
     # Widgets without a size property defined in Phoebus are 0
-    if widget.findtext(size) is None:
+    if widget.findtext(widget_property) is None:
         return 0
     else:
-        return int(widget.findtext(size))
+        return int(widget.findtext(widget_property))
 
 
 def get_screen_width(display: Element) -> int:
