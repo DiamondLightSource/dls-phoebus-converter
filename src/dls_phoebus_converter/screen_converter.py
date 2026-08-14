@@ -179,7 +179,7 @@ class ScreenConverter:
                 else:
                     logger.warning(
                         f"File {file_paths} has already been processed, will not make "
-                        "new conversion configuration."
+                        "duplicate conversion configuration."
                     )
         else:
             src_file_paths = [src_path_config]
@@ -198,7 +198,7 @@ class ScreenConverter:
                 macros = file_data["macros"]
 
             file_depth = len(dst_bob_dir_path.parts) - len(self.output_dir_path.parts)
-            path_to_top = path_to_top = Path(*["../"] * file_depth)
+            path_to_top = Path(*["../"] * file_depth)
             new_conversion = OpiConverter(
                 src_file_path=src_opi_file_path,
                 dst_bob_dir_path=dst_bob_dir_path,

@@ -257,7 +257,11 @@ def create_symbol_image_file(
     oc.completed_conversion_steps.create_sym_images = True
     logger.info(f"Creating new image for symbol from: {str(src_file)}")
 
-    # make directory for symbols if it doesnt exist
+    # Make directory for symbols if it doesnt exist. This can happen if we convert a
+    # symbol widget which uses symbol files from a support module which has not been
+    # scheduled for conversion. Normally we only mkdir for the support module when we
+    # schedule it for conversion, so it is possible that this will happen too late or
+    # wont happen if the user has not requested to convert dependencies.
     output_file_full.parent.mkdir(exist_ok=True)
 
     for n in range(n_images):
@@ -403,7 +407,8 @@ def fix_edm_symbol_widgets(
     old_symbol_file = Path(widget.findtext("symbols/symbol"))
     if old_symbol_file.suffix == ".gif":
         logging.warning(
-            "gif symbol images are not currently supported {old_symbol_wdiget}"
+            "gif symbol images are not currently supported, failed to fix edm symbol: "
+            f"{old_symbol_file}"
         )
         return
 
@@ -453,6 +458,8 @@ def fix_edm_symbol_widgets(
         if symbol.findtext("name") == widget_name and symbol.findtext(
             "image_file"
         ) == str(old_symbol_file):
+            # sub_image_width stores a stringified float, so we must convert to float
+            # first
             width = int(float(symbol.findtext("sub_image_width")))
 
     full_width, height = get_symbol_image_dims(src_file)
