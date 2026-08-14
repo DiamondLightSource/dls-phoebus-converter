@@ -110,7 +110,11 @@ def update_filepaths(sc: ScreenConverter, oc: OpiConverter):
 
 
 def switch_filepaths(
-    sc: ScreenConverter, oc: OpiConverter, file_path, macros=None, symbol=False
+    sc: ScreenConverter,
+    oc: OpiConverter,
+    file_path: Path,
+    macros: dict[str, str] | None = None,
+    symbol: bool = False,
 ) -> str:
     "Takes an old file_path string and returns what the new file_path should be."
     "This is done by getting the name of the support module from the old path and"
@@ -118,82 +122,77 @@ def switch_filepaths(
     "its name from the file_path string. If we cant deduce the support module from"
     "the file_path, then we guess that the file is somewhere in our own support module"
 
-    file_path_string = str(file_path)
+    support_module_name = None
+    stripped_file_path = Path()
     all_support_modules = (
         sc.domain_support_module_locations + sc.acc_support_module_locations
     )
+
     # If the pathstring is in the current directory, eg file.bob, then no need to
     # change it
     if len(file_path.parts) <= 1:
-        return file_path_string
+        return str(file_path)
 
-    # If we have already updated the paths, dont do it again:
-    if (
-        sc.acc_ui_support_bob_dst_part.parts[0] in file_path_string
-        or sc.domain_ui_support_bob_dst_part.parts[0] in file_path_string
-    ):
-        return file_path_string
+    # If we have already updated the paths, dont do it again
+    if sc.acc_ui_support_bob_dst_part.parts[0] in str(
+        file_path
+    ) or sc.domain_ui_support_bob_dst_part.parts[0] in str(file_path):
+        return str(file_path)
 
     if macros is not None:
-        file_path_string = fill_in_macros(file_path_string, macros)
-    file_path = Path(file_path_string)
+        file_path = Path(fill_in_macros(str(file_path), macros))
 
     if file_path.suffix == ".opi":
         file_path = file_path.with_suffix(".bob")
 
-    new_filepath = Path()
+    if file_path.suffix in [".png", ".svg", ".gif", ".jpeg"]:
+        symbol = True
+
     for part in file_path.parts:
-        strings_to_skip = ["..", ".", "images", "symbols"]
+        strings_to_skip = ["..", "."]
         if part not in strings_to_skip:
-            new_filepath = new_filepath / part
-        elif part in ["images", "symbols"]:
-            symbol = True
-    support_module_name = new_filepath.parts[0]
+            stripped_file_path = stripped_file_path / part
+
+    # Look to see if the first part of the stripped filepath is a support module
+    # which we recognise. If it is then, we will be updating the filepath to point
+    # to the new location for this support module. Otherwise, the stripped
+    # filepath is probably a relative path to a folder within our own support module.
+    for data in all_support_modules:
+        if data[0] == stripped_file_path.parts[0]:
+            support_module_name = stripped_file_path.parts[0]
+            subdir_structure = Path(*stripped_file_path.parts[1:]).parent
+
+    if support_module_name is None:
+        support_module_name = oc.support_module_name
+        subdir_structure = stripped_file_path.parent
 
     for data in all_support_modules:
         if data[0] == support_module_name:
             if symbol:
+                # data[1] stores the path to bob/support_module, we want the symbols
+                # which is data[1]/../symbols
+                path_to_support_modules = (
+                    oc.path_to_top / data[1].parent.parent / "symbols"
+                )
                 return str(
-                    oc.path_to_top
-                    / Path(*data[1].parts[:-2])
-                    / "symbols"
+                    path_to_support_modules / support_module_name / file_path.name
+                )
+            else:
+                path_to_support_modules = oc.path_to_top / data[1].parent
+                # we care about keeping the support module structure for bob files
+                # but not for symbols
+                return str(
+                    path_to_support_modules
                     / support_module_name
-                    / file_path.name
-                )
-            else:
-                return str(
-                    oc.path_to_top
-                    / data[1].parent
-                    / new_filepath.parent
-                    / file_path.name
-                )
-
-    # If our support_module guess fails, then the file is probably in our own support
-    # module, so use oc.support_module_name
-    for data in all_support_modules:
-        if data[0] == oc.support_module_name:
-            if symbol:
-                return str(
-                    oc.path_to_top
-                    / Path(*data[1].parts[:-2])
-                    / "symbols"
-                    / oc.support_module_name
-                    / file_path.name
-                )
-            else:
-                return str(
-                    oc.path_to_top
-                    / data[1].parent
-                    / oc.support_module_name
-                    / new_filepath.parent
+                    / subdir_structure
                     / file_path.name
                 )
 
     logger.warning(
-        f"Could not find support module for old path: {file_path_string}. Filepath "
+        f"Could not find support module for old path: {str(file_path)}. Filepath "
         "unchanged."
     )
-    return file_path_string
+    return str(file_path)
 
 
 def get_existing_support_module_filepath(support_module_name) -> str | None:
