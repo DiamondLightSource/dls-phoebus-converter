@@ -58,7 +58,7 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
         pass
 
 
-def get_widget_dimension(widget: Element, size: str) -> None | int:
+def get_widget_dimension(widget: Element, size: str) -> int:
     # Widgets without a size property defined in Phoebus are 0
     if widget.findtext(size) is None:
         return 0
@@ -66,7 +66,7 @@ def get_widget_dimension(widget: Element, size: str) -> None | int:
         return int(widget.findtext(size))
 
 
-def get_screen_width(display: Element) -> None | int:
+def get_screen_width(display: Element) -> int:
     # screens without a width property defined in Phoebus are set to a default size
     if display.findtext("width") is None:
         return DEFAULT_SCREEN_WIDTH
@@ -74,7 +74,7 @@ def get_screen_width(display: Element) -> None | int:
         return int(display.findtext("width"))
 
 
-def get_screen_height(display: Element) -> None | int:
+def get_screen_height(display: Element) -> int:
     # screens without a height property defined in Phoebus are set to a default size
     if display.findtext("height") is None:
         return DEFAULT_SCREEN_HEIGHT
@@ -113,14 +113,14 @@ def expand_screen_to_widgets(oc: OpiConverter):
 
     # Only update the display dimensions if they are
     # too small to show all of the widgets
-    if int(screen_width) < max_width:
+    if screen_width < max_width:
         if root.findtext("width") is None:
             etree.SubElement(root, "width").text = str(new_width)
         else:
             root.find("width").text = str(new_width)
         logging.info(f"Display width resized to: {new_width}")
 
-    if int(screen_height) < max_height:
+    if screen_height < max_height:
         if root.findtext("height") is None:
             etree.SubElement(root, "height").text = str(new_height)
         else:
