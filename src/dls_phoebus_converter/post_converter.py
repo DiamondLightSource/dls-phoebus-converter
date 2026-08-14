@@ -25,7 +25,8 @@ from dls_phoebus_converter.support_modules import (
 
 logger = logging.getLogger("dls_phoebus_converter")
 
-# These are the standard sizes set when creating a new .opi file
+# These are the default sizes used in the Diamond setup that are
+# used when a screen does not define a height or width.
 DEFAULT_SCREEN_WIDTH = 800  # px
 DEFAULT_SCREEN_HEIGHT = 600  # px
 
