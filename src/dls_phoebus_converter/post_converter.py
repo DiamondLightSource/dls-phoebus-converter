@@ -82,7 +82,7 @@ def get_screen_height(display: Element) -> int:
         return int(display.findtext("height"))
 
 
-def expand_screen_to_widgets(oc: OpiConverter):
+def expand_screen_to_widgets(oc: OpiConverter) -> None:
     """Resize the screen to fit the widgets on it. This is useful for screens which have
     been converted from CS-Studio where the screen size was not set correctly."""
 
