@@ -231,12 +231,12 @@ def get_symbol_image_dims(src_file: Path) -> tuple[int, int]:
     )
     stdout, stderr = process.communicate()
 
-    for line in stderr.decode("utf-8").split("\n"):
-        if line != "":
-            if stdout == "":
-                logger.error(f"identify - {line}")
-            else:
-                logger.debug(f"identify - {line}")
+    if process.returncode != 0:
+        logger.error(f"identify - {stderr}")
+        return None, None
+
+    if stderr != "":
+        logger.debug(f"identify - {stderr}")
 
     dims = stdout.decode().strip("'").split(" ")
     width = int(dims[0])
@@ -467,6 +467,12 @@ def fix_edm_symbol_widgets(
             width = int(float(symbol.findtext("sub_image_width")))
 
     full_width, height = get_symbol_image_dims(src_file)
+    if full_width is None or height is None:
+        logging.error(
+            "Failed to convert symbol widget due to problem with identify cmd"
+        )
+        return
+
     if width == 0:
         logging.warning(
             "Could not find symbol widget sub_image_width. Assuming width==height"
