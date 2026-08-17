@@ -29,11 +29,13 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 
 def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
-    find_required_support_modules(sc, oc)
-    fix_widget_issues(oc, sc)
-
     # If sc is None, then we are just converting a single_file, so we dont
     # do any of the changes for converting a technical area.
+    if sc is not None:
+        find_required_support_modules(sc, oc)
+
+    fix_widget_issues(oc, sc)
+
     if sc is not None:
         handle_macros(oc)
         handle_support_modules(sc, oc)
@@ -83,7 +85,8 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
             for child in widget:
                 if child.tag == "actions":
                     fix_widget_actions(oc, widget.find(".//actions"))
-            fix_edm_symbol_widgets(oc, sc, widget)
+            if sc is not None:
+                fix_edm_symbol_widgets(oc, sc, widget)
 
         elif widget_type == "progressbar":
             # Actions are not supported on progressBars in Phoebus, so
