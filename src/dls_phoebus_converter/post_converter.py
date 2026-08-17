@@ -416,12 +416,17 @@ def fix_edm_symbol_widgets(
         old_symbol_file_resolved = Path(resolved)
         # Look for image file in external support modules
         for sm in all_support_modules:
-            for part in old_symbol_file_resolved.parts:
+            for i, part in enumerate(old_symbol_file_resolved.parts):
                 if sm[0] == part:
                     sm_path = get_existing_support_module_filepath(part)
                     if sm_path is not None:
                         src_sm = part
-                        src_file = Path(sm_path) / Path(old_symbol_file_resolved.name)
+                        # merge the path to the support module with the relative path of
+                        # the file in the support module (excluding the support module
+                        # name)
+                        src_file = Path(sm_path) / Path(
+                            *old_symbol_file_resolved.parts[i + 1 :]
+                        )
                         break
 
         # Look for symbol file within our own support module
