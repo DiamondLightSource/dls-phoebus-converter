@@ -3,8 +3,8 @@
 	<name>$(dom)</name>
 	<x>543</x>
 	<y>581</y>
-	<width>400</width>
-	<height>120</height>
+	<width>600</width>
+	<height>103</height>
 	<background_color>
 		<color name="Grey 75%" red="192" green="192" blue="192"></color>
 	</background_color>

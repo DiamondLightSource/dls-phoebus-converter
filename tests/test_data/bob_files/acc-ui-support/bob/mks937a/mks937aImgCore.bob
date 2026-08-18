@@ -3,7 +3,7 @@
 	<name>MKS 937A Inverted Magenetron Gauge - $(device)</name>
 	<x>64</x>
 	<y>703</y>
-	<width>238</width>
+	<width>245</width>
 	<height>428</height>
 	<background_color>
 		<color name="Canvas" red="200" green="200" blue="200"></color>
