@@ -81,7 +81,7 @@ $(pv_value)</tooltip>
 		<name>EDM related display</name>
 		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>mks937aPirg.opi</file>
+				<file>mks937aPirg.bob</file>
 				<macros>
 					<device>$(dom)-VA-PIRG-$(id)</device>
 				</macros>
@@ -303,7 +303,7 @@ $(pv_value)</tooltip>
 		<name>EDM related display</name>
 		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>mks937a.opi</file>
+				<file>mks937a.bob</file>
 				<macros>
 					<device>$(GCTLR)</device>
 				</macros>
@@ -360,7 +360,7 @@ $(pv_value)</tooltip>
 			<name>EDM related display</name>
 			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>mks937aImg.opi</file>
+					<file>mks937aImg.bob</file>
 					<macros>
 						<device>$(dom)-VA-IMG-$(id)</device>
 					</macros>
@@ -438,7 +438,8 @@ overwrite</text>
 		<name>DLS symbol</name>
 		<pv_name>$(dom)-VA-GAUGE-$(id):ILKSETSP:NOWRITE</pv_name>
 		<symbols>
-			<symbol>acc-ui-support/symbols/mks937aLock-symbol-61.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aLock-symbol-61_2.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aLock-symbol-61_1.png</symbol>
 		</symbols>
 		<x>97</x>
 		<y>269</y>
@@ -449,21 +450,9 @@ overwrite</text>
 		</background_color>
 		<actions></actions>
 		<rules>
-			<rule name="symbol_single_pv" prop_id="image_index" out_exp="true">
-				<exp bool_exp="pvSev0==3">
-					<expression>0</expression>
-				</exp>
-				<exp bool_exp="pv0&gt;=-1.0&amp;&amp;pv0&lt;0.0">
-					<expression>0</expression>
-				</exp>
-				<exp bool_exp="pv0&gt;=1.0&amp;&amp;pv0&lt;99.0">
-					<expression>1</expression>
-				</exp>
-				<exp bool_exp="pv0&gt;=0.0&amp;&amp;pv0&lt;1.0">
-					<expression>2</expression>
-				</exp>
-				<exp bool_exp="true">
-					<expression>0</expression>
+			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
+				<exp bool_exp="pvSev0==3 || pvSev0==4">
+					<value>../../../acc-ui-support/symbols/mks937a/mks937aLock-symbol-61_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>

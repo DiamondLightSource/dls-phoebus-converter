@@ -580,7 +580,7 @@ $(pv_value)</tooltip>
 			<name>EDM related display</name>
 			<actions><action type="open_display">
 					<description>Switch on/off</description>
-					<file>mks937aImgWarning.opi</file>
+					<file>mks937aImgWarning.bob</file>
 					<target>standalone</target>
 				</action>
 			</actions>

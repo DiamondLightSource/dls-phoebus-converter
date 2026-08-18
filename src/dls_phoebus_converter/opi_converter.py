@@ -40,18 +40,18 @@ class CompletedSteps:
 @dataclass
 class OpiConverter:
     src_file_path: Path
-    dst_dir_path: Path
-    dst_filename: str | None = None
-    dst_filepath: Path | None = None
+    dst_bob_dir_path: Path
+    dst_symbols_dir_path: Path
+    path_to_top: Path = Path()
+    dst_bob_filename: str | None = None
+    dst_bob_filepath: Path | None = None
     tmp_file_path: Path | None = None
-    template_file_path: Path | None = None
     conversions_to_skip_filepath: Path | None = None
 
     support_module_name: str | None = None
     macros: dict[str, str] = field(default_factory=lambda: {})
     completed_conversion_steps = CompletedSteps()
 
-    is_synoptic: bool = False
     replace_tab: bool = True
     fix_group: bool = True
 
@@ -67,21 +67,16 @@ class OpiConverter:
     bob_data: etree.ElementTree | None = None
 
     def __post_init__(self):
-        if self.dst_filename is None:
-            self.dst_filename = self.src_file_path.with_suffix(".bob").name
-        if self.dst_filepath is None:
-            self.dst_filepath = self.dst_dir_path / self.dst_filename
+        if self.dst_bob_filename is None:
+            self.dst_bob_filename = self.src_file_path.with_suffix(".bob").name
+        if self.dst_bob_filepath is None:
+            self.dst_bob_filepath = self.dst_bob_dir_path / self.dst_bob_filename
         if self.tmp_file_path is None:
-            self.tmp_file_path = self.dst_dir_path / "tmp.opi"
+            self.tmp_file_path = self.dst_bob_dir_path / "tmp.opi"
 
-        self.read_template_file_contents()
         self.read_opi_file_contents()
         # If conversion has already been run, delete previous BOB conversion
         self.delete_old_file()
-
-    def read_template_file_contents(self):
-        if self.template_file_path is not None:
-            self.template_data = etree.parse(self.template_file_path)
 
     def read_opi_file_contents(self):
         self.opi_data = etree.parse(self.src_file_path)
@@ -89,7 +84,7 @@ class OpiConverter:
 
     def read_bob_file_contents(self, output_file=None):
         if output_file is None:
-            output_file = self.dst_filepath
+            output_file = self.dst_bob_filepath
         self.bob_data = etree.parse(output_file)
         self.const_bob_data = copy.deepcopy(self.bob_data)
 
@@ -112,7 +107,7 @@ class OpiConverter:
                 el.text = el.text.strip()
 
         self.bob_data.write(
-            self.dst_filepath,
+            self.dst_bob_filepath,
             pretty_print=True,
             xml_declaration=True,
             encoding="UTF-8",
@@ -120,7 +115,7 @@ class OpiConverter:
 
     def delete_old_file(self):
         try:
-            old_file = self.dst_filepath
+            old_file = self.dst_bob_filepath
             os.remove(old_file)
             logger.info(f"Removing old converted file: {old_file}")
         except OSError:
@@ -182,14 +177,14 @@ class OpiConverter:
         convert_command = (
             PHOEBUS_SH_FILE_PATH
             + " -main org.csstudio.display.builder.model.Converter -output "
-            + str(self.dst_dir_path)
+            + str(self.dst_bob_dir_path)
             + " "
             + str(self.tmp_file_path)
         )
         process = subprocess.Popen(
             convert_command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
-        tmp_bob_file_path = self.dst_dir_path / "tmp.bob"
+        tmp_bob_file_path = self.dst_bob_dir_path / "tmp.bob"
 
         # Captures the stdout and stderr from the converter process.
         # This can be very verbose, so we log it at the DEBUG level
@@ -260,4 +255,4 @@ class OpiConverter:
         self.write_bob_file_contents()
 
         self.log_conversion_steps()
-        logger.info(f"Conversion saved to {self.dst_filepath}\n")
+        logger.info(f"Conversion saved to {self.dst_bob_filepath}\n")

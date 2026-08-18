@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 import yaml
 
-from dls_phoebus_converter.macros import fill_in_file_path_macros
+from dls_phoebus_converter.macros import fill_in_macros
 
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
@@ -21,6 +21,8 @@ ACC_UI_SUPPORT_MODULE_LIST = [
     "digitelMpc",
     "mks937a",
     "mks937b",
+    "mks937$(mks_type)",
+    "mks937$(mksType)",
     "mpsPermit",
     "rga",
     "TimingTemplates",
@@ -34,15 +36,7 @@ def handle_support_modules(sc: ScreenConverter, oc: OpiConverter):
     update them to the new paths for the DII screen deployment structure."""
 
     find_required_support_modules(sc, oc)
-
-    # Support module paths are relative and so don't need to have their paths
-    # updated except to convert from .opi to .bob
-    if oc.support_module_name is None:
-        update_filepaths(sc, oc)
-    else:
-        for el in oc.bob_data.getroot().iter():
-            if el.text is not None and ".opi" in el.text:
-                el.text.replace(".opi", ".bob")
+    update_filepaths(sc, oc)
 
 
 def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
@@ -52,12 +46,14 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
     widget_file_paths: list[Path] = []
     # Look for filepaths in xml
     for widget in oc.bob_data.findall(".//widget"):
-        search_widget_filepaths(sc, widget, append_new_filepath, widget_file_paths)
+        search_widget_filepaths(sc, oc, widget, append_new_filepath, widget_file_paths)
 
     # Only keep unique filepaths and fill in macros
     file_paths_unique = set()
     for file_path in set(widget_file_paths):
-        file_paths_unique.add(Path(fill_in_file_path_macros(str(file_path), oc.macros)))
+        resolved_path = fill_in_macros(str(file_path), oc.macros)
+        if resolved_path is not None:
+            file_paths_unique.add(Path(resolved_path))
 
     # If a support module has been requested and we are not already converting it,
     # then add it to the list of extra required support modules which we will
@@ -66,7 +62,7 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
         # Search through the filepath and remove any strings which dont look useful
         new_filepath = Path()
         for part in file_path.parts:
-            strings_to_skip = ["..", ".", "images", "symbols"]
+            strings_to_skip = ["..", ".", "images", "symbols", "symbol"]
             if part not in strings_to_skip:
                 new_filepath = new_filepath / part
         file_path = new_filepath
@@ -74,8 +70,13 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
         # If we only have 1 part left, it is probably the file itself which isnt a
         # support module so we move to the next one
         if len(file_path.parts) > 1:
-            # The support module should be the second to last part
-            support_module_name = file_path.parts[-2]
+            support_module_name = file_path.parts[0]
+            # check if our "support_module" is actually just a folder at the same level
+            if support_module_name in [
+                f.name for f in oc.src_file_path.parent.iterdir() if f.is_dir()
+            ]:
+                continue
+
             if support_module_name in ACC_UI_SUPPORT_MODULE_LIST:
                 new_entry = (
                     support_module_name,
@@ -95,67 +96,101 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
     logger.info(f"Required acc modules: {sc.acc_support_module_locations}")
 
 
-def append_new_filepath(sc, path_string, widget_file_paths, symbol=False):
+def append_new_filepath(sc, oc, path_string, widget_file_paths, symbol=False):
     widget_file_paths.append(path_string)
     return False
 
 
-def update_filepaths(sc, oc: OpiConverter):
+def update_filepaths(sc: ScreenConverter, oc: OpiConverter):
     """Replace all filepaths in the element tree"""
     for widget in oc.bob_data.findall(".//widget"):
-        search_widget_filepaths(sc, widget, switch_filepaths, oc.macros)
+        search_widget_filepaths(sc, oc, widget, switch_filepaths, oc.macros)
 
 
-def switch_filepaths(sc: ScreenConverter, file_path, macros=None, symbol=False) -> str:
+def switch_filepaths(
+    sc: ScreenConverter,
+    oc: OpiConverter,
+    file_path: Path,
+    macros: dict[str, str] | None = None,
+    symbol: bool = False,
+) -> str:
     "Takes an old file_path string and returns what the new file_path should be."
     "This is done by getting the name of the support module from the old path and"
-    "matching it with our data."
-    file_path_string = str(file_path)
+    "matching it with our data. We first look for the support module by guessing"
+    "its name from the file_path string. If we cant deduce the support module from"
+    "the file_path, then we guess that the file is somewhere in our own support module"
+
+    support_module_name = None
+    stripped_file_path = Path()
     all_support_modules = (
         sc.domain_support_module_locations + sc.acc_support_module_locations
     )
+
     # If the pathstring is in the current directory, eg file.bob, then no need to
     # change it
     if len(file_path.parts) <= 1:
-        return file_path_string
+        return str(file_path)
 
-    # If we have already updated the paths, dont do it again:
-    if (
-        sc.acc_ui_support_bob_dst_part.parts[0] in file_path_string
-        or sc.domain_ui_support_bob_dst_part.parts[0] in file_path_string
-        or sc.domain_synoptic_dst_part.parts[0] in file_path_string
-    ):
-        return file_path_string
+    # If we have already updated the paths, dont do it again
+    if sc.acc_ui_support_bob_dst_part.parts[0] in str(
+        file_path
+    ) or sc.domain_ui_support_bob_dst_part.parts[0] in str(file_path):
+        return str(file_path)
 
     if macros is not None:
-        file_path_string = fill_in_file_path_macros(file_path_string, macros)
-    file_path = Path(file_path_string)
-    if file_path.suffix == ".opi":
-        file_name = file_path.with_suffix(".bob").name
-    else:
-        file_name = file_path.name
+        file_path = Path(fill_in_macros(str(file_path), macros))
 
-    new_filepath = Path()
+    if file_path.suffix == ".opi":
+        file_path = file_path.with_suffix(".bob")
+
+    if file_path.suffix in [".png", ".svg", ".gif", ".jpeg"]:
+        symbol = True
+
     for part in file_path.parts:
-        strings_to_skip = ["..", ".", "images", "symbols"]
+        strings_to_skip = ["..", "."]
         if part not in strings_to_skip:
-            new_filepath = new_filepath / part
-        elif part in ["images", "symbols"]:
-            symbol = True
-    support_module_name = "-".join(new_filepath.parts[:-1])
+            stripped_file_path = stripped_file_path / part
+
+    # Look to see if the first part of the stripped filepath is a support module
+    # which we recognise. If it is then, we will be updating the filepath to point
+    # to the new location for this support module. Otherwise, the stripped
+    # filepath is probably a relative path to a folder within our own support module.
+    for data in all_support_modules:
+        if data[0] == stripped_file_path.parts[0]:
+            support_module_name = stripped_file_path.parts[0]
+            subdir_structure = Path(*stripped_file_path.parts[1:]).parent
+
+    if support_module_name is None:
+        support_module_name = oc.support_module_name
+        subdir_structure = stripped_file_path.parent
 
     for data in all_support_modules:
         if data[0] == support_module_name:
             if symbol:
-                return str(Path(*data[1].parts[:-2]) / "symbols" / file_name)
+                # data[1] stores the path to bob/support_module, we want the symbols
+                # which is data[1]/../symbols
+                path_to_support_modules = (
+                    oc.path_to_top / data[1].parent.parent / "symbols"
+                )
+                return str(
+                    path_to_support_modules / support_module_name / file_path.name
+                )
             else:
-                return str(data[1] / file_name)
+                path_to_support_modules = oc.path_to_top / data[1].parent
+                # we care about keeping the support module structure for bob files
+                # but not for symbols
+                return str(
+                    path_to_support_modules
+                    / support_module_name
+                    / subdir_structure
+                    / file_path.name
+                )
 
     logger.warning(
-        f"Could not find support module for old path: {file_path_string}. Filepath "
+        f"Could not find support module for old path: {str(file_path)}. Filepath "
         "unchanged."
     )
-    return file_path_string
+    return str(file_path)
 
 
 def get_existing_support_module_filepath(support_module_name) -> str | None:
@@ -208,25 +243,21 @@ def convert_extra_support_modules(sc: ScreenConverter):
             if sm_file_path.suffix == "":
                 sm_src_file_path = get_existing_support_module_filepath(sm_name)
                 if sm_src_file_path is not None:
+                    dst = "fe-ui-support"
                     if sm_name in ACC_UI_SUPPORT_MODULE_LIST:
-                        data["files"].append(
-                            {
-                                "src": sm_src_file_path,
-                                "dst": "acc-ui-support",
-                                "support_module_name": sm_name,
-                                "include_subdirs": True,
-                            }
-                        )
-                    else:
-                        data["files"].append(
-                            {
-                                "src": sm_src_file_path,
-                                "dst": "fe-ui-support",
-                                "support_module_name": sm_name,
-                                "include_subdirs": True,
-                            }
-                        )
-                logger.info(f"Converting extra support module: {sm_name}")
+                        dst = "acc-ui-support"
+
+                    data["files"].append(
+                        {
+                            "src": sm_src_file_path,
+                            "dst": dst,
+                            "support_module_name": sm_name,
+                            "include_subdirs": True,
+                        }
+                    )
+
+                    logger.info(f"Converting extra support module: {sm_name}")
+
     if len(data["files"]) > 0:
         sc.get_config(data)
         sc.convert()

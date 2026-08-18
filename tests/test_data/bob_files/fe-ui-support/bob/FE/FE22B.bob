@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <display version="2.0.0">
 	<name>$(dom)</name>
 	<x>543</x>
@@ -32,7 +32,7 @@
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>44</x>
 			<y>288</y>
@@ -91,17 +91,17 @@ $(pv_value)</tooltip>
 			<name>$(dom)-VA-IONP-01</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_1.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_2.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_3.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_4.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_5.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_6.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_7.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_8.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_9.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_10.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_11.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_1.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_2.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_3.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_4.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_5.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_6.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_7.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_8.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_9.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_10.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_11.png</symbol>
 			</symbols>
 			<x>32</x>
 			<y>320</y>
@@ -110,10 +110,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
+					<file>../../../acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
 					<macros>
 						<device>$(dom)-VA-IONP-01</device>
 					</macros>
@@ -123,67 +122,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
+						<value>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -198,7 +137,7 @@ $(pv_value)</tooltip>
 			<macros>
 				<id>01</id>
 			</macros>
-			<file>acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
+			<file>../../../acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
 			<x>24</x>
 			<width>66</width>
 			<height>194</height>
@@ -212,7 +151,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>44</x>
 			<y>216</y>
@@ -271,22 +210,22 @@ $(pv_value)</tooltip>
 			<name>$(dom)-VA-IMG-01</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_1.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_2.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_3.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_4.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_5.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_6.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_7.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_8.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_9.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_10.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_11.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_12.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_13.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_14.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_15.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_16.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_1.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_2.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_3.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_4.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_5.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_6.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_7.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_8.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_9.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_10.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_11.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_12.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_13.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_14.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_15.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_16.png</symbol>
 			</symbols>
 			<x>68</x>
 			<y>237</y>
@@ -295,10 +234,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>acc-ui-support/bob/mks937a/mks937aImg.bob</file>
+					<file>../../../acc-ui-support/bob/mks937a/mks937aImg.bob</file>
 					<macros>
 						<device>$(dom)-VA-IMG-01</device>
 					</macros>
@@ -308,97 +246,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
+						<value>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -412,22 +260,22 @@ $(pv_value)</tooltip>
 			<name>$(dom)-VA-PIRG-01</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_1.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_2.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_3.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_4.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_5.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_6.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_7.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_8.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_9.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_10.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_11.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_12.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_13.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_14.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_15.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_16.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_1.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_2.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_3.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_4.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_5.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_6.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_7.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_8.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_9.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_10.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_11.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_12.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_13.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_14.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_15.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_16.png</symbol>
 			</symbols>
 			<x>68</x>
 			<y>204</y>
@@ -436,10 +284,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
+					<file>../../../acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
 					<macros>
 						<device>$(dom)-VA-PIRG-01</device>
 					</macros>
@@ -449,97 +296,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
+						<value>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -553,16 +310,16 @@ $(pv_value)</tooltip>
 			<name>$(dom)-VA-RGA-01</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>acc-ui-support/symbols/rga-symbol-34_1.png</symbol>
-				<symbol>acc-ui-support/symbols/rga-symbol-34_2.png</symbol>
-				<symbol>acc-ui-support/symbols/rga-symbol-34_3.png</symbol>
-				<symbol>acc-ui-support/symbols/rga-symbol-34_4.png</symbol>
-				<symbol>acc-ui-support/symbols/rga-symbol-34_5.png</symbol>
-				<symbol>acc-ui-support/symbols/rga-symbol-34_6.png</symbol>
-				<symbol>acc-ui-support/symbols/rga-symbol-34_7.png</symbol>
-				<symbol>acc-ui-support/symbols/rga-symbol-34_8.png</symbol>
-				<symbol>acc-ui-support/symbols/rga-symbol-34_9.png</symbol>
-				<symbol>acc-ui-support/symbols/rga-symbol-34_10.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/rga/rga-symbol-34_1.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/rga/rga-symbol-34_2.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/rga/rga-symbol-34_3.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/rga/rga-symbol-34_4.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/rga/rga-symbol-34_5.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/rga/rga-symbol-34_6.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/rga/rga-symbol-34_7.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/rga/rga-symbol-34_8.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/rga/rga-symbol-34_9.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/rga/rga-symbol-34_10.png</symbol>
 			</symbols>
 			<y>204</y>
 			<width>24</width>
@@ -570,10 +327,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>acc-ui-support/bob/rga/rga.bob</file>
+					<file>../../../acc-ui-support/bob/rga/rga.bob</file>
 					<macros>
 						<device>$(dom)-VA-RGA-01</device>
 					</macros>
@@ -583,61 +339,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/rga-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/rga-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/rga-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/rga-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/rga-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/rga-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/rga-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/rga-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/rga-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/rga-symbol-34_0.png</value>
+						<value>../../../acc-ui-support/symbols/rga/rga-symbol-34_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -650,7 +352,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle_36</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>44</x>
 			<y>213</y>
@@ -708,7 +410,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle_37</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>44</x>
 			<y>246</y>
@@ -766,7 +468,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle_38</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>23</x>
 			<y>213</y>
@@ -849,11 +551,11 @@ $(pv_value)</tooltip>
 		<name>$(dom)-VA-VALVE-01</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_1.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_2.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_3.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_4.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_5.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_1.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_2.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_3.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_4.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_5.png</symbol>
 		</symbols>
 		<x>84</x>
 		<y>340</y>
@@ -862,10 +564,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+				<file>../../../fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
 				<macros>
 					<device>$(dom)-VA-VALVE-01</device>
 				</macros>
@@ -875,31 +576,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
+					<value>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -912,7 +589,7 @@ $(pv_value)</tooltip>
 	<widget type="action_button" version="2.0.0">
 		<name>EDM Rectangle</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>484</x>
 		<y>328</y>
@@ -925,10 +602,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Mid Green" red="0" green="196" blue="0"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>fe-ui-support/bob/vacuumSpace/space.bob</file>
+				<file>../../../fe-ui-support/bob/vacuumSpace/space.bob</file>
 				<macros>
 					<device>$(dom)-VA-SPACE-02</device>
 				</macros>
@@ -963,11 +639,11 @@ $(pv_value)</tooltip>
 		<name>$(dom)-VA-VALVE-02</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_1.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_2.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_3.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_4.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_5.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_1.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_2.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_3.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_4.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_5.png</symbol>
 		</symbols>
 		<x>461</x>
 		<y>321</y>
@@ -976,10 +652,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+				<file>../../../fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
 				<macros>
 					<device>$(dom)-VA-VALVE-02</device>
 				</macros>
@@ -989,31 +664,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
+					<value>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -1026,7 +677,7 @@ $(pv_value)</tooltip>
 	<widget type="action_button" version="2.0.0">
 		<name>EDM Rectangle</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>239</x>
 		<y>328</y>
@@ -1039,10 +690,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Mid Green" red="0" green="196" blue="0"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>fe-ui-support/bob/vacuumSpace/space.bob</file>
+				<file>../../../fe-ui-support/bob/vacuumSpace/space.bob</file>
 				<macros>
 					<device>$(dom)-VA-SPACE-01</device>
 				</macros>
@@ -1081,10 +731,9 @@ $(pv_value)</tooltip>
 				<children>
 					<widget type="action_button" version="3.0.0">
 						<name>Action Button</name>
-						<actions>
-							<action type="open_display">
+						<actions><action type="open_display">
 								<description>Open Display</description>
-								<file>acc-ui-support/bob/devIocStats/ioc_stats.bob</file>
+								<file>../../../acc-ui-support/bob/devIocStats/ioc_stats.bob</file>
 								<macros>
 									<ioc>$(dom)-CS-IOC-01</ioc>
 								</macros>
@@ -1107,10 +756,9 @@ $(pv_value)</tooltip>
 					</widget>
 					<widget type="action_button" version="3.0.0">
 						<name>Action Button</name>
-						<actions>
-							<action type="open_display">
+						<actions><action type="open_display">
 								<description>Open Display</description>
-								<file>acc-ui-support/bob/TimingTemplates/evr.bob</file>
+								<file>../../../acc-ui-support/bob/TimingTemplates/evr.bob</file>
 								<macros>
 									<evr>$(dom)-CS-EVR-01:SET-HW</evr>
 								</macros>
@@ -1139,7 +787,7 @@ $(pv_value)</tooltip>
 					<widget type="rectangle" version="2.0.0">
 						<name>Rectangle</name>
 						<macros>
-							<pv_name></pv_name>
+							<pv_name/>
 						</macros>
 						<x>16</x>
 						<y>24</y>
@@ -1181,7 +829,7 @@ $(pv_value)</tooltip>
 					<widget type="rectangle" version="2.0.0">
 						<name>Rectangle</name>
 						<macros>
-							<pv_name></pv_name>
+							<pv_name/>
 						</macros>
 						<x>216</x>
 						<y>24</y>
@@ -1223,7 +871,7 @@ $(pv_value)</tooltip>
 					<widget type="rectangle" version="2.0.0">
 						<name>Rectangle_2</name>
 						<macros>
-							<pv_name></pv_name>
+							<pv_name/>
 						</macros>
 						<x>426</x>
 						<y>24</y>
@@ -1567,7 +1215,7 @@ $(pv_value)</tooltip>
 						<limits_from_pv>false</limits_from_pv>
 						<maximum>3000.0</maximum>
 						<background_color>
-							<color name="Transparent" red="255" green="255" blue="255"></color>
+							<color name="Transparent" red="255" green="255" blue="255"/>
 						</background_color>
 					</widget>
 					<widget type="textupdate" version="2.0.0">
@@ -1607,7 +1255,7 @@ $(pv_value)</tooltip>
 						<limits_from_pv>false</limits_from_pv>
 						<maximum>3000.0</maximum>
 						<background_color>
-							<color name="Transparent" red="255" green="255" blue="255"></color>
+							<color name="Transparent" red="255" green="255" blue="255"/>
 						</background_color>
 					</widget>
 					<widget type="textupdate" version="2.0.0">
@@ -1647,7 +1295,7 @@ $(pv_value)</tooltip>
 						<limits_from_pv>false</limits_from_pv>
 						<maximum>3000.0</maximum>
 						<background_color>
-							<color name="Transparent" red="255" green="255" blue="255"></color>
+							<color name="Transparent" red="255" green="255" blue="255"/>
 						</background_color>
 					</widget>
 					<widget type="textupdate" version="2.0.0">
@@ -1683,7 +1331,7 @@ $(pv_value)</tooltip>
 					<widget type="symbol" version="2.0.0">
 						<name>Edm Symbol Widget</name>
 						<symbols>
-							<symbol>fe-ui-support/symbols/absorber-xsection_0.png</symbol>
+							<symbol>../../../fe-ui-support/symbols/FE/absorber-xsection.png</symbol>
 						</symbols>
 						<x>120</x>
 						<y>48</y>
@@ -1794,7 +1442,7 @@ $(pv_value)</tooltip>
 						<widget type="rectangle" version="2.0.0">
 							<name>Rectangle_2</name>
 							<macros>
-								<pv_name></pv_name>
+								<pv_name/>
 							</macros>
 							<y>8</y>
 							<width>225</width>
@@ -2099,7 +1747,7 @@ $(pv_value)</tooltip>
 					<widget type="symbol" version="2.0.0">
 						<name>Edm Symbol Widget_1</name>
 						<symbols>
-							<symbol>fe-ui-support/symbols/mirror1_0.png</symbol>
+							<symbol>../../../fe-ui-support/symbols/FE/mirror1.png</symbol>
 						</symbols>
 						<x>68</x>
 						<y>27</y>
@@ -2757,10 +2405,9 @@ $(pv_value)</tooltip>
 					</widget>
 					<widget type="action_button" version="3.0.0">
 						<name>Action Button_1</name>
-						<actions>
-							<action type="open_display">
+						<actions><action type="open_display">
 								<description>Open Display</description>
-								<file>fe-ui-support/bob/eurotherm2k/eurotherm2k.bob</file>
+								<file>../../../fe-ui-support/bob/eurotherm2k/eurotherm2k.bob</file>
 								<macros>
 									<eurotherm>$(dom)-CS-TCTRL-01</eurotherm>
 								</macros>
@@ -2791,7 +2438,7 @@ $(pv_value)</tooltip>
 						<macros>
 							<suffix>:C</suffix>
 						</macros>
-						<file>fe-ui-support/bob/common/plc/absb_temps_fe22b.bob</file>
+						<file>../../../fe-ui-support/bob/FE/common/plc/absb_temps_fe22b.bob</file>
 						<y>10</y>
 						<width>371</width>
 						<height>99</height>
@@ -2819,11 +2466,11 @@ $(pv_value)</tooltip>
 		<name>$(dom)-VA-VALVE-03</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_1.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_2.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_3.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_4.png</symbol>
-			<symbol>fe-ui-support/symbols/vacuumValve-symbol-34_5.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_1.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_2.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_3.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_4.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_5.png</symbol>
 		</symbols>
 		<x>968</x>
 		<y>320</y>
@@ -2832,10 +2479,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+				<file>../../../fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
 				<macros>
 					<device>$(dom)-VA-VALVE-03</device>
 				</macros>
@@ -2845,31 +2491,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/vacuumValve-symbol-34_0.png</value>
+					<value>../../../fe-ui-support/symbols/dlsPLC/vacuumValve-symbol-34_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -2882,7 +2504,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>Rectangle</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>800</x>
 		<y>89</y>
@@ -2902,7 +2524,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>Rectangle_1</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>800</x>
 		<y>344</y>
@@ -2943,10 +2565,9 @@ $(pv_value)</tooltip>
 	</widget>
 	<widget type="action_button" version="3.0.0">
 		<name>Action Button</name>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>acc-ui-support/bob/mpsPermit/mpsPermit.bob</file>
+				<file>../../../acc-ui-support/bob/mpsPermit/mpsPermit.bob</file>
 				<macros>
 					<device>$(dom)-MP-PERMT-01</device>
 				</macros>
@@ -2970,7 +2591,7 @@ $(pv_value)</tooltip>
 	<widget type="label" version="2.0.0">
 		<name>Text Update_5</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<text>SHTR-01</text>
 		<x>715</x>
@@ -3001,13 +2622,13 @@ $(pv_value)</tooltip>
 		<name>$(dom)-PS-SHTR-01</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_3.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_1.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_2.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_3.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_4.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_0.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_0.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_3.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_1.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_2.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_3.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_4.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_6.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_1.png</symbol>
 		</symbols>
 		<x>718</x>
 		<y>309</y>
@@ -3016,10 +2637,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+				<file>../../../fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
 				<macros>
 					<device>$(dom)-PS-SHTR-01</device>
 				</macros>
@@ -3029,43 +2649,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
+					<value>../../../fe-ui-support/symbols/FE/fastFlap-symbol_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -3079,13 +2663,13 @@ $(pv_value)</tooltip>
 		<name>$(dom)-PS-SHTR-02</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_3.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_1.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_2.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_3.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_4.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_0.png</symbol>
-			<symbol>fe-ui-support/symbols/fastFlap-symbol_0.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_3.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_1.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_2.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_3.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_4.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_6.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_1.png</symbol>
 		</symbols>
 		<x>750</x>
 		<y>309</y>
@@ -3094,10 +2678,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+				<file>../../../fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
 				<macros>
 					<device>$(dom)-PS-SHTR-02</device>
 				</macros>
@@ -3107,43 +2690,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
+					<value>../../../fe-ui-support/symbols/FE/fastFlap-symbol_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -3156,7 +2703,7 @@ $(pv_value)</tooltip>
 	<widget type="label" version="2.0.0">
 		<name>Text Update_6</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<text>SHTR-02</text>
 		<x>747</x>
@@ -3186,7 +2733,7 @@ $(pv_value)</tooltip>
 	<widget type="symbol" version="2.0.0">
 		<name>Edm Symbol Widget</name>
 		<symbols>
-			<symbol>fe-ui-support/symbols/beam_direction_0.png</symbol>
+			<symbol>../../../fe-ui-support/symbols/FE/beam_direction.png</symbol>
 		</symbols>
 		<x>790</x>
 		<y>40</y>
@@ -3202,7 +2749,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle_4</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>881</x>
 		<y>328</y>
@@ -3261,17 +2808,17 @@ $(pv_value)</tooltip>
 		<name>$(dom)-VA-IONP-05</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_1.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_2.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_3.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_4.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_5.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_6.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_7.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_8.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_9.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_10.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_11.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_1.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_2.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_3.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_4.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_5.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_6.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_7.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_8.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_9.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_10.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_11.png</symbol>
 		</symbols>
 		<x>869</x>
 		<y>360</y>
@@ -3280,10 +2827,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
+				<file>../../../acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
 				<macros>
 					<device>$(dom)-VA-IONP-05</device>
 				</macros>
@@ -3293,67 +2839,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
+					<value>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -3368,7 +2854,7 @@ $(pv_value)</tooltip>
 		<macros>
 			<id>06</id>
 		</macros>
-		<file>acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
+		<file>../../../acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
 		<x>884</x>
 		<y>40</y>
 		<width>66</width>
@@ -3383,7 +2869,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>881</x>
 		<y>256</y>
@@ -3442,22 +2928,22 @@ $(pv_value)</tooltip>
 		<name>$(dom)-VA-IMG-06</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_1.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_2.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_3.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_4.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_5.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_6.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_7.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_8.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_9.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_10.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_11.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_12.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_13.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_14.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_15.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_16.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_1.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_2.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_3.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_4.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_5.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_6.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_7.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_8.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_9.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_10.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_11.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_12.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_13.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_14.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_15.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_16.png</symbol>
 		</symbols>
 		<x>905</x>
 		<y>277</y>
@@ -3466,10 +2952,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>acc-ui-support/bob/mks937a/mks937aImg.bob</file>
+				<file>../../../acc-ui-support/bob/mks937a/mks937aImg.bob</file>
 				<macros>
 					<device>$(dom)-VA-IMG-06</device>
 				</macros>
@@ -3479,97 +2964,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
+					<value>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -3583,22 +2978,22 @@ $(pv_value)</tooltip>
 		<name>$(dom)-VA-PIRG-06</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_1.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_2.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_3.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_4.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_5.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_6.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_7.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_8.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_9.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_10.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_11.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_12.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_13.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_14.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_15.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_16.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_1.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_2.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_3.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_4.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_5.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_6.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_7.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_8.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_9.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_10.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_11.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_12.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_13.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_14.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_15.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_16.png</symbol>
 		</symbols>
 		<x>905</x>
 		<y>244</y>
@@ -3607,10 +3002,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
+				<file>../../../acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
 				<macros>
 					<device>$(dom)-VA-PIRG-06</device>
 				</macros>
@@ -3620,97 +3014,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
+					<value>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -3723,7 +3027,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle_36</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>881</x>
 		<y>253</y>
@@ -3781,7 +3085,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle_37</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>881</x>
 		<y>286</y>
@@ -3841,7 +3145,7 @@ $(pv_value)</tooltip>
 		<macros>
 			<id>05</id>
 		</macros>
-		<file>acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
+		<file>../../../acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
 		<x>639</x>
 		<y>40</y>
 		<width>66</width>
@@ -3856,7 +3160,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>636</x>
 		<y>256</y>
@@ -3915,22 +3219,22 @@ $(pv_value)</tooltip>
 		<name>$(dom)-VA-IMG-05</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_1.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_2.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_3.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_4.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_5.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_6.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_7.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_8.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_9.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_10.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_11.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_12.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_13.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_14.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_15.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_16.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_1.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_2.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_3.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_4.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_5.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_6.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_7.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_8.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_9.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_10.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_11.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_12.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_13.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_14.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_15.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_16.png</symbol>
 		</symbols>
 		<x>660</x>
 		<y>277</y>
@@ -3939,10 +3243,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>acc-ui-support/bob/mks937a/mks937aImg.bob</file>
+				<file>../../../acc-ui-support/bob/mks937a/mks937aImg.bob</file>
 				<macros>
 					<device>$(dom)-VA-IMG-05</device>
 				</macros>
@@ -3952,97 +3255,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
+					<value>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -4056,22 +3269,22 @@ $(pv_value)</tooltip>
 		<name>$(dom)-VA-PIRG-05</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_1.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_2.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_3.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_4.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_5.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_6.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_7.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_8.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_9.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_10.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_11.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_12.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_13.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_14.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_15.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_16.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_1.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_2.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_3.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_4.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_5.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_6.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_7.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_8.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_9.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_10.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_11.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_12.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_13.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_14.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_15.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_16.png</symbol>
 		</symbols>
 		<x>660</x>
 		<y>244</y>
@@ -4080,10 +3293,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
+				<file>../../../acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
 				<macros>
 					<device>$(dom)-VA-PIRG-05</device>
 				</macros>
@@ -4093,97 +3305,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
+					<value>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -4196,7 +3318,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle_36</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>636</x>
 		<y>253</y>
@@ -4254,7 +3376,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle_37</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>636</x>
 		<y>286</y>
@@ -4331,13 +3453,13 @@ $(pv_value)</tooltip>
 			<name>$(dom)-VA-FVALV-01</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>fe-ui-support/symbols/fastFlap-symbol_0.png</symbol>
-				<symbol>fe-ui-support/symbols/fastFlap-symbol_1.png</symbol>
-				<symbol>fe-ui-support/symbols/fastFlap-symbol_2.png</symbol>
-				<symbol>fe-ui-support/symbols/fastFlap-symbol_3.png</symbol>
-				<symbol>fe-ui-support/symbols/fastFlap-symbol_4.png</symbol>
-				<symbol>fe-ui-support/symbols/fastFlap-symbol_5.png</symbol>
-				<symbol>fe-ui-support/symbols/fastFlap-symbol_6.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_1.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_1.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_2.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_3.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_4.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_5.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/fastFlap-symbol_6.png</symbol>
 			</symbols>
 			<y>75</y>
 			<width>24</width>
@@ -4345,10 +3467,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+					<file>../../../fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
 					<macros>
 						<device>$(dom)-VA-FVALV-01</device>
 					</macros>
@@ -4358,43 +3479,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/fastFlap-symbol_0.png</value>
+						<value>../../../fe-ui-support/symbols/FE/fastFlap-symbol_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -4407,7 +3492,7 @@ $(pv_value)</tooltip>
 		<widget type="label" version="2.0.0">
 			<name>Text Update_2</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<text>FVALV-01</text>
 			<width>30</width>
@@ -4454,7 +3539,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle_4</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>12</x>
 			<y>288</y>
@@ -4513,17 +3598,17 @@ $(pv_value)</tooltip>
 			<name>$(dom)-VA-IONP-04</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_1.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_2.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_3.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_4.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_5.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_6.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_7.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_8.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_9.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_10.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_11.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_1.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_2.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_3.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_4.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_5.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_6.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_7.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_8.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_9.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_10.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_11.png</symbol>
 			</symbols>
 			<y>320</y>
 			<width>30</width>
@@ -4531,10 +3616,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
+					<file>../../../acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
 					<macros>
 						<device>$(dom)-VA-IONP-04</device>
 					</macros>
@@ -4544,67 +3628,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
+						<value>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -4619,7 +3643,7 @@ $(pv_value)</tooltip>
 			<macros>
 				<id>04</id>
 			</macros>
-			<file>acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
+			<file>../../../acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
 			<x>15</x>
 			<width>66</width>
 			<height>194</height>
@@ -4633,7 +3657,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>12</x>
 			<y>216</y>
@@ -4692,22 +3716,22 @@ $(pv_value)</tooltip>
 			<name>$(dom)-VA-IMG-04</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_1.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_2.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_3.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_4.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_5.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_6.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_7.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_8.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_9.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_10.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_11.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_12.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_13.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_14.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_15.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_16.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_1.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_2.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_3.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_4.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_5.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_6.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_7.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_8.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_9.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_10.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_11.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_12.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_13.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_14.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_15.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_16.png</symbol>
 			</symbols>
 			<x>36</x>
 			<y>237</y>
@@ -4716,10 +3740,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>acc-ui-support/bob/mks937a/mks937aImg.bob</file>
+					<file>../../../acc-ui-support/bob/mks937a/mks937aImg.bob</file>
 					<macros>
 						<device>$(dom)-VA-IMG-04</device>
 					</macros>
@@ -4729,97 +3752,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
+						<value>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -4833,22 +3766,22 @@ $(pv_value)</tooltip>
 			<name>$(dom)-VA-PIRG-04</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_1.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_2.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_3.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_4.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_5.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_6.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_7.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_8.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_9.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_10.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_11.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_12.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_13.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_14.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_15.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_16.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_1.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_2.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_3.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_4.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_5.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_6.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_7.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_8.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_9.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_10.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_11.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_12.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_13.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_14.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_15.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_16.png</symbol>
 			</symbols>
 			<x>36</x>
 			<y>204</y>
@@ -4857,10 +3790,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
+					<file>../../../acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
 					<macros>
 						<device>$(dom)-VA-PIRG-04</device>
 					</macros>
@@ -4870,97 +3802,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
+						<value>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -4973,7 +3815,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle_36</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>12</x>
 			<y>213</y>
@@ -5031,7 +3873,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle_37</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>12</x>
 			<y>246</y>
@@ -5090,7 +3932,7 @@ $(pv_value)</tooltip>
 	<widget type="action_button" version="2.0.0">
 		<name>EDM Rectangle_47</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>231</x>
 		<y>328</y>
@@ -5103,10 +3945,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Mid Green" red="0" green="196" blue="0"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>fe-ui-support/bob/vacuumSpace/space.bob</file>
+				<file>../../../fe-ui-support/bob/vacuumSpace/space.bob</file>
 				<macros>
 					<device>$(dom)-VA-SPACE-01</device>
 				</macros>
@@ -5158,7 +3999,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>12</x>
 			<y>216</y>
@@ -5216,7 +4057,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>12</x>
 			<y>288</y>
@@ -5275,17 +4116,17 @@ $(pv_value)</tooltip>
 			<name>$(dom)-VA-IONP-02</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_1.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_2.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_3.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_4.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_5.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_6.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_7.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_8.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_9.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_10.png</symbol>
-				<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_11.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_1.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_2.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_3.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_4.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_5.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_6.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_7.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_8.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_9.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_10.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_11.png</symbol>
 			</symbols>
 			<y>320</y>
 			<width>30</width>
@@ -5293,10 +4134,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
+					<file>../../../acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
 					<macros>
 						<device>$(dom)-VA-IONP-02</device>
 					</macros>
@@ -5306,67 +4146,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
+						<value>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -5381,7 +4161,7 @@ $(pv_value)</tooltip>
 			<macros>
 				<id>02</id>
 			</macros>
-			<file>acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
+			<file>../../../acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
 			<x>3</x>
 			<width>66</width>
 			<height>194</height>
@@ -5396,22 +4176,22 @@ $(pv_value)</tooltip>
 			<name>$(dom)-VA-IMG-02</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_1.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_2.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_3.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_4.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_5.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_6.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_7.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_8.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_9.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_10.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_11.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_12.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_13.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_14.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_15.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_16.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_1.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_2.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_3.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_4.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_5.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_6.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_7.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_8.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_9.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_10.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_11.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_12.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_13.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_14.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_15.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_16.png</symbol>
 			</symbols>
 			<x>36</x>
 			<y>237</y>
@@ -5420,10 +4200,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>acc-ui-support/bob/mks937a/mks937aImg.bob</file>
+					<file>../../../acc-ui-support/bob/mks937a/mks937aImg.bob</file>
 					<macros>
 						<device>$(dom)-VA-IMG-02</device>
 					</macros>
@@ -5433,97 +4212,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
+						<value>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -5537,22 +4226,22 @@ $(pv_value)</tooltip>
 			<name>$(dom)-VA-PIRG-02</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_1.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_2.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_3.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_4.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_5.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_6.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_7.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_8.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_9.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_10.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_11.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_12.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_13.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_14.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_15.png</symbol>
-				<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_16.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_1.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_2.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_3.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_4.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_5.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_6.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_7.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_8.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_9.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_10.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_11.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_12.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_13.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_14.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_15.png</symbol>
+				<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_16.png</symbol>
 			</symbols>
 			<x>36</x>
 			<y>204</y>
@@ -5561,10 +4250,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
+					<file>../../../acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
 					<macros>
 						<device>$(dom)-VA-PIRG-02</device>
 					</macros>
@@ -5574,97 +4262,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
+						<value>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -5677,7 +4275,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle_36</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>12</x>
 			<y>213</y>
@@ -5735,7 +4333,7 @@ $(pv_value)</tooltip>
 		<widget type="rectangle" version="2.0.0">
 			<name>EDM Rectangle_37</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<x>12</x>
 			<y>246</y>
@@ -5794,7 +4392,7 @@ $(pv_value)</tooltip>
 	<widget type="action_button" version="2.0.0">
 		<name>EDM Rectangle_48</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>107</x>
 		<y>347</y>
@@ -5807,10 +4405,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Mid Green" red="0" green="196" blue="0"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>fe-ui-support/bob/vacuumSpace/space.bob</file>
+				<file>../../../fe-ui-support/bob/vacuumSpace/space.bob</file>
 				<macros>
 					<device>$(dom)-VA-SPACE-01</device>
 				</macros>
@@ -5844,7 +4441,7 @@ $(pv_value)</tooltip>
 	<widget type="action_button" version="2.0.0">
 		<name>EDM Rectangle_49</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>58</x>
 		<y>347</y>
@@ -5857,10 +4454,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Mid Green" red="0" green="196" blue="0"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>fe-ui-support/bob/vacuumSpace/space.bob</file>
+				<file>../../../fe-ui-support/bob/vacuumSpace/space.bob</file>
 				<macros>
 					<device>$(dom)-VA-SPACE-01</device>
 				</macros>
@@ -5913,15 +4509,15 @@ $(pv_value)</tooltip>
 			<name>$(dom)-RS-ABSB-01</name>
 			<pv_name>$(name):STA</pv_name>
 			<symbols>
-				<symbol>fe-ui-support/symbols/absorber-symbol_0.png</symbol>
-				<symbol>fe-ui-support/symbols/absorber-symbol_1.png</symbol>
-				<symbol>fe-ui-support/symbols/absorber-symbol_2.png</symbol>
-				<symbol>fe-ui-support/symbols/absorber-symbol_3.png</symbol>
-				<symbol>fe-ui-support/symbols/absorber-symbol_4.png</symbol>
-				<symbol>fe-ui-support/symbols/absorber-symbol_5.png</symbol>
-				<symbol>fe-ui-support/symbols/absorber-symbol_5.png</symbol>
-				<symbol>fe-ui-support/symbols/absorber-symbol_5.png</symbol>
-				<symbol>fe-ui-support/symbols/absorber-symbol_5.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/absorber-symbol_1.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/absorber-symbol_1.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/absorber-symbol_2.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/absorber-symbol_3.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/absorber-symbol_4.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/absorber-symbol_5.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/absorber-symbol_5.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/absorber-symbol_5.png</symbol>
+				<symbol>../../../fe-ui-support/symbols/FE/absorber-symbol_5.png</symbol>
 			</symbols>
 			<y>84</y>
 			<width>30</width>
@@ -5929,10 +4525,9 @@ $(pv_value)</tooltip>
 			<background_color>
 				<color name="Canvas" red="200" green="200" blue="200"></color>
 			</background_color>
-			<actions>
-				<action type="open_display">
+			<actions><action type="open_display">
 					<description>Open Display</description>
-					<file>fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
+					<file>../../../fe-ui-support/bob/dlsPLC/vacuumValve.bob</file>
 					<macros>
 						<device>$(dom)-RS-ABSB-01</device>
 					</macros>
@@ -5942,55 +4537,7 @@ $(pv_value)</tooltip>
 			<rules>
 				<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/absorber-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/absorber-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/absorber-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/absorber-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/absorber-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/absorber-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/absorber-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/absorber-symbol_0.png</value>
-					</exp>
-					<pv_name>$(pv_name)</pv_name>
-				</rule>
-				<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-					<exp bool_exp="pvSev0==3 || pvSev0==4">
-						<value>fe-ui-support/symbols/absorber-symbol_0.png</value>
+						<value>../../../fe-ui-support/symbols/FE/absorber-symbol_0.png</value>
 					</exp>
 					<pv_name>$(pv_name)</pv_name>
 				</rule>
@@ -6003,7 +4550,7 @@ $(pv_value)</tooltip>
 		<widget type="label" version="2.0.0">
 			<name>Text Update_1</name>
 			<macros>
-				<pv_name></pv_name>
+				<pv_name/>
 			</macros>
 			<text>ABSB-01</text>
 			<width>30</width>
@@ -6274,7 +4821,7 @@ $(pv_value)</tooltip>
 		<macros>
 			<id>03</id>
 		</macros>
-		<file>acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
+		<file>../../../acc-ui-support/bob/mks937a/vacuumWidget.bob</file>
 		<x>382</x>
 		<y>40</y>
 		<width>66</width>
@@ -6289,7 +4836,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>379</x>
 		<y>256</y>
@@ -6348,22 +4895,22 @@ $(pv_value)</tooltip>
 		<name>$(dom)-VA-IMG-03</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_1.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_2.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_3.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_4.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_5.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_6.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_7.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_8.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_9.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_10.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_11.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_12.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_13.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_14.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_15.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aImg-symbol-34_16.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_1.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_2.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_3.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_4.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_5.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_6.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_7.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_8.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_9.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_10.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_11.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_12.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_13.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_14.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_15.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_16.png</symbol>
 		</symbols>
 		<x>403</x>
 		<y>277</y>
@@ -6372,10 +4919,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>acc-ui-support/bob/mks937a/mks937aImg.bob</file>
+				<file>../../../acc-ui-support/bob/mks937a/mks937aImg.bob</file>
 				<macros>
 					<device>$(dom)-VA-IMG-03</device>
 				</macros>
@@ -6385,97 +4931,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aImg-symbol-34_0.png</value>
+					<value>../../../acc-ui-support/symbols/mks937a/mks937aImg-symbol-34_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -6489,22 +4945,22 @@ $(pv_value)</tooltip>
 		<name>$(dom)-VA-PIRG-03</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_1.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_2.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_3.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_4.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_5.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_6.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_7.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_8.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_9.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_10.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_11.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_12.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_13.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_14.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_15.png</symbol>
-			<symbol>acc-ui-support/symbols/mks937aPirg-symbol-34_16.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_1.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_2.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_3.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_4.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_5.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_6.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_7.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_8.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_9.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_10.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_11.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_12.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_13.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_14.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_15.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_16.png</symbol>
 		</symbols>
 		<x>403</x>
 		<y>244</y>
@@ -6513,10 +4969,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
+				<file>../../../acc-ui-support/bob/mks937a/mks937aPirg.bob</file>
 				<macros>
 					<device>$(dom)-VA-PIRG-03</device>
 				</macros>
@@ -6526,97 +4981,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_11" prop_id="symbols[11]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_12" prop_id="symbols[12]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_13" prop_id="symbols[13]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_14" prop_id="symbols[14]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_15" prop_id="symbols[15]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/mks937aPirg-symbol-34_0.png</value>
+					<value>../../../acc-ui-support/symbols/mks937a/mks937aPirg-symbol-34_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>
@@ -6629,7 +4994,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle_36</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>379</x>
 		<y>253</y>
@@ -6687,7 +5052,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle_37</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>379</x>
 		<y>286</y>
@@ -6745,7 +5110,7 @@ $(pv_value)</tooltip>
 	<widget type="rectangle" version="2.0.0">
 		<name>EDM Rectangle_4</name>
 		<macros>
-			<pv_name></pv_name>
+			<pv_name/>
 		</macros>
 		<x>379</x>
 		<y>328</y>
@@ -6804,17 +5169,17 @@ $(pv_value)</tooltip>
 		<name>$(dom)-VA-IONP-03</name>
 		<pv_name>$(name):STA</pv_name>
 		<symbols>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_1.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_2.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_3.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_4.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_5.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_6.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_7.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_8.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_9.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_10.png</symbol>
-			<symbol>acc-ui-support/symbols/digitelMpcIonp-symbol-34_11.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_1.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_2.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_3.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_4.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_5.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_6.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_7.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_8.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_9.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_10.png</symbol>
+			<symbol>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_11.png</symbol>
 		</symbols>
 		<x>367</x>
 		<y>360</y>
@@ -6823,10 +5188,9 @@ $(pv_value)</tooltip>
 		<background_color>
 			<color name="Canvas" red="200" green="200" blue="200"></color>
 		</background_color>
-		<actions>
-			<action type="open_display">
+		<actions><action type="open_display">
 				<description>Open Display</description>
-				<file>acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
+				<file>../../../acc-ui-support/bob/digitelMpc/digitelMpcIonp2sp.bob</file>
 				<macros>
 					<device>$(dom)-VA-IONP-03</device>
 				</macros>
@@ -6836,67 +5200,7 @@ $(pv_value)</tooltip>
 		<rules>
 			<rule name="symbol_single_pv" prop_id="symbols[0]" out_exp="false">
 				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_1" prop_id="symbols[1]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_2" prop_id="symbols[2]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_3" prop_id="symbols[3]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_4" prop_id="symbols[4]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_5" prop_id="symbols[5]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_6" prop_id="symbols[6]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_7" prop_id="symbols[7]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_8" prop_id="symbols[8]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_9" prop_id="symbols[9]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
-				</exp>
-				<pv_name>$(pv_name)</pv_name>
-			</rule>
-			<rule name="symbol_single_pv_10" prop_id="symbols[10]" out_exp="false">
-				<exp bool_exp="pvSev0==3 || pvSev0==4">
-					<value>acc-ui-support/symbols/digitelMpcIonp-symbol-34_0.png</value>
+					<value>../../../acc-ui-support/symbols/digitelMpc/digitelMpcIonp-symbol-34_0.png</value>
 				</exp>
 				<pv_name>$(pv_name)</pv_name>
 			</rule>

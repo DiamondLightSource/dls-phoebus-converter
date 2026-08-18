@@ -7,10 +7,9 @@ from pathlib import Path
 
 from xmldiff import formatting, main
 
-from conftest import OUTPUT_SRC
+from conftest import OUTPUT_DIR
 
-REFERENCE_DIR = Path("tests/test_data/bob_files/fe-services/synoptic/")
-OUTPUT_DIR = OUTPUT_SRC / Path("fe-services/synoptic/")
+REFERENCE_DIR = Path("tests/test_data/bob_files/")
 
 
 def conversion_test(config_file, files_to_compare):
@@ -20,7 +19,7 @@ def conversion_test(config_file, files_to_compare):
         "-m",
         "dls_phoebus_converter",
         "-o",
-        OUTPUT_SRC,
+        OUTPUT_DIR,
         "-c",
         f"config/{config_file}",
     ]
@@ -47,7 +46,7 @@ def test_single_conversion():
     file. Compare the results to our reference data, failing if they differ."""
 
     files_to_compare = [
-        "FE12I.bob",
+        "fe-ui-support/bob/FE/FE12I.bob",
     ]
 
     diff_strings = conversion_test("example1.yaml", files_to_compare)
@@ -67,10 +66,10 @@ def test_representative_conversion():
     if they differ."""
 
     files_to_compare = [
-        "FE09I.bob",
-        "FE22B.bob",
-        "FE24B.bob",
-        "fe-ui-support/bob/common/plc/absb_temps_fe22b.bob",
+        "fe-ui-support/bob/FE/FE09I.bob",
+        "fe-ui-support/bob/FE/FE22B.bob",
+        "fe-ui-support/bob/FE/FE24B.bob",
+        "fe-ui-support/bob/FE/common/plc/absb_temps_fe22b.bob",
     ]
 
     diff_strings = conversion_test("example3.yaml", files_to_compare)

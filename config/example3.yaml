@@ -1,13 +1,13 @@
 # Used by integration/test_conversion_ci.py
 meta_data:
   - domain: fe
-    domain_synoptic_dst: fe-services/synoptic
     domain_ui_support_dst: fe-ui-support
     acc_ui_support_dst: acc-ui-support
 
 files:
-  - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE09I.opi
-    dst: synoptic
+  - src: tests/test_data/opi_files/FE/FE09I.opi
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE09I
       cell: 09
@@ -16,9 +16,9 @@ files:
       srvalve: 02
       ISBL: ""
 
-  - src: tests/test_data/opi_files/FE22B.opi
-    dst: synoptic
-    template_file: FE22B_template.xml
+  - src: tests/test_data/opi_files/FE/FE22B.opi
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE22B
       cell: 22
@@ -26,8 +26,9 @@ files:
       type: B
       srvalve: 03
 
-  - src: tests/test_data/opi_files/FE24B.opi
-    dst: synoptic
+  - src: tests/test_data/opi_files/FE/FE24B.opi
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE24B
       cell: 24
@@ -36,6 +37,7 @@ files:
       srvalve: 03
       ISBL: ""
 
-  - src: tests/test_data/opi_files/common
+  - src: tests/test_data/opi_files/FE
     dst: fe-ui-support
+    support_module_name: FE
     include_subdirs: true

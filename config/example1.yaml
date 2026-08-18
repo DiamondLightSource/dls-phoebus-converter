@@ -1,7 +1,6 @@
 # Used by integration/test_conversion_ci.py
 meta_data:
   - domain: fe
-    domain_synoptic_dst: fe-services/synoptic
     domain_ui_support_dst: fe-ui-support
     acc_ui_support_dst:  acc-ui-support
 
@@ -9,8 +8,9 @@ meta_data:
 files:
   # region synoptic screens
   # Convert FE22B.opi
-  - src: tests/test_data/opi_files/FE12I.opi
-    dst: synoptic
+  - src: tests/test_data/opi_files/FE/FE12I.opi
+    dst: fe-ui-support
+    support_module_name: FE
     macros:
       dom: FE12I
       cell: 12
