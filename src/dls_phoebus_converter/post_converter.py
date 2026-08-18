@@ -20,8 +20,10 @@ if TYPE_CHECKING:
     from dls_phoebus_converter.screen_converter import ScreenConverter
 
 from dls_phoebus_converter.support_modules import (
-    find_required_support_modules, get_existing_support_module_filepath,
-    handle_support_modules)
+    find_required_support_modules,
+    get_existing_support_module_filepath,
+    handle_support_modules,
+)
 
 logger = logging.getLogger("dls_phoebus_converter")
 
