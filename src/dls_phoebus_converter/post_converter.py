@@ -421,9 +421,11 @@ def fix_edm_symbol_widgets(
                     sm_path = get_existing_support_module_filepath(part)
                     if sm_path is not None:
                         src_sm = part
-                        # merge the path to the support module with the relative path of
-                        # the file in the support module (excluding the support module
-                        # name)
+                        # we have an absolute path to the support module:
+                        # sm_path=/dls_sw/FE/3-10/ and a relative path
+                        # within the support module:
+                        # old_symbol_file_resolved=../FE/symbols/symbol.png
+                        # which we want to merge to get the full symbol file path
                         src_file = Path(sm_path) / Path(
                             *old_symbol_file_resolved.parts[i + 1 :]
                         )
