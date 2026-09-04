@@ -13,6 +13,8 @@ from conftest import OUTPUT_DIR, REFERENCE_DIR
 
 # Url to fetch the reference screens from
 WEBSERVER_URL = "https://screen-tests-opis.diamond.ac.uk/screen-tests-synoptic/"
+
+IGNORE_SUFFIXES = [".html", "test*"]
 IMAGE_SUFFIXES = [".png", ".svg"]
 
 
@@ -53,7 +55,7 @@ def compare_dirs(out_dir, ref_dir):
     all_left = []
     all_right = []
     all_diffs = []
-    dcmp = filecmp.dircmp(out_dir, ref_dir, ignore=[".html", "test*"], shallow=False)
+    dcmp = filecmp.dircmp(out_dir, ref_dir, ignore=IGNORE_SUFFIXES, shallow=False)
 
     for file in dcmp.diff_files:
         if Path(file).suffix in IMAGE_SUFFIXES:
