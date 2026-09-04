@@ -75,8 +75,10 @@ def compare_dirs(out_dir, ref_dir):
 
         diff = difflib.unified_diff(lines1, lines2, fromfile=str(test), tofile=str(ref))
         diff_str = "".join(diff)
-        if diff_str != "":
-            all_diffs.append(f"Files {test} and {ref} differ:\n{diff_str}")
+        if diff_str == "":
+            raise Exception(f"Unexpected empty diff for {test} and {ref}")
+
+        all_diffs.append(f"Files {test} and {ref} differ:\n{diff_str}")
 
     if dcmp.left_only:
         all_left.extend([out_dir / file for file in dcmp.left_only])
