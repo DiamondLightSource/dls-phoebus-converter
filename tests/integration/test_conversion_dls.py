@@ -24,9 +24,14 @@ def compare_dirs(out_dir, ref_dir):
     dcmp = filecmp.dircmp(out_dir, ref_dir, ignore=[".html", "test*"], shallow=False)
 
     for file in dcmp.diff_files:
-        with open(out_dir / file) as test, open(ref_dir / file) as ref:
-            lines1 = test.readlines()
-            lines2 = ref.readlines()
+        try:
+            with open(out_dir / file) as test, open(ref_dir / file) as ref:
+                lines1 = test.readlines()
+                lines2 = ref.readlines()
+        except UnicodeDecodeError as e:
+            # Either ignore problematic files or otherwise handle them
+            raise Exception(f"Cannot compare {file}") from e
+
         diff = difflib.unified_diff(lines1, lines2, fromfile=str(test), tofile=str(ref))
         diff_str = "".join(diff)
         if diff_str != "":
