@@ -13,6 +13,38 @@ from conftest import OUTPUT_DIR, REFERENCE_DIR
 
 # Url to fetch the reference screens from
 WEBSERVER_URL = "https://screen-tests-opis.diamond.ac.uk/screen-tests-synoptic/"
+IMAGE_SUFFIXES = [".png", ".svg"]
+
+
+def get_image_hash(img: Path) -> str:
+    "Get image hash, excluding metadata."
+
+    cmd = [
+        "identify",
+        "-quiet",
+        "-format",
+        "'%#\n'",
+        img,
+    ]
+
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    stdout, stderr = process.communicate()
+
+    if process.returncode != 0:
+        raise Exception(f"Failed to get image hash for: {img} with errors:\n{stderr}")
+
+    return stdout.decode()
+
+
+def compare_images(test: Path, ref: Path) -> str:
+    if get_image_hash(test) != get_image_hash(ref):
+        return f"Files {test} and {ref} differ"
+
+    return ""
 
 
 def compare_dirs(out_dir, ref_dir):
@@ -24,12 +56,19 @@ def compare_dirs(out_dir, ref_dir):
     dcmp = filecmp.dircmp(out_dir, ref_dir, ignore=[".html", "test*"], shallow=False)
 
     for file in dcmp.diff_files:
+        if Path(file).suffix in IMAGE_SUFFIXES:
+            diff = compare_images(out_dir / file, ref_dir / file)
+            if diff:
+                all_diffs.append(diff)
+
+            continue
+
         try:
             with open(out_dir / file) as test, open(ref_dir / file) as ref:
                 lines1 = test.readlines()
                 lines2 = ref.readlines()
         except UnicodeDecodeError as e:
-            # Either ignore problematic files or otherwise handle them
+            # Either ignore, add to IMAGE_SUFFIXES, or otherwise handle errors
             raise Exception(f"Cannot compare {file}") from e
 
         diff = difflib.unified_diff(lines1, lines2, fromfile=str(test), tofile=str(ref))
