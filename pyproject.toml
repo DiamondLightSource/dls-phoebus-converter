@@ -7,8 +7,6 @@ name = "dls-phoebus-converter"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: Apache Software License",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
 description = "Converts Diamond cs-studio screens for use in Phoebus"
@@ -21,7 +19,7 @@ dependencies = [
 dynamic = ["version"]
 license.file = "LICENSE"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 
 [dependency-groups]
 dev = [
