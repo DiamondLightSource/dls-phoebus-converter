@@ -69,17 +69,17 @@
         {
             "source": "/dls_sw",
             "target": "/dls_sw",
-            "type": "bind"
+            "type": "bind,readonly"
         },
         {
             "source": "/dls",
             "target": "/dls",
-            "type": "bind"
+            "type": "bind,readonly"
         },
         {
             "source": "/home/ops",
             "target": "/home/ops",
-            "type": "bind"
+            "type": "bind,readonly"
         }
     ],
     // Mount the parent as /workspaces so we can pip install peers as editable
