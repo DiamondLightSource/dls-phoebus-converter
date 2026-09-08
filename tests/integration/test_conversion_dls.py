@@ -70,7 +70,8 @@ def compare_dirs(out_dir, ref_dir):
                 lines1 = test.readlines()
                 lines2 = ref.readlines()
         except UnicodeDecodeError as e:
-            # Either ignore, add to IMAGE_SUFFIXES, or otherwise handle errors
+            # In order to fix tests for files that cannot be compared line-by-line, you
+            # may need to ignore, add to IMAGE_SUFFIXES, or otherwise handle errors
             raise Exception(f"Cannot compare {file}") from e
 
         diff = difflib.unified_diff(lines1, lines2, fromfile=str(test), tofile=str(ref))
