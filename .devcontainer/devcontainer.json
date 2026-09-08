@@ -72,6 +72,11 @@
             "type": "bind,readonly"
         },
         {
+            "source": "/dls_sw/deploy-tools",
+            "target": "/dls_sw/deploy-tools",
+            "type": "bind,readonly"
+        },
+        {
             "source": "/dls",
             "target": "/dls",
             "type": "bind,readonly"
