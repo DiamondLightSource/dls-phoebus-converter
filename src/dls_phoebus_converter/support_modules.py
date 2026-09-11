@@ -231,7 +231,11 @@ def get_existing_support_module_filepath(
         logger.error(
             f"Could not find screens for {support_module_name} in {release_dir}"
         )
+        sc.modules_without_screens.add(f"{support_module_name} ({opi_dir_guess})")
         return None
+
+    if support_module_name not in sc.dependency_versions:
+        sc.unpinned_modules_found.add(support_module_name)
 
     return str(opi_dir_guess)
 
@@ -242,12 +246,10 @@ def get_support_module_release(
     """Pick which release of a support module to convert from.
 
     Releases pinned in the config are used as given. An unpinned module falls back to
-    the newest release on disk, and under UnpinnedModuleAction.ERROR is also recorded
-    so that report_unpinned_modules can list them all at the end of the run.
+    the newest release on disk.
 
     Args:
-        sc: The running conversion, holding the pinned releases and how to handle
-            modules without one.
+        sc: The running conversion, holding the pinned releases.
         support_module_name: Name of the support module being resolved.
         module_dir: The module's directory in /dls_sw, holding one dir per release.
 
@@ -272,36 +274,49 @@ def get_support_module_release(
 
         return release_dir
 
-    if sc.on_unpinned_module is UnpinnedModuleAction.ERROR:
-        sc.unpinned_modules_found.add(support_module_name)
-
     releases = [path for path in module_dir.iterdir() if path.is_dir()]
     return max(releases, key=lambda release: release.stat().st_ctime)
 
 
-def report_unpinned_modules(sc: ScreenConverter) -> None:
-    """Fail the conversion if any support module was resolved without a pinned release.
+def report_support_module_problems(sc: ScreenConverter) -> None:
+    """Fail the conversion if any support module did not resolve as intended.
 
-    Does nothing unless the config asked for UnpinnedModuleAction.ERROR. Every unpinned
-    module is named in a single message.
+    Called once the conversion has finished, so every problem is named in a single
+    message rather than costing one run each.
 
     Args:
         sc: The finished conversion.
 
     Raises:
-        ValueError: If any support module was resolved without a pinned release.
+        ValueError: If any module's screens were not found, or, under
+            UnpinnedModuleAction.ERROR, if any module was converted from an unpinned
+            release.
     """
 
-    if not sc.unpinned_modules_found:
+    problems = []
+
+    if sc.modules_without_screens:
+        problems.append(
+            "These support modules are in /dls_sw but their screens were not where "
+            "they were expected, so none of their screens have been converted: "
+            f"{', '.join(sorted(sc.modules_without_screens))}."
+        )
+
+    if sc.on_unpinned_module is UnpinnedModuleAction.ERROR and (
+        sc.unpinned_modules_found
+    ):
+        problems.append(
+            "The config file asks for on_unpinned_module: "
+            f"{UnpinnedModuleAction.ERROR}, but these support modules have no pinned "
+            "release and were converted from the newest release on disk: "
+            f"{', '.join(sorted(sc.unpinned_modules_found))}. Add them to the "
+            "dependencies field of the config file."
+        )
+
+    if not problems:
         return
 
-    error_msg = (
-        "The config file asks for on_unpinned_module: "
-        f"{UnpinnedModuleAction.ERROR}, but these support modules have no pinned "
-        "release and were converted from the newest release on disk: "
-        f"{', '.join(sorted(sc.unpinned_modules_found))}. Add them to the dependencies "
-        "field of the config file."
-    )
+    error_msg = "\n".join(problems)
     logger.error(error_msg)
     raise ValueError(error_msg)
 
