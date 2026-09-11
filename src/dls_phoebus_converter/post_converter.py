@@ -494,7 +494,7 @@ def fix_edm_symbol_widgets(
         for sm in all_support_modules:
             for i, part in enumerate(old_symbol_file_resolved.parts):
                 if sm[0] == part:
-                    sm_path = get_existing_support_module_filepath(part)
+                    sm_path = get_existing_support_module_filepath(sc, part)
                     if sm_path is not None:
                         src_sm = part
                         # we have an absolute path to the support module:
@@ -510,13 +510,15 @@ def fix_edm_symbol_widgets(
         # Look for symbol file within our own support module
         if src_file is None or not src_file.is_file():
             if oc.support_module_name is not None:
-                # The old path is relative, but we want absolute so strip out ../
-                old_symbol_file_stripped = str(old_symbol_file_resolved).replace(
-                    "../", ""
+                own_sm_path = get_existing_support_module_filepath(
+                    sc, oc.support_module_name
                 )
-                src_file = Path(
-                    get_existing_support_module_filepath(oc.support_module_name)
-                ) / Path(old_symbol_file_stripped)
+                if own_sm_path is not None:
+                    # The old path is relative, but we want absolute so strip out ../
+                    old_symbol_file_stripped = str(old_symbol_file_resolved).replace(
+                        "../", ""
+                    )
+                    src_file = Path(own_sm_path) / Path(old_symbol_file_stripped)
 
     if src_file is None or not src_file.is_file():
         logging.error(

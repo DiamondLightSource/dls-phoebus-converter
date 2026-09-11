@@ -3,6 +3,35 @@ meta_data:
     domain_ui_support_dst: fe-ui-support
     acc_ui_support_dst:  acc-ui-support
     convert_dependencies: True
+    # What to do with a support module that resolves on disk but is not pinned below.
+    # latest (default): newest release on disk. error: abort, naming every unpinned module.
+    on_unpinned_module: error
+    # Releases used to generate an older known-working set of screens on 2026-08-28.
+    # FE is pinned here as well as in the src paths below, because symbol lookups
+    # resolve it through this list rather than through the src path.
+    dependencies:
+      deltaTauPLCStat: 2-6
+      devIocStats: 3-1-14dls3-3
+      digitelMpc: 6-24
+      dlsPLC: 3-0-73
+      enzLoCuM4: 2-42
+      eurotherm2k: 2-10
+      FE: 9-67
+      mks937a: 2-97
+      mks937b: 2-98
+      motor: 7-0dls9-1
+      motorPLC: 2-0
+      mpsPermit: 3-0
+      pmac: 2-7-9
+      pmacUtil: 5-13
+      procServControl: 1-25
+      rackFan: 2-12
+      rga: 4-26
+      slit: 3-28-0-3
+      terminalServer: 2-6-1
+      TimingTemplates: 6-11
+      vacuum: 4-98
+      vacuumSpace: 4-10
 
 files:
   # region synoptic screens
@@ -131,7 +160,7 @@ files:
       type: I
       srvalve: 02
       ISBL: ""
-  
+
   - src: /dls_sw/prod/R3.14.12.7/support/FE/9-67/FEApp/opi/opi/FE10B.opi
     dst: fe-ui-support
     support_module_name: FE
