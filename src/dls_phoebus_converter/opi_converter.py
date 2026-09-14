@@ -99,7 +99,7 @@ class OpiConverter:
     path_to_top: Path = Path()
     dst_bob_filename: str | None = None
     dst_bob_filepath: Path | None = None
-    tmp_file_path: Path | None = None
+    staged_opi_path: Path | None = None
     conversions_to_skip_filepath: Path | None = None
 
     support_module_name: str | None = None
@@ -125,8 +125,8 @@ class OpiConverter:
             self.dst_bob_filename = self.src_file_path.with_suffix(".bob").name
         if self.dst_bob_filepath is None:
             self.dst_bob_filepath = self.dst_bob_dir_path / self.dst_bob_filename
-        if self.tmp_file_path is None:
-            self.tmp_file_path = self.dst_bob_dir_path / "tmp.opi"
+        if self.staged_opi_path is None:
+            self.staged_opi_path = self.dst_bob_dir_path / "tmp.opi"
 
         self.read_opi_file_contents()
         # If conversion has already been run, delete previous BOB conversion
@@ -143,7 +143,7 @@ class OpiConverter:
         self.const_bob_data = copy.deepcopy(self.bob_data)
 
     def write_opi_file_contents(self):
-        self.opi_data.write(self.tmp_file_path)
+        self.opi_data.write(self.staged_opi_path)
 
     def write_bob_file_contents(self):
 
@@ -266,14 +266,14 @@ class OpiConverter:
         if self.is_conversion_allowed():
             return False
 
-        self.tmp_file_path = staged_opi_path
+        self.staged_opi_path = staged_opi_path
 
         # Modify the OPI file before running conversion
         use_modified_opi = self.run_pre_conversion_steps()
         if not use_modified_opi:
             # Copy the src file to the staged location. This is done as autoconverting
             # directly from the src file sometimes fails due to read permission issues
-            shutil.copy(self.src_file_path, self.tmp_file_path)
+            shutil.copy(self.src_file_path, self.staged_opi_path)
 
         return True
 
@@ -288,7 +288,7 @@ class OpiConverter:
             True if the screen was converted and saved.
         """
 
-        os.remove(self.tmp_file_path)
+        os.remove(self.staged_opi_path)
 
         if not staged_bob_path.is_file():
             logger.error(f"Phoebus conversion failed for: {self.src_file_path}")
