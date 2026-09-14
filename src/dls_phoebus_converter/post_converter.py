@@ -570,7 +570,7 @@ def fix_edm_symbol_widgets(
         return
 
     widget_name = widget.findtext("name")
-    logger.info(f"Fixing Symbol widget with name: {widget_name}")
+    logger.debug(f"Fixing Symbol widget with name: {widget_name}")
 
     output_file, output_file_full = get_symbol_file_destinations(
         sc, oc, src_file, src_sm
