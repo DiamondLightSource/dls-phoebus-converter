@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 from dls_phoebus_converter.support_modules import (
     find_required_support_modules,
     get_existing_support_module_filepath,
-    handle_support_modules,
+    update_filepaths,
 )
 
 logger = logging.getLogger("dls_phoebus_converter")
@@ -44,7 +44,7 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
 
     if sc is not None:
         handle_macros(oc)
-        handle_support_modules(sc, oc)
+        update_filepaths(sc, oc)
 
     # Catch any conversion we may have missed, also used when converting a single
     # opi file.
