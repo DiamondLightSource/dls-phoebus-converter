@@ -54,7 +54,7 @@ default_config = {
         "file": {
             "class": "logging.FileHandler",
             "level": "DEBUG",
-            "formatter": "simple",
+            "formatter": "detailed",
             "filename": get_timestamped_log_filename(),
             "mode": "w",
         },
