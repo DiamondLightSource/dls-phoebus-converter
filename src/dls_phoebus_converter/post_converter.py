@@ -589,7 +589,7 @@ def fix_edm_symbol_widgets(
     if n_images is None:
         return
 
-    oc.completed_conversion_steps.create_sym_images = True
+    oc.completed_conversion_steps.split_sym_images = True
 
     # Fix rules and return the start_index
     start_index, old_rule = update_symbol_widget_rules(widget, output_file)
