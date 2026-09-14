@@ -47,9 +47,11 @@ def fix_grouping_container(oc: OpiConverter):
     """Sometimes group containers are missing border_color or border_style elements,
     if this is the case then add them with sensible defaults."""
 
+    fixed = False
     for widget in oc.opi_data.findall(
         ".//widget[@typeId='org.csstudio.opibuilder.widgets.groupingContainer']"
     ):
+        fixed = True
         oc.completed_conversion_steps.fix_group_cont = True
         logger.debug("Fixing missing border property in 'Group' widget")
 
@@ -63,4 +65,4 @@ def fix_grouping_container(oc: OpiConverter):
         if widget.find("border_style") is None:
             widget.append(etree.fromstring("<border_style>0</border_style>\n"))
 
-    return oc.completed_conversion_steps.fix_group_cont
+    return fixed
