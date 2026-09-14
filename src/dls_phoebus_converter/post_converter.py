@@ -121,20 +121,20 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
             etree.SubElement(root, "width").text = str(new_width)
         else:
             root.find("width").text = str(new_width)
-        logging.info(f"Display width resized to: {new_width}")
+        logger.info(f"Display width resized to: {new_width}")
 
     if screen_height < max_height:
         if root.findtext("height") is None:
             etree.SubElement(root, "height").text = str(new_height)
         else:
             root.find("height").text = str(new_height)
-        logging.info(f"Display height resized to: {new_height}")
+        logger.info(f"Display height resized to: {new_height}")
 
 
 def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
     for widget in oc.bob_data.findall(".//widget"):
         if "typeId" in widget.attrib.keys():
-            logging.error(
+            logger.error(
                 "Detected old CSS index '@typeid' - suggests that the Phoebus converter"
                 "failed to convert the GroupContainer widget.\n"
                 "Try running converter with --fixGroup option."
@@ -521,7 +521,7 @@ def fix_edm_symbol_widgets(
     # Get name of symbol file
     old_symbol_file = Path(widget.findtext("symbols/symbol"))
     if old_symbol_file.suffix == ".gif":
-        logging.warning(
+        logger.warning(
             "gif symbol images are not currently supported, failed to fix edm symbol: "
             f"{old_symbol_file}"
         )
@@ -561,7 +561,7 @@ def fix_edm_symbol_widgets(
                     src_file = Path(own_sm_path) / Path(old_symbol_file_stripped)
 
     if src_file is None or not src_file.is_file():
-        logging.error(
+        logger.error(
             f"Could not find symbol image for symbol reference {old_symbol_file}"
         )
         return

@@ -130,7 +130,7 @@ class OpiConverter:
                 lines = f.readlines()
                 for line in lines:
                     if self.src_file_path == line.strip():
-                        logging.warning(
+                        logger.warning(
                             "!OPI file to be converted is in the 'conversions_to_skip' "
                             "list suggesting that it has had manual changes that should"
                             " not be overwritten.\n"

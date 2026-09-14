@@ -72,7 +72,7 @@ def main(args: Sequence[str] | None = None) -> None:
         logger.setLevel(logging.DEBUG)
 
     if args.single_screen is not None and args.config_file is not None:
-        logging.error(
+        logger.error(
             "You cannot provide both a single-screen and a "
             "config_file argument. Exiting"
         )
@@ -101,7 +101,7 @@ def main(args: Sequence[str] | None = None) -> None:
         converter.convert()
 
     else:
-        logging.error(
+        logger.error(
             "You must provide either a single-screen to convert or a "
             "config_file. Exiting"
         )
