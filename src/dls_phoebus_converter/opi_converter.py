@@ -125,8 +125,6 @@ class OpiConverter:
             self.dst_bob_filename = self.src_file_path.with_suffix(".bob").name
         if self.dst_bob_filepath is None:
             self.dst_bob_filepath = self.dst_bob_dir_path / self.dst_bob_filename
-        if self.staged_opi_path is None:
-            self.staged_opi_path = self.dst_bob_dir_path / "tmp.opi"
 
         self.read_opi_file_contents()
         # If conversion has already been run, delete previous BOB conversion
