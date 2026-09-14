@@ -7,6 +7,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -23,6 +24,48 @@ logger = logging.getLogger("dls_phoebus_converter")
 # Screens are converted in batches to avoid container/phoebus overhead. Capped so that a
 # long run reports progress as it goes, rather than going quiet for minutes at a time.
 PHOEBUS_BATCH_SIZE = 100
+
+# Batches run concurrently. Each one is a separate container using ~470MB, so the limit
+# may be cores rather than memory.
+PHOEBUS_WORKERS = 4
+
+
+def run_phoebus_batch(opi_file_paths: list[Path], output_dir_path: Path) -> set[str]:
+    """Run the Phoebus converter once over a batch of .opi files.
+
+    Args:
+        opi_file_paths: The .opi files to convert in this batch.
+        output_dir_path: Directory the converter writes the .bob files to.
+
+    Returns:
+        The filenames the converter reported it could not convert.
+    """
+
+    convert_command = [
+        *PHOEBUS_SH_FILE_PATH.split(),
+        "-main",
+        "org.csstudio.display.builder.model.Converter",
+        "-output",
+        str(output_dir_path),
+        *[str(path) for path in opi_file_paths],
+    ]
+    logger.info(f"Running the Phoebus converter on {len(opi_file_paths)} screens")
+
+    process = subprocess.Popen(
+        convert_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    _, stderr = process.communicate()
+    stderr_text = stderr.decode("utf-8")
+
+    # The converter is very verbose, so it is logged at the DEBUG level
+    for line in stderr_text.split("\n"):
+        if line != "":
+            logger.debug(f"Phoebus - {line}")
+
+    return {
+        Path(reported).name
+        for reported in re.findall(r"Cannot convert (\S+)", stderr_text)
+    }
 
 
 def run_phoebus_converter(
@@ -41,35 +84,18 @@ def run_phoebus_converter(
         empty .bob for these, so they cannot be found by looking for a missing file.
     """
 
+    batches = [
+        opi_file_paths[start : start + PHOEBUS_BATCH_SIZE]
+        for start in range(0, len(opi_file_paths), PHOEBUS_BATCH_SIZE)
+    ]
+
     failed_file_names: set[str] = set()
-
-    for start in range(0, len(opi_file_paths), PHOEBUS_BATCH_SIZE):
-        batch = opi_file_paths[start : start + PHOEBUS_BATCH_SIZE]
-        convert_command = [
-            *PHOEBUS_SH_FILE_PATH.split(),
-            "-main",
-            "org.csstudio.display.builder.model.Converter",
-            "-output",
-            str(output_dir_path),
-            *[str(path) for path in batch],
-        ]
-        logger.info(f"Running the Phoebus converter on {len(batch)} screens")
-
-        process = subprocess.Popen(
-            convert_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-        _, stderr = process.communicate()
-        stderr_text = stderr.decode("utf-8")
-
-        # The converter is very verbose, so it is logged at the DEBUG level
-        for line in stderr_text.split("\n"):
-            if line != "":
-                logger.debug(f"Phoebus - {line}")
-
-        failed_file_names.update(
-            Path(reported).name
-            for reported in re.findall(r"Cannot convert (\S+)", stderr_text)
-        )
+    # Threads are enough as each only waits on its own converter process
+    with ThreadPoolExecutor(max_workers=PHOEBUS_WORKERS) as executor:
+        for batch_failed_file_names in executor.map(
+            lambda batch: run_phoebus_batch(batch, output_dir_path), batches
+        ):
+            failed_file_names.update(batch_failed_file_names)
 
     return failed_file_names
 
