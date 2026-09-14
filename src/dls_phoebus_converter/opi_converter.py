@@ -3,8 +3,10 @@
 import copy
 import logging
 import os
+import re
 import shutil
 import subprocess
+import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -17,6 +19,59 @@ PHOEBUS_SH_FILE_PATH = "/dls_sw/deploy-tools/modules/phoebus/dev/entrypoints/pho
 PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
 
 logger = logging.getLogger("dls_phoebus_converter")
+
+# Screens are converted in batches to avoid container/phoebus overhead. Capped so that a
+# long run reports progress as it goes, rather than going quiet for minutes at a time.
+PHOEBUS_BATCH_SIZE = 100
+
+
+def run_phoebus_converter(
+    opi_file_paths: list[Path], output_dir_path: Path
+) -> set[str]:
+    """Convert .opi files to .bob with the Phoebus converter.
+
+    Each output is named after its input, so the inputs must have distinct names.
+
+    Args:
+        opi_file_paths: The .opi files to convert.
+        output_dir_path: Directory the converter writes the .bob files to.
+
+    Returns:
+        The filenames the converter reported it could not convert. It still writes an
+        empty .bob for these, so they cannot be found by looking for a missing file.
+    """
+
+    failed_file_names: set[str] = set()
+
+    for start in range(0, len(opi_file_paths), PHOEBUS_BATCH_SIZE):
+        batch = opi_file_paths[start : start + PHOEBUS_BATCH_SIZE]
+        convert_command = [
+            *PHOEBUS_SH_FILE_PATH.split(),
+            "-main",
+            "org.csstudio.display.builder.model.Converter",
+            "-output",
+            str(output_dir_path),
+            *[str(path) for path in batch],
+        ]
+        logger.info(f"Running the Phoebus converter on {len(batch)} screens")
+
+        process = subprocess.Popen(
+            convert_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        _, stderr = process.communicate()
+        stderr_text = stderr.decode("utf-8")
+
+        # The converter is very verbose, so it is logged at the DEBUG level
+        for line in stderr_text.split("\n"):
+            if line != "":
+                logger.debug(f"Phoebus - {line}")
+
+        failed_file_names.update(
+            Path(reported).name
+            for reported in re.findall(r"Cannot convert (\S+)", stderr_text)
+        )
+
+    return failed_file_names
 
 
 @dataclass
@@ -197,45 +252,61 @@ class OpiConverter:
             if conversion_step_complete:
                 logger.info(conversion_step_log_msg)
 
-    def run_converter(self):
-        convert_command = (
-            PHOEBUS_SH_FILE_PATH
-            + " -main org.csstudio.display.builder.model.Converter -output "
-            + str(self.dst_bob_dir_path)
-            + " "
-            + str(self.tmp_file_path)
-        )
-        process = subprocess.Popen(
-            convert_command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-        tmp_bob_file_path = self.dst_bob_dir_path / "tmp.bob"
+    def stage_opi_file(self, staged_opi_path: Path) -> bool:
+        """Prepare the .opi that the Phoebus converter should read.
 
-        # Captures the stdout and stderr from the converter process.
-        # This can be very verbose, so we log it at the DEBUG level
-        _, stderr = process.communicate()
+        Args:
+            staged_opi_path: Where to put the prepared file. The Phoebus converter
+                names its output after this, so it must be unique within a batch.
 
-        # Delete input file (tmp.opi)
+        Returns:
+            True if the file was staged and should be converted.
+        """
+
+        if self.is_conversion_allowed():
+            return False
+
+        self.tmp_file_path = staged_opi_path
+
+        # Modify the OPI file before running conversion
+        use_modified_opi = self.run_pre_conversion_steps()
+        if not use_modified_opi:
+            # Copy the src file to the staged location. This is done as autoconverting
+            # directly from the src file sometimes fails due to read permission issues
+            shutil.copy(self.src_file_path, self.tmp_file_path)
+
+        return True
+
+    def apply_conversion(self, staged_bob_path: Path, sc) -> bool:
+        """Finish a conversion from what the Phoebus converter produced.
+
+        Args:
+            staged_bob_path: The .bob the Phoebus converter wrote for this screen.
+            sc: The running conversion, or None for a single file.
+
+        Returns:
+            True if the screen was converted and saved.
+        """
+
         os.remove(self.tmp_file_path)
 
-        if not tmp_bob_file_path.is_file():
-            logger.error(
-                f"Phoebus conversion failed for command: {''.join(convert_command)}"
-            )
-        for line in stderr.decode("utf-8").split("\n"):
-            if line != "":
-                if not tmp_bob_file_path.is_file():
-                    logger.error(f"Phoebus - {line}")
-                else:
-                    logger.debug(f"Phoebus - {line}")
+        if not staged_bob_path.is_file():
+            logger.error(f"Phoebus conversion failed for: {self.src_file_path}")
+            return False
 
-        if tmp_bob_file_path.is_file():
-            # Read tmp.bob
-            self.read_bob_file_contents(tmp_bob_file_path)
-            # Delete tmp.bob
-            os.remove(tmp_bob_file_path)
-            return True
+        self.read_bob_file_contents(staged_bob_path)
+        os.remove(staged_bob_path)
 
-        return False
+        # Make modifications to converted .bob file
+        self.run_post_conversion_steps(sc)
+
+        # Write the final xml to the bob file
+        self.write_bob_file_contents()
+
+        self.log_conversion_steps()
+        logger.info(f"Conversion saved to {self.dst_bob_filepath}\n")
+
+        return True
 
     def run_pre_conversion_steps(self):
         """Perform modifications to the .opi file before doing the main conversion
@@ -254,29 +325,22 @@ class OpiConverter:
         return post_conversion_steps(self, sc)
 
     def convert(self, sc=None) -> Path | None:
-        if self.is_conversion_allowed():
-            return True
+        """Convert this screen on its own, with its own Phoebus invocation."""
 
-        # Modify the OPI file before running conversion
-        use_modified_opi = self.run_pre_conversion_steps()
+        staging_dir = Path(tempfile.mkdtemp())
+        try:
+            staged_opi_path = staging_dir / "tmp.opi"
+            if not self.stage_opi_file(staged_opi_path):
+                return True
 
-        # Should we use the modified OPI files
-        if not use_modified_opi:
-            # Copy the src file to the tmp location overwriting any existing tmp.opi.
-            # This is done as autoconverting directly from the src file sometimes fails
-            # due to read permission issues
-            shutil.copy(self.src_file_path, self.tmp_file_path)
+            failed_file_names = run_phoebus_converter([staged_opi_path], staging_dir)
+            if staged_opi_path.name in failed_file_names:
+                logger.error(
+                    f"The Phoebus converter could not convert {self.src_file_path}, "
+                    "so its screen will be empty"
+                )
 
-        # Run Phoebus converter
-        success = self.run_converter()
-        if not success:
-            return False
-
-        # Make modifications to converted .bob file
-        self.run_post_conversion_steps(sc)
-
-        # Write the final xml to the bob file
-        self.write_bob_file_contents()
-
-        self.log_conversion_steps()
-        logger.info(f"Conversion saved to {self.dst_bob_filepath}\n")
+            if not self.apply_conversion(staged_opi_path.with_suffix(".bob"), sc):
+                return False
+        finally:
+            shutil.rmtree(staging_dir, ignore_errors=True)
