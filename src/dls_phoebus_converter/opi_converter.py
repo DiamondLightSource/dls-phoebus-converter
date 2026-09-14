@@ -31,7 +31,6 @@ class CompletedSteps:
     non_ab_action: bool = False
     replace_with_ab: bool = False
     replace_db_script: bool = False
-    fix_open_action_name: bool = False
     fix_action_macro_name: bool = False
     split_sym_images: bool = False
     replace_action_tab: bool = False

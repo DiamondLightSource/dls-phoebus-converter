@@ -51,6 +51,7 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
     for el in oc.bob_data.getroot().iter():
         if el.text is not None and ".opi" in el.text:
             el.text = el.text.replace(".opi", ".bob")
+            oc.completed_conversion_steps.replace_opi_ext = True
 
     # Special cases are tweaks which are not handled by the
     # normal conversion process and are often unique to a specific screen.
@@ -225,6 +226,7 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                     pv_names = match.group(1)
                     pv_names = pv_names.split(",")
                     switch_to_new_databrowser_action(action, list(pv_names))
+                    oc.completed_conversion_steps.replace_db_script = True
                 else:
                     logger.error(
                         "Could not find any PV names to add to the open_data_browser"
@@ -251,6 +253,7 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                     pv_names.extend(str_list[i + 1 : -1])
                     break
             switch_to_new_databrowser_action(action, list(pv_names))
+            oc.completed_conversion_steps.replace_db_script = True
 
 
 def switch_to_new_databrowser_action(action: Element, pv_names: list[str]):
