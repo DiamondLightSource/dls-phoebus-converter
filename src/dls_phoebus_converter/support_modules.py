@@ -4,6 +4,7 @@ the deployment locations."""
 from __future__ import annotations
 
 import logging
+from enum import StrEnum
 from pathlib import Path, PosixPath
 from typing import TYPE_CHECKING
 
@@ -29,6 +30,13 @@ ACC_UI_SUPPORT_MODULE_LIST = [
 ]
 
 logger = logging.getLogger("dls_phoebus_converter")
+
+
+class UnpinnedModuleAction(StrEnum):
+    """What to do with a support module that has no pinned release in the config."""
+
+    LATEST = "latest"
+    ERROR = "error"
 
 
 def handle_support_modules(sc: ScreenConverter, oc: OpiConverter):
@@ -193,28 +201,124 @@ def switch_filepaths(
     return str(file_path)
 
 
-def get_existing_support_module_filepath(support_module_name) -> str | None:
-    """Look for a support module in /dls_sw and get the path to the latest release
-    of the support module."""
+def get_existing_support_module_filepath(
+    sc: ScreenConverter, support_module_name: str
+) -> str | None:
+    """Look for a support module in /dls_sw and get the path to its screens.
+
+    Args:
+        sc: The running conversion, holding the pinned releases and how to handle
+            modules without one.
+        support_module_name: Name of the support module to look for.
+
+    Returns:
+        The path to the screen directory of the chosen release, or None if the module
+        is not in /dls_sw or that release holds no screens.
+    """
 
     dls_sw_support_modules = Path("/dls_sw/prod/R3.14.12.7/support/")
-    version_list = []
-    latest_file = Path("")
-    for path in dls_sw_support_modules.iterdir():
-        if path.name == support_module_name:
-            for version in path.iterdir():
-                if version.is_dir():
-                    version_list.append(version)
-            latest_file = max(list(version_list), key=lambda item: item.stat().st_ctime)
-
-    opi_dir_guess = latest_file / f"{support_module_name}App" / "opi" / "opi"
-    if opi_dir_guess.is_dir():
-        return str(opi_dir_guess)
-    else:
+    module_dir = dls_sw_support_modules / support_module_name
+    if not module_dir.is_dir():
         logger.error(
             f"Could not find {support_module_name} in {str(dls_sw_support_modules)}"
         )
         return None
+
+    release_dir = get_support_module_release(sc, support_module_name, module_dir)
+
+    opi_dir_guess = release_dir / f"{support_module_name}App" / "opi" / "opi"
+    if not opi_dir_guess.is_dir():
+        logger.error(
+            f"Could not find screens for {support_module_name} in {release_dir}"
+        )
+        sc.modules_without_screens.add(f"{support_module_name} ({opi_dir_guess})")
+        return None
+
+    if support_module_name not in sc.dependency_versions:
+        sc.unpinned_modules_found.add(support_module_name)
+
+    return str(opi_dir_guess)
+
+
+def get_support_module_release(
+    sc: ScreenConverter, support_module_name: str, module_dir: Path
+) -> Path:
+    """Pick which release of a support module to convert from.
+
+    Releases pinned in the config are used as given. An unpinned module falls back to
+    the newest release on disk.
+
+    Args:
+        sc: The running conversion, holding the pinned releases.
+        support_module_name: Name of the support module being resolved.
+        module_dir: The module's directory in /dls_sw, holding one dir per release.
+
+    Returns:
+        The path to the chosen release directory.
+
+    Raises:
+        ValueError: If the release pinned for this module is not in /dls_sw.
+    """
+
+    pinned_release = sc.dependency_versions.get(support_module_name)
+    if pinned_release is not None:
+        release_dir = module_dir / str(pinned_release)
+        if not release_dir.is_dir():
+            error_msg = (
+                f"Release {pinned_release} pinned for support module "
+                f"{support_module_name} in the config file does not exist: "
+                f"{release_dir}"
+            )
+            logger.error(error_msg)
+            raise ValueError(error_msg)
+
+        return release_dir
+
+    releases = [path for path in module_dir.iterdir() if path.is_dir()]
+    return max(releases, key=lambda release: release.stat().st_ctime)
+
+
+def report_support_module_problems(sc: ScreenConverter) -> None:
+    """Fail the conversion if any support module did not resolve as intended.
+
+    Called once the conversion has finished, so every problem is named in a single
+    message rather than costing one run each.
+
+    Args:
+        sc: The finished conversion.
+
+    Raises:
+        ValueError: If any module's screens were not found, or, under
+            UnpinnedModuleAction.ERROR, if any module was converted from an unpinned
+            release.
+    """
+
+    problems = []
+
+    if sc.modules_without_screens:
+        problems.append(
+            "These support modules are in /dls_sw but their screens were not where "
+            "they were expected, so none of their screens have been converted: "
+            f"{', '.join(sorted(sc.modules_without_screens))}."
+        )
+
+    if sc.on_unpinned_module is UnpinnedModuleAction.ERROR and (
+        sc.unpinned_modules_found
+    ):
+        problems.append(
+            "The config file asks for on_unpinned_module: "
+            f"{UnpinnedModuleAction.ERROR}, but these support modules have no pinned "
+            "release and were converted from the newest release on disk: "
+            f"{', '.join(sorted(sc.unpinned_modules_found))}. Add them to the "
+            "dependencies field of the config file."
+        )
+
+    if not problems:
+        return
+
+    error_msg = "\n".join(problems)
+    logger.error(error_msg)
+    raise ValueError(error_msg)
 
 
 def convert_extra_support_modules(sc: ScreenConverter):
@@ -241,7 +345,7 @@ def convert_extra_support_modules(sc: ScreenConverter):
         if sm_name not in existing_module_names:
             # Filter out any files which have been mistaken for support modules
             if sm_file_path.suffix == "":
-                sm_src_file_path = get_existing_support_module_filepath(sm_name)
+                sm_src_file_path = get_existing_support_module_filepath(sc, sm_name)
                 if sm_src_file_path is not None:
                     dst = "fe-ui-support"
                     if sm_name in ACC_UI_SUPPORT_MODULE_LIST:
@@ -260,6 +364,6 @@ def convert_extra_support_modules(sc: ScreenConverter):
 
     if len(data["files"]) > 0:
         sc.get_config(data)
-        sc.convert()
+        sc.convert_screens()
     else:
         logger.info("Creating extra modules finished!")

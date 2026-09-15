@@ -33,7 +33,7 @@ class CompletedSteps:
     replace_db_script = False
     fix_open_action_name = False
     fix_action_macro_name = False
-    create_sym_images = False
+    split_sym_images = False
     replace_action_tab = False
 
 
@@ -162,7 +162,8 @@ class OpiConverter:
             "to open a DataBrowser plt file",
             ccs.fix_action_macro_name: "Fixed Open Display action that contains the "
             "$name macro that does not get parsed",
-            ccs.create_sym_images: "Created new images for Symbol widget from original",
+            ccs.split_sym_images: "Split the combined Symbol widget image into one "
+            "image per symbol",
             ccs.replace_action_tab: "Replace open display target=tab with "
             "target=standalone",
         }

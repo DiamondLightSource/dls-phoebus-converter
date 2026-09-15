@@ -320,20 +320,72 @@ def get_symbol_image_dims(src_file: Path) -> tuple[int, int]:
     return width, height
 
 
+def get_symbol_file_paths(base_file: Path, n_images: int) -> list[Path]:
+    """One path per symbol, indexed unless the image holds a single symbol."""
+
+    if n_images == 1:
+        return [base_file]
+
+    return [base_file.with_stem(f"{base_file.stem}_{n}") for n in range(n_images)]
+
+
+def get_symbol_image_split(
+    sc: ScreenConverter, output_file_full: Path, src_file: Path, width: int
+) -> int | None:
+    """Split a symbol image into one file per symbol, doing the work once per image.
+
+    An image is an array of equally sized symbols, so it can only split one way. The
+    first widget to use it sets the width; later widgets reuse that split and are
+    warned if they ask for a different one.
+
+    Args:
+        sc: The running conversion, holding the split made for each image.
+        output_file_full: Where the symbol files are written.
+        src_file: The combined symbol image to split.
+        width: Width of one symbol as this widget gives it, or 0 if it gives none.
+
+    Returns:
+        The number of symbols in src_file, or None if it could not be measured.
+    """
+
+    if output_file_full in sc.symbol_image_splits:
+        split_width, n_images = sc.symbol_image_splits[output_file_full]
+        if width not in (0, split_width):
+            logger.warning(
+                f"Symbol image {src_file} was already split at sub_image_width "
+                f"{split_width}, so the {width} asked for here is ignored."
+            )
+        return n_images
+
+    full_width, height = get_symbol_image_dims(src_file)
+    if full_width is None or height is None:
+        logger.error("Failed to convert symbol widget due to problem with identify cmd")
+        return None
+
+    if width == 0:
+        logger.warning(
+            "Could not find symbol widget sub_image_width. Assuming width==height"
+        )
+        width = height
+
+    # Need to calculate from width of full image / width
+    n_images = full_width // width
+    create_symbol_image_file(output_file_full, src_file, n_images, width, height)
+    sc.symbol_image_splits[output_file_full] = (width, n_images)
+
+    return n_images
+
+
 def create_symbol_image_file(
-    oc: OpiConverter,
-    output_file: Path,
     output_file_full: Path,
     src_file: Path,
     n_images: int,
     width: int,
     height: int,
-) -> list[str]:
+) -> None:
     """Use the cli 'convert' tool to split the edm style single symbol image file
     into a seperate symbol image file per symbol"""
 
-    symbol_files = []
-    oc.completed_conversion_steps.create_sym_images = True
     logger.info(f"Creating new image for symbol from: {str(src_file)}")
 
     # Make directory for symbols if it doesnt exist. This can happen if we convert a
@@ -343,18 +395,10 @@ def create_symbol_image_file(
     # wont happen if the user has not requested to convert dependencies.
     output_file_full.parent.mkdir(exist_ok=True)
 
-    for n in range(n_images):
+    for n, new_output_file in enumerate(
+        get_symbol_file_paths(output_file_full, n_images)
+    ):
         x = 0 + width * n
-
-        # If there is only 1 image file, we dont need to add an index
-        if n_images == 1:
-            new_symbol = str(output_file)
-            new_output_file = output_file_full
-        else:
-            new_symbol = str(output_file.with_stem(output_file.stem + "_" + str(n)))
-            new_output_file = output_file_full.with_stem(
-                output_file_full.stem + "_" + str(n)
-            )
 
         cmd = [
             "convert",
@@ -381,10 +425,6 @@ def create_symbol_image_file(
                     logger.error(f"convert - {line}")
                 else:
                     logger.debug(f"convert - {line}")
-
-        symbol_files.append(new_symbol)
-
-    return symbol_files
 
 
 def get_symbol_file_destinations(
@@ -494,7 +534,7 @@ def fix_edm_symbol_widgets(
         for sm in all_support_modules:
             for i, part in enumerate(old_symbol_file_resolved.parts):
                 if sm[0] == part:
-                    sm_path = get_existing_support_module_filepath(part)
+                    sm_path = get_existing_support_module_filepath(sc, part)
                     if sm_path is not None:
                         src_sm = part
                         # we have an absolute path to the support module:
@@ -510,13 +550,15 @@ def fix_edm_symbol_widgets(
         # Look for symbol file within our own support module
         if src_file is None or not src_file.is_file():
             if oc.support_module_name is not None:
-                # The old path is relative, but we want absolute so strip out ../
-                old_symbol_file_stripped = str(old_symbol_file_resolved).replace(
-                    "../", ""
+                own_sm_path = get_existing_support_module_filepath(
+                    sc, oc.support_module_name
                 )
-                src_file = Path(
-                    get_existing_support_module_filepath(oc.support_module_name)
-                ) / Path(old_symbol_file_stripped)
+                if own_sm_path is not None:
+                    # The old path is relative, but we want absolute so strip out ../
+                    old_symbol_file_stripped = str(old_symbol_file_resolved).replace(
+                        "../", ""
+                    )
+                    src_file = Path(own_sm_path) / Path(old_symbol_file_stripped)
 
     if src_file is None or not src_file.is_file():
         logging.error(
@@ -532,7 +574,6 @@ def fix_edm_symbol_widgets(
     )
 
     width = 0
-    height = 0
 
     old_symbols_children = oc.const_opi_data.findall(".//sub_image_width")
     for symbol_child in old_symbols_children:
@@ -544,20 +585,12 @@ def fix_edm_symbol_widgets(
             # first
             width = int(float(symbol.findtext("sub_image_width")))
 
-    full_width, height = get_symbol_image_dims(src_file)
-    if full_width is None or height is None:
-        logging.error(
-            "Failed to convert symbol widget due to problem with identify cmd"
-        )
+    n_images = get_symbol_image_split(sc, output_file_full, src_file, width)
+    if n_images is None:
         return
 
-    if width == 0:
-        logging.warning(
-            "Could not find symbol widget sub_image_width. Assuming width==height"
-        )
-        width = height
-    # Need to calculate from width of full image / width
-    n_images = full_width // width
+    oc.completed_conversion_steps.split_sym_images = True
+
     # Fix rules and return the start_index
     start_index, old_rule = update_symbol_widget_rules(widget, output_file)
 
@@ -566,9 +599,7 @@ def fix_edm_symbol_widgets(
         widget.append(Element("run_actions_on_mouse_click"))
         widget.find("run_actions_on_mouse_click").text = "true"
 
-    symbol_files = create_symbol_image_file(
-        oc, output_file, output_file_full, src_file, n_images, width, height
-    )
+    symbol_files = [str(path) for path in get_symbol_file_paths(output_file, n_images)]
 
     # Remove the symbol files before the start index
     symbol_files = symbol_files[start_index:]

@@ -7,7 +7,11 @@ from pathlib import Path, PosixPath
 import yaml
 
 from dls_phoebus_converter.opi_converter import OpiConverter
-from dls_phoebus_converter.support_modules import convert_extra_support_modules
+from dls_phoebus_converter.support_modules import (
+    UnpinnedModuleAction,
+    convert_extra_support_modules,
+    report_support_module_problems,
+)
 
 logger = logging.getLogger("dls_phoebus_converter")
 
@@ -20,6 +24,15 @@ class ScreenConverter:
         self.output_dir_path = output_dir_path
         self.config_file = config_file_path
         self.convert_dependencies = False
+        # Mapping between a support module name and the release to convert from
+        self.dependency_versions: dict[str, str] = {}
+        self.on_unpinned_module = UnpinnedModuleAction.LATEST
+        # Support module problems, collected during the run and reported once at the end
+        self.unpinned_modules_found: set[str] = set()
+        self.modules_without_screens: set[str] = set()
+        # Symbol image destination -> (symbol width, number of symbols), so each image
+        # is only split once per run
+        self.symbol_image_splits: dict[Path, tuple[int, int]] = {}
         # Mapping between a screens src path and destination dir
         self.conversion_data: list[OpiConverter] = []
         # Mapping between a support module name and its screen location dir
@@ -101,6 +114,24 @@ class ScreenConverter:
         )
         if "convert_dependencies" in meta_data:
             self.convert_dependencies = bool(meta_data["convert_dependencies"])
+
+        if "dependencies" in meta_data:
+            # An empty dependencies field parses as None rather than an empty mapping
+            self.dependency_versions = meta_data["dependencies"] or {}
+
+        if "on_unpinned_module" in meta_data:
+            try:
+                self.on_unpinned_module = UnpinnedModuleAction(
+                    meta_data["on_unpinned_module"]
+                )
+            except ValueError:
+                error_msg = (
+                    "Invalid on_unpinned_module field in config file: "
+                    f"{meta_data['on_unpinned_module']}. Expected one of "
+                    f"{[action.value for action in UnpinnedModuleAction]}."
+                )
+                logger.error(error_msg)
+                raise ValueError(error_msg) from None
 
     def parse_file_data(
         self, file_data: dict, processed_files: list
@@ -214,6 +245,18 @@ class ScreenConverter:
         return new_conversions
 
     def convert(self) -> None:
+        """Convert everything in the config, plus the support modules it depends on."""
+
+        self.convert_screens()
+        report_support_module_problems(self)
+
+    def convert_screens(self) -> None:
+        """Convert the screens currently listed in conversion_data.
+
+        convert_extra_support_modules calls back into this with the screens of the
+        support modules it has found, so this runs once per round of dependencies.
+        """
+
         for conversion in self.conversion_data:
             logger.info(f"Converting {conversion.src_file_path}")
 

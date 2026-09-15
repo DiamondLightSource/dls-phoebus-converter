@@ -20,7 +20,12 @@ def pre_conversion_steps(oc: OpiConverter):
     if oc.fix_group:
         # Fix missing border items from grouping container
         use_modified_opi = fix_grouping_container(oc) or use_modified_opi
-    oc.write_opi_file_contents()
+
+    # If nothing was modified the caller copies the source over the top of this, so
+    # there is no point writing it out.
+    if use_modified_opi:
+        oc.write_opi_file_contents()
+
     return use_modified_opi
 
 
