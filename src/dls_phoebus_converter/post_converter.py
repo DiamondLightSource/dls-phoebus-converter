@@ -220,7 +220,7 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                 if match:
                     pv_names = match.group(1)
                     pv_names = pv_names.split(",")
-                    switch_to_new_databrowser_action(action, list(pv_names))
+                    switch_to_new_databrowser_action(action, pv_names)
                     oc.completed_conversion_steps.replace_db_script = True
                 else:
                     logger.error(
@@ -247,7 +247,7 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                 if "strip.py" in string or "strip.sh" in string:
                     pv_names.extend(str_list[i + 1 : -1])
                     break
-            switch_to_new_databrowser_action(action, list(pv_names))
+            switch_to_new_databrowser_action(action, pv_names)
             oc.completed_conversion_steps.replace_db_script = True
 
 
