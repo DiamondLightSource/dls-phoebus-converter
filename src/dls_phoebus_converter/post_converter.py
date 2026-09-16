@@ -286,8 +286,15 @@ def fix_action_open_macro(oc: OpiConverter, action: Element):
                         macro.text = action.getparent().getparent().find("name").text
 
 
-def get_symbol_image_dims(src_file: Path) -> tuple[int, int]:
-    """Returns the width and height of an image file."""
+def get_symbol_image_dims(src_file: Path) -> tuple[int, int] | tuple[None, None]:
+    """Get the pixel dimensions of an image file.
+
+    Args:
+        src_file: The image to measure.
+
+    Returns:
+        Its width and height, or (None, None) if identify failed.
+    """
 
     cmd = [
         "identify",
@@ -310,10 +317,8 @@ def get_symbol_image_dims(src_file: Path) -> tuple[int, int]:
     if stderr:
         logger.debug(f"identify - {stderr}")
 
-    dims = stdout.decode().strip("'").split(" ")
-    width = int(dims[0])
-    height = int(dims[1])
-    return width, height
+    width, height = stdout.decode().strip("'").split(" ")
+    return int(width), int(height)
 
 
 def get_symbol_file_paths(base_file: Path, n_images: int) -> list[Path]:
