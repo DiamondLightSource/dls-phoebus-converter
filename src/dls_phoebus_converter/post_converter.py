@@ -460,49 +460,45 @@ def update_symbol_widget_rules(
 
     invalid_image_index = None
     old_rule = None
-    if widget.findall("rules/rule") is not None:
-        rules = widget.findall("rules/rule")
-        additional_rules = []
-        for rule in rules:
-            # Look for a rule which is used to change the displayed
-            # symbol to a symbol signifying an invalid state.
-            if (
-                "prop_id" in rule.attrib.keys()
-                and rule.attrib["prop_id"] == "image_index"
-            ):
-                old_rule = copy.deepcopy(rule)
-                rule.attrib["prop_id"] = "symbols[0]"
-                rule.attrib["out_exp"] = "false"
-                for exp in rule.findall("exp"):
-                    if exp.attrib["bool_exp"] == "pvLegacySev0==-1":
-                        invalid_image_index = int(exp.findtext("expression"))
-                        exp.remove(exp.find("expression"))
-                        exp.attrib["bool_exp"] = "pvSev0==3 || pvSev0==4"
-                        val_el = Element("value")
-                        val_el.text = str(
-                            output_file.with_stem(
-                                f"{output_file.stem}_{invalid_image_index}"
-                            )
-                        )
-                        exp.append(val_el)
-                    else:
-                        # Remove other "image_index" rule expressions. Usually
-                        # we dont want to keep these rules as for the most part
-                        # this functionality is now built into the widget.
-                        rule.remove(exp)
+    # Possible bug: not cleared between rules, so a second matching rule appends the
+    # first rule's copies as well as its own. Depends on the rules in the source .opi.
+    additional_rules = []
 
-                # We must create a rule for each symbol specified for
-                # the widget which overwrites the displayed symbol
-                # widget with the special invalid state symbol.
-                for i in range(1, len(widget.find("symbols"))):
-                    # Get a unique copy of the rule
-                    additional_rule = copy.deepcopy(rule)
-                    additional_rule.attrib["name"] = rule.attrib["name"] + f"_{i}"
-                    additional_rule.attrib["prop_id"] = f"symbols[{i}]"
-                    additional_rules.append(additional_rule)
+    for rule in widget.findall("rules/rule"):
+        # Look for a rule which is used to change the displayed symbol to a symbol
+        # signifying an invalid state.
+        if rule.attrib.get("prop_id") != "image_index":
+            continue
 
-                # Extend the rules for this widget with the new rules we created
-                rule.getparent().extend(additional_rules)
+        old_rule = copy.deepcopy(rule)
+        rule.attrib["prop_id"] = "symbols[0]"
+        rule.attrib["out_exp"] = "false"
+        for exp in rule.findall("exp"):
+            if exp.attrib["bool_exp"] == "pvLegacySev0==-1":
+                invalid_image_index = int(exp.findtext("expression"))
+                exp.remove(exp.find("expression"))
+                exp.attrib["bool_exp"] = "pvSev0==3 || pvSev0==4"
+                val_el = Element("value")
+                val_el.text = str(
+                    output_file.with_stem(f"{output_file.stem}_{invalid_image_index}")
+                )
+                exp.append(val_el)
+            else:
+                # Remove other "image_index" rule expressions. For the most part this
+                # functionality is now built into the widget, so we dont keep them.
+                rule.remove(exp)
+
+        # We must create a rule for each symbol specified for the widget which
+        # overwrites the displayed symbol widget with the special invalid state symbol.
+        for i in range(1, len(widget.find("symbols"))):
+            # Get a unique copy of the rule
+            additional_rule = copy.deepcopy(rule)
+            additional_rule.attrib["name"] = rule.attrib["name"] + f"_{i}"
+            additional_rule.attrib["prop_id"] = f"symbols[{i}]"
+            additional_rules.append(additional_rule)
+
+        # Extend the rules for this widget with the new rules we created
+        rule.getparent().extend(additional_rules)
 
     if invalid_image_index is None:
         return 0, old_rule
