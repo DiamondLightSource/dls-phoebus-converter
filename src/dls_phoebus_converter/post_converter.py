@@ -139,6 +139,8 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
                 "failed to convert the GroupContainer widget.\n"
                 "Try running converter with --fixGroup option."
             )
+            # Returning here leaves every later widget in the file unfixed. Correcting
+            # it changes the converted output, so it is left as it is for now.
             return
 
         widget_type = widget.attrib.get("type")
