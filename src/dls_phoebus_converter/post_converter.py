@@ -278,12 +278,11 @@ def fix_action_open_macro(oc: OpiConverter, action: Element):
     """Replace the macro $(name) with the actions parent widgets name"""
 
     if action.attrib["type"] == "open_display":
-        for child in action:
-            if child.tag == "macros":
-                for macro in child:
-                    if macro.text == "$(name)":
-                        oc.completed_conversion_steps.fix_action_macro_name = True
-                        macro.text = action.getparent().getparent().find("name").text
+        for macros_el in action.findall("macros"):
+            for macro in macros_el:
+                if macro.text == "$(name)":
+                    oc.completed_conversion_steps.fix_action_macro_name = True
+                    macro.text = action.getparent().getparent().find("name").text
 
 
 def get_symbol_image_dims(src_file: Path) -> tuple[int, int] | tuple[None, None]:
@@ -750,9 +749,9 @@ def fix_actions_on_widgets_without_actions_functionality(
 
 def replace_open_in_tab(oc: OpiConverter, action: Element):
     if action.attrib["type"] == "open_display":
-        for child in action:
-            if child.tag == "target" and child.text == "tab":
-                child.text = "standalone"
+        for target in action.findall("target"):
+            if target.text == "tab":
+                target.text = "standalone"
                 oc.completed_conversion_steps.replace_action_tab = True
 
 

@@ -23,24 +23,22 @@ def replace_visible_script(oc: OpiConverter) -> None:
             parent.remove(script)
             widget = parent.getparent()
             if widget is not None:
-                rules_found = False
-                for child in widget:
-                    if child.tag == "rules":
-                        rule_xml = (
-                            '<rule name="set_visible" prop_id="visible" '
-                            'out_exp="false"><exp bool_exp="pv0==4">'
-                            "<value>true</value></exp><exp "
-                            'bool_exp="pv0==5"><value>true</value></exp>'
-                            '<exp bool_exp="pv0==6"><value>true</value>'
-                            '</exp><exp bool_exp="pv0==7"><value>true'
-                            '</value></exp><exp bool_exp="true">'
-                            "<value>false</value></exp><pv_name>"
-                            "$(motor):ELOSS</pv_name></rule>"
-                        )
-                        child.insert(-1, etree.fromstring(rule_xml))
-                        rules_found = True
-                        continue
-                if not rules_found:
+                rules_elements = widget.findall("rules")
+                for rules_el in rules_elements:
+                    rule_xml = (
+                        '<rule name="set_visible" prop_id="visible" '
+                        'out_exp="false"><exp bool_exp="pv0==4">'
+                        "<value>true</value></exp><exp "
+                        'bool_exp="pv0==5"><value>true</value></exp>'
+                        '<exp bool_exp="pv0==6"><value>true</value>'
+                        '</exp><exp bool_exp="pv0==7"><value>true'
+                        '</value></exp><exp bool_exp="true">'
+                        "<value>false</value></exp><pv_name>"
+                        "$(motor):ELOSS</pv_name></rule>"
+                    )
+                    rules_el.insert(-1, etree.fromstring(rule_xml))
+
+                if not rules_elements:
                     rules_xml = (
                         '<rules><rule name="set_visible" prop_id="visible" '
                         'out_exp="false"><exp bool_exp="pv0==4"><value>true'
