@@ -399,7 +399,7 @@ def create_symbol_image_file(
     for n, new_output_file in enumerate(
         get_symbol_file_paths(output_file_full, n_images)
     ):
-        x = 0 + width * n
+        x = width * n
 
         cmd = [
             "convert",
