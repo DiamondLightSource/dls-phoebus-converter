@@ -661,14 +661,8 @@ def move_action_to_transparent_button(widget: Element):
         etree.SubElement(action_button, "width").text = widget.findtext("width")
         etree.SubElement(action_button, "height").text = widget.findtext("height")
         # Sometimes x and y are not defined in the .bob file and will default to 0.
-        if widget.find("x") is not None:
-            etree.SubElement(action_button, "x").text = widget.findtext("x")
-        else:
-            etree.SubElement(action_button, "x").text = "0"
-        if widget.find("y") is not None:
-            etree.SubElement(action_button, "y").text = widget.findtext("y")
-        else:
-            etree.SubElement(action_button, "y").text = "0"
+        etree.SubElement(action_button, "x").text = widget.findtext("x", "0")
+        etree.SubElement(action_button, "y").text = widget.findtext("y", "0")
 
         return action_button
 
