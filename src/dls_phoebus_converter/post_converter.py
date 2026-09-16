@@ -147,11 +147,7 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
             if actions is not None:
                 text = widget.find("text")
                 if text is not None:
-                    if (
-                        text.text == "EXIT"
-                        or text.text == "Exit"
-                        or text.text == "Cancel"
-                    ):
+                    if text.text in ("EXIT", "Exit", "Cancel"):
                         # We are assuming that there is only one action on this widget
                         # and so only update the first one we find.
                         fix_exit_button(oc, actions.find("action"))
