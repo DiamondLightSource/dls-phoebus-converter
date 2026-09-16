@@ -51,11 +51,11 @@ def add_new_macros(
     macro_data = oc.bob_data.find("macros")
 
     for new_macro_name, new_macro_value in zip(macro_names, macro_values, strict=True):
-        for existing_macro_name, existing_macro_value in macro_data.items():
-            if existing_macro_name == new_macro_name:
+        for existing_macro in macro_data:
+            if existing_macro.tag == new_macro_name:
                 logger.warning(
-                    f"An existing file macro is being overwritten: "
-                    f"{existing_macro_name}:{existing_macro_value} -> "
+                    "An existing file macro is being overwritten: "
+                    f"{existing_macro.tag}:{existing_macro.text} -> "
                     f"{new_macro_name}:{new_macro_value}"
                 )
         new_macro = etree.Element(new_macro_name)
