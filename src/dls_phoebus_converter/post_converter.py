@@ -685,23 +685,17 @@ def get_alarm_sensitive_progress_bars(oc: OpiConverter):
     """Get a list of identifying string pairs which are used to identify an
     alarm sensitive progressbar."""
 
+    # A progressbar is alarm sensitive if any of these are set
+    alarm_properties = (
+        "backcolor_alarm_sensitive",
+        "forecolor_alarm_sensitive",
+        "fillcolor_alarm_sensitive",
+    )
+
     alarm_sensitive_progress_bars = []
     xpath = ".//widget[@typeId='org.csstudio.opibuilder.widgets.progressbar']"
     for widget in oc.const_opi_data.findall(xpath):
-        if (
-            (
-                widget.find("backcolor_alarm_sensitive") is not None
-                and widget.find("backcolor_alarm_sensitive").text == "true"
-            )
-            or (
-                widget.find("forecolor_alarm_sensitive") is not None
-                and widget.find("forecolor_alarm_sensitive").text == "true"
-            )
-            or (
-                widget.find("fillcolor_alarm_sensitive") is not None
-                and widget.find("fillcolor_alarm_sensitive").text == "true"
-            )
-        ):
+        if any(widget.findtext(prop) == "true" for prop in alarm_properties):
             name_ids = [widget.find("name").text, widget.find("pv_name").text]
             alarm_sensitive_progress_bars.append(name_ids)
 
