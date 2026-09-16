@@ -117,17 +117,17 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
     # Only update the display dimensions if they are
     # too small to show all of the widgets
     if screen_width < max_width:
-        if root.findtext("width") is None:
-            etree.SubElement(root, "width").text = str(new_width)
-        else:
-            root.find("width").text = str(new_width)
+        width_el = root.find("width")
+        if width_el is None:
+            width_el = etree.SubElement(root, "width")
+        width_el.text = str(new_width)
         logger.info(f"Display width resized to: {new_width}")
 
     if screen_height < max_height:
-        if root.findtext("height") is None:
-            etree.SubElement(root, "height").text = str(new_height)
-        else:
-            root.find("height").text = str(new_height)
+        height_el = root.find("height")
+        if height_el is None:
+            height_el = etree.SubElement(root, "height")
+        height_el.text = str(new_height)
         logger.info(f"Display height resized to: {new_height}")
 
 
@@ -232,16 +232,13 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                 logger.warning(
                     "Screen contains an executeEclipseCommand script which is"
                     "not supported by Phoebus. Found script: "
-                    f"{action.find('script/text').text} in file {oc.src_file_path}"
+                    f"{script_text_el.text} in file {oc.src_file_path}"
                 )
 
     elif action.attrib["type"] == "command":
-        if (
-            "strip.py" in action.find("command").text
-            or "strip.sh" in action.find("command").text
-        ):
-            search_string = action.find("command").text
-            str_list = search_string.split(" ")
+        command = action.find("command").text
+        if "strip.py" in command or "strip.sh" in command:
+            str_list = command.split(" ")
             pv_names = []
             for i, string in enumerate(str_list):
                 if "strip.py" in string or "strip.sh" in string:
@@ -259,10 +256,11 @@ def switch_to_new_databrowser_action(action: Element, pv_names: list[str]):
     etree.SubElement(new_action, "pv_name").text = " ".join(pv_names)
     etree.SubElement(new_action, "timeframe").text = "1 hour"
 
+    actions = action.getparent()
     # Add the new action
-    action.getparent().append(new_action)
+    actions.append(new_action)
     # Delete the old action
-    action.getparent().remove(action)
+    actions.remove(action)
 
 
 def fix_widget_actions(oc: OpiConverter, actions: Element):
@@ -719,17 +717,19 @@ def fix_actions_on_widgets_without_actions_functionality(
     Phoebus. We look for these situations and try to fix them by converting the widget
     to an action button which can have actions."""
 
-    if widget.find(".actions/action") is not None:
-        if widget.attrib["type"] not in ("action_button", "symbol"):
+    first_action = widget.find("actions/action")
+    if first_action is not None:
+        widget_type = widget.attrib["type"]
+        if widget_type not in ("action_button", "symbol"):
             oc.completed_conversion_steps.non_ab_action = True
             logger.debug(
                 "Action contained in widget that isn't an action button: "
-                f"{widget.attrib['type']}, name: {widget.find('name').text}"
+                f"{widget_type}, name: {widget.find('name').text}"
             )
-            logger.debug(f"    action: {widget.find('actions/action').text}")
+            logger.debug(f"    action: {first_action.text}")
 
-            if widget.attrib["type"] in ("rectangle", "bool_button"):
-                if widget.attrib["type"] == "bool_button":
+            if widget_type in ("rectangle", "bool_button"):
+                if widget_type == "bool_button":
                     if widget.find("on_label").text != widget.find("off_label").text:
                         return
 
@@ -737,11 +737,10 @@ def fix_actions_on_widgets_without_actions_functionality(
                 logger.debug("    Attempting to fix by converting to an action_button")
                 widget.attrib["type"] = "action_button"
 
-                if (
-                    widget.find("text") is not None
-                    and widget.find("off_label") is not None
-                ):
-                    widget.find("text").text = widget.find("off_label").text
+                text = widget.find("text")
+                off_label = widget.find("off_label")
+                if text is not None and off_label is not None:
+                    text.text = off_label.text
                 else:
                     text_el = Element("text")
                     text_el.text = ""
