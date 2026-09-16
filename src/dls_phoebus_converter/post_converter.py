@@ -416,13 +416,15 @@ def create_symbol_image_file(
         )
         _, stderr = process.communicate()
 
-        if not new_output_file.is_file():
+        created = new_output_file.is_file()
+        if not created:
             logger.error(
                 f"Failed to create new symbol images with command: {' '.join(cmd)}"
             )
+
         for line in stderr.decode("utf-8").split("\n"):
             if line:
-                if not new_output_file.is_file():
+                if not created:
                     logger.error(f"convert - {line}")
                 else:
                     logger.debug(f"convert - {line}")
