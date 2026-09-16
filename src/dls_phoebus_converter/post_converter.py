@@ -382,7 +382,7 @@ def create_symbol_image_file(
     """Use the cli 'convert' tool to split the edm style single symbol image file
     into a seperate symbol image file per symbol"""
 
-    logger.info(f"Creating new image for symbol from: {str(src_file)}")
+    logger.info(f"Creating new image for symbol from: {src_file}")
 
     # Make directory for symbols if it doesnt exist. This can happen if we convert a
     # symbol widget which uses symbol files from a support module which has not been
@@ -400,7 +400,7 @@ def create_symbol_image_file(
             "convert",
             str(src_file),
             "-crop",
-            f"{str(width)}x{str(height)}+{str(x)}+0",
+            f"{width}x{height}+{x}+0",
             str(new_output_file),
         ]
 
@@ -472,7 +472,7 @@ def update_symbol_widget_rules(
                         val_el = Element("value")
                         val_el.text = str(
                             output_file.with_stem(
-                                output_file.stem + "_" + str(invalid_image_index)
+                                f"{output_file.stem}_{invalid_image_index}"
                             )
                         )
                         exp.append(val_el)
@@ -734,11 +734,9 @@ def fix_actions_on_widgets_without_actions_functionality(
             oc.completed_conversion_steps.non_ab_action = True
             logger.debug(
                 "Action contained in widget that isn't an action button: "
-                + str(widget.attrib["type"])
-                + ", name: "
-                + str(widget.find("name").text)
+                f"{widget.attrib['type']}, name: {widget.find('name').text}"
             )
-            logger.debug("    action: " + str(widget.find("actions/action").text))
+            logger.debug(f"    action: {widget.find('actions/action').text}")
 
             if (
                 widget.attrib["type"] == "rectangle"

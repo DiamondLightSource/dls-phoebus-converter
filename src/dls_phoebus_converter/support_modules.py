@@ -203,8 +203,7 @@ def switch_filepaths(
                 )
 
     logger.warning(
-        f"Could not find support module for old path: {str(file_path)}. Filepath "
-        "unchanged."
+        f"Could not find support module for old path: {file_path}. Filepath unchanged."
     )
     return str(file_path)
 
@@ -228,7 +227,7 @@ def get_existing_support_module_filepath(
     module_dir = dls_sw_support_modules / support_module_name
     if not module_dir.is_dir():
         logger.error(
-            f"Could not find {support_module_name} in {str(dls_sw_support_modules)}"
+            f"Could not find {support_module_name} in {dls_sw_support_modules}"
         )
         return None
 
