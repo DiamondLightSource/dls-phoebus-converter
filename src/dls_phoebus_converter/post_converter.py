@@ -815,7 +815,7 @@ def reorder_default_symbol_order_from_rule(
                     pv_val = int(float(match.group(1)))
             reorder_map.append((pv_val, result))
 
-    if len(reorder_map) == 0:
+    if not reorder_map:
         logger.warning(
             "Failed to parse symbol widget index modification rule when "
             "attempting to reorder symbol widget. Rule is being ignored."
