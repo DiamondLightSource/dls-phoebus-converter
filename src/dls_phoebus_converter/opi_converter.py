@@ -19,7 +19,6 @@ from dls_phoebus_converter.post_converter import post_conversion_steps
 from dls_phoebus_converter.pre_converter import pre_conversion_steps
 
 PHOEBUS_SH_FILE_PATH = "/dls_sw/deploy-tools/modules/phoebus/dev/entrypoints/phoebus"
-PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
 
 logger = logging.getLogger("dls_phoebus_converter")
 
