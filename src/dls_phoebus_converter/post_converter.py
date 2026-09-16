@@ -889,13 +889,3 @@ def fix_pv_severity_expression(oc: OpiConverter, exp_el: Element):
             logger.debug(f"Fixing {css_exp} to {phoebus_exp} in rule")
 
     exp_el.attrib["bool_exp"] = modified_attrib
-
-
-def update_legacy_sev_status(oc: OpiConverter, input_field, leg_sev, new_sev):
-    if leg_sev in input_field:
-        oc.completed_conversion_steps.update_leg_sev = True
-        result = input_field.replace(leg_sev, new_sev)
-        logger.debug(f"Fixing {leg_sev} to {new_sev}")
-        return result
-    else:
-        return input_field
