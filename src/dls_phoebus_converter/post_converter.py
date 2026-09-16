@@ -817,28 +817,17 @@ def convert_pv_function(widget: Element):
     for child in widget.iter():
         inp_string = child.text
         if inp_string is not None and "pv(" in inp_string:
-            # cs-studio writes a PV name as pv("NAME"), Phoebus as `NAME`. Splitting on
-            # the opening pv(" leaves every part but the first starting with a PV name,
-            # so the separator is dropped and the name up to the closing ") is quoted.
-            parts = inp_string.split('pv("')
-            converted = [parts[0]]
-            for part in parts[1:]:
-                name_end = part.find('")')
-                if name_end < 0:
-                    converted.append(part)
-                else:
-                    converted.append(f"`{part[:name_end]}`{part[name_end + 2 :]}")
-            pv_replacement = "".join(converted)
-            # Catch case where there is a function call nested within a pv(...) function
-            # In this case the above replacement will not have found pv(" and so it
-            # will still exist in the replacement. There is no way to handle this in
-            # Phoebus so just issue warning
+            # cs-studio writes a PV name as pv("NAME"), Phoebus as `NAME`
+            pv_replacement = re.sub(r'pv\("(.*?)"\)', r"`\1`", inp_string)
+            # Anything still holding pv( did not match, either a nested call such as
+            # pv(concat(...)) or an unclosed pv(". Phoebus has no equivalent for the
+            # former, so warn and leave the formula as it was.
             if "pv(" in pv_replacement:
                 logger.warning(
-                    "Cannot fix the following formula in Phoebus " + inp_string
+                    f"Cannot fix the following formula in Phoebus {inp_string}"
                 )
             else:
-                logger.info("Replace pv() function with " + pv_replacement)
+                logger.info(f"Replace pv() function with {pv_replacement}")
                 child.text = pv_replacement
 
 
