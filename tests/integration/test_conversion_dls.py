@@ -17,6 +17,10 @@ WEBSERVER_URL = "https://screen-tests-opis.diamond.ac.uk/screen-tests-synoptic/"
 IGNORE_SUFFIXES = [".html", "test*"]
 IMAGE_SUFFIXES = [".png", ".svg"]
 
+# The converter logs everything to stderr, so only the end of it is shown on failure.
+# That is enough for a traceback, which is what a crashed conversion leaves behind.
+STDERR_TAIL_LINES = 40
+
 
 def get_image_hash(img: Path) -> str:
     "Get image hash, excluding metadata."
@@ -113,8 +117,8 @@ def test_front_ends(ref_output_directory):
         "-c",
         "config/front_ends.yaml",
     ]
-    proc = subprocess.Popen(cmd, stderr=subprocess.DEVNULL)
-    proc.wait()
+    proc = subprocess.Popen(cmd, stderr=subprocess.PIPE)
+    _, stderr = proc.communicate()
 
     # Get the reference screens from kubernetes
 
@@ -140,4 +144,10 @@ def test_front_ends(ref_output_directory):
         else:
             for diff in diffs:
                 print(f"{diff}\n")
+
+        if proc.returncode != 0:
+            tail = stderr.decode(errors="replace").splitlines()[-STDERR_TAIL_LINES:]
+            print(f"\nThe conversion exited {proc.returncode}, ending with:\n")
+            print("\n".join(tail))
+
         raise AssertionError("Found differences in the conversion.")

@@ -30,8 +30,8 @@ default_config = {
     "formatters": {
         "simple": {"format": "%(levelname)s - %(message)s"},
         "detailed": {
-            "format": "%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d"
-            " - %(message)s",
+            "format": "%(asctime)s.%(msecs)03d - %(name)s - %(levelname)s - "
+            "%(filename)s:%(lineno)d - %(message)s",
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
@@ -54,7 +54,7 @@ default_config = {
         "file": {
             "class": "logging.FileHandler",
             "level": "DEBUG",
-            "formatter": "simple",
+            "formatter": "detailed",
             "filename": get_timestamped_log_filename(),
             "mode": "w",
         },

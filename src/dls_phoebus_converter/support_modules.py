@@ -48,8 +48,16 @@ def handle_support_modules(sc: ScreenConverter, oc: OpiConverter):
 
 
 def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
-    """Update the ScreenConverters list of required support modules based on
-    references to support modules found in the screen."""
+    """Update the ScreenConverter's list of required support modules based on
+    references to support modules found in the screen.
+
+    Args:
+        sc: The running conversion, whose module lists are appended to.
+        oc: The screen being converted.
+    """
+
+    new_domain_modules: list[str] = []
+    new_acc_modules: list[str] = []
 
     widget_file_paths: list[Path] = []
     # Look for filepaths in xml
@@ -92,6 +100,7 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
                 )
                 if new_entry not in sc.acc_support_module_locations:
                     sc.acc_support_module_locations.append(new_entry)
+                    new_acc_modules.append(support_module_name)
             else:
                 new_entry = (
                     support_module_name,
@@ -99,9 +108,14 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
                 )
                 if new_entry not in sc.domain_support_module_locations:
                     sc.domain_support_module_locations.append(new_entry)
+                    new_domain_modules.append(support_module_name)
 
-    logger.info(f"Required domain modules: {sc.domain_support_module_locations}")
-    logger.info(f"Required acc modules: {sc.acc_support_module_locations}")
+    # Only the modules this screen adds are logged. Names are sorted because they are
+    # found by iterating a set.
+    if new_domain_modules:
+        logger.info(f"Newly required domain modules: {sorted(new_domain_modules)}")
+    if new_acc_modules:
+        logger.info(f"Newly required acc modules: {sorted(new_acc_modules)}")
 
 
 def append_new_filepath(sc, oc, path_string, widget_file_paths, symbol=False):

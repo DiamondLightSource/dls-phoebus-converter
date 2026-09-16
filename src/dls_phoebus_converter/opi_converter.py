@@ -23,18 +23,17 @@ logger = logging.getLogger("dls_phoebus_converter")
 class CompletedSteps:
     """Steps are marked as done if completed successfully, used for logging"""
 
-    replace_edm_sym = False
-    fix_group_cont = False
-    update_leg_sev = False
-    fix_exit_but = False
-    replace_opi_ext = False
-    non_ab_action = False
-    replace_with_ab = False
-    replace_db_script = False
-    fix_open_action_name = False
-    fix_action_macro_name = False
-    split_sym_images = False
-    replace_action_tab = False
+    replace_edm_sym: bool = False
+    fix_group_cont: bool = False
+    update_leg_sev: bool = False
+    fix_exit_but: bool = False
+    replace_opi_ext: bool = False
+    non_ab_action: bool = False
+    replace_with_ab: bool = False
+    replace_db_script: bool = False
+    fix_action_macro_name: bool = False
+    split_sym_images: bool = False
+    replace_action_tab: bool = False
 
 
 @dataclass
@@ -50,7 +49,7 @@ class OpiConverter:
 
     support_module_name: str | None = None
     macros: dict[str, str] = field(default_factory=lambda: {})
-    completed_conversion_steps = CompletedSteps()
+    completed_conversion_steps: CompletedSteps = field(default_factory=CompletedSteps)
 
     replace_tab: bool = True
     fix_group: bool = True
@@ -130,7 +129,7 @@ class OpiConverter:
                 lines = f.readlines()
                 for line in lines:
                     if self.src_file_path == line.strip():
-                        logging.warning(
+                        logger.warning(
                             "!OPI file to be converted is in the 'conversions_to_skip' "
                             "list suggesting that it has had manual changes that should"
                             " not be overwritten.\n"
@@ -144,33 +143,57 @@ class OpiConverter:
     def log_conversion_steps(self):
         # Log what was done
         ccs = self.completed_conversion_steps
-        conversion_step_log_map = {
-            ccs.replace_edm_sym: "Replaced EDMSymbol widgets in OPI before running "
-            "converter",
-            ccs.fix_group_cont: "Fixed Grouping Container widget in OPI that is missing"
-            "required properties",
-            ccs.update_leg_sev: "Updating legacy PV severity status",
-            ccs.fix_exit_but: "Converting EXIT to script to an EXIT action button to "
-            "close the display",
-            ccs.replace_opi_ext: "Replaced .OPI file extensions with .BOB for "
-            "EmbeddedDisplay/LinkingContainers/Open Display actions",
-            ccs.non_ab_action: "Found an action on a widget that is NOT an ActionButton"
-            " or Symbol widget. Debug for more",
-            ccs.replace_with_ab: "Replaced a Rectangle/BooleanButton widget with an "
-            "action, with an Action Button widget",
-            ccs.replace_db_script: "Replaced script to open databrowser with an action "
-            "to open a DataBrowser plt file",
-            ccs.fix_action_macro_name: "Fixed Open Display action that contains the "
-            "$name macro that does not get parsed",
-            ccs.split_sym_images: "Split the combined Symbol widget image into one "
-            "image per symbol",
-            ccs.replace_action_tab: "Replace open display target=tab with "
-            "target=standalone",
-        }
-        for (
-            conversion_step_complete,
-            conversion_step_log_msg,
-        ) in conversion_step_log_map.items():
+        conversion_steps = [
+            (
+                ccs.replace_edm_sym,
+                "Replaced EDMSymbol widgets in OPI before running converter",
+            ),
+            (
+                ccs.fix_group_cont,
+                "Fixed Grouping Container widget in OPI that is missing "
+                "required properties",
+            ),
+            (ccs.update_leg_sev, "Updating legacy PV severity status"),
+            (
+                ccs.fix_exit_but,
+                "Converting EXIT to script to an EXIT action button to "
+                "close the display",
+            ),
+            (
+                ccs.replace_opi_ext,
+                "Replaced .OPI file extensions with .BOB for "
+                "EmbeddedDisplay/LinkingContainers/Open Display actions",
+            ),
+            (
+                ccs.non_ab_action,
+                "Found an action on a widget that is NOT an ActionButton"
+                " or Symbol widget. Debug for more",
+            ),
+            (
+                ccs.replace_with_ab,
+                "Replaced a Rectangle/BooleanButton widget with an "
+                "action, with an Action Button widget",
+            ),
+            (
+                ccs.replace_db_script,
+                "Replaced script to open databrowser with an action "
+                "to open a DataBrowser plt file",
+            ),
+            (
+                ccs.fix_action_macro_name,
+                "Fixed Open Display action that contains the "
+                "$name macro that does not get parsed",
+            ),
+            (
+                ccs.split_sym_images,
+                "Split the combined Symbol widget image into one image per symbol",
+            ),
+            (
+                ccs.replace_action_tab,
+                "Replace open display target=tab with target=standalone",
+            ),
+        ]
+        for conversion_step_complete, conversion_step_log_msg in conversion_steps:
             if conversion_step_complete:
                 logger.info(conversion_step_log_msg)
 

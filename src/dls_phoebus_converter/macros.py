@@ -32,7 +32,7 @@ def fill_in_macros(string: str, macros: dict[str, str]) -> str | None:
 
     if re.search(r"\$\{\}", resolved_path):
         # There is still an unresolved macro, return None
-        logging.error(f"Failed to resolve macros for string {string}")
+        logger.error(f"Failed to resolve macros for string {string}")
         return None
     else:
         return resolved_path
@@ -53,7 +53,7 @@ def add_new_macros(
     for new_macro_name, new_macro_value in zip(macro_names, macro_values, strict=True):
         for existing_macro_name, existing_macro_value in macro_data.items():
             if existing_macro_name == new_macro_name:
-                logging.warning(
+                logger.warning(
                     f"An existing file macro is being overwritten: "
                     f"{existing_macro_name}:{existing_macro_value} -> "
                     f"{new_macro_name}:{new_macro_value}"
