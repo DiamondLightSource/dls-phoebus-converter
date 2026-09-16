@@ -369,7 +369,7 @@ def convert_extra_support_modules(sc: ScreenConverter):
 
                     logger.info(f"Converting extra support module: {sm_name}")
 
-    if len(data["files"]) > 0:
+    if data["files"]:
         sc.get_config(data)
         sc.convert_screens()
     else:
