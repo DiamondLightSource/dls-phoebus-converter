@@ -185,7 +185,7 @@ class OpiConverter:
                 if el.text is not None and "\n" in el.text:
                     el.text = el.text.strip("\n")
                     el.text = el.text.strip()
-            elif (el.tag == "actions" or el.tag == "scripts") and el.text is not None:
+            elif el.tag in ("actions", "scripts") and el.text is not None:
                 el.text = el.text.strip("\n")
                 el.text = el.text.strip()
 

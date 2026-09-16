@@ -727,10 +727,7 @@ def fix_actions_on_widgets_without_actions_functionality(
     to an action button which can have actions."""
 
     if widget.find(".actions/action") is not None:
-        if (
-            widget.attrib["type"] != "action_button"
-            and widget.attrib["type"] != "symbol"
-        ):
+        if widget.attrib["type"] not in ("action_button", "symbol"):
             oc.completed_conversion_steps.non_ab_action = True
             logger.debug(
                 "Action contained in widget that isn't an action button: "
@@ -738,10 +735,7 @@ def fix_actions_on_widgets_without_actions_functionality(
             )
             logger.debug(f"    action: {widget.find('actions/action').text}")
 
-            if (
-                widget.attrib["type"] == "rectangle"
-                or widget.attrib["type"] == "bool_button"
-            ):
+            if widget.attrib["type"] in ("rectangle", "bool_button"):
                 if widget.attrib["type"] == "bool_button":
                     if widget.find("on_label").text != widget.find("off_label").text:
                         return
