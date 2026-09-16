@@ -104,10 +104,8 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
         width = get_widget_dimension(widget, "width")
         height = get_widget_dimension(widget, "height")
 
-        if x + width > max_width:
-            max_width = x + width
-        if y + height > max_height:
-            max_height = y + height
+        max_width = max(max_width, x + width)
+        max_height = max(max_height, y + height)
 
     root = oc.bob_data.getroot()
     screen_width = get_screen_width(root)
