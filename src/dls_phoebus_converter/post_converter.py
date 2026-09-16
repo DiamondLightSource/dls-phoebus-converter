@@ -307,7 +307,7 @@ def get_symbol_image_dims(src_file: Path) -> tuple[int, int]:
         logger.error(f"identify - {stderr}")
         return None, None
 
-    if stderr != "":
+    if stderr:
         logger.debug(f"identify - {stderr}")
 
     dims = stdout.decode().strip("'").split(" ")
@@ -416,7 +416,7 @@ def create_symbol_image_file(
                 f"Failed to create new symbol images with command: {' '.join(cmd)}"
             )
         for line in stderr.decode("utf-8").split("\n"):
-            if line != "":
+            if line:
                 if not new_output_file.is_file():
                     logger.error(f"convert - {line}")
                 else:

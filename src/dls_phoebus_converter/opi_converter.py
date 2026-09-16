@@ -63,7 +63,7 @@ def run_phoebus_batch(
 
     # The converter is very verbose, so it is logged at the DEBUG level
     for line in stderr_text.split("\n"):
-        if line != "":
+        if line:
             logger.debug(f"Phoebus - {line}")
 
     return {
