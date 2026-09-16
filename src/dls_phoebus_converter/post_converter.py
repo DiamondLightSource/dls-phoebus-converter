@@ -168,11 +168,10 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
                     move_action_to_transparent_button(widget)
             # Look for any progress bar widgets with alarm borders enabled
             alarm_sensitive_progress_bars = get_alarm_sensitive_progress_bars(oc)
-            if widget.find("name") is not None and widget.find("pv_name") is not None:
-                if [
-                    widget.find("name").text,
-                    widget.find("pv_name").text,
-                ] in alarm_sensitive_progress_bars:
+            name = widget.find("name")
+            pv_name = widget.find("pv_name")
+            if name is not None and pv_name is not None:
+                if [name.text, pv_name.text] in alarm_sensitive_progress_bars:
                     widget.append(Element("border_alarm_sensitive"))
                     widget.find("border_alarm_sensitive").text = "true"
 
@@ -180,11 +179,10 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
             # Phoebus is missing the <transparent_background> option, so we just set the
             # background colour to transparent
             transparent_tank_backgrounds = get_transparent_background_tank_widget(oc)
-            if widget.find("name") is not None and widget.find("pv_name") is not None:
-                if [
-                    widget.find("name").text,
-                    widget.find("pv_name").text,
-                ] in transparent_tank_backgrounds:
+            name = widget.find("name")
+            pv_name = widget.find("pv_name")
+            if name is not None and pv_name is not None:
+                if [name.text, pv_name.text] in transparent_tank_backgrounds:
                     new_el = etree.fromstring(
                         "<background_color>\n<color name='Transparent' red='255' green='255' blue='255'></color>\n</background_color>\n"  # noqa: E501
                     )
