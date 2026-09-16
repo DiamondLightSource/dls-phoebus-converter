@@ -63,28 +63,20 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
         pass
 
 
-def get_widget_dimension(widget: Element, widget_property: str) -> int:
-    # Widgets without a size property defined in Phoebus are 0
-    if widget.findtext(widget_property) is None:
-        return 0
-    else:
-        return int(widget.findtext(widget_property))
+def get_dimension(element: Element, name: str, default: int = 0) -> int:
+    """Read an integer dimension, falling back to a default where it is not set.
 
+    Args:
+        element: The widget or display to read from.
+        name: The dimension property, such as "x" or "width".
+        default: Used when the property is absent.
 
-def get_screen_width(display: Element) -> int:
-    # screens without a width property defined in Phoebus are set to a default size
-    if display.findtext("width") is None:
-        return DEFAULT_SCREEN_WIDTH
-    else:
-        return int(display.findtext("width"))
+    Returns:
+        The dimension in pixels.
+    """
 
-
-def get_screen_height(display: Element) -> int:
-    # screens without a height property defined in Phoebus are set to a default size
-    if display.findtext("height") is None:
-        return DEFAULT_SCREEN_HEIGHT
-    else:
-        return int(display.findtext("height"))
+    value = element.findtext(name)
+    return default if value is None else int(value)
 
 
 def expand_screen_to_widgets(oc: OpiConverter) -> None:
@@ -99,17 +91,17 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
     padding = 5  # px
 
     for widget in oc.bob_data.findall(".//widget"):
-        x = get_widget_dimension(widget, "x")
-        y = get_widget_dimension(widget, "y")
-        width = get_widget_dimension(widget, "width")
-        height = get_widget_dimension(widget, "height")
+        x = get_dimension(widget, "x")
+        y = get_dimension(widget, "y")
+        width = get_dimension(widget, "width")
+        height = get_dimension(widget, "height")
 
         max_width = max(max_width, x + width)
         max_height = max(max_height, y + height)
 
     root = oc.bob_data.getroot()
-    screen_width = get_screen_width(root)
-    screen_height = get_screen_height(root)
+    screen_width = get_dimension(root, "width", DEFAULT_SCREEN_WIDTH)
+    screen_height = get_dimension(root, "height", DEFAULT_SCREEN_HEIGHT)
 
     new_width = max_width + padding
     new_height = max_height + padding
