@@ -715,7 +715,7 @@ def get_transparent_background_tank_widget(oc: OpiConverter):
     transparent_backgrounds = []
     xpath = ".//widget[@typeId='org.csstudio.opibuilder.widgets.tank']"
     for widget in oc.const_opi_data.findall(xpath):
-        if widget.find("transparent_background").text == "true":
+        if widget.findtext("transparent_background") == "true":
             name_ids = [widget.find("name").text, widget.find("pv_name").text]
             transparent_backgrounds.append(name_ids)
 
