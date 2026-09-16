@@ -34,8 +34,8 @@ def fill_in_macros(string: str, macros: dict[str, str]) -> str | None:
         # There is still an unresolved macro, return None
         logger.error(f"Failed to resolve macros for string {string}")
         return None
-    else:
-        return resolved_path
+
+    return resolved_path
 
 
 def add_new_macros(

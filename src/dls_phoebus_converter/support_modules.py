@@ -191,16 +191,16 @@ def switch_filepaths(
                 return str(
                     path_to_support_modules / support_module_name / file_path.name
                 )
-            else:
-                path_to_support_modules = oc.path_to_top / data[1].parent
-                # we care about keeping the support module structure for bob files
-                # but not for symbols
-                return str(
-                    path_to_support_modules
-                    / support_module_name
-                    / subdir_structure
-                    / file_path.name
-                )
+
+            path_to_support_modules = oc.path_to_top / data[1].parent
+            # we care about keeping the support module structure for bob files
+            # but not for symbols
+            return str(
+                path_to_support_modules
+                / support_module_name
+                / subdir_structure
+                / file_path.name
+            )
 
     logger.warning(
         f"Could not find support module for old path: {file_path}. Filepath unchanged."

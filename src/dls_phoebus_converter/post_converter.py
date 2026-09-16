@@ -498,10 +498,8 @@ def update_symbol_widget_rules(
         # Extend the rules for this widget with the new rules we created
         rule.getparent().extend(additional_rules)
 
-    if invalid_image_index is None:
-        return 0, old_rule
-    else:
-        return 1, old_rule
+    start_index = 0 if invalid_image_index is None else 1
+    return start_index, old_rule
 
 
 @lru_cache(maxsize=1)
@@ -804,20 +802,20 @@ def reorder_default_symbol_order_from_rule(
             "attempting to reorder symbol widget. Rule is being ignored."
         )
         return symbols
-    else:
-        # Sort the map by ascending pv_val
-        reorder_map = sorted(reorder_map, key=lambda x: x[0])
-        new_symbols_order = list(symbols)
-        for pv_val, index in reorder_map:
-            for symbol in symbols:
-                if pv_val >= len(new_symbols_order):
-                    # Sometimes rules can specify a symbol to use for a pv_value outside
-                    # the number of images, we handle this by adding it to the end
-                    new_symbols_order.append(symbol)
-                elif f"_{index}." in symbol:
-                    new_symbols_order[pv_val] = symbol
 
-        return new_symbols_order
+    # Sort the map by ascending pv_val
+    reorder_map = sorted(reorder_map, key=lambda x: x[0])
+    new_symbols_order = list(symbols)
+    for pv_val, index in reorder_map:
+        for symbol in symbols:
+            if pv_val >= len(new_symbols_order):
+                # Sometimes rules can specify a symbol to use for a pv_value outside the
+                # number of images, we handle this by adding it to the end
+                new_symbols_order.append(symbol)
+            elif f"_{index}." in symbol:
+                new_symbols_order[pv_val] = symbol
+
+    return new_symbols_order
 
 
 def convert_pv_function(widget: Element):
