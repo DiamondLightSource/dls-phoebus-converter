@@ -60,17 +60,14 @@ def remove_fe_temp_indicator_script(oc: OpiConverter) -> None:
     )
 
     # Find and remove all <script> elements which use feTempIndicator.py
-    for script in oc.bob_data.findall('.//script[@file="feTempIndicator.py"]'):
-        parent = script.getparent()
-        if parent is not None:
-            parent.remove(script)
-
-    for script in oc.bob_data.findall(
-        './/script[@file="common/plc/feTempIndicator.py"]'
+    for xpath in (
+        './/script[@file="feTempIndicator.py"]',
+        './/script[@file="common/plc/feTempIndicator.py"]',
     ):
-        parent = script.getparent()
-        if parent is not None:
-            parent.remove(script)
+        for script in oc.bob_data.findall(xpath):
+            parent = script.getparent()
+            if parent is not None:
+                parent.remove(script)
 
 
 def replace_progress_bar_with_linear_meter(
