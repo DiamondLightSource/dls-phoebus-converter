@@ -120,14 +120,13 @@ class ScreenConverter:
         self.dependency_versions = meta_data.get("dependencies") or {}
 
         if "on_unpinned_module" in meta_data:
+            unpinned_action = meta_data["on_unpinned_module"]
             try:
-                self.on_unpinned_module = UnpinnedModuleAction(
-                    meta_data["on_unpinned_module"]
-                )
+                self.on_unpinned_module = UnpinnedModuleAction(unpinned_action)
             except ValueError:
                 error_msg = (
                     "Invalid on_unpinned_module field in config file: "
-                    f"{meta_data['on_unpinned_module']}. Expected one of "
+                    f"{unpinned_action}. Expected one of "
                     f"{[action.value for action in UnpinnedModuleAction]}."
                 )
                 logger.error(error_msg)
@@ -140,7 +139,6 @@ class ScreenConverter:
         src_file_paths = []
         dst_dir_paths = []
         src_path_config = Path(file_data["src"])
-        dst_path_config = Path()
         support_module_name = file_data["support_module_name"]
 
         # Common support module area shared across Accelerator Controls
@@ -187,16 +185,13 @@ class ScreenConverter:
                             ]:
                                 recursive_dir = recursive_dir / subdir
 
-                            qualified_module_name = support_module_name
+                            module_location = (support_module_name, dst_path_partial)
                             if (
-                                qualified_module_name,
-                                dst_path_partial,
-                            ) not in self.domain_support_module_locations:
+                                module_location
+                                not in self.domain_support_module_locations
+                            ):
                                 self.domain_support_module_locations.append(
-                                    (
-                                        qualified_module_name,
-                                        dst_path_partial,
-                                    )
+                                    module_location
                                 )
 
                         src_file_paths.append(file_paths)

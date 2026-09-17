@@ -15,7 +15,6 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 
 def pre_conversion_steps(oc: OpiConverter):
-    use_modified_opi = False
     use_modified_opi = replace_edm_symbol_widget(oc)
     if oc.fix_group:
         # Fix missing border items from grouping container
