@@ -23,7 +23,7 @@ def fill_in_macros(string: str, macros: dict[str, str]) -> str | None:
     the resolved string."""
 
     def replace(match):
-        key = match.group(1)  # the ‘x’ inside ${x}
+        key = match.group(1)  # the "x" inside ${x}
         return macros.get(key, match.group(0))  # If no macro matches, leave unchanged
 
     resolved_path = string
@@ -83,7 +83,7 @@ def handle_macros(oc: OpiConverter) -> None:
     for macro in unique_identified_macros:
         # Some macros refer to internal Phoebus objects, so we dont resolve these
         if macro not in MACRO_EXCEPTION_LIST:
-            if macro in oc.macros.keys():
+            if macro in oc.macros:
                 new_macro_names.append(macro)
                 new_macro_values.append(oc.macros[macro])
             else:

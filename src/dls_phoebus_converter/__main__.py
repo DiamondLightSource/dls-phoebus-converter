@@ -55,9 +55,7 @@ def parse_arguments(args: Sequence[str] | None = None) -> None:
         action="store_true",
         default=False,
     )
-    args = parser.parse_args(args)
-
-    return args
+    return parser.parse_args(args)
 
 
 def main(args: Sequence[str] | None = None) -> None:

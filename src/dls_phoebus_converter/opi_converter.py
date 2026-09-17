@@ -134,7 +134,7 @@ class OpiConverter:
     conversions_to_skip_filepath: Path | None = None
 
     support_module_name: str | None = None
-    macros: dict[str, str] = field(default_factory=lambda: {})
+    macros: dict[str, str] = field(default_factory=dict)
     completed_conversion_steps: CompletedSteps = field(default_factory=CompletedSteps)
 
     replace_tab: bool = True

@@ -133,7 +133,7 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
 
 def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
     for widget in oc.bob_data.findall(".//widget"):
-        if "typeId" in widget.attrib.keys():
+        if "typeId" in widget.attrib:
             logger.error(
                 "Detected old CSS index '@typeid' - suggests that the Phoebus converter"
                 "failed to convert the GroupContainer widget.\n"
