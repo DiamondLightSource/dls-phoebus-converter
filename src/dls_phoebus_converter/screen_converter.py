@@ -4,7 +4,7 @@ import logging
 import shutil
 import tempfile
 from importlib import import_module
-from pathlib import Path, PosixPath
+from pathlib import Path
 
 import yaml
 
@@ -61,7 +61,7 @@ class ScreenConverter:
 
     def get_config(self, config_file: Path | str) -> None:
         # get useful data out of json
-        if type(config_file) is PosixPath:
+        if isinstance(config_file, Path):
             with open(config_file) as file:
                 data = yaml.safe_load(file)
         else:

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import logging
 from enum import StrEnum
-from pathlib import Path, PosixPath
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import yaml
@@ -336,7 +336,7 @@ def convert_extra_support_modules(sc: ScreenConverter):
         sc.domain_support_module_locations + sc.acc_support_module_locations
     )
 
-    if type(sc.config_file) is PosixPath:
+    if isinstance(sc.config_file, Path):
         with open(sc.config_file) as file:
             data = yaml.safe_load(file)
     else:
