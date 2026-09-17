@@ -114,12 +114,10 @@ class ScreenConverter:
         self.domain_ui_support_symbol_dst_full = (
             self.output_dir_path / meta_data["domain_ui_support_dst"] / "symbols"
         )
-        if "convert_dependencies" in meta_data:
-            self.convert_dependencies = bool(meta_data["convert_dependencies"])
+        self.convert_dependencies = bool(meta_data.get("convert_dependencies"))
 
-        if "dependencies" in meta_data:
-            # An empty dependencies field parses as None rather than an empty mapping
-            self.dependency_versions = meta_data["dependencies"] or {}
+        # An empty dependencies field parses as None rather than an empty mapping
+        self.dependency_versions = meta_data.get("dependencies") or {}
 
         if "on_unpinned_module" in meta_data:
             try:
@@ -178,10 +176,7 @@ class ScreenConverter:
 
             for file_paths in src_path_config.rglob("*.opi"):
                 if file_paths not in processed_files:
-                    if (
-                        "include_subdirs" in file_data
-                        and file_data["include_subdirs"] is True
-                    ):
+                    if file_data.get("include_subdirs") is True:
                         # We need to do some fancy path manipulation to recreate the old
                         # directory structure in the destination directory
                         recursive_dir = Path()
@@ -221,14 +216,8 @@ class ScreenConverter:
         for src_opi_file_path, dst_bob_dir_path in zip(
             src_file_paths, dst_dir_paths, strict=True
         ):
-            dst_bob_filename = None
-            macros = None
-
-            if "new_filename" in file_data:
-                dst_bob_filename = file_data["new_filename"]
-
-            if "macros" in file_data:
-                macros = file_data["macros"]
+            dst_bob_filename = file_data.get("new_filename")
+            macros = file_data.get("macros")
 
             file_depth = len(dst_bob_dir_path.parts) - len(self.output_dir_path.parts)
             path_to_top = Path(*["../"] * file_depth)
