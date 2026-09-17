@@ -59,8 +59,14 @@ class ScreenConverter:
         self.domain_ui_support_bob_dst_full.mkdir(parents=True, exist_ok=True)
         self.domain_ui_support_symbol_dst_full.mkdir(parents=True, exist_ok=True)
 
-    def get_config(self, config_file: Path | str) -> None:
-        # get useful data out of json
+    def get_config(self, config_file: Path | dict) -> None:
+        """Read the config and build the list of screens to convert.
+
+        Args:
+            config_file: The .yaml file to read, or config data that has already been
+                parsed.
+        """
+
         if isinstance(config_file, Path):
             with open(config_file) as file:
                 data = yaml.safe_load(file)
