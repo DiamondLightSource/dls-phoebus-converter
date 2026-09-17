@@ -216,8 +216,7 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
         if "executeEclipseCommand" in script_text_el.text:
             if "org.csstudio.trends.databrowser2" in script_text_el.text:
                 search_string = script_text_el.text
-                match = re.search(r"'pvnames',\s*'([^']+)'", search_string)
-                if match:
+                if match := re.search(r"'pvnames',\s*'([^']+)'", search_string):
                     pv_names = match.group(1)
                     pv_names = pv_names.split(",")
                     switch_to_new_databrowser_action(action, pv_names)
@@ -784,14 +783,12 @@ def reorder_default_symbol_order_from_rule(
         # Match for pvX in string
         if re.findall(r"pv\d+", bool_logic):
             if "==" in bool_logic:
-                match = re.search(r"==\s*(\d+)", bool_logic)
-                if match:
+                if match := re.search(r"==\s*(\d+)", bool_logic):
                     pv_val = int(match.group(1))
             elif ">=" in bool_logic and "<" in bool_logic and "&&" in bool_logic:
                 # Gets the integer between >= and &&. This could be made
                 # smarter if required
-                match = re.search(r">=\s*(.+?)\s*&&", bool_logic)
-                if match:
+                if match := re.search(r">=\s*(.+?)\s*&&", bool_logic):
                     pv_val = int(float(match.group(1)))
             reorder_map.append((pv_val, result))
 
