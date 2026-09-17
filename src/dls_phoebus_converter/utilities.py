@@ -38,26 +38,26 @@ def search_widget_filepaths(
 
     file_el = widget.find("file")
     if file_el is not None and file_el.text is not None:
-        if func(sc, oc, Path(file_el.text), *args):
-            file_el.text = func(sc, oc, Path(file_el.text), *args)
+        if new_path := func(sc, oc, Path(file_el.text), *args):
+            file_el.text = new_path
 
     opi_file_el = widget.find("opi_file")
     if opi_file_el is not None and opi_file_el.text is not None:
-        if func(sc, oc, Path(opi_file_el.text), *args):
-            opi_file_el.text = func(sc, oc, Path(opi_file_el.text), *args)
+        if new_path := func(sc, oc, Path(opi_file_el.text), *args):
+            opi_file_el.text = new_path
 
     image_file_el = widget.find("image_file")
     if image_file_el is not None and image_file_el.text is not None:
-        if func(sc, oc, Path(image_file_el.text), *args):
-            image_file_el.text = func(sc, oc, Path(image_file_el.text), *args)
+        if new_path := func(sc, oc, Path(image_file_el.text), *args):
+            image_file_el.text = new_path
 
     action_els = widget.findall("./actions/action")
     for action_el in action_els:
         path_el = action_el.find("path")
         file_el = action_el.find("file")
         if path_el is not None and path_el.text is not None:
-            if func(sc, oc, Path(path_el.text), *args):
-                path_el.text = func(sc, oc, Path(path_el.text), *args)
+            if new_path := func(sc, oc, Path(path_el.text), *args):
+                path_el.text = new_path
         elif file_el is not None and file_el.text is not None:
-            if func(sc, oc, Path(file_el.text), *args):
-                file_el.text = func(sc, oc, Path(file_el.text), *args)
+            if new_path := func(sc, oc, Path(file_el.text), *args):
+                file_el.text = new_path
