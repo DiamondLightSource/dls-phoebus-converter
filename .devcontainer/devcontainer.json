@@ -51,7 +51,11 @@
         // Make sure SELinux does not disable with access to host filesystems like tmp
         "--security-opt=label=disable",
         // Add fuse device for apptainer testing inside the dev container
-        "--device=/dev/fuse"
+        "--device=/dev/fuse",
+        // Without this /tmp sits on the container's fuse-overlayfs, where every read and
+        // write is relayed by a single userspace daemon. That daemon saturates one core
+        // and starves the parallel screen conversion, which stages its files in /tmp.
+        "--tmpfs=/tmp:rw,size=4g,mode=1777"
     ],
     "mounts": [
         // Mount in the user terminal config folder so it can be edited

@@ -1,12 +1,14 @@
 """Handles the entire conversion of a set of screens from a config.yaml file"""
 
 import logging
+import shutil
+import tempfile
 from importlib import import_module
 from pathlib import Path, PosixPath
 
 import yaml
 
-from dls_phoebus_converter.opi_converter import OpiConverter
+from dls_phoebus_converter.opi_converter import OpiConverter, run_phoebus_converter
 from dls_phoebus_converter.support_modules import (
     UnpinnedModuleAction,
     convert_extra_support_modules,
@@ -257,16 +259,36 @@ class ScreenConverter:
         support modules it has found, so this runs once per round of dependencies.
         """
 
-        for conversion in self.conversion_data:
-            logger.info(f"Converting {conversion.src_file_path}")
+        staging_dir_path = Path(tempfile.mkdtemp())
+        try:
+            staged = []
+            for index, conversion in enumerate(self.conversion_data):
+                logger.info(f"Converting {conversion.src_file_path}")
 
-            # Create directories to place screens
-            conversion.dst_bob_dir_path.mkdir(parents=True, exist_ok=True)
-            # Create directory to place symbols
-            conversion.dst_symbols_dir_path.mkdir(parents=True, exist_ok=True)
+                # Create directories to place screens
+                conversion.dst_bob_dir_path.mkdir(parents=True, exist_ok=True)
+                # Create directory to place symbols
+                conversion.dst_symbols_dir_path.mkdir(parents=True, exist_ok=True)
 
-            # Convert .opi to .bob
-            conversion.convert(self)
+                # The Phoebus converter names its output after its input, so every
+                # screen in a batch needs a distinct staged filename
+                staged_opi_path = staging_dir_path / f"{index:05}.opi"
+                if conversion.stage_opi_file(staged_opi_path):
+                    staged.append((conversion, staged_opi_path))
+
+            failed_file_names = run_phoebus_converter(
+                [path for _, path in staged], staging_dir_path
+            )
+
+            for conversion, staged_opi_path in staged:
+                if staged_opi_path.name in failed_file_names:
+                    logger.error(
+                        "The Phoebus converter could not convert "
+                        f"{conversion.src_file_path}, so its screen will be empty"
+                    )
+                conversion.apply_conversion(staged_opi_path.with_suffix(".bob"), self)
+        finally:
+            shutil.rmtree(staging_dir_path, ignore_errors=True)
 
         # Get missing support module screens
         if self.convert_dependencies:
