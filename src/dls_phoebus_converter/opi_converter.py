@@ -181,12 +181,11 @@ class OpiConverter:
         # We must remove some dodgey formatting from certain elements inherited from the
         # opi file
         for el in self.bob_data.iter():
-            if el.attrib.items() and not list(el):
+            if el.attrib and len(el) == 0:
+                # TODO: Do we need the following '"\n" in el.text' check?
                 if el.text is not None and "\n" in el.text:
-                    el.text = el.text.strip("\n")
                     el.text = el.text.strip()
             elif el.tag in ("actions", "scripts") and el.text is not None:
-                el.text = el.text.strip("\n")
                 el.text = el.text.strip()
 
         self.bob_data.write(
