@@ -134,7 +134,6 @@ def switch_filepaths(
     "its name from the file_path string. If we cant deduce the support module from"
     "the file_path, then we guess that the file is somewhere in our own support module"
 
-    support_module_name = None
     all_support_modules = (
         sc.domain_support_module_locations + sc.acc_support_module_locations
     )
@@ -167,28 +166,26 @@ def switch_filepaths(
     # which we recognise. If it is then, we will be updating the filepath to point
     # to the new location for this support module. Otherwise, the stripped
     # filepath is probably a relative path to a folder within our own support module.
-    for data in all_support_modules:
-        if data[0] == stripped_file_path.parts[0]:
-            support_module_name = stripped_file_path.parts[0]
-            subdir_structure = Path(*stripped_file_path.parts[1:]).parent
-
-    if support_module_name is None:
+    if stripped_file_path.parts[0] in [name for name, _ in all_support_modules]:
+        support_module_name = stripped_file_path.parts[0]
+        subdir_structure = Path(*stripped_file_path.parts[1:]).parent
+    else:
         support_module_name = oc.support_module_name
         subdir_structure = stripped_file_path.parent
 
-    for data in all_support_modules:
-        if data[0] == support_module_name:
+    for module_name, module_bob_dir in all_support_modules:
+        if module_name == support_module_name:
             if symbol:
-                # data[1] stores the path to bob/support_module, we want the symbols
-                # which is data[1]/../symbols
+                # module_bob_dir is the path to bob/support_module, we want the symbols
+                # which is module_bob_dir/../symbols
                 path_to_support_modules = (
-                    oc.path_to_top / data[1].parent.parent / "symbols"
+                    oc.path_to_top / module_bob_dir.parent.parent / "symbols"
                 )
                 return str(
                     path_to_support_modules / support_module_name / file_path.name
                 )
 
-            path_to_support_modules = oc.path_to_top / data[1].parent
+            path_to_support_modules = oc.path_to_top / module_bob_dir.parent
             # we care about keeping the support module structure for bob files
             # but not for symbols
             return str(
