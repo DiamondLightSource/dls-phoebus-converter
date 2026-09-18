@@ -471,8 +471,9 @@ def update_symbol_widget_rules(
         rule.attrib["out_exp"] = "false"
         for exp in rule.findall("exp"):
             if exp.attrib["bool_exp"] == "pvLegacySev0==-1":
-                invalid_image_index = int(exp.findtext("expression"))
-                exp.remove(exp.find("expression"))
+                expression = exp.find("expression")
+                invalid_image_index = int(expression.text)
+                exp.remove(expression)
                 exp.attrib["bool_exp"] = "pvSev0==3 || pvSev0==4"
                 val_el = Element("value")
                 val_el.text = str(
