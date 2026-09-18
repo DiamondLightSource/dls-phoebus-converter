@@ -66,14 +66,12 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
     # If a support module has been requested and we are not already converting it,
     # then add it to the list of extra required support modules which we will
     # attempt to build later.
+    strings_to_skip = ("..", ".", "images", "symbols", "symbol")
     for file_path in file_paths_unique:
         # Search through the filepath and remove any strings which dont look useful
-        new_filepath = Path()
-        for part in file_path.parts:
-            strings_to_skip = ["..", ".", "images", "symbols", "symbol"]
-            if part not in strings_to_skip:
-                new_filepath = new_filepath / part
-        file_path = new_filepath
+        file_path = Path(
+            *[part for part in file_path.parts if part not in strings_to_skip]
+        )
 
         # If we only have 1 part left, it is probably the file itself which isnt a
         # support module so we move to the next one
@@ -137,7 +135,6 @@ def switch_filepaths(
     "the file_path, then we guess that the file is somewhere in our own support module"
 
     support_module_name = None
-    stripped_file_path = Path()
     all_support_modules = (
         sc.domain_support_module_locations + sc.acc_support_module_locations
     )
@@ -162,10 +159,9 @@ def switch_filepaths(
     if file_path.suffix in [".png", ".svg", ".gif", ".jpeg"]:
         symbol = True
 
-    for part in file_path.parts:
-        strings_to_skip = ["..", "."]
-        if part not in strings_to_skip:
-            stripped_file_path = stripped_file_path / part
+    stripped_file_path = Path(
+        *[part for part in file_path.parts if part not in ("..", ".")]
+    )
 
     # Look to see if the first part of the stripped filepath is a support module
     # which we recognise. If it is then, we will be updating the filepath to point
