@@ -714,36 +714,44 @@ def fix_actions_on_widgets_without_actions_functionality(
     to an action button which can have actions."""
 
     first_action = widget.find("actions/action")
-    if first_action is not None:
-        widget_type = widget.attrib["type"]
-        if widget_type not in ("action_button", "symbol"):
-            oc.completed_conversion_steps.non_ab_action = True
-            logger.debug(
-                "Action contained in widget that isn't an action button: "
-                f"{widget_type}, name: {widget.find('name').text}"
-            )
-            logger.debug(f"    action: {first_action.text}")
+    if first_action is None:
+        return
 
-            if widget_type in ("rectangle", "bool_button"):
-                if widget_type == "bool_button":
-                    if widget.find("on_label").text != widget.find("off_label").text:
-                        return
+    widget_type = widget.attrib["type"]
+    if widget_type in ("action_button", "symbol"):
+        return
 
-                oc.completed_conversion_steps.replace_with_ab = True
-                logger.debug("    Attempting to fix by converting to an action_button")
-                widget.attrib["type"] = "action_button"
+    oc.completed_conversion_steps.non_ab_action = True
+    logger.debug(
+        "Action contained in widget that isn't an action button: "
+        f"{widget_type}, name: {widget.find('name').text}"
+    )
+    logger.debug(f"    action: {first_action.text}")
 
-                text = widget.find("text")
-                off_label = widget.find("off_label")
-                if text is not None and off_label is not None:
-                    text.text = off_label.text
-                else:
-                    text_el = Element("text")
-                    text_el.text = ""
-                    widget.append(text_el)
-                for rule in widget.findall("rules/rule"):
-                    if rule.attrib["prop_id"] == "line_color":
-                        rule.getparent().remove(rule)
+    if widget_type not in ("rectangle", "bool_button"):
+        return
+
+    if widget_type == "bool_button" and (
+        widget.find("on_label").text != widget.find("off_label").text
+    ):
+        return
+
+    oc.completed_conversion_steps.replace_with_ab = True
+    logger.debug("    Attempting to fix by converting to an action_button")
+    widget.attrib["type"] = "action_button"
+
+    text = widget.find("text")
+    off_label = widget.find("off_label")
+    if text is not None and off_label is not None:
+        text.text = off_label.text
+    else:
+        text_el = Element("text")
+        text_el.text = ""
+        widget.append(text_el)
+
+    for rule in widget.findall("rules/rule"):
+        if rule.attrib["prop_id"] == "line_color":
+            rule.getparent().remove(rule)
 
 
 def replace_open_in_tab(oc: OpiConverter, action: Element):
