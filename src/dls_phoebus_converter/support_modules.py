@@ -128,11 +128,25 @@ def switch_filepaths(
     macros: dict[str, str] | None = None,
     symbol: bool = False,
 ) -> str:
-    "Takes an old file_path string and returns what the new file_path should be."
-    "This is done by getting the name of the support module from the old path and"
-    "matching it with our data. We first look for the support module by guessing"
-    "its name from the file_path string. If we cant deduce the support module from"
-    "the file_path, then we guess that the file is somewhere in our own support module"
+    """Work out where a file referenced by a screen is deployed to.
+
+    The support module is guessed from the first part of the old path. Where that does
+    not name a module we know about, the file is assumed to be somewhere within our own
+    support module.
+
+    Args:
+        sc: The running conversion, holding where each support module is deployed to.
+        oc: The screen being converted.
+        file_path: The path as the old screen references it.
+        macros: Resolved in the path before it is matched. None leaves them in place.
+        symbol: Whether the file is a symbol image, which is deployed to the module's
+            symbols directory rather than alongside its screens. An image suffix is
+            taken as a symbol regardless of whatever this is set to.
+
+    Returns:
+        The new path, or the old one unchanged where it needs no update or no support
+        module could be found for it.
+    """
 
     all_support_modules = (
         sc.domain_support_module_locations + sc.acc_support_module_locations
