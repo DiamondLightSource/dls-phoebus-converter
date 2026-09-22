@@ -311,7 +311,7 @@ class OpiConverter:
 
         Args:
             staged_bob_path: The .bob the Phoebus converter wrote for this screen.
-            sc: The running conversion, or None for a single file.
+            sc: The conversion configuration, or None for a single file.
 
         Returns:
             True if the screen was converted and saved.
