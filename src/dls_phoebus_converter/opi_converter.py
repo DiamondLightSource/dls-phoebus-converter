@@ -353,7 +353,7 @@ class OpiConverter:
         """
         return post_conversion_steps(self, sc)
 
-    def convert(self, sc=None) -> Path | None:
+    def convert(self, sc=None) -> bool:
         """Convert this screen on its own, with its own Phoebus invocation."""
 
         staging_dir = Path(tempfile.mkdtemp())
