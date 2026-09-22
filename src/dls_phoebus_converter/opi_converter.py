@@ -297,7 +297,8 @@ class OpiConverter:
 
         self.staged_opi_path = staged_opi_path
 
-        # Modify the OPI file before running conversion
+        # Modify the OPI file before running conversion. If modifications are made, file
+        # is copied over to staged_opi_path by run_pre_conversion_steps()
         use_modified_opi = self.run_pre_conversion_steps()
         if not use_modified_opi:
             # Copy the src file to the staged location. This is done as autoconverting
