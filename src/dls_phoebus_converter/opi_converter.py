@@ -360,7 +360,7 @@ class OpiConverter:
         try:
             staged_opi_path = staging_dir / "tmp.opi"
             if not self.stage_opi_file(staged_opi_path):
-                return True
+                return False
 
             failed_file_names = run_phoebus_converter([staged_opi_path], staging_dir)
             if staged_opi_path.name in failed_file_names:
@@ -373,3 +373,5 @@ class OpiConverter:
                 return False
         finally:
             shutil.rmtree(staging_dir, ignore_errors=True)
+
+        return True
