@@ -1,13 +1,15 @@
 """Handles the conversion of an individual file from opi to bob"""
 
 import copy
+import itertools
 import logging
 import os
 import re
 import shutil
 import subprocess
 import tempfile
-from concurrent.futures import ThreadPoolExecutor
+from collections.abc import Sequence
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -30,7 +32,9 @@ PHOEBUS_BATCH_SIZE = 100
 PHOEBUS_WORKERS = 4
 
 
-def run_phoebus_batch(opi_file_paths: list[Path], output_dir_path: Path) -> set[str]:
+def run_phoebus_batch(
+    opi_file_paths: Sequence[Path], output_dir_path: Path
+) -> set[str]:
     """Run the Phoebus converter once over a batch of .opi files.
 
     Args:
@@ -84,18 +88,19 @@ def run_phoebus_converter(
         empty .bob for these, so they cannot be found by looking for a missing file.
     """
 
-    batches = [
-        opi_file_paths[start : start + PHOEBUS_BATCH_SIZE]
-        for start in range(0, len(opi_file_paths), PHOEBUS_BATCH_SIZE)
-    ]
+    batches = itertools.batched(opi_file_paths, PHOEBUS_BATCH_SIZE, strict=False)
 
     failed_file_names: set[str] = set()
-    # Threads are enough as each only waits on its own converter process
+    # Threads rather than processes: each one only waits on its own converter
+    # subprocess, so almost no time is spent holding the GIL
     with ThreadPoolExecutor(max_workers=PHOEBUS_WORKERS) as executor:
-        for batch_failed_file_names in executor.map(
-            lambda batch: run_phoebus_batch(batch, output_dir_path), batches
-        ):
-            failed_file_names.update(batch_failed_file_names)
+        # Each batch becomes one run of the converter, read back as it finishes
+        futures = [
+            executor.submit(run_phoebus_batch, batch, output_dir_path)
+            for batch in batches
+        ]
+        for future in as_completed(futures):
+            failed_file_names.update(future.result())
 
     return failed_file_names
 
