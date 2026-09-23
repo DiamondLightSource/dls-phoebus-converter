@@ -39,14 +39,6 @@ class UnpinnedModuleAction(StrEnum):
     ERROR = "error"
 
 
-def handle_support_modules(sc: ScreenConverter, oc: OpiConverter):
-    """Figure out which filepaths within bob files need updating and
-    update them to the new paths for the DII screen deployment structure."""
-
-    find_required_support_modules(sc, oc)
-    update_filepaths(sc, oc)
-
-
 def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None:
     """Update the ScreenConverter's list of required support modules based on
     references to support modules found in the screen.
@@ -124,7 +116,9 @@ def append_new_filepath(sc, oc, path_string, widget_file_paths, symbol=False):
 
 
 def update_filepaths(sc: ScreenConverter, oc: OpiConverter):
-    """Replace all filepaths in the element tree"""
+    """Replace all filepaths in the element tree with the new paths for the DII screen
+    deployment structure."""
+
     for widget in oc.bob_data.findall(".//widget"):
         search_widget_filepaths(sc, oc, widget, switch_filepaths, oc.macros)
 

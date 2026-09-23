@@ -6,6 +6,7 @@ import copy
 import logging
 import re
 import subprocess
+from functools import lru_cache
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -22,7 +23,7 @@ if TYPE_CHECKING:
 from dls_phoebus_converter.support_modules import (
     find_required_support_modules,
     get_existing_support_module_filepath,
-    handle_support_modules,
+    update_filepaths,
 )
 
 logger = logging.getLogger("dls_phoebus_converter")
@@ -44,7 +45,7 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
 
     if sc is not None:
         handle_macros(oc)
-        handle_support_modules(sc, oc)
+        update_filepaths(sc, oc)
 
     # Catch any conversion we may have missed, also used when converting a single
     # opi file.
@@ -508,6 +509,31 @@ def update_symbol_widget_rules(
         return 1, old_rule
 
 
+@lru_cache(maxsize=1)
+def get_sub_image_widths(opi_data: etree.ElementTree) -> dict[tuple, str]:
+    """Index the sub image widths in an .opi by the symbol they belong to.
+
+    Cached on the tree so the index is built once per screen. Only the most recent is
+    kept, as screens are converted one at a time.
+
+    Args:
+        opi_data: The unmodified .opi element tree.
+
+    Returns:
+        Sub image width, as its original string, by (name, image file). Where a screen
+        repeats a pair the last one wins, as it did when this was searched linearly.
+    """
+
+    widths = {}
+    for width_el in opi_data.findall(".//sub_image_width"):
+        symbol = width_el.getparent()
+        widths[(symbol.findtext("name"), symbol.findtext("image_file"))] = (
+            symbol.findtext("sub_image_width")
+        )
+
+    return widths
+
+
 def fix_edm_symbol_widgets(
     oc: OpiConverter, sc: ScreenConverter, widget: Element
 ) -> None:
@@ -576,17 +602,10 @@ def fix_edm_symbol_widgets(
         sc, oc, src_file, src_sm
     )
 
-    width = 0
-
-    old_symbols_children = oc.const_opi_data.findall(".//sub_image_width")
-    for symbol_child in old_symbols_children:
-        symbol = symbol_child.getparent()
-        if symbol.findtext("name") == widget_name and symbol.findtext(
-            "image_file"
-        ) == str(old_symbol_file):
-            # sub_image_width stores a stringified float, so we must convert to float
-            # first
-            width = int(float(symbol.findtext("sub_image_width")))
+    symbol_key = (widget_name, str(old_symbol_file))
+    sub_image_width = get_sub_image_widths(oc.const_opi_data).get(symbol_key)
+    # sub_image_width stores a stringified float, so we must convert to float first
+    width = 0 if sub_image_width is None else int(float(sub_image_width))
 
     n_images = get_symbol_image_split(sc, output_file_full, src_file, width)
     if n_images is None:
