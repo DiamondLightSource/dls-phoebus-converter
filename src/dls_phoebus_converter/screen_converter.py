@@ -18,10 +18,24 @@ from dls_phoebus_converter.support_modules import (
 logger = logging.getLogger("dls_phoebus_converter")
 
 
+def load_config(config_file: Path) -> dict:
+    """Read a config file.
+
+    Args:
+        config_file: The .yaml file to read.
+
+    Returns:
+        The config data.
+    """
+
+    with open(config_file) as file:
+        return yaml.safe_load(file)
+
+
 class ScreenConverter:
     def __init__(self, config_file_path: Path, output_dir_path: Path) -> None:
         self.output_dir_path = output_dir_path
-        self.config_file = config_file_path
+        self.config_data = load_config(config_file_path)
         self.convert_dependencies = False
         # Mapping between a support module name and the release to convert from
         self.dependency_versions: dict[str, str] = {}
@@ -37,7 +51,7 @@ class ScreenConverter:
         # Mapping between a support module name and its screen location dir
         self.domain_support_module_locations: list[tuple] = []
         self.acc_support_module_locations: list[tuple] = []
-        self.parse_config(config_file_path)
+        self.parse_config(self.config_data)
         self.make_top_dirs()
 
         try:
@@ -56,21 +70,16 @@ class ScreenConverter:
         self.domain_ui_support_bob_dst_full.mkdir(parents=True, exist_ok=True)
         self.domain_ui_support_symbol_dst_full.mkdir(parents=True, exist_ok=True)
 
-    def parse_config(self, config_file: Path | dict) -> None:
-        """Read the config and build the list of screens to convert.
+    def parse_config(self, config_data: dict) -> None:
+        """Build the list of screens to convert from config data.
 
         Args:
-            config_file: The .yaml file to read, or config data that has already been
-                parsed.
+            config_data: Config data, as returned by load_config.
         """
 
-        if isinstance(config_file, Path):
-            with open(config_file) as file:
-                data = yaml.safe_load(file)
-        else:
-            data = config_file
-        self.parse_meta_data(data["meta_data"][0])
-        all_file_data = data["files"]
+        self.parse_meta_data(config_data["meta_data"][0])
+        # Copied so that the reordering below leaves the caller's list alone
+        all_file_data = list(config_data["files"])
 
         dir_index_list = []
         # Move directories last in the list so that single files
