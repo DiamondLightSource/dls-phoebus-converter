@@ -1,7 +1,6 @@
 """Interface for ``python -m dls_phoebus_converter``."""
 
 import logging
-from collections.abc import Sequence
 from pathlib import Path
 from typing import Annotated
 
@@ -115,13 +114,9 @@ def convert(
         raise typer.Exit(code=2)
 
 
-def main(args: Sequence[str] | None = None) -> None:
-    """Run the command line interface.
-
-    Args:
-        args: Command line arguments, defaulting to ``sys.argv[1:]``.
-    """
-    app(args)
+def main() -> None:
+    """Run the command line interface."""
+    app()
 
 
 if __name__ == "__main__":
