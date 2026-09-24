@@ -95,7 +95,7 @@ def convert(
             "You cannot provide both a single-screen and a "
             "config_file argument. Exiting"
         )
-        return
+        raise typer.Exit(code=2)
 
     if config_file is not None:
         # If the user only supplied the name of a config file, then add the path to the
@@ -121,7 +121,7 @@ def convert(
             "You must provide either a single-screen to convert or a "
             "config_file. Exiting"
         )
-        return
+        raise typer.Exit(code=2)
 
 
 def main(args: Sequence[str] | None = None) -> None:
