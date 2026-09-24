@@ -9,8 +9,8 @@ import typer
 
 from dls_phoebus_converter._version import __version__
 from dls_phoebus_converter.logconfig import setup_logging
-from dls_phoebus_converter.opi_converter import OpiConverter
-from dls_phoebus_converter.screen_converter import ScreenConverter
+from dls_phoebus_converter.opi_converter import convert_single_screen
+from dls_phoebus_converter.screen_converter import convert_from_config
 
 __all__ = ["main"]
 
@@ -102,19 +102,10 @@ def convert(
         # directory containing the example config files
         if len(config_file.parts) == 1:
             config_file = Path.cwd() / "config" / config_file
-        screen_converter = ScreenConverter(
-            config_file_path=config_file, output_dir_path=output_dir
-        )
-        screen_converter.convert()
+        convert_from_config(config_file, output_dir)
 
     elif single_screen is not None:
-        opi_converter = OpiConverter(single_screen, output_dir, output_dir)
-        logger.info(f"Converting {opi_converter.src_file_path}")
-        # Create directories to place screens and symbols
-        opi_converter.dst_bob_dir_path.mkdir(parents=True, exist_ok=True)
-        opi_converter.dst_symbols_dir_path.mkdir(parents=True, exist_ok=True)
-        # Convert .opi to .bob
-        opi_converter.convert()
+        convert_single_screen(single_screen, output_dir)
 
     else:
         logger.error(

@@ -7,5 +7,7 @@
 """
 
 from ._version import __version__
+from .opi_converter import convert_single_screen
+from .screen_converter import convert_from_config
 
-__all__ = ["__version__"]
+__all__ = ["__version__", "convert_from_config", "convert_single_screen"]
