@@ -19,10 +19,7 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 
 class ScreenConverter:
-    def __init__(
-        self, config_file_path: Path, output_dir_path: Path, debug: bool = False
-    ) -> None:
-        self.debug = debug
+    def __init__(self, config_file_path: Path, output_dir_path: Path) -> None:
         self.output_dir_path = output_dir_path
         self.config_file = config_file_path
         self.convert_dependencies = False
