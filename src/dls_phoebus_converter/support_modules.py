@@ -371,7 +371,7 @@ def convert_extra_support_modules(sc: ScreenConverter):
                     logger.info(f"Converting extra support module: {sm_name}")
 
     if data["files"]:
-        sc.get_config(data)
+        sc.parse_config(data)
         sc.convert_screens()
     else:
         logger.info("Creating extra modules finished!")

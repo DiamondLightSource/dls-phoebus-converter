@@ -37,7 +37,7 @@ class ScreenConverter:
         # Mapping between a support module name and its screen location dir
         self.domain_support_module_locations: list[tuple] = []
         self.acc_support_module_locations: list[tuple] = []
-        self.get_config(config_file_path)
+        self.parse_config(config_file_path)
         self.make_top_dirs()
 
         try:
@@ -56,7 +56,7 @@ class ScreenConverter:
         self.domain_ui_support_bob_dst_full.mkdir(parents=True, exist_ok=True)
         self.domain_ui_support_symbol_dst_full.mkdir(parents=True, exist_ok=True)
 
-    def get_config(self, config_file: Path | dict) -> None:
+    def parse_config(self, config_file: Path | dict) -> None:
         """Read the config and build the list of screens to convert.
 
         Args:
