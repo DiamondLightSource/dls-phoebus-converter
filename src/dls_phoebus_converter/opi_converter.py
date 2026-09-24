@@ -63,7 +63,7 @@ def run_phoebus_batch(
 
     # The converter is very verbose, so it is logged at the DEBUG level
     for line in stderr_text.split("\n"):
-        if line != "":
+        if line:
             logger.debug(f"Phoebus - {line}")
 
     return {
@@ -134,7 +134,7 @@ class OpiConverter:
     conversions_to_skip_filepath: Path | None = None
 
     support_module_name: str | None = None
-    macros: dict[str, str] = field(default_factory=lambda: {})
+    macros: dict[str, str] = field(default_factory=dict)
     completed_conversion_steps: CompletedSteps = field(default_factory=CompletedSteps)
 
     replace_tab: bool = True
@@ -181,12 +181,11 @@ class OpiConverter:
         # We must remove some dodgey formatting from certain elements inherited from the
         # opi file
         for el in self.bob_data.iter():
-            if el.attrib.items() and not list(el):
+            if el.attrib and len(el) == 0:
+                # TODO: Do we need the following '"\n" in el.text' check?
                 if el.text is not None and "\n" in el.text:
-                    el.text = el.text.strip("\n")
                     el.text = el.text.strip()
-            elif (el.tag == "actions" or el.tag == "scripts") and el.text is not None:
-                el.text = el.text.strip("\n")
+            elif el.tag in ("actions", "scripts") and el.text is not None:
                 el.text = el.text.strip()
 
         self.bob_data.write(

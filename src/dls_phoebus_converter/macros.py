@@ -23,7 +23,7 @@ def fill_in_macros(string: str, macros: dict[str, str]) -> str | None:
     the resolved string."""
 
     def replace(match):
-        key = match.group(1)  # the ‘x’ inside ${x}
+        key = match.group(1)  # the "x" inside ${x}
         return macros.get(key, match.group(0))  # If no macro matches, leave unchanged
 
     resolved_path = string
@@ -34,8 +34,8 @@ def fill_in_macros(string: str, macros: dict[str, str]) -> str | None:
         # There is still an unresolved macro, return None
         logger.error(f"Failed to resolve macros for string {string}")
         return None
-    else:
-        return resolved_path
+
+    return resolved_path
 
 
 def add_new_macros(
@@ -51,11 +51,11 @@ def add_new_macros(
     macro_data = oc.bob_data.find("macros")
 
     for new_macro_name, new_macro_value in zip(macro_names, macro_values, strict=True):
-        for existing_macro_name, existing_macro_value in macro_data.items():
-            if existing_macro_name == new_macro_name:
+        for existing_macro in macro_data:
+            if existing_macro.tag == new_macro_name:
                 logger.warning(
-                    f"An existing file macro is being overwritten: "
-                    f"{existing_macro_name}:{existing_macro_value} -> "
+                    "An existing file macro is being overwritten: "
+                    f"{existing_macro.tag}:{existing_macro.text} -> "
                     f"{new_macro_name}:{new_macro_value}"
                 )
         new_macro = etree.Element(new_macro_name)
@@ -83,7 +83,7 @@ def handle_macros(oc: OpiConverter) -> None:
     for macro in unique_identified_macros:
         # Some macros refer to internal Phoebus objects, so we dont resolve these
         if macro not in MACRO_EXCEPTION_LIST:
-            if macro in oc.macros.keys():
+            if macro in oc.macros:
                 new_macro_names.append(macro)
                 new_macro_values.append(oc.macros[macro])
             else:

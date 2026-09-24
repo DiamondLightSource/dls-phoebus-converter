@@ -5,7 +5,6 @@ used to easily achieve a good practice of logging. Modify the local copy as per
 the project or site requirements.
 """
 
-import json
 import logging
 import logging.config
 import os
@@ -79,5 +78,5 @@ default_config = {
 }
 
 
-def setup_logging(config: json = default_config) -> None:
+def setup_logging(config: dict = default_config) -> None:
     logging.config.dictConfig(config)

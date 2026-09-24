@@ -4,7 +4,7 @@ import logging
 import shutil
 import tempfile
 from importlib import import_module
-from pathlib import Path, PosixPath
+from pathlib import Path
 
 import yaml
 
@@ -59,9 +59,15 @@ class ScreenConverter:
         self.domain_ui_support_bob_dst_full.mkdir(parents=True, exist_ok=True)
         self.domain_ui_support_symbol_dst_full.mkdir(parents=True, exist_ok=True)
 
-    def get_config(self, config_file: Path | str) -> None:
-        # get useful data out of json
-        if type(config_file) is PosixPath:
+    def get_config(self, config_file: Path | dict) -> None:
+        """Read the config and build the list of screens to convert.
+
+        Args:
+            config_file: The .yaml file to read, or config data that has already been
+                parsed.
+        """
+
+        if isinstance(config_file, Path):
             with open(config_file) as file:
                 data = yaml.safe_load(file)
         else:
@@ -114,22 +120,19 @@ class ScreenConverter:
         self.domain_ui_support_symbol_dst_full = (
             self.output_dir_path / meta_data["domain_ui_support_dst"] / "symbols"
         )
-        if "convert_dependencies" in meta_data:
-            self.convert_dependencies = bool(meta_data["convert_dependencies"])
+        self.convert_dependencies = bool(meta_data.get("convert_dependencies"))
 
-        if "dependencies" in meta_data:
-            # An empty dependencies field parses as None rather than an empty mapping
-            self.dependency_versions = meta_data["dependencies"] or {}
+        # An empty dependencies field parses as None rather than an empty mapping
+        self.dependency_versions = meta_data.get("dependencies") or {}
 
         if "on_unpinned_module" in meta_data:
+            unpinned_action = meta_data["on_unpinned_module"]
             try:
-                self.on_unpinned_module = UnpinnedModuleAction(
-                    meta_data["on_unpinned_module"]
-                )
+                self.on_unpinned_module = UnpinnedModuleAction(unpinned_action)
             except ValueError:
                 error_msg = (
                     "Invalid on_unpinned_module field in config file: "
-                    f"{meta_data['on_unpinned_module']}. Expected one of "
+                    f"{unpinned_action}. Expected one of "
                     f"{[action.value for action in UnpinnedModuleAction]}."
                 )
                 logger.error(error_msg)
@@ -142,7 +145,6 @@ class ScreenConverter:
         src_file_paths = []
         dst_dir_paths = []
         src_path_config = Path(file_data["src"])
-        dst_path_config = Path()
         support_module_name = file_data["support_module_name"]
 
         # Common support module area shared across Accelerator Controls
@@ -178,10 +180,7 @@ class ScreenConverter:
 
             for file_paths in src_path_config.rglob("*.opi"):
                 if file_paths not in processed_files:
-                    if (
-                        "include_subdirs" in file_data
-                        and file_data["include_subdirs"] is True
-                    ):
+                    if file_data.get("include_subdirs") is True:
                         # We need to do some fancy path manipulation to recreate the old
                         # directory structure in the destination directory
                         recursive_dir = Path()
@@ -192,16 +191,13 @@ class ScreenConverter:
                             ]:
                                 recursive_dir = recursive_dir / subdir
 
-                            qualified_module_name = support_module_name
+                            module_location = (support_module_name, dst_path_partial)
                             if (
-                                qualified_module_name,
-                                dst_path_partial,
-                            ) not in self.domain_support_module_locations:
+                                module_location
+                                not in self.domain_support_module_locations
+                            ):
                                 self.domain_support_module_locations.append(
-                                    (
-                                        qualified_module_name,
-                                        dst_path_partial,
-                                    )
+                                    module_location
                                 )
 
                         src_file_paths.append(file_paths)
@@ -221,14 +217,8 @@ class ScreenConverter:
         for src_opi_file_path, dst_bob_dir_path in zip(
             src_file_paths, dst_dir_paths, strict=True
         ):
-            dst_bob_filename = None
-            macros = None
-
-            if "new_filename" in file_data:
-                dst_bob_filename = file_data["new_filename"]
-
-            if "macros" in file_data:
-                macros = file_data["macros"]
+            dst_bob_filename = file_data.get("new_filename")
+            macros = file_data.get("macros")
 
             file_depth = len(dst_bob_dir_path.parts) - len(self.output_dir_path.parts)
             path_to_top = Path(*["../"] * file_depth)

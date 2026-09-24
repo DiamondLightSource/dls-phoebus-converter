@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import logging
 from enum import StrEnum
-from pathlib import Path, PosixPath
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import yaml
@@ -66,14 +66,12 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
     # If a support module has been requested and we are not already converting it,
     # then add it to the list of extra required support modules which we will
     # attempt to build later.
+    strings_to_skip = ("..", ".", "images", "symbols", "symbol")
     for file_path in file_paths_unique:
         # Search through the filepath and remove any strings which dont look useful
-        new_filepath = Path()
-        for part in file_path.parts:
-            strings_to_skip = ["..", ".", "images", "symbols", "symbol"]
-            if part not in strings_to_skip:
-                new_filepath = new_filepath / part
-        file_path = new_filepath
+        file_path = Path(
+            *[part for part in file_path.parts if part not in strings_to_skip]
+        )
 
         # If we only have 1 part left, it is probably the file itself which isnt a
         # support module so we move to the next one
@@ -130,14 +128,26 @@ def switch_filepaths(
     macros: dict[str, str] | None = None,
     symbol: bool = False,
 ) -> str:
-    "Takes an old file_path string and returns what the new file_path should be."
-    "This is done by getting the name of the support module from the old path and"
-    "matching it with our data. We first look for the support module by guessing"
-    "its name from the file_path string. If we cant deduce the support module from"
-    "the file_path, then we guess that the file is somewhere in our own support module"
+    """Work out where a file referenced by a screen is deployed to.
 
-    support_module_name = None
-    stripped_file_path = Path()
+    The support module is guessed from the first part of the old path. Where that does
+    not name a module we know about, the file is assumed to be somewhere within our own
+    support module.
+
+    Args:
+        sc: The running conversion, holding where each support module is deployed to.
+        oc: The screen being converted.
+        file_path: The path as the old screen references it.
+        macros: Resolved in the path before it is matched. None leaves them in place.
+        symbol: Whether the file is a symbol image, which is deployed to the module's
+            symbols directory rather than alongside its screens. An image suffix is
+            taken as a symbol regardless of whatever this is set to.
+
+    Returns:
+        The new path, or the old one unchanged where it needs no update or no support
+        module could be found for it.
+    """
+
     all_support_modules = (
         sc.domain_support_module_locations + sc.acc_support_module_locations
     )
@@ -162,49 +172,45 @@ def switch_filepaths(
     if file_path.suffix in [".png", ".svg", ".gif", ".jpeg"]:
         symbol = True
 
-    for part in file_path.parts:
-        strings_to_skip = ["..", "."]
-        if part not in strings_to_skip:
-            stripped_file_path = stripped_file_path / part
+    stripped_file_path = Path(
+        *[part for part in file_path.parts if part not in ("..", ".")]
+    )
 
     # Look to see if the first part of the stripped filepath is a support module
     # which we recognise. If it is then, we will be updating the filepath to point
     # to the new location for this support module. Otherwise, the stripped
     # filepath is probably a relative path to a folder within our own support module.
-    for data in all_support_modules:
-        if data[0] == stripped_file_path.parts[0]:
-            support_module_name = stripped_file_path.parts[0]
-            subdir_structure = Path(*stripped_file_path.parts[1:]).parent
-
-    if support_module_name is None:
+    if stripped_file_path.parts[0] in [name for name, _ in all_support_modules]:
+        support_module_name = stripped_file_path.parts[0]
+        subdir_structure = Path(*stripped_file_path.parts[1:]).parent
+    else:
         support_module_name = oc.support_module_name
         subdir_structure = stripped_file_path.parent
 
-    for data in all_support_modules:
-        if data[0] == support_module_name:
+    for module_name, module_bob_dir in all_support_modules:
+        if module_name == support_module_name:
             if symbol:
-                # data[1] stores the path to bob/support_module, we want the symbols
-                # which is data[1]/../symbols
+                # module_bob_dir is the path to bob/support_module, we want the symbols
+                # which is module_bob_dir/../symbols
                 path_to_support_modules = (
-                    oc.path_to_top / data[1].parent.parent / "symbols"
+                    oc.path_to_top / module_bob_dir.parent.parent / "symbols"
                 )
                 return str(
                     path_to_support_modules / support_module_name / file_path.name
                 )
-            else:
-                path_to_support_modules = oc.path_to_top / data[1].parent
-                # we care about keeping the support module structure for bob files
-                # but not for symbols
-                return str(
-                    path_to_support_modules
-                    / support_module_name
-                    / subdir_structure
-                    / file_path.name
-                )
+
+            path_to_support_modules = oc.path_to_top / module_bob_dir.parent
+            # we care about keeping the support module structure for bob files
+            # but not for symbols
+            return str(
+                path_to_support_modules
+                / support_module_name
+                / subdir_structure
+                / file_path.name
+            )
 
     logger.warning(
-        f"Could not find support module for old path: {str(file_path)}. Filepath "
-        "unchanged."
+        f"Could not find support module for old path: {file_path}. Filepath unchanged."
     )
     return str(file_path)
 
@@ -228,7 +234,7 @@ def get_existing_support_module_filepath(
     module_dir = dls_sw_support_modules / support_module_name
     if not module_dir.is_dir():
         logger.error(
-            f"Could not find {support_module_name} in {str(dls_sw_support_modules)}"
+            f"Could not find {support_module_name} in {dls_sw_support_modules}"
         )
         return None
 
@@ -337,7 +343,7 @@ def convert_extra_support_modules(sc: ScreenConverter):
         sc.domain_support_module_locations + sc.acc_support_module_locations
     )
 
-    if type(sc.config_file) is PosixPath:
+    if isinstance(sc.config_file, Path):
         with open(sc.config_file) as file:
             data = yaml.safe_load(file)
     else:
@@ -370,7 +376,7 @@ def convert_extra_support_modules(sc: ScreenConverter):
 
                     logger.info(f"Converting extra support module: {sm_name}")
 
-    if len(data["files"]) > 0:
+    if data["files"]:
         sc.get_config(data)
         sc.convert_screens()
     else:

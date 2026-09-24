@@ -7,6 +7,20 @@ from dls_phoebus_converter.opi_converter import OpiConverter
 
 logger = logging.getLogger("dls_phoebus_converter")
 
+# Shows the widget while $(motor):ELOSS is in one of the error states, replacing the
+# visible.py script the screens used in cs-studio.
+VISIBLE_RULE_XML = (
+    '<rule name="set_visible" prop_id="visible" '
+    'out_exp="false"><exp bool_exp="pv0==4">'
+    "<value>true</value></exp><exp "
+    'bool_exp="pv0==5"><value>true</value></exp>'
+    '<exp bool_exp="pv0==6"><value>true</value>'
+    '</exp><exp bool_exp="pv0==7"><value>true'
+    '</value></exp><exp bool_exp="true">'
+    "<value>false</value></exp><pv_name>"
+    "$(motor):ELOSS</pv_name></rule>"
+)
+
 
 def replace_visible_script(oc: OpiConverter) -> None:
     """Replace this complex script with a rule"""
@@ -23,35 +37,14 @@ def replace_visible_script(oc: OpiConverter) -> None:
             parent.remove(script)
             widget = parent.getparent()
             if widget is not None:
-                rules_found = False
-                for child in widget:
-                    if child.tag == "rules":
-                        rule_xml = (
-                            '<rule name="set_visible" prop_id="visible" '
-                            'out_exp="false"><exp bool_exp="pv0==4">'
-                            "<value>true</value></exp><exp "
-                            'bool_exp="pv0==5"><value>true</value></exp>'
-                            '<exp bool_exp="pv0==6"><value>true</value>'
-                            '</exp><exp bool_exp="pv0==7"><value>true'
-                            '</value></exp><exp bool_exp="true">'
-                            "<value>false</value></exp><pv_name>"
-                            "$(motor):ELOSS</pv_name></rule>"
-                        )
-                        child.insert(-1, etree.fromstring(rule_xml))
-                        rules_found = True
-                        continue
-                if not rules_found:
-                    rules_xml = (
-                        '<rules><rule name="set_visible" prop_id="visible" '
-                        'out_exp="false"><exp bool_exp="pv0==4"><value>true'
-                        '</value></exp><exp bool_exp="pv0==5"><value>true'
-                        '</value></exp><exp bool_exp="pv0==6"><value>true'
-                        '</value></exp><exp bool_exp="pv0==7"><value>true'
-                        '</value></exp><exp bool_exp="true"><value>false'
-                        "</value></exp><pv_name>$(motor):ELOSS</pv_name>"
-                        "</rule></rules>"
+                rules_elements = widget.findall("rules")
+                for rules_el in rules_elements:
+                    rules_el.insert(-1, etree.fromstring(VISIBLE_RULE_XML))
+
+                if not rules_elements:
+                    widget.insert(
+                        -1, etree.fromstring(f"<rules>{VISIBLE_RULE_XML}</rules>")
                     )
-                    widget.insert(-1, etree.fromstring(rules_xml))
 
 
 def remove_fe_temp_indicator_script(oc: OpiConverter) -> None:
@@ -67,17 +60,14 @@ def remove_fe_temp_indicator_script(oc: OpiConverter) -> None:
     )
 
     # Find and remove all <script> elements which use feTempIndicator.py
-    for script in oc.bob_data.findall('.//script[@file="feTempIndicator.py"]'):
-        parent = script.getparent()
-        if parent is not None:
-            parent.remove(script)
-
-    for script in oc.bob_data.findall(
-        './/script[@file="common/plc/feTempIndicator.py"]'
+    for xpath in (
+        './/script[@file="feTempIndicator.py"]',
+        './/script[@file="common/plc/feTempIndicator.py"]',
     ):
-        parent = script.getparent()
-        if parent is not None:
-            parent.remove(script)
+        for script in oc.bob_data.findall(xpath):
+            parent = script.getparent()
+            if parent is not None:
+                parent.remove(script)
 
 
 def replace_progress_bar_with_linear_meter(
