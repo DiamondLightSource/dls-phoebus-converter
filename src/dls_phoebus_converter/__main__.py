@@ -90,11 +90,10 @@ def convert(
     )
 
     if single_screen is not None and config_file is not None:
-        logger.error(
-            "You cannot provide both a single-screen and a "
-            "config_file argument. Exiting"
+        raise typer.BadParameter(
+            "Cannot convert both a config file and a single screen",
+            param_hint="--config-file / --single-screen",
         )
-        raise typer.Exit(code=2)
 
     if config_file is not None:
         # If the user only supplied the name of a config file, then add the path to the
@@ -107,11 +106,10 @@ def convert(
         convert_single_screen(single_screen, output_dir)
 
     else:
-        logger.error(
-            "You must provide either a single-screen to convert or a "
-            "config_file. Exiting"
+        raise typer.BadParameter(
+            "Must provide either a config file or a single screen to convert",
+            param_hint="--config-file / --single-screen",
         )
-        raise typer.Exit(code=2)
 
 
 def main() -> None:
