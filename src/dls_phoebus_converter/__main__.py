@@ -75,6 +75,18 @@ def convert(
     ] = False,
 ) -> None:
     """Convert Diamond cs-studio screens for use in Phoebus."""
+    if single_screen is not None and config_file is not None:
+        raise typer.BadParameter(
+            "Cannot convert both a config file and a single screen",
+            param_hint="--config-file / --single-screen",
+        )
+
+    if single_screen is None and config_file is None:
+        raise typer.BadParameter(
+            "Must provide either a config file or a single screen to convert",
+            param_hint="--config-file / --single-screen",
+        )
+
     setup_logging()
     logger = logging.getLogger("dls_phoebus_converter")
 
@@ -89,12 +101,6 @@ def convert(
         f"output_dir={output_dir}, single_screen={single_screen}, debug={debug}"
     )
 
-    if single_screen is not None and config_file is not None:
-        raise typer.BadParameter(
-            "Cannot convert both a config file and a single screen",
-            param_hint="--config-file / --single-screen",
-        )
-
     if config_file is not None:
         # If the user only supplied the name of a config file, then add the path to the
         # directory containing the example config files
@@ -104,12 +110,6 @@ def convert(
 
     elif single_screen is not None:
         convert_single_screen(single_screen, output_dir)
-
-    else:
-        raise typer.BadParameter(
-            "Must provide either a config file or a single screen to convert",
-            param_hint="--config-file / --single-screen",
-        )
 
 
 def main() -> None:
