@@ -49,13 +49,15 @@ default_config = {
             "formatter": "simple",
             "stream": "ext://sys.stderr",
         },
-        # Generated every time the script is run.
+        # Generated the first time a run logs something, so that a run which fails
+        # during argument processing does not leave an empty log behind.
         "file": {
             "class": "logging.FileHandler",
             "level": "DEBUG",
             "formatter": "detailed",
             "filename": get_timestamped_log_filename(),
             "mode": "w",
+            "delay": True,
         },
     },
     "loggers": {
