@@ -13,7 +13,9 @@ from dls_phoebus_converter.screen_converter import convert_from_config
 
 __all__ = ["main"]
 
-app = typer.Typer(add_completion=False)
+app = typer.Typer(
+    add_completion=False, context_settings={"help_option_names": ["-h", "--help"]}
+)
 
 
 def version_callback(value: bool) -> None:
