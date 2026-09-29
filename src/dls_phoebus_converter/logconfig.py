@@ -21,62 +21,84 @@ def get_timestamped_log_filename() -> str:
     return os.path.join("logs", f"conversion_{timestamp}.log")
 
 
-# NOTE: Setting the logging level to DEBUG will produce additional output from
-# CSStudio's conversion process, which is very verbose.
-default_config = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "simple": {"format": "%(levelname)s - %(message)s"},
-        "detailed": {
-            "format": "%(asctime)s.%(msecs)03d - %(name)s - %(levelname)s - "
-            "%(filename)s:%(lineno)d - %(message)s",
-            "datefmt": "%Y-%m-%d %H:%M:%S",
+def default_config() -> dict:
+    """Build the default logging configuration.
+
+    Built per run rather than on import, so that the logs/ directory and the
+    timestamp in the log filename come from the run that uses them.
+
+    Returns:
+        A mapping for logging.config.dictConfig.
+    """
+
+    # NOTE: Setting the logging level to DEBUG will produce additional output from
+    # CSStudio's conversion process, which is very verbose.
+    return {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "simple": {"format": "%(levelname)s - %(message)s"},
+            "detailed": {
+                "format": "%(asctime)s.%(msecs)03d - %(name)s - %(levelname)s - "
+                "%(filename)s:%(lineno)d - %(message)s",
+                "datefmt": "%Y-%m-%d %H:%M:%S",
+            },
         },
-    },
-    "handlers": {
-        # Useful output that can be piped to other processes.
-        "console": {
-            "class": "logging.StreamHandler",
-            "level": "INFO",
-            "formatter": "simple",
-            "stream": "ext://sys.stdout",
+        "handlers": {
+            # Useful output that can be piped to other processes.
+            "console": {
+                "class": "logging.StreamHandler",
+                "level": "INFO",
+                "formatter": "simple",
+                "stream": "ext://sys.stdout",
+            },
+            # All debug and user messages.
+            "stderr": {
+                "class": "logging.StreamHandler",
+                "level": "DEBUG",
+                "formatter": "simple",
+                "stream": "ext://sys.stderr",
+            },
+            # Generated the first time a run logs something, so that a run which
+            # fails during argument processing does not leave an empty log behind.
+            "file": {
+                "class": "logging.FileHandler",
+                "level": "DEBUG",
+                "formatter": "detailed",
+                "filename": get_timestamped_log_filename(),
+                "mode": "w",
+                "delay": True,
+            },
         },
-        # All debug and user messages.
-        "stderr": {
-            "class": "logging.StreamHandler",
+        "loggers": {
+            # Fine-grained logging configuration for individual modules or classes
+            # Use this to set different log levels without changing 'real' code.
+            "dls_phoebus_converter": {
+                "level": "INFO",
+                "propagate": False,
+                "handlers": ["stderr", "file"],
+            },
+        },
+        "root": {
+            # Set the level here to be the default minimum level of log record to be
+            # produced If you set a handler to level DEBUG you will need to set either
+            # this level, or the level of one of the loggers above to DEBUG or you
+            # won't see any DEBUG messages
             "level": "DEBUG",
-            "formatter": "simple",
-            "stream": "ext://sys.stderr",
+            "handlers": ["stderr"],
         },
-        # Generated every time the script is run.
-        "file": {
-            "class": "logging.FileHandler",
-            "level": "DEBUG",
-            "formatter": "detailed",
-            "filename": get_timestamped_log_filename(),
-            "mode": "w",
-        },
-    },
-    "loggers": {
-        # Fine-grained logging configuration for individual modules or classes
-        # Use this to set different log levels without changing 'real' code.
-        "dls_phoebus_converter": {
-            "level": "INFO",
-            "propagate": False,
-            "handlers": ["stderr", "file"],
-        },
-    },
-    "root": {
-        # Set the level here to be the default minimum level of log record to be
-        # produced If you set a handler to level DEBUG you will need to set either this
-        # level, or the level of one of the loggers above to DEBUG or you won't see any
-        # DEBUG messages
-        "level": "DEBUG",
-        "handlers": ["stderr"],
-    },
-}
+    }
 
 
-def setup_logging(config: dict = default_config) -> None:
+def setup_logging(config: dict | None = None) -> None:
+    """Configure logging.
+
+    Args:
+        config: A mapping for logging.config.dictConfig, defaulting to
+            default_config().
+    """
+
+    if config is None:
+        config = default_config()
+
     logging.config.dictConfig(config)

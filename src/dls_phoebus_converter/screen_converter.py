@@ -19,10 +19,7 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 
 class ScreenConverter:
-    def __init__(
-        self, config_file_path: Path, output_dir_path: Path, debug: bool = False
-    ) -> None:
-        self.debug = debug
+    def __init__(self, config_file_path: Path, output_dir_path: Path) -> None:
         self.output_dir_path = output_dir_path
         self.config_file = config_file_path
         self.convert_dependencies = False
@@ -283,3 +280,14 @@ class ScreenConverter:
         # Get missing support module screens
         if self.convert_dependencies:
             convert_extra_support_modules(self)
+
+
+def convert_from_config(config_file_path: Path, output_dir_path: Path) -> None:
+    """Convert every screen listed in a config file.
+
+    Args:
+        config_file_path: The .yaml config describing what to convert.
+        output_dir_path: Directory to write the converted screens to.
+    """
+
+    ScreenConverter(config_file_path, output_dir_path).convert()

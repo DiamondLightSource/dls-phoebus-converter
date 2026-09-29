@@ -375,3 +375,23 @@ class OpiConverter:
             shutil.rmtree(staging_dir, ignore_errors=True)
 
         return True
+
+
+def convert_single_screen(src_file_path: Path, output_dir_path: Path) -> bool:
+    """Convert one screen, without a config file.
+
+    Args:
+        src_file_path: The .opi file to convert.
+        output_dir_path: Directory to write the screen and its symbols to.
+
+    Returns:
+        True if the screen was converted and saved.
+    """
+
+    converter = OpiConverter(src_file_path, output_dir_path, output_dir_path)
+    logger.info(f"Converting {src_file_path}")
+
+    converter.dst_bob_dir_path.mkdir(parents=True, exist_ok=True)
+    converter.dst_symbols_dir_path.mkdir(parents=True, exist_ok=True)
+
+    return converter.convert()
