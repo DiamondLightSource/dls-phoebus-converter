@@ -773,7 +773,7 @@ def reorder_default_symbol_order_from_rule(
     old rule is removed"""
 
     # Contains a list of tuples of (pv_val, symbol_index)
-    reorder_map: list[tuple] = []
+    reorder_map: list[tuple[int, int]] = []
     for exp in rule.findall("exp"):
         pv_val = None
         result = int(exp.find("expression").text)
@@ -789,6 +789,17 @@ def reorder_default_symbol_order_from_rule(
                 # smarter if required
                 if match := re.search(r">=\s*(.+?)\s*&&", bool_logic):
                     pv_val = int(float(match.group(1)))
+
+            if pv_val is None:
+                # Applying the rest of the rule would move some symbols and leave the
+                # ones this expression covers at their default position, which is
+                # neither the old order nor the intended one.
+                logger.warning(
+                    "Could not read a PV value from the symbol widget index "
+                    f"modification expression '{bool_logic}'. Rule is being ignored."
+                )
+                return symbols
+
             reorder_map.append((pv_val, result))
 
     if not reorder_map:
