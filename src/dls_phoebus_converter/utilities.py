@@ -3,52 +3,40 @@
 from __future__ import annotations
 
 import logging
-import typing
+from collections.abc import Iterator
 from pathlib import Path
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from dls_phoebus_converter.opi_converter import OpiConverter
-    from dls_phoebus_converter.screen_converter import ScreenConverter
+from lxml import etree
 
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-def search_widget_filepaths(
-    sc: ScreenConverter,
-    oc: OpiConverter,
-    widget,
-    func: typing.Callable,
-    widget_file_paths=None,
-    macros=None,
-):
-    """This generic function takes a widget and searches for any references to
-    filepaths. Filepaths are used in different ways for different widgets and so
-    there are serveral tpyes of filepath tag that we search for. When a filepath is
-    found, it is passed into the passed func callable."""
+def find_filepaths(
+    bob_data: etree._ElementTree, include_symbols: bool = False
+) -> Iterator[tuple[etree._Element, Path]]:
+    """Yield each filepath referenced by a screen, with the element holding it.
 
-    args = [arg for arg in [widget_file_paths, macros] if arg is not None]
-    for symbol_widget in widget.findall("symbols/symbol"):
-        if symbol_widget.text is not None:
-            # edm symbol widget filepaths are switched in the code which converts
-            # the symbol widgets, so we only need to parse them to look for support
-            # modules
-            if func.__name__ == "append_new_filepath":
-                func(sc, oc, Path(symbol_widget.text), *args, symbol=True)
+    Different widgets hold filepaths in different tags, so several are searched.
 
-    for tag in ("file", "opi_file", "image_file"):
-        path_el = widget.find(tag)
-        if path_el is not None and path_el.text is not None:
-            if new_path := func(sc, oc, Path(path_el.text), *args):
-                path_el.text = new_path
+    Args:
+        bob_data: The screen to search.
+        include_symbols: Include symbol widget image paths.
 
-    action_els = widget.findall("./actions/action")
-    for action_el in action_els:
-        path_el = action_el.find("path")
-        file_el = action_el.find("file")
-        if path_el is not None and path_el.text is not None:
-            if new_path := func(sc, oc, Path(path_el.text), *args):
-                path_el.text = new_path
-        elif file_el is not None and file_el.text is not None:
-            if new_path := func(sc, oc, Path(file_el.text), *args):
-                file_el.text = new_path
+    Yields:
+        Each element whose text is a filepath, and that filepath.
+    """
+
+    for widget in bob_data.findall(".//widget"):
+        candidates: list[etree._Element | None] = []
+        if include_symbols:
+            candidates += widget.findall("symbols/symbol")
+        candidates += [widget.find(tag) for tag in ("file", "opi_file", "image_file")]
+        for action in widget.findall("actions/action"):
+            # An action's file is only used when it has no path
+            path_el = action.find("path")
+            has_path = path_el is not None and path_el.text is not None
+            candidates.append(path_el if has_path else action.find("file"))
+
+        for element in candidates:
+            if element is not None and element.text is not None:
+                yield element, Path(element.text)

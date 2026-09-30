@@ -15,7 +15,7 @@ from dls_phoebus_converter.macros import fill_in_macros
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
     from dls_phoebus_converter.screen_converter import ScreenConverter
-from dls_phoebus_converter.utilities import search_widget_filepaths
+from dls_phoebus_converter.utilities import find_filepaths
 
 ACC_UI_SUPPORT_MODULE_LIST = [
     "devIocStats",
@@ -51,10 +51,10 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
     new_domain_modules: list[str] = []
     new_acc_modules: list[str] = []
 
-    widget_file_paths: list[Path] = []
     # Look for filepaths in xml
-    for widget in oc.bob_data.findall(".//widget"):
-        search_widget_filepaths(sc, oc, widget, append_new_filepath, widget_file_paths)
+    widget_file_paths = [
+        file_path for _, file_path in find_filepaths(oc.bob_data, include_symbols=True)
+    ]
 
     # Only keep unique filepaths and fill in macros
     file_paths_unique = set()
@@ -108,17 +108,12 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
         logger.info(f"Newly required acc modules: {sorted(new_acc_modules)}")
 
 
-def append_new_filepath(sc, oc, path_string, widget_file_paths, symbol=False):
-    widget_file_paths.append(path_string)
-    return False
-
-
 def update_filepaths(sc: ScreenConverter, oc: OpiConverter):
     """Replace all filepaths in the element tree with the new paths for the DII screen
     deployment structure."""
 
-    for widget in oc.bob_data.findall(".//widget"):
-        search_widget_filepaths(sc, oc, widget, switch_filepaths, oc.macros)
+    for element, file_path in find_filepaths(oc.bob_data):
+        element.text = switch_filepaths(sc, oc, file_path, oc.macros)
 
 
 def switch_filepaths(
