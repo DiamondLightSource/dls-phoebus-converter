@@ -121,7 +121,6 @@ def switch_filepaths(
     oc: OpiConverter,
     file_path: Path,
     macros: dict[str, str] | None = None,
-    symbol: bool = False,
 ) -> str:
     """Work out where a file referenced by a screen is deployed to.
 
@@ -129,14 +128,14 @@ def switch_filepaths(
     not name a module we know about, the file is assumed to be somewhere within our own
     support module.
 
+    Images are taken to be symbols, which are deployed to the module's
+    symbols directory rather than alongside its screens.
+
     Args:
         sc: The running conversion, holding where each support module is deployed to.
         oc: The screen being converted.
         file_path: The path as the old screen references it.
         macros: Resolved in the path before it is matched. None leaves them in place.
-        symbol: Whether the file is a symbol image, which is deployed to the module's
-            symbols directory rather than alongside its screens. An image suffix is
-            taken as a symbol regardless of whatever this is set to.
 
     Returns:
         The new path, or the old one unchanged where it needs no update or no support
@@ -164,8 +163,7 @@ def switch_filepaths(
     if file_path.suffix == ".opi":
         file_path = file_path.with_suffix(".bob")
 
-    if file_path.suffix in [".png", ".svg", ".gif", ".jpeg"]:
-        symbol = True
+    is_symbol = file_path.suffix in [".png", ".svg", ".gif", ".jpeg"]
 
     stripped_file_path = Path(
         *[part for part in file_path.parts if part not in ("..", ".")]
@@ -184,7 +182,7 @@ def switch_filepaths(
 
     for module_name, module_bob_dir in all_support_modules:
         if module_name == support_module_name:
-            if symbol:
+            if is_symbol:
                 # module_bob_dir is the path to bob/support_module, we want the symbols
                 # which is module_bob_dir/../symbols
                 path_to_support_modules = (
