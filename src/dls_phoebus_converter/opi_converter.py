@@ -135,9 +135,6 @@ class OpiConverter:
     macros: dict[str, str] = field(default_factory=dict)
     completed_conversion_steps: CompletedSteps = field(default_factory=CompletedSteps)
 
-    replace_tab: bool = True
-    fix_group: bool = True
-
     # This stores template file data
     template_data: etree.ElementTree | None = None
 

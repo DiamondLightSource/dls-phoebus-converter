@@ -267,9 +267,7 @@ def fix_widget_actions(oc: OpiConverter, actions: Element):
 
     for action in actions:
         fix_action_open_macro(oc, action)
-        if oc.replace_tab:
-            replace_open_in_tab(oc, action)
-
+        replace_open_in_tab(oc, action)
         fix_open_databrowser_actions(oc, action)
 
 
