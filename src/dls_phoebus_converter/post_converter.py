@@ -135,9 +135,9 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
     for widget in oc.bob_data.findall(".//widget"):
         if "typeId" in widget.attrib:
             logger.error(
-                "Detected old CSS index '@typeid' - suggests that the Phoebus converter"
-                "failed to convert the GroupContainer widget.\n"
-                "Try running converter with --fixGroup option."
+                f"The Phoebus converter did not convert widget "
+                f"{widget.attrib['typeId']} in {oc.src_file_path}. Widgets after it "
+                f"are not fixed."
             )
             # Returning here leaves every later widget in the file unfixed. Correcting
             # it changes the converted output, so it is left as it is for now.
