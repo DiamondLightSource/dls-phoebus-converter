@@ -128,8 +128,9 @@ def switch_filepaths(
     not name a module we know about, the file is assumed to be somewhere within our own
     support module.
 
-    Images are taken to be symbols, which are deployed to the module's
-    symbols directory rather than alongside its screens.
+    All image files are taken to be symbols, which are deployed to the module's symbols/
+    directory rather than alongside its screens. Note that Image widget images are also
+    added to the symbols/ directory, and they will remain fully functional.
 
     Args:
         sc: The running conversion, holding where each support module is deployed to.
