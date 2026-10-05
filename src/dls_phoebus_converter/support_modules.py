@@ -15,7 +15,7 @@ from dls_phoebus_converter.macros import fill_in_macros
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
     from dls_phoebus_converter.screen_converter import ScreenConverter
-from dls_phoebus_converter.utilities import search_widget_filepaths
+from dls_phoebus_converter.utilities import find_filepaths
 
 ACC_UI_SUPPORT_MODULE_LIST = [
     "devIocStats",
@@ -51,10 +51,10 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
     new_domain_modules: list[str] = []
     new_acc_modules: list[str] = []
 
-    widget_file_paths: list[Path] = []
     # Look for filepaths in xml
-    for widget in oc.bob_data.findall(".//widget"):
-        search_widget_filepaths(sc, oc, widget, append_new_filepath, widget_file_paths)
+    widget_file_paths = [
+        file_path for _, file_path in find_filepaths(oc.bob_data, include_symbols=True)
+    ]
 
     # Only keep unique filepaths and fill in macros
     file_paths_unique = set()
@@ -108,17 +108,12 @@ def find_required_support_modules(sc: ScreenConverter, oc: OpiConverter) -> None
         logger.info(f"Newly required acc modules: {sorted(new_acc_modules)}")
 
 
-def append_new_filepath(sc, oc, path_string, widget_file_paths, symbol=False):
-    widget_file_paths.append(path_string)
-    return False
-
-
 def update_filepaths(sc: ScreenConverter, oc: OpiConverter):
     """Replace all filepaths in the element tree with the new paths for the DII screen
     deployment structure."""
 
-    for widget in oc.bob_data.findall(".//widget"):
-        search_widget_filepaths(sc, oc, widget, switch_filepaths, oc.macros)
+    for element, file_path in find_filepaths(oc.bob_data):
+        element.text = switch_filepaths(sc, oc, file_path, oc.macros)
 
 
 def switch_filepaths(
@@ -126,7 +121,6 @@ def switch_filepaths(
     oc: OpiConverter,
     file_path: Path,
     macros: dict[str, str] | None = None,
-    symbol: bool = False,
 ) -> str:
     """Work out where a file referenced by a screen is deployed to.
 
@@ -134,14 +128,15 @@ def switch_filepaths(
     not name a module we know about, the file is assumed to be somewhere within our own
     support module.
 
+    All image files are taken to be symbols, which are deployed to the module's symbols/
+    directory rather than alongside its screens. Note that Image widget images are also
+    added to the symbols/ directory, and they will remain fully functional.
+
     Args:
         sc: The running conversion, holding where each support module is deployed to.
         oc: The screen being converted.
         file_path: The path as the old screen references it.
         macros: Resolved in the path before it is matched. None leaves them in place.
-        symbol: Whether the file is a symbol image, which is deployed to the module's
-            symbols directory rather than alongside its screens. An image suffix is
-            taken as a symbol regardless of whatever this is set to.
 
     Returns:
         The new path, or the old one unchanged where it needs no update or no support
@@ -169,8 +164,7 @@ def switch_filepaths(
     if file_path.suffix == ".opi":
         file_path = file_path.with_suffix(".bob")
 
-    if file_path.suffix in [".png", ".svg", ".gif", ".jpeg"]:
-        symbol = True
+    is_symbol = file_path.suffix in [".png", ".svg", ".gif", ".jpeg"]
 
     stripped_file_path = Path(
         *[part for part in file_path.parts if part not in ("..", ".")]
@@ -189,7 +183,7 @@ def switch_filepaths(
 
     for module_name, module_bob_dir in all_support_modules:
         if module_name == support_module_name:
-            if symbol:
+            if is_symbol:
                 # module_bob_dir is the path to bob/support_module, we want the symbols
                 # which is module_bob_dir/../symbols
                 path_to_support_modules = (
