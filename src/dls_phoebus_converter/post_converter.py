@@ -135,9 +135,9 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
     for widget in oc.bob_data.findall(".//widget"):
         if "typeId" in widget.attrib:
             logger.error(
-                "Detected old CSS index '@typeid' - suggests that the Phoebus converter"
-                "failed to convert the GroupContainer widget.\n"
-                "Try running converter with --fixGroup option."
+                f"The Phoebus converter did not convert widget "
+                f"{widget.attrib['typeId']} in {oc.src_file_path}. Widgets after it "
+                f"are not fixed."
             )
             # Returning here leaves every later widget in the file unfixed. Correcting
             # it changes the converted output, so it is left as it is for now.
@@ -267,9 +267,7 @@ def fix_widget_actions(oc: OpiConverter, actions: Element):
 
     for action in actions:
         fix_action_open_macro(oc, action)
-        if oc.replace_tab:
-            replace_open_in_tab(oc, action)
-
+        replace_open_in_tab(oc, action)
         fix_open_databrowser_actions(oc, action)
 
 
@@ -889,13 +887,3 @@ def fix_pv_severity_expression(oc: OpiConverter, exp_el: Element):
             logger.debug(f"Fixing {css_exp} to {phoebus_exp} in rule")
 
     exp_el.attrib["bool_exp"] = modified_attrib
-
-
-def update_legacy_sev_status(oc: OpiConverter, input_field, leg_sev, new_sev):
-    if leg_sev in input_field:
-        oc.completed_conversion_steps.update_leg_sev = True
-        result = input_field.replace(leg_sev, new_sev)
-        logger.debug(f"Fixing {leg_sev} to {new_sev}")
-        return result
-    else:
-        return input_field

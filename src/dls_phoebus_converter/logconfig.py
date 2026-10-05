@@ -11,9 +11,6 @@ import os
 import os.path
 from datetime import datetime
 
-GELFLOG_SERVER = "graylog-log-target.diamond.ac.uk"
-GELFLOG_SERVER_PORT = "12228"
-
 
 def get_timestamped_log_filename() -> str:
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")

@@ -19,7 +19,6 @@ from dls_phoebus_converter.post_converter import post_conversion_steps
 from dls_phoebus_converter.pre_converter import pre_conversion_steps
 
 PHOEBUS_SH_FILE_PATH = "/dls_sw/deploy-tools/modules/phoebus/dev/entrypoints/phoebus"
-PLOT_LOCATION_MACRO = "$(PLOT_LOC)"
 
 logger = logging.getLogger("dls_phoebus_converter")
 
@@ -131,14 +130,10 @@ class OpiConverter:
     dst_bob_filename: str | None = None
     dst_bob_filepath: Path | None = None
     staged_opi_path: Path | None = None
-    conversions_to_skip_filepath: Path | None = None
 
     support_module_name: str | None = None
     macros: dict[str, str] = field(default_factory=dict)
     completed_conversion_steps: CompletedSteps = field(default_factory=CompletedSteps)
-
-    replace_tab: bool = True
-    fix_group: bool = True
 
     # This stores template file data
     template_data: etree.ElementTree | None = None
@@ -203,26 +198,6 @@ class OpiConverter:
         except OSError:
             pass
 
-    def is_conversion_allowed(self):
-        """Check the conversions_to_skip file to see if we should run the conversion for
-        this file. Is this even useful?"""
-
-        if self.conversions_to_skip_filepath is not None:
-            with open(self.conversions_to_skip_filepath) as f:
-                lines = f.readlines()
-                for line in lines:
-                    if self.src_file_path == line.strip():
-                        logger.warning(
-                            "!OPI file to be converted is in the 'conversions_to_skip' "
-                            "list suggesting that it has had manual changes that should"
-                            " not be overwritten.\n"
-                            "If this is incorrect then remove this file from the "
-                            f"{self.conversions_to_skip_filepath}.\n"
-                            "Skipping this conversion"
-                        )
-                        return True
-        return False
-
     def log_conversion_steps(self):
         # Log what was done
         ccs = self.completed_conversion_steps
@@ -280,19 +255,13 @@ class OpiConverter:
             if conversion_step_complete:
                 logger.info(conversion_step_log_msg)
 
-    def stage_opi_file(self, staged_opi_path: Path) -> bool:
+    def stage_opi_file(self, staged_opi_path: Path) -> None:
         """Prepare the .opi that the Phoebus converter should read.
 
         Args:
             staged_opi_path: Where to put the prepared file. The Phoebus converter
                 names its output after this, so it must be unique within a batch.
-
-        Returns:
-            True if the file was staged and should be converted.
         """
-
-        if self.is_conversion_allowed():
-            return False
 
         self.staged_opi_path = staged_opi_path
 
@@ -303,8 +272,6 @@ class OpiConverter:
             # Copy the src file to the staged location. This is done as autoconverting
             # directly from the src file sometimes fails due to read permission issues
             shutil.copy(self.src_file_path, self.staged_opi_path)
-
-        return True
 
     def apply_conversion(self, staged_bob_path: Path, sc) -> bool:
         """Finish a conversion from what the Phoebus converter produced.
@@ -354,13 +321,19 @@ class OpiConverter:
         return post_conversion_steps(self, sc)
 
     def convert(self, sc=None) -> bool:
-        """Convert this screen on its own, with its own Phoebus invocation."""
+        """Convert this screen on its own, with its own Phoebus invocation.
+
+        Args:
+            sc: The conversion configuration, or None for a single file.
+
+        Returns:
+            True if the screen was converted and saved.
+        """
 
         staging_dir = Path(tempfile.mkdtemp())
         try:
             staged_opi_path = staging_dir / "tmp.opi"
-            if not self.stage_opi_file(staged_opi_path):
-                return False
+            self.stage_opi_file(staged_opi_path)
 
             failed_file_names = run_phoebus_converter([staged_opi_path], staging_dir)
             if staged_opi_path.name in failed_file_names:
@@ -369,12 +342,9 @@ class OpiConverter:
                     "so its screen will be empty"
                 )
 
-            if not self.apply_conversion(staged_opi_path.with_suffix(".bob"), sc):
-                return False
+            return self.apply_conversion(staged_opi_path.with_suffix(".bob"), sc)
         finally:
             shutil.rmtree(staging_dir, ignore_errors=True)
-
-        return True
 
 
 def convert_single_screen(src_file_path: Path, output_dir_path: Path) -> bool:

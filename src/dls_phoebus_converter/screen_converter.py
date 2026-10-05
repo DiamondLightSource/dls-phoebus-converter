@@ -260,8 +260,8 @@ class ScreenConverter:
                 # The Phoebus converter names its output after its input, so every
                 # screen in a batch needs a distinct staged filename
                 staged_opi_path = staging_dir_path / f"{index:05}.opi"
-                if conversion.stage_opi_file(staged_opi_path):
-                    staged.append((conversion, staged_opi_path))
+                conversion.stage_opi_file(staged_opi_path)
+                staged.append((conversion, staged_opi_path))
 
             failed_file_names = run_phoebus_converter(
                 [path for _, path in staged], staging_dir_path
