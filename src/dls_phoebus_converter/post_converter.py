@@ -17,7 +17,7 @@ from dls_phoebus_converter.macros import fill_in_macros, handle_macros
 from dls_phoebus_converter.support_modules import ACC_UI_SUPPORT_MODULE_LIST
 
 if TYPE_CHECKING:
-    from dls_phoebus_converter.opi_converter import OpiConverter
+    from dls_phoebus_converter.opi_converter import CompletedSteps, OpiConverter
     from dls_phoebus_converter.screen_converter import ScreenConverter
 
 from dls_phoebus_converter.support_modules import (
@@ -124,6 +124,7 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
 
 
 def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
+    steps = oc.completed_conversion_steps
     for widget in oc.bob_data.findall(".//widget"):
         if "typeId" in widget.attrib:
             logger.error(
@@ -144,13 +145,15 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
                     if text.text in ("EXIT", "Exit", "Cancel"):
                         # We are assuming that there is only one action on this widget
                         # and so only update the first one we find.
-                        fix_exit_button(oc, actions.find("action"))
-                    fix_widget_actions(oc, actions)
+                        fix_exit_button(steps, actions.find("action"))
+                    fix_widget_actions(steps, oc.src_file_path, actions)
 
         elif widget_type == "symbol":
             for child in widget:
                 if child.tag == "actions":
-                    fix_widget_actions(oc, widget.find(".//actions"))
+                    fix_widget_actions(
+                        steps, oc.src_file_path, widget.find(".//actions")
+                    )
             if sc is not None:
                 fix_edm_symbol_widgets(oc, sc, widget)
 
@@ -182,12 +185,12 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
                     )
                     widget.append(new_el)
         convert_pv_function(widget)
-        fix_rule_expressions(oc, widget)
-        fix_actions_on_widgets_without_actions_functionality(oc, widget)
+        fix_rule_expressions(steps, widget)
+        fix_actions_on_widgets_without_actions_functionality(steps, widget)
 
 
-def fix_exit_button(oc: OpiConverter, action: Element):
-    oc.completed_conversion_steps.fix_exit_but = True
+def fix_exit_button(steps: CompletedSteps, action: Element):
+    steps.fix_exit_but = True
     action.attrib["type"] = "close_display"
     action.attrib["description"] = "Close display"
     description = action.find("description")
@@ -199,7 +202,9 @@ def fix_exit_button(oc: OpiConverter, action: Element):
         action.remove(old_script)
 
 
-def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
+def fix_open_databrowser_actions(
+    steps: CompletedSteps, src_file_path: Path, action: Element
+):
     """Fix custom scripts/commands used to launch the databrowser which dont work
     in Phoebus"""
 
@@ -212,7 +217,7 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                     pv_names = match.group(1)
                     pv_names = pv_names.split(",")
                     switch_to_new_databrowser_action(action, pv_names)
-                    oc.completed_conversion_steps.replace_db_script = True
+                    steps.replace_db_script = True
                 else:
                     logger.error(
                         "Could not find any PV names to add to the open_data_browser"
@@ -223,7 +228,7 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                 logger.warning(
                     "Screen contains an executeEclipseCommand script which is"
                     "not supported by Phoebus. Found script: "
-                    f"{script_text_el.text} in file {oc.src_file_path}"
+                    f"{script_text_el.text} in file {src_file_path}"
                 )
 
     elif action.attrib["type"] == "command":
@@ -236,7 +241,7 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                     pv_names.extend(str_list[i + 1 : -1])
                     break
             switch_to_new_databrowser_action(action, pv_names)
-            oc.completed_conversion_steps.replace_db_script = True
+            steps.replace_db_script = True
 
 
 def switch_to_new_databrowser_action(action: Element, pv_names: list[str]):
@@ -254,23 +259,23 @@ def switch_to_new_databrowser_action(action: Element, pv_names: list[str]):
     actions.remove(action)
 
 
-def fix_widget_actions(oc: OpiConverter, actions: Element):
+def fix_widget_actions(steps: CompletedSteps, src_file_path: Path, actions: Element):
     """Fix issues with widget actions"""
 
     for action in actions:
-        fix_action_open_macro(oc, action)
-        replace_open_in_tab(oc, action)
-        fix_open_databrowser_actions(oc, action)
+        fix_action_open_macro(steps, action)
+        replace_open_in_tab(steps, action)
+        fix_open_databrowser_actions(steps, src_file_path, action)
 
 
-def fix_action_open_macro(oc: OpiConverter, action: Element):
+def fix_action_open_macro(steps: CompletedSteps, action: Element):
     """Replace the macro $(name) with the actions parent widgets name"""
 
     if action.attrib["type"] == "open_display":
         for macros_el in action.findall("macros"):
             for macro in macros_el:
                 if macro.text == "$(name)":
-                    oc.completed_conversion_steps.fix_action_macro_name = True
+                    steps.fix_action_macro_name = True
                     macro.text = action.getparent().getparent().find("name").text
 
 
@@ -698,7 +703,7 @@ def get_transparent_background_tank_widget(oc: OpiConverter):
 
 
 def fix_actions_on_widgets_without_actions_functionality(
-    oc: OpiConverter, widget: Element
+    steps: CompletedSteps, widget: Element
 ):
     """Some widgets which could have actions in CS-Studio, cannot have actions in
     Phoebus. We look for these situations and try to fix them by converting the widget
@@ -712,7 +717,7 @@ def fix_actions_on_widgets_without_actions_functionality(
     if widget_type in ("action_button", "symbol"):
         return
 
-    oc.completed_conversion_steps.non_ab_action = True
+    steps.non_ab_action = True
     logger.debug(
         "Action contained in widget that isn't an action button: "
         f"{widget_type}, name: {widget.find('name').text}"
@@ -727,7 +732,7 @@ def fix_actions_on_widgets_without_actions_functionality(
     ):
         return
 
-    oc.completed_conversion_steps.replace_with_ab = True
+    steps.replace_with_ab = True
     logger.debug("    Attempting to fix by converting to an action_button")
     widget.attrib["type"] = "action_button"
 
@@ -745,12 +750,12 @@ def fix_actions_on_widgets_without_actions_functionality(
             rule.getparent().remove(rule)
 
 
-def replace_open_in_tab(oc: OpiConverter, action: Element):
+def replace_open_in_tab(steps: CompletedSteps, action: Element):
     if action.attrib["type"] == "open_display":
         for target in action.findall("target"):
             if target.text == "tab":
                 target.text = "standalone"
-                oc.completed_conversion_steps.replace_action_tab = True
+                steps.replace_action_tab = True
 
 
 def reorder_default_symbol_order_from_rule(
@@ -842,13 +847,13 @@ def convert_pv_function(widget: Element):
                 child.text = pv_replacement
 
 
-def fix_rule_expressions(oc, widget: Element):
+def fix_rule_expressions(steps: CompletedSteps, widget: Element):
     """Fix common issues that come up in cs-studio rules"""
 
     expressions = widget.findall("rules/rule/exp")
     for exp in expressions:
         # Use new syntax for getting a PV alarm severity
-        fix_pv_severity_expression(oc, exp)
+        fix_pv_severity_expression(steps, exp)
 
         # widget.getValue() is not available in Phoebus, we assume this is an attempt to
         # get the value of the widgets pv, so we replace it with pv0
@@ -858,7 +863,7 @@ def fix_rule_expressions(oc, widget: Element):
             )
 
 
-def fix_pv_severity_expression(oc: OpiConverter, exp_el: Element):
+def fix_pv_severity_expression(steps: CompletedSteps, exp_el: Element):
     # OK, Major, Minor, Invalid/undefined
     css_sev_expressions = [
         "pvLegacySev0==0",
@@ -874,7 +879,7 @@ def fix_pv_severity_expression(oc: OpiConverter, exp_el: Element):
         css_sev_expressions, phoebus_sev_expressions, strict=True
     ):
         if css_exp in initial_attrib:
-            oc.completed_conversion_steps.update_leg_sev = True
+            steps.update_leg_sev = True
             modified_attrib = initial_attrib.replace(css_exp, phoebus_exp)
             logger.debug(f"Fixing {css_exp} to {phoebus_exp} in rule")
 
