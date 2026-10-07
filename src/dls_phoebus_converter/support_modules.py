@@ -8,8 +8,6 @@ from enum import StrEnum
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import yaml
-
 from dls_phoebus_converter.macros import fill_in_macros
 
 if TYPE_CHECKING:
@@ -337,12 +335,7 @@ def convert_extra_support_modules(sc: ScreenConverter):
         sc.domain_support_module_locations + sc.acc_support_module_locations
     )
 
-    if isinstance(sc.config_file, Path):
-        with open(sc.config_file) as file:
-            data = yaml.safe_load(file)
-    else:
-        data = sc.config_file
-    data["files"] = []
+    extra_file_data = []
 
     existing_modules_paths = list(sc.acc_ui_support_bob_dst_full.iterdir()) + list(
         sc.domain_ui_support_bob_dst_full.iterdir()
@@ -359,7 +352,7 @@ def convert_extra_support_modules(sc: ScreenConverter):
                     if sm_name in ACC_UI_SUPPORT_MODULE_LIST:
                         dst = "acc-ui-support"
 
-                    data["files"].append(
+                    extra_file_data.append(
                         {
                             "src": sm_src_file_path,
                             "dst": dst,
@@ -370,8 +363,9 @@ def convert_extra_support_modules(sc: ScreenConverter):
 
                     logger.info(f"Converting extra support module: {sm_name}")
 
-    if data["files"]:
-        sc.get_config(data)
+    if extra_file_data:
+        # The same config, but converting these support modules instead of its own files
+        sc.parse_config({**sc.config_data, "files": extra_file_data})
         sc.convert_screens()
     else:
         logger.info("Creating extra modules finished!")

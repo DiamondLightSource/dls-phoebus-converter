@@ -63,28 +63,20 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
         pass
 
 
-def get_widget_dimension(widget: Element, widget_property: str) -> int:
-    # Widgets without a size property defined in Phoebus are 0
-    if widget.findtext(widget_property) is None:
-        return 0
-    else:
-        return int(widget.findtext(widget_property))
+def get_dimension(element: Element, name: str, default: int = 0) -> int:
+    """Read an integer dimension, falling back to a default where it is not set.
 
+    Args:
+        element: The widget or display to read from.
+        name: The dimension property, such as "x" or "width".
+        default: Used when the property is absent.
 
-def get_screen_width(display: Element) -> int:
-    # screens without a width property defined in Phoebus are set to a default size
-    if display.findtext("width") is None:
-        return DEFAULT_SCREEN_WIDTH
-    else:
-        return int(display.findtext("width"))
+    Returns:
+        The dimension in pixels.
+    """
 
-
-def get_screen_height(display: Element) -> int:
-    # screens without a height property defined in Phoebus are set to a default size
-    if display.findtext("height") is None:
-        return DEFAULT_SCREEN_HEIGHT
-    else:
-        return int(display.findtext("height"))
+    value = element.findtext(name)
+    return default if value is None else int(value)
 
 
 def expand_screen_to_widgets(oc: OpiConverter) -> None:
@@ -99,17 +91,17 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
     padding = 5  # px
 
     for widget in oc.bob_data.findall(".//widget"):
-        x = get_widget_dimension(widget, "x")
-        y = get_widget_dimension(widget, "y")
-        width = get_widget_dimension(widget, "width")
-        height = get_widget_dimension(widget, "height")
+        x = get_dimension(widget, "x")
+        y = get_dimension(widget, "y")
+        width = get_dimension(widget, "width")
+        height = get_dimension(widget, "height")
 
         max_width = max(max_width, x + width)
         max_height = max(max_height, y + height)
 
     root = oc.bob_data.getroot()
-    screen_width = get_screen_width(root)
-    screen_height = get_screen_height(root)
+    screen_width = get_dimension(root, "width", DEFAULT_SCREEN_WIDTH)
+    screen_height = get_dimension(root, "height", DEFAULT_SCREEN_HEIGHT)
 
     new_width = max_width + padding
     new_height = max_height + padding
@@ -781,7 +773,7 @@ def reorder_default_symbol_order_from_rule(
     old rule is removed"""
 
     # Contains a list of tuples of (pv_val, symbol_index)
-    reorder_map: list[tuple] = []
+    reorder_map: list[tuple[int, int]] = []
     for exp in rule.findall("exp"):
         pv_val = None
         result = int(exp.find("expression").text)
@@ -797,6 +789,17 @@ def reorder_default_symbol_order_from_rule(
                 # smarter if required
                 if match := re.search(r">=\s*(.+?)\s*&&", bool_logic):
                     pv_val = int(float(match.group(1)))
+
+            if pv_val is None:
+                # Applying the rest of the rule would move some symbols and leave the
+                # ones this expression covers at their default position, which is
+                # neither the old order nor the intended one.
+                logger.warning(
+                    "Could not read a PV value from the symbol widget index "
+                    f"modification expression '{bool_logic}'. Rule is being ignored."
+                )
+                return symbols
+
             reorder_map.append((pv_val, result))
 
     if not reorder_map:
@@ -825,28 +828,17 @@ def convert_pv_function(widget: Element):
     for child in widget.iter():
         inp_string = child.text
         if inp_string is not None and "pv(" in inp_string:
-            # cs-studio writes a PV name as pv("NAME"), Phoebus as `NAME`. Splitting on
-            # the opening pv(" leaves every part but the first starting with a PV name,
-            # so the separator is dropped and the name up to the closing ") is quoted.
-            parts = inp_string.split('pv("')
-            converted = [parts[0]]
-            for part in parts[1:]:
-                name_end = part.find('")')
-                if name_end < 0:
-                    converted.append(part)
-                else:
-                    converted.append(f"`{part[:name_end]}`{part[name_end + 2 :]}")
-            pv_replacement = "".join(converted)
-            # Catch case where there is a function call nested within a pv(...) function
-            # In this case the above replacement will not have found pv(" and so it
-            # will still exist in the replacement. There is no way to handle this in
-            # Phoebus so just issue warning
+            # cs-studio writes a PV name as pv("NAME"), Phoebus as `NAME`
+            pv_replacement = re.sub(r'pv\("(.*?)"\)', r"`\1`", inp_string)
+            # Anything still holding pv( did not match, either a nested call such as
+            # pv(concat(...)) or an unclosed pv(". Phoebus has no equivalent for the
+            # former, so warn and leave the formula as it was.
             if "pv(" in pv_replacement:
                 logger.warning(
-                    "Cannot fix the following formula in Phoebus " + inp_string
+                    f"Cannot fix the following formula in Phoebus {inp_string}"
                 )
             else:
-                logger.info("Replace pv() function with " + pv_replacement)
+                logger.info(f"Replace pv() function with {pv_replacement}")
                 child.text = pv_replacement
 
 
