@@ -34,13 +34,13 @@ DEFAULT_SCREEN_WIDTH = 800  # px
 DEFAULT_SCREEN_HEIGHT = 600  # px
 
 
-def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
+def post_conversion_steps(sc: ScreenConverter, oc: OpiConverter):
     # If sc is None, then we are just converting a single_file, so we dont
     # do any of the changes for converting a technical area.
     if sc is not None:
         find_required_support_modules(sc, oc)
 
-    fix_widget_issues(oc, sc)
+    fix_widget_issues(sc, oc)
     expand_screen_to_widgets(oc.bob_data)
 
     if sc is not None:
@@ -123,7 +123,7 @@ def expand_screen_to_widgets(bob_data: etree.ElementTree) -> None:
         logger.info(f"Display height resized to: {new_height}")
 
 
-def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
+def fix_widget_issues(sc: ScreenConverter, oc: OpiConverter):
     steps = oc.completed_conversion_steps
     for widget in oc.bob_data.findall(".//widget"):
         if "typeId" in widget.attrib:
@@ -155,7 +155,7 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
                         steps, oc.src_file_path, widget.find(".//actions")
                     )
             if sc is not None:
-                fix_edm_symbol_widgets(oc, sc, widget)
+                fix_edm_symbol_widgets(sc, oc, widget)
 
         elif widget_type == "progressbar":
             # Actions are not supported on progressBars in Phoebus, so
@@ -530,7 +530,7 @@ def get_sub_image_widths(opi_data: etree.ElementTree) -> dict[tuple, str]:
 
 
 def fix_edm_symbol_widgets(
-    oc: OpiConverter, sc: ScreenConverter, widget: Element
+    sc: ScreenConverter, oc: OpiConverter, widget: Element
 ) -> None:
     """Converts from an edm/cs-studio style symbol widget to a Pheobus style symbol
     widget."""
