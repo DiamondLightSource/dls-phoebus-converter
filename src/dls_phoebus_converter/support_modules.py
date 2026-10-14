@@ -111,15 +111,10 @@ def update_filepaths(sc: ScreenConverter, oc: OpiConverter):
     deployment structure."""
 
     for element, file_path in find_filepaths(oc.bob_data):
-        element.text = switch_filepaths(sc, oc, file_path, oc.macros)
+        element.text = switch_filepaths(sc, oc, file_path)
 
 
-def switch_filepaths(
-    sc: ScreenConverter,
-    oc: OpiConverter,
-    file_path: Path,
-    macros: dict[str, str] | None = None,
-) -> str:
+def switch_filepaths(sc: ScreenConverter, oc: OpiConverter, file_path: Path) -> str:
     """Work out where a file referenced by a screen is deployed to.
 
     The support module is guessed from the first part of the old path. Where that does
@@ -132,9 +127,9 @@ def switch_filepaths(
 
     Args:
         sc: The running conversion, holding where each support module is deployed to.
-        oc: The screen being converted.
+        oc: The screen being converted. Its macros are resolved in the path before it
+            is matched.
         file_path: The path as the old screen references it.
-        macros: Resolved in the path before it is matched. None leaves them in place.
 
     Returns:
         The new path, or the old one unchanged where it needs no update or no support
@@ -156,8 +151,8 @@ def switch_filepaths(
     ) or sc.domain_ui_support_bob_dst_part.parts[0] in str(file_path):
         return str(file_path)
 
-    if macros is not None:
-        file_path = Path(fill_in_macros(str(file_path), macros))
+    if oc.macros is not None:
+        file_path = Path(fill_in_macros(str(file_path), oc.macros))
 
     if file_path.suffix == ".opi":
         file_path = file_path.with_suffix(".bob")
