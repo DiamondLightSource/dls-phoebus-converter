@@ -328,7 +328,10 @@ def get_symbol_file_paths(base_file: Path, n_images: int) -> list[Path]:
 
 
 def get_symbol_image_split(
-    sc: ScreenConverter, output_file_full: Path, src_file: Path, width: int
+    symbol_image_splits: dict[Path, tuple[int, int]],
+    output_file_full: Path,
+    src_file: Path,
+    width: int,
 ) -> int | None:
     """Split a symbol image into one file per symbol, doing the work once per image.
 
@@ -337,7 +340,8 @@ def get_symbol_image_split(
     warned if they ask for a different one.
 
     Args:
-        sc: The running conversion, holding the split made for each image.
+        symbol_image_splits: The (symbol width, number of symbols) of each image split
+            so far, by destination. A new split is added to it.
         output_file_full: Where the symbol files are written.
         src_file: The combined symbol image to split.
         width: Width of one symbol as this widget gives it, or 0 if it gives none.
@@ -346,8 +350,8 @@ def get_symbol_image_split(
         The number of symbols in src_file, or None if it could not be measured.
     """
 
-    if output_file_full in sc.symbol_image_splits:
-        split_width, n_images = sc.symbol_image_splits[output_file_full]
+    if output_file_full in symbol_image_splits:
+        split_width, n_images = symbol_image_splits[output_file_full]
         if width not in (0, split_width):
             logger.warning(
                 f"Symbol image {src_file} was already split at sub_image_width "
@@ -369,7 +373,7 @@ def get_symbol_image_split(
     # Need to calculate from width of full image / width
     n_images = full_width // width
     create_symbol_image_file(output_file_full, src_file, n_images, width, height)
-    sc.symbol_image_splits[output_file_full] = (width, n_images)
+    symbol_image_splits[output_file_full] = (width, n_images)
 
     return n_images
 
@@ -598,7 +602,9 @@ def fix_edm_symbol_widgets(
     # sub_image_width stores a stringified float, so we must convert to float first
     width = 0 if sub_image_width is None else int(float(sub_image_width))
 
-    n_images = get_symbol_image_split(sc, output_file_full, src_file, width)
+    n_images = get_symbol_image_split(
+        sc.symbol_image_splits, output_file_full, src_file, width
+    )
     if n_images is None:
         return
 

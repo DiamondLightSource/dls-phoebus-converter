@@ -230,7 +230,10 @@ def get_existing_support_module_filepath(
         )
         return None
 
-    release_dir = get_support_module_release(sc, support_module_name, module_dir)
+    pinned_release = sc.dependency_versions.get(support_module_name)
+    release_dir = get_support_module_release(
+        support_module_name, module_dir, pinned_release
+    )
 
     opi_dir_guess = release_dir / f"{support_module_name}App" / "opi" / "opi"
     if not opi_dir_guess.is_dir():
@@ -247,7 +250,7 @@ def get_existing_support_module_filepath(
 
 
 def get_support_module_release(
-    sc: ScreenConverter, support_module_name: str, module_dir: Path
+    support_module_name: str, module_dir: Path, pinned_release: str | None
 ) -> Path:
     """Pick which release of a support module to convert from.
 
@@ -255,9 +258,10 @@ def get_support_module_release(
     the newest release on disk.
 
     Args:
-        sc: The running conversion, holding the pinned releases.
         support_module_name: Name of the support module being resolved.
         module_dir: The module's directory in /dls_sw, holding one dir per release.
+        pinned_release: The release pinned for this module in the config, or None if
+            it has none.
 
     Returns:
         The path to the chosen release directory.
@@ -266,7 +270,6 @@ def get_support_module_release(
         ValueError: If the release pinned for this module is not in /dls_sw.
     """
 
-    pinned_release = sc.dependency_versions.get(support_module_name)
     if pinned_release is not None:
         release_dir = module_dir / str(pinned_release)
         if not release_dir.is_dir():
