@@ -71,14 +71,14 @@ def remove_fe_temp_indicator_script(oc: OpiConverter) -> None:
 
 
 def replace_progress_bar_with_linear_meter(
-    bob_file_data: etree.ElementTree, dst_filepath: Path
+    bob_data: etree.ElementTree, dst_bob_filepath: Path
 ) -> None:
     """
     HLA-1077: This replaces the progress bars in FE22B with linear meters
     to support alarm limits, which are not a feature of progress bars in Phoebus.
     """
     logger.info(
-        f"Special case: Replacing ProgressBar with LinearMeter in {dst_filepath}"
+        f"Special case: Replacing ProgressBar with LinearMeter in {dst_bob_filepath}"
     )
 
     def create_linear_meter_from_progress_bar(
@@ -135,13 +135,13 @@ def replace_progress_bar_with_linear_meter(
 
         return linear_meter
 
-    for progress_bar in bob_file_data.findall(".//widget[@type='progressbar']"):
+    for progress_bar in bob_data.findall(".//widget[@type='progressbar']"):
         new_linear_meter = create_linear_meter_from_progress_bar(progress_bar)
         progress_bar.getparent().replace(progress_bar, new_linear_meter)
 
         # Turn off alarm borders for the corresponding text update widget
         expected_text_update_widget_name = progress_bar.findtext("name") + " Label"
-        for text_update in bob_file_data.findall(".//widget[@type='textupdate']"):
+        for text_update in bob_data.findall(".//widget[@type='textupdate']"):
             if text_update.findtext("name") == expected_text_update_widget_name:
                 etree.SubElement(text_update, "border_alarm_sensitive").text = "false"
 
