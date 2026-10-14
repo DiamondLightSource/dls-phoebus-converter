@@ -41,10 +41,10 @@ def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
         find_required_support_modules(sc, oc)
 
     fix_widget_issues(oc, sc)
-    expand_screen_to_widgets(oc)
+    expand_screen_to_widgets(oc.bob_data)
 
     if sc is not None:
-        handle_macros(oc)
+        handle_macros(oc.bob_data, oc.macros)
         update_filepaths(sc, oc)
 
     # Catch any conversion we may have missed, also used when converting a single
@@ -79,7 +79,7 @@ def get_dimension(element: Element, name: str, default: int = 0) -> int:
     return default if value is None else int(value)
 
 
-def expand_screen_to_widgets(oc: OpiConverter) -> None:
+def expand_screen_to_widgets(bob_data: etree.ElementTree) -> None:
     """Resize the screen to fit the widgets on it. This is useful for screens which have
     been converted from CS-Studio where the screen size was not set correctly."""
 
@@ -90,7 +90,7 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
     # of a widget, such as border width and buttons expanding when highlighted.
     padding = 5  # px
 
-    for widget in oc.bob_data.findall(".//widget"):
+    for widget in bob_data.findall(".//widget"):
         x = get_dimension(widget, "x")
         y = get_dimension(widget, "y")
         width = get_dimension(widget, "width")
@@ -99,7 +99,7 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
         max_width = max(max_width, x + width)
         max_height = max(max_height, y + height)
 
-    root = oc.bob_data.getroot()
+    root = bob_data.getroot()
     screen_width = get_dimension(root, "width", DEFAULT_SCREEN_WIDTH)
     screen_height = get_dimension(root, "height", DEFAULT_SCREEN_HEIGHT)
 
@@ -164,7 +164,9 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
                 if child.tag == "actions":
                     move_action_to_transparent_button(widget)
             # Look for any progress bar widgets with alarm borders enabled
-            alarm_sensitive_progress_bars = get_alarm_sensitive_progress_bars(oc)
+            alarm_sensitive_progress_bars = get_alarm_sensitive_progress_bars(
+                oc.const_opi_data
+            )
             name = widget.find("name")
             pv_name = widget.find("pv_name")
             if name is not None and pv_name is not None:
@@ -175,7 +177,9 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
         elif widget_type == "tank":
             # Phoebus is missing the <transparent_background> option, so we just set the
             # background colour to transparent
-            transparent_tank_backgrounds = get_transparent_background_tank_widget(oc)
+            transparent_tank_backgrounds = get_transparent_background_tank_widget(
+                oc.const_opi_data
+            )
             name = widget.find("name")
             pv_name = widget.find("pv_name")
             if name is not None and pv_name is not None:
@@ -667,7 +671,7 @@ def move_action_to_transparent_button(widget: Element):
     widget.remove(widget_actions)
 
 
-def get_alarm_sensitive_progress_bars(oc: OpiConverter):
+def get_alarm_sensitive_progress_bars(opi_data: etree.ElementTree):
     """Get a list of identifying string pairs which are used to identify an
     alarm sensitive progressbar."""
 
@@ -680,7 +684,7 @@ def get_alarm_sensitive_progress_bars(oc: OpiConverter):
 
     alarm_sensitive_progress_bars = []
     xpath = ".//widget[@typeId='org.csstudio.opibuilder.widgets.progressbar']"
-    for widget in oc.const_opi_data.findall(xpath):
+    for widget in opi_data.findall(xpath):
         if any(widget.findtext(prop) == "true" for prop in alarm_properties):
             name_ids = [widget.find("name").text, widget.find("pv_name").text]
             alarm_sensitive_progress_bars.append(name_ids)
@@ -688,13 +692,13 @@ def get_alarm_sensitive_progress_bars(oc: OpiConverter):
     return alarm_sensitive_progress_bars
 
 
-def get_transparent_background_tank_widget(oc: OpiConverter):
+def get_transparent_background_tank_widget(opi_data: etree.ElementTree):
     """Get a list of identifying string pairs which are used to identify a
     tank widget with a transparent background."""
 
     transparent_backgrounds = []
     xpath = ".//widget[@typeId='org.csstudio.opibuilder.widgets.tank']"
-    for widget in oc.const_opi_data.findall(xpath):
+    for widget in opi_data.findall(xpath):
         if widget.findtext("transparent_background") == "true":
             name_ids = [widget.find("name").text, widget.find("pv_name").text]
             transparent_backgrounds.append(name_ids)
