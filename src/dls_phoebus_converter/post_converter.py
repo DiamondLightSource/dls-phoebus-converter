@@ -298,21 +298,16 @@ def get_symbol_image_dims(src_file: Path) -> tuple[int, int] | tuple[None, None]
         str(src_file),
     ]
 
-    process = subprocess.Popen(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    stdout, stderr = process.communicate()
+    result = subprocess.run(cmd, capture_output=True, encoding="utf-8")
 
-    if process.returncode != 0:
-        logger.error(f"identify - {stderr}")
+    if result.returncode != 0:
+        logger.error(f"identify - {result.stderr}")
         return None, None
 
-    if stderr:
-        logger.debug(f"identify - {stderr}")
+    if result.stderr:
+        logger.debug(f"identify - {result.stderr}")
 
-    width, height = stdout.decode().strip("'").split(" ")
+    width, height = result.stdout.strip("'").split(" ")
     return int(width), int(height)
 
 
@@ -408,12 +403,7 @@ def create_symbol_image_file(
             str(new_output_file),
         ]
 
-        process = subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        _, stderr = process.communicate()
+        result = subprocess.run(cmd, capture_output=True, encoding="utf-8")
 
         created = new_output_file.is_file()
         if not created:
@@ -421,7 +411,7 @@ def create_symbol_image_file(
                 f"Failed to create new symbol images with command: {' '.join(cmd)}"
             )
 
-        for line in stderr.decode("utf-8").split("\n"):
+        for line in result.stderr.split("\n"):
             if line:
                 if not created:
                     logger.error(f"convert - {line}")

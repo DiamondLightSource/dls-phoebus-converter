@@ -54,20 +54,16 @@ def run_phoebus_batch(
     ]
     logger.info(f"Running the Phoebus converter on {len(opi_file_paths)} screens")
 
-    process = subprocess.Popen(
-        convert_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    _, stderr = process.communicate()
-    stderr_text = stderr.decode("utf-8")
+    result = subprocess.run(convert_command, capture_output=True, encoding="utf-8")
 
     # The converter is very verbose, so it is logged at the DEBUG level
-    for line in stderr_text.split("\n"):
+    for line in result.stderr.split("\n"):
         if line:
             logger.debug(f"Phoebus - {line}")
 
     return {
         Path(reported).name
-        for reported in re.findall(r"Cannot convert (\S+)", stderr_text)
+        for reported in re.findall(r"Cannot convert (\S+)", result.stderr)
     }
 
 
