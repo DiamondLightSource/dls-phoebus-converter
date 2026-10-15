@@ -45,7 +45,7 @@ def run_phoebus_batch(
     """
 
     convert_command = [
-        *PHOEBUS_SH_FILE_PATH.split(),
+        PHOEBUS_SH_FILE_PATH,
         "-main",
         "org.csstudio.display.builder.model.Converter",
         "-output",
