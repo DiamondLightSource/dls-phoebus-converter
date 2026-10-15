@@ -182,8 +182,6 @@ dependencies = [
     { name = "lxml" },
     { name = "pyyaml" },
     { name = "typer" },
-    { name = "xmldiff" },
-    { name = "xmltodict" },
 ]
 
 [package.dev-dependencies]
@@ -196,7 +194,7 @@ dev = [
     { name = "ruff" },
     { name = "tox-uv" },
     { name = "types-lxml" },
-    { name = "types-mock" },
+    { name = "xmldiff" },
 ]
 
 [package.metadata]
@@ -204,8 +202,6 @@ requires-dist = [
     { name = "lxml" },
     { name = "pyyaml" },
     { name = "typer" },
-    { name = "xmldiff" },
-    { name = "xmltodict" },
 ]
 
 [package.metadata.requires-dev]
@@ -218,7 +214,7 @@ dev = [
     { name = "ruff" },
     { name = "tox-uv" },
     { name = "types-lxml" },
-    { name = "types-mock" },
+    { name = "xmldiff" },
 ]
 
 [[package]]
@@ -965,15 +961,6 @@ wheels = [
 ]
 
 [[package]]
-name = "types-mock"
-version = "5.2.0.20260408"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/51/4f/a17fd8f0bdeb8d97842e4a825907e7ef7d0360e29728b7a0442d245e28e9/types_mock-5.2.0.20260408.tar.gz", hash = "sha256:0bca3ca21943ba25bca6888b2383b91938f5978a189c840656e255073d53868d", size = 11494, upload-time = "2026-04-08T04:31:46.301Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/5f/f8/dc90b73af9c04a9ff89eb785d4b63482ac74c365668a22a0b609a8e90ce9/types_mock-5.2.0.20260408-py3-none-any.whl", hash = "sha256:7754cdaadb81127124804acf2abea413705c1ac22f7bd2bd8417710d2e507216", size = 10500, upload-time = "2026-04-08T04:31:45.404Z" },
-]
-
-[[package]]
 name = "types-webencodings"
 version = "0.5.0.20260408"
 source = { registry = "https://pypi.org/simple" }
@@ -1064,13 +1051,4 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/55/d8/b31a4d75bc72d5c3a5adf5012405118169b56d163ebf407e4fc49a575e96/xmldiff-2.7.0.tar.gz", hash = "sha256:c0910b1f800366dd7ec62923e5d06e8b06a1bd9120569a1c27f4f2446b9c68a2", size = 87596, upload-time = "2024-05-13T12:15:48.996Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2d/23/4c026139010faa8a48636fac190e9f8f830f850edca8e85f74123a58ed92/xmldiff-2.7.0-py3-none-any.whl", hash = "sha256:c8020e6aa4aa9fa13c72e5bf0eeafd0be998b0ab55d78b008abc75fbfebaca27", size = 43994, upload-time = "2024-05-13T12:15:46.459Z" },
-]
-
-[[package]]
-name = "xmltodict"
-version = "1.0.4"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/19/70/80f3b7c10d2630aa66414bf23d210386700aa390547278c789afa994fd7e/xmltodict-1.0.4.tar.gz", hash = "sha256:6d94c9f834dd9e44514162799d344d815a3a4faec913717a9ecbfa5be1bb8e61", size = 26124, upload-time = "2026-02-22T02:21:22.074Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/38/34/98a2f52245f4d47be93b580dae5f9861ef58977d73a79eb47c58f1ad1f3a/xmltodict-1.0.4-py3-none-any.whl", hash = "sha256:a4a00d300b0e1c59fc2bfccb53d7b2e88c32f200df138a0dd2229f842497026a", size = 13580, upload-time = "2026-02-22T02:21:21.039Z" },
 ]
