@@ -177,7 +177,7 @@ def fix_widget_issues(sc: ScreenConverter, oc: OpiConverter):
         elif widget_type == "tank":
             # Phoebus is missing the <transparent_background> option, so we just set the
             # background colour to transparent
-            transparent_tank_backgrounds = get_transparent_background_tank_widget(
+            transparent_tank_backgrounds = get_transparent_background_tank_widgets(
                 oc.const_opi_data
             )
             name = widget.find("name")
@@ -698,7 +698,7 @@ def get_alarm_sensitive_progress_bars(opi_data: etree.ElementTree):
     return alarm_sensitive_progress_bars
 
 
-def get_transparent_background_tank_widget(opi_data: etree.ElementTree):
+def get_transparent_background_tank_widgets(opi_data: etree.ElementTree):
     """Get a list of identifying string pairs which are used to identify a
     tank widget with a transparent background."""
 
