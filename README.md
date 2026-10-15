@@ -30,3 +30,17 @@ Or if it is a commandline tool then you might put some example commands here:
 ```
 python -m dls_phoebus_converter --version
 ```
+
+## Staging directory
+
+Screens are staged for the Phoebus converter in a temporary directory under `TMPDIR`,
+or `/tmp` if that is unset. It must be:
+
+- **On fast storage.** On RHEL8, rootless podman by default puts a container's `/tmp` on
+  fuse-overlayfs, where one userspace daemon relays every read and write. A full run
+  there was several times slower than on tmpfs.
+- **Visible inside the Phoebus converter's Apptainer container.** Apptainer binds
+  `/tmp`, `$HOME` and the working directory by default.
+
+The devcontainer mounts a tmpfs on `/tmp` for this reason. Do the same when running the
+image, e.g. `docker run --tmpfs /tmp ...`.
