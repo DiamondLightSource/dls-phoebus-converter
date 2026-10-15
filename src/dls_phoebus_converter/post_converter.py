@@ -17,7 +17,7 @@ from dls_phoebus_converter.macros import fill_in_macros, handle_macros
 from dls_phoebus_converter.support_modules import ACC_UI_SUPPORT_MODULE_LIST
 
 if TYPE_CHECKING:
-    from dls_phoebus_converter.opi_converter import OpiConverter
+    from dls_phoebus_converter.opi_converter import CompletedSteps, OpiConverter
     from dls_phoebus_converter.screen_converter import ScreenConverter
 
 from dls_phoebus_converter.support_modules import (
@@ -34,17 +34,17 @@ DEFAULT_SCREEN_WIDTH = 800  # px
 DEFAULT_SCREEN_HEIGHT = 600  # px
 
 
-def post_conversion_steps(oc: OpiConverter, sc: ScreenConverter):
+def post_conversion_steps(sc: ScreenConverter, oc: OpiConverter):
     # If sc is None, then we are just converting a single_file, so we dont
     # do any of the changes for converting a technical area.
     if sc is not None:
         find_required_support_modules(sc, oc)
 
-    fix_widget_issues(oc, sc)
-    expand_screen_to_widgets(oc)
+    fix_widget_issues(sc, oc)
+    expand_screen_to_widgets(oc.bob_data)
 
     if sc is not None:
-        handle_macros(oc)
+        handle_macros(oc.bob_data, oc.macros)
         update_filepaths(sc, oc)
 
     # Catch any conversion we may have missed, also used when converting a single
@@ -79,7 +79,7 @@ def get_dimension(element: Element, name: str, default: int = 0) -> int:
     return default if value is None else int(value)
 
 
-def expand_screen_to_widgets(oc: OpiConverter) -> None:
+def expand_screen_to_widgets(bob_data: etree.ElementTree) -> None:
     """Resize the screen to fit the widgets on it. This is useful for screens which have
     been converted from CS-Studio where the screen size was not set correctly."""
 
@@ -90,7 +90,7 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
     # of a widget, such as border width and buttons expanding when highlighted.
     padding = 5  # px
 
-    for widget in oc.bob_data.findall(".//widget"):
+    for widget in bob_data.findall(".//widget"):
         x = get_dimension(widget, "x")
         y = get_dimension(widget, "y")
         width = get_dimension(widget, "width")
@@ -99,7 +99,7 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
         max_width = max(max_width, x + width)
         max_height = max(max_height, y + height)
 
-    root = oc.bob_data.getroot()
+    root = bob_data.getroot()
     screen_width = get_dimension(root, "width", DEFAULT_SCREEN_WIDTH)
     screen_height = get_dimension(root, "height", DEFAULT_SCREEN_HEIGHT)
 
@@ -123,7 +123,8 @@ def expand_screen_to_widgets(oc: OpiConverter) -> None:
         logger.info(f"Display height resized to: {new_height}")
 
 
-def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
+def fix_widget_issues(sc: ScreenConverter, oc: OpiConverter):
+    steps = oc.completed_conversion_steps
     for widget in oc.bob_data.findall(".//widget"):
         if "typeId" in widget.attrib:
             logger.error(
@@ -144,15 +145,17 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
                     if text.text in ("EXIT", "Exit", "Cancel"):
                         # We are assuming that there is only one action on this widget
                         # and so only update the first one we find.
-                        fix_exit_button(oc, actions.find("action"))
-                    fix_widget_actions(oc, actions)
+                        fix_exit_button(steps, actions.find("action"))
+                    fix_widget_actions(steps, oc.src_file_path, actions)
 
         elif widget_type == "symbol":
             for child in widget:
                 if child.tag == "actions":
-                    fix_widget_actions(oc, widget.find(".//actions"))
+                    fix_widget_actions(
+                        steps, oc.src_file_path, widget.find(".//actions")
+                    )
             if sc is not None:
-                fix_edm_symbol_widgets(oc, sc, widget)
+                fix_edm_symbol_widgets(sc, oc, widget)
 
         elif widget_type == "progressbar":
             # Actions are not supported on progressBars in Phoebus, so
@@ -161,7 +164,9 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
                 if child.tag == "actions":
                     move_action_to_transparent_button(widget)
             # Look for any progress bar widgets with alarm borders enabled
-            alarm_sensitive_progress_bars = get_alarm_sensitive_progress_bars(oc)
+            alarm_sensitive_progress_bars = get_alarm_sensitive_progress_bars(
+                oc.const_opi_data
+            )
             name = widget.find("name")
             pv_name = widget.find("pv_name")
             if name is not None and pv_name is not None:
@@ -172,7 +177,9 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
         elif widget_type == "tank":
             # Phoebus is missing the <transparent_background> option, so we just set the
             # background colour to transparent
-            transparent_tank_backgrounds = get_transparent_background_tank_widget(oc)
+            transparent_tank_backgrounds = get_transparent_background_tank_widget(
+                oc.const_opi_data
+            )
             name = widget.find("name")
             pv_name = widget.find("pv_name")
             if name is not None and pv_name is not None:
@@ -182,12 +189,12 @@ def fix_widget_issues(oc: OpiConverter, sc: ScreenConverter):
                     )
                     widget.append(new_el)
         convert_pv_function(widget)
-        fix_rule_expressions(oc, widget)
-        fix_actions_on_widgets_without_actions_functionality(oc, widget)
+        fix_rule_expressions(steps, widget)
+        fix_actions_on_widgets_without_actions_functionality(steps, widget)
 
 
-def fix_exit_button(oc: OpiConverter, action: Element):
-    oc.completed_conversion_steps.fix_exit_but = True
+def fix_exit_button(steps: CompletedSteps, action: Element):
+    steps.fix_exit_but = True
     action.attrib["type"] = "close_display"
     action.attrib["description"] = "Close display"
     description = action.find("description")
@@ -199,7 +206,9 @@ def fix_exit_button(oc: OpiConverter, action: Element):
         action.remove(old_script)
 
 
-def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
+def fix_open_databrowser_actions(
+    steps: CompletedSteps, src_file_path: Path, action: Element
+):
     """Fix custom scripts/commands used to launch the databrowser which dont work
     in Phoebus"""
 
@@ -212,7 +221,7 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                     pv_names = match.group(1)
                     pv_names = pv_names.split(",")
                     switch_to_new_databrowser_action(action, pv_names)
-                    oc.completed_conversion_steps.replace_db_script = True
+                    steps.replace_db_script = True
                 else:
                     logger.error(
                         "Could not find any PV names to add to the open_data_browser"
@@ -223,7 +232,7 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                 logger.warning(
                     "Screen contains an executeEclipseCommand script which is"
                     "not supported by Phoebus. Found script: "
-                    f"{script_text_el.text} in file {oc.src_file_path}"
+                    f"{script_text_el.text} in file {src_file_path}"
                 )
 
     elif action.attrib["type"] == "command":
@@ -236,7 +245,7 @@ def fix_open_databrowser_actions(oc: OpiConverter, action: Element):
                     pv_names.extend(str_list[i + 1 : -1])
                     break
             switch_to_new_databrowser_action(action, pv_names)
-            oc.completed_conversion_steps.replace_db_script = True
+            steps.replace_db_script = True
 
 
 def switch_to_new_databrowser_action(action: Element, pv_names: list[str]):
@@ -254,23 +263,23 @@ def switch_to_new_databrowser_action(action: Element, pv_names: list[str]):
     actions.remove(action)
 
 
-def fix_widget_actions(oc: OpiConverter, actions: Element):
+def fix_widget_actions(steps: CompletedSteps, src_file_path: Path, actions: Element):
     """Fix issues with widget actions"""
 
     for action in actions:
-        fix_action_open_macro(oc, action)
-        replace_open_in_tab(oc, action)
-        fix_open_databrowser_actions(oc, action)
+        fix_action_open_macro(steps, action)
+        replace_open_in_tab(steps, action)
+        fix_open_databrowser_actions(steps, src_file_path, action)
 
 
-def fix_action_open_macro(oc: OpiConverter, action: Element):
+def fix_action_open_macro(steps: CompletedSteps, action: Element):
     """Replace the macro $(name) with the actions parent widgets name"""
 
     if action.attrib["type"] == "open_display":
         for macros_el in action.findall("macros"):
             for macro in macros_el:
                 if macro.text == "$(name)":
-                    oc.completed_conversion_steps.fix_action_macro_name = True
+                    steps.fix_action_macro_name = True
                     macro.text = action.getparent().getparent().find("name").text
 
 
@@ -319,7 +328,10 @@ def get_symbol_file_paths(base_file: Path, n_images: int) -> list[Path]:
 
 
 def get_symbol_image_split(
-    sc: ScreenConverter, output_file_full: Path, src_file: Path, width: int
+    symbol_image_splits: dict[Path, tuple[int, int]],
+    output_file_full: Path,
+    src_file: Path,
+    width: int,
 ) -> int | None:
     """Split a symbol image into one file per symbol, doing the work once per image.
 
@@ -328,7 +340,8 @@ def get_symbol_image_split(
     warned if they ask for a different one.
 
     Args:
-        sc: The running conversion, holding the split made for each image.
+        symbol_image_splits: The (symbol width, number of symbols) of each image split
+            so far, by destination. A new split is added to it.
         output_file_full: Where the symbol files are written.
         src_file: The combined symbol image to split.
         width: Width of one symbol as this widget gives it, or 0 if it gives none.
@@ -337,8 +350,8 @@ def get_symbol_image_split(
         The number of symbols in src_file, or None if it could not be measured.
     """
 
-    if output_file_full in sc.symbol_image_splits:
-        split_width, n_images = sc.symbol_image_splits[output_file_full]
+    if output_file_full in symbol_image_splits:
+        split_width, n_images = symbol_image_splits[output_file_full]
         if width not in (0, split_width):
             logger.warning(
                 f"Symbol image {src_file} was already split at sub_image_width "
@@ -360,7 +373,7 @@ def get_symbol_image_split(
     # Need to calculate from width of full image / width
     n_images = full_width // width
     create_symbol_image_file(output_file_full, src_file, n_images, width, height)
-    sc.symbol_image_splits[output_file_full] = (width, n_images)
+    symbol_image_splits[output_file_full] = (width, n_images)
 
     return n_images
 
@@ -517,7 +530,7 @@ def get_sub_image_widths(opi_data: etree.ElementTree) -> dict[tuple, str]:
 
 
 def fix_edm_symbol_widgets(
-    oc: OpiConverter, sc: ScreenConverter, widget: Element
+    sc: ScreenConverter, oc: OpiConverter, widget: Element
 ) -> None:
     """Converts from an edm/cs-studio style symbol widget to a Pheobus style symbol
     widget."""
@@ -589,7 +602,9 @@ def fix_edm_symbol_widgets(
     # sub_image_width stores a stringified float, so we must convert to float first
     width = 0 if sub_image_width is None else int(float(sub_image_width))
 
-    n_images = get_symbol_image_split(sc, output_file_full, src_file, width)
+    n_images = get_symbol_image_split(
+        sc.symbol_image_splits, output_file_full, src_file, width
+    )
     if n_images is None:
         return
 
@@ -662,7 +677,7 @@ def move_action_to_transparent_button(widget: Element):
     widget.remove(widget_actions)
 
 
-def get_alarm_sensitive_progress_bars(oc: OpiConverter):
+def get_alarm_sensitive_progress_bars(opi_data: etree.ElementTree):
     """Get a list of identifying string pairs which are used to identify an
     alarm sensitive progressbar."""
 
@@ -675,7 +690,7 @@ def get_alarm_sensitive_progress_bars(oc: OpiConverter):
 
     alarm_sensitive_progress_bars = []
     xpath = ".//widget[@typeId='org.csstudio.opibuilder.widgets.progressbar']"
-    for widget in oc.const_opi_data.findall(xpath):
+    for widget in opi_data.findall(xpath):
         if any(widget.findtext(prop) == "true" for prop in alarm_properties):
             name_ids = [widget.find("name").text, widget.find("pv_name").text]
             alarm_sensitive_progress_bars.append(name_ids)
@@ -683,13 +698,13 @@ def get_alarm_sensitive_progress_bars(oc: OpiConverter):
     return alarm_sensitive_progress_bars
 
 
-def get_transparent_background_tank_widget(oc: OpiConverter):
+def get_transparent_background_tank_widget(opi_data: etree.ElementTree):
     """Get a list of identifying string pairs which are used to identify a
     tank widget with a transparent background."""
 
     transparent_backgrounds = []
     xpath = ".//widget[@typeId='org.csstudio.opibuilder.widgets.tank']"
-    for widget in oc.const_opi_data.findall(xpath):
+    for widget in opi_data.findall(xpath):
         if widget.findtext("transparent_background") == "true":
             name_ids = [widget.find("name").text, widget.find("pv_name").text]
             transparent_backgrounds.append(name_ids)
@@ -698,7 +713,7 @@ def get_transparent_background_tank_widget(oc: OpiConverter):
 
 
 def fix_actions_on_widgets_without_actions_functionality(
-    oc: OpiConverter, widget: Element
+    steps: CompletedSteps, widget: Element
 ):
     """Some widgets which could have actions in CS-Studio, cannot have actions in
     Phoebus. We look for these situations and try to fix them by converting the widget
@@ -712,7 +727,7 @@ def fix_actions_on_widgets_without_actions_functionality(
     if widget_type in ("action_button", "symbol"):
         return
 
-    oc.completed_conversion_steps.non_ab_action = True
+    steps.non_ab_action = True
     logger.debug(
         "Action contained in widget that isn't an action button: "
         f"{widget_type}, name: {widget.find('name').text}"
@@ -727,7 +742,7 @@ def fix_actions_on_widgets_without_actions_functionality(
     ):
         return
 
-    oc.completed_conversion_steps.replace_with_ab = True
+    steps.replace_with_ab = True
     logger.debug("    Attempting to fix by converting to an action_button")
     widget.attrib["type"] = "action_button"
 
@@ -745,12 +760,12 @@ def fix_actions_on_widgets_without_actions_functionality(
             rule.getparent().remove(rule)
 
 
-def replace_open_in_tab(oc: OpiConverter, action: Element):
+def replace_open_in_tab(steps: CompletedSteps, action: Element):
     if action.attrib["type"] == "open_display":
         for target in action.findall("target"):
             if target.text == "tab":
                 target.text = "standalone"
-                oc.completed_conversion_steps.replace_action_tab = True
+                steps.replace_action_tab = True
 
 
 def reorder_default_symbol_order_from_rule(
@@ -842,13 +857,13 @@ def convert_pv_function(widget: Element):
                 child.text = pv_replacement
 
 
-def fix_rule_expressions(oc, widget: Element):
+def fix_rule_expressions(steps: CompletedSteps, widget: Element):
     """Fix common issues that come up in cs-studio rules"""
 
     expressions = widget.findall("rules/rule/exp")
     for exp in expressions:
         # Use new syntax for getting a PV alarm severity
-        fix_pv_severity_expression(oc, exp)
+        fix_pv_severity_expression(steps, exp)
 
         # widget.getValue() is not available in Phoebus, we assume this is an attempt to
         # get the value of the widgets pv, so we replace it with pv0
@@ -858,7 +873,7 @@ def fix_rule_expressions(oc, widget: Element):
             )
 
 
-def fix_pv_severity_expression(oc: OpiConverter, exp_el: Element):
+def fix_pv_severity_expression(steps: CompletedSteps, exp_el: Element):
     # OK, Major, Minor, Invalid/undefined
     css_sev_expressions = [
         "pvLegacySev0==0",
@@ -874,7 +889,7 @@ def fix_pv_severity_expression(oc: OpiConverter, exp_el: Element):
         css_sev_expressions, phoebus_sev_expressions, strict=True
     ):
         if css_exp in initial_attrib:
-            oc.completed_conversion_steps.update_leg_sev = True
+            steps.update_leg_sev = True
             modified_attrib = initial_attrib.replace(css_exp, phoebus_exp)
             logger.debug(f"Fixing {css_exp} to {phoebus_exp} in rule")
 

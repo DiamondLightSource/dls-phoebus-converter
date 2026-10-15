@@ -15,9 +15,11 @@ logger = logging.getLogger("dls_phoebus_converter")
 
 
 def pre_conversion_steps(oc: OpiConverter):
-    use_modified_opi = replace_edm_symbol_widget(oc)
+    steps = oc.completed_conversion_steps
+    steps.replace_edm_sym = replace_edm_symbol_widget(oc.opi_data)
     # Fix missing border items from grouping container
-    use_modified_opi = fix_grouping_container(oc) or use_modified_opi
+    steps.fix_group_cont = fix_grouping_container(oc.opi_data)
+    use_modified_opi = steps.replace_edm_sym or steps.fix_group_cont
 
     # If nothing was modified the caller copies the source over the top of this, so
     # there is no point writing it out.
@@ -27,9 +29,9 @@ def pre_conversion_steps(oc: OpiConverter):
     return use_modified_opi
 
 
-def replace_edm_symbol_widget(oc: OpiConverter):
+def replace_edm_symbol_widget(opi_data: etree.ElementTree) -> bool:
     fixed = False
-    for element in oc.opi_data.iter():
+    for element in opi_data.iter():
         for key, value in element.attrib.items():
             if value == "org.csstudio.opibuilder.widgets.edm.symbolwidget":
                 logger.debug("Replacing CSS EDM Widgets in OPI before conversion")
@@ -37,20 +39,18 @@ def replace_edm_symbol_widget(oc: OpiConverter):
                     "org.csstudio.opibuilder.widgets.symbol.multistate.MultistateMonitorWidget"
                 )
                 fixed = True
-                oc.completed_conversion_steps.replace_edm_sym = True
     return fixed
 
 
-def fix_grouping_container(oc: OpiConverter):
+def fix_grouping_container(opi_data: etree.ElementTree) -> bool:
     """Sometimes group containers are missing border_color or border_style elements,
     if this is the case then add them with sensible defaults."""
 
     fixed = False
-    for widget in oc.opi_data.findall(
+    for widget in opi_data.findall(
         ".//widget[@typeId='org.csstudio.opibuilder.widgets.groupingContainer']"
     ):
         fixed = True
-        oc.completed_conversion_steps.fix_group_cont = True
         logger.debug("Fixing missing border property in 'Group' widget")
 
         if widget.find("border_color") is None:

@@ -22,16 +22,16 @@ VISIBLE_RULE_XML = (
 )
 
 
-def replace_visible_script(oc: OpiConverter) -> None:
+def replace_visible_script(bob_data: etree.ElementTree, dst_bob_filepath: Path) -> None:
     """Replace this complex script with a rule"""
 
     logger.info(
-        f"Special case: Removing references to visible.py from {oc.dst_bob_filepath}"
+        f"Special case: Removing references to visible.py from {dst_bob_filepath}"
     )
 
     # Find and remove all <script> elements which use visible.py. Replace it with a new
     # rule
-    for script in oc.bob_data.findall('.//script[@file="visible.py"]'):
+    for script in bob_data.findall('.//script[@file="visible.py"]'):
         parent = script.getparent()
         if parent is not None:
             parent.remove(script)
@@ -47,7 +47,9 @@ def replace_visible_script(oc: OpiConverter) -> None:
                     )
 
 
-def remove_fe_temp_indicator_script(oc: OpiConverter) -> None:
+def remove_fe_temp_indicator_script(
+    bob_data: etree.ElementTree, dst_bob_filepath: Path
+) -> None:
     """This script was being used to colour ProgressBars based on hihi and hi values.
     Instead we now just use an alarm border which changes the border based on alarm.
     Assuming hihi and hi are configured to generate Major and Minor alarms, the
@@ -56,7 +58,7 @@ def remove_fe_temp_indicator_script(oc: OpiConverter) -> None:
 
     logger.info(
         "Special case: Removing references to feTempIndicator.py from "
-        f"{oc.dst_bob_filepath}"
+        f"{dst_bob_filepath}"
     )
 
     # Find and remove all <script> elements which use feTempIndicator.py
@@ -64,21 +66,21 @@ def remove_fe_temp_indicator_script(oc: OpiConverter) -> None:
         './/script[@file="feTempIndicator.py"]',
         './/script[@file="common/plc/feTempIndicator.py"]',
     ):
-        for script in oc.bob_data.findall(xpath):
+        for script in bob_data.findall(xpath):
             parent = script.getparent()
             if parent is not None:
                 parent.remove(script)
 
 
 def replace_progress_bar_with_linear_meter(
-    bob_file_data: etree.ElementTree, dst_filepath: Path
+    bob_data: etree.ElementTree, dst_bob_filepath: Path
 ) -> None:
     """
     HLA-1077: This replaces the progress bars in FE22B with linear meters
     to support alarm limits, which are not a feature of progress bars in Phoebus.
     """
     logger.info(
-        f"Special case: Replacing ProgressBar with LinearMeter in {dst_filepath}"
+        f"Special case: Replacing ProgressBar with LinearMeter in {dst_bob_filepath}"
     )
 
     def create_linear_meter_from_progress_bar(
@@ -135,13 +137,13 @@ def replace_progress_bar_with_linear_meter(
 
         return linear_meter
 
-    for progress_bar in bob_file_data.findall(".//widget[@type='progressbar']"):
+    for progress_bar in bob_data.findall(".//widget[@type='progressbar']"):
         new_linear_meter = create_linear_meter_from_progress_bar(progress_bar)
         progress_bar.getparent().replace(progress_bar, new_linear_meter)
 
         # Turn off alarm borders for the corresponding text update widget
         expected_text_update_widget_name = progress_bar.findtext("name") + " Label"
-        for text_update in bob_file_data.findall(".//widget[@type='textupdate']"):
+        for text_update in bob_data.findall(".//widget[@type='textupdate']"):
             if text_update.findtext("name") == expected_text_update_widget_name:
                 etree.SubElement(text_update, "border_alarm_sensitive").text = "false"
 
@@ -163,7 +165,7 @@ def run(oc: OpiConverter) -> None:
         "absb.bob",
     ]:
         if name in str(oc.dst_bob_filepath):
-            remove_fe_temp_indicator_script(oc)
+            remove_fe_temp_indicator_script(oc.bob_data, oc.dst_bob_filepath)
 
     if "motor.bob" in str(oc.dst_bob_filepath):
-        replace_visible_script(oc)
+        replace_visible_script(oc.bob_data, oc.dst_bob_filepath)

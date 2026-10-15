@@ -111,15 +111,10 @@ def update_filepaths(sc: ScreenConverter, oc: OpiConverter):
     deployment structure."""
 
     for element, file_path in find_filepaths(oc.bob_data):
-        element.text = switch_filepaths(sc, oc, file_path, oc.macros)
+        element.text = switch_filepaths(sc, oc, file_path)
 
 
-def switch_filepaths(
-    sc: ScreenConverter,
-    oc: OpiConverter,
-    file_path: Path,
-    macros: dict[str, str] | None = None,
-) -> str:
+def switch_filepaths(sc: ScreenConverter, oc: OpiConverter, file_path: Path) -> str:
     """Work out where a file referenced by a screen is deployed to.
 
     The support module is guessed from the first part of the old path. Where that does
@@ -132,9 +127,9 @@ def switch_filepaths(
 
     Args:
         sc: The running conversion, holding where each support module is deployed to.
-        oc: The screen being converted.
+        oc: The screen being converted. Its macros are resolved in the path before it
+            is matched.
         file_path: The path as the old screen references it.
-        macros: Resolved in the path before it is matched. None leaves them in place.
 
     Returns:
         The new path, or the old one unchanged where it needs no update or no support
@@ -156,8 +151,8 @@ def switch_filepaths(
     ) or sc.domain_ui_support_bob_dst_part.parts[0] in str(file_path):
         return str(file_path)
 
-    if macros is not None:
-        file_path = Path(fill_in_macros(str(file_path), macros))
+    if oc.macros is not None:
+        file_path = Path(fill_in_macros(str(file_path), oc.macros))
 
     if file_path.suffix == ".opi":
         file_path = file_path.with_suffix(".bob")
@@ -230,7 +225,10 @@ def get_existing_support_module_filepath(
         )
         return None
 
-    release_dir = get_support_module_release(sc, support_module_name, module_dir)
+    pinned_release = sc.dependency_versions.get(support_module_name)
+    release_dir = get_support_module_release(
+        support_module_name, module_dir, pinned_release
+    )
 
     opi_dir_guess = release_dir / f"{support_module_name}App" / "opi" / "opi"
     if not opi_dir_guess.is_dir():
@@ -247,7 +245,7 @@ def get_existing_support_module_filepath(
 
 
 def get_support_module_release(
-    sc: ScreenConverter, support_module_name: str, module_dir: Path
+    support_module_name: str, module_dir: Path, pinned_release: str | None
 ) -> Path:
     """Pick which release of a support module to convert from.
 
@@ -255,9 +253,10 @@ def get_support_module_release(
     the newest release on disk.
 
     Args:
-        sc: The running conversion, holding the pinned releases.
         support_module_name: Name of the support module being resolved.
         module_dir: The module's directory in /dls_sw, holding one dir per release.
+        pinned_release: The release pinned for this module in the config, or None if
+            it has none.
 
     Returns:
         The path to the chosen release directory.
@@ -266,7 +265,6 @@ def get_support_module_release(
         ValueError: If the release pinned for this module is not in /dls_sw.
     """
 
-    pinned_release = sc.dependency_versions.get(support_module_name)
     if pinned_release is not None:
         release_dir = module_dir / str(pinned_release)
         if not release_dir.is_dir():

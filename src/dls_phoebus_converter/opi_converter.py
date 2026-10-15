@@ -316,7 +316,7 @@ class OpiConverter:
         - Change filepaths to reference new support module screen locations
         - Add macros as needed
         """
-        return post_conversion_steps(self, sc)
+        return post_conversion_steps(sc, self)
 
     def convert(self, sc=None) -> bool:
         """Convert this screen on its own, with its own Phoebus invocation.
