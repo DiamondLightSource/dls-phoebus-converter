@@ -33,17 +33,14 @@ def get_image_hash(img: Path) -> str:
         img,
     ]
 
-    process = subprocess.Popen(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    stdout, stderr = process.communicate()
+    result = subprocess.run(cmd, capture_output=True, encoding="utf-8")
 
-    if process.returncode != 0:
-        raise Exception(f"Failed to get image hash for: {img} with errors:\n{stderr}")
+    if result.returncode != 0:
+        raise Exception(
+            f"Failed to get image hash for: {img} with errors:\n{result.stderr}"
+        )
 
-    return stdout.decode()
+    return result.stdout
 
 
 def compare_images(test: Path, ref: Path) -> str:
@@ -128,8 +125,9 @@ def test_front_ends(ref_output_directory):
         "-c",
         "config/front_ends.yaml",
     ]
-    proc = subprocess.Popen(cmd, stderr=subprocess.PIPE)
-    _, stderr = proc.communicate()
+    result = subprocess.run(
+        cmd, stderr=subprocess.PIPE, encoding="utf-8", errors="replace"
+    )
 
     # Get the reference screens from kubernetes
 
@@ -142,8 +140,7 @@ def test_front_ends(ref_output_directory):
         str(REFERENCE_DIR),
         WEBSERVER_URL,
     ]
-    proc = subprocess.Popen(cmd)
-    proc.wait()
+    subprocess.run(cmd)
 
     add_gitkeep_files(OUTPUT_DIR)
     left, right, diffs = compare_dirs(OUTPUT_DIR, REFERENCE_DIR)
@@ -157,9 +154,9 @@ def test_front_ends(ref_output_directory):
             for diff in diffs:
                 print(f"{diff}\n")
 
-        if proc.returncode != 0:
-            tail = stderr.decode(errors="replace").splitlines()[-STDERR_TAIL_LINES:]
-            print(f"\nThe conversion exited {proc.returncode}, ending with:\n")
+        if result.returncode != 0:
+            tail = result.stderr.splitlines()[-STDERR_TAIL_LINES:]
+            print(f"\nThe conversion exited {result.returncode}, ending with:\n")
             print("\n".join(tail))
 
         raise AssertionError("Found differences in the conversion.")

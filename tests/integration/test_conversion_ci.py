@@ -23,8 +23,7 @@ def conversion_test(config_file, files_to_compare):
         "-c",
         f"config/{config_file}",
     ]
-    proc = subprocess.Popen(cmd, stderr=subprocess.DEVNULL)
-    proc.wait()
+    subprocess.run(cmd, stderr=subprocess.DEVNULL)
 
     for file in files_to_compare:
         diff = main.diff_files(
