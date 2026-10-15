@@ -57,10 +57,8 @@ def post_conversion_steps(sc: ScreenConverter, oc: OpiConverter):
     # Special cases are tweaks which are not handled by the
     # normal conversion process and are often unique to a specific screen.
     # These are optionally defined in a domain-specific special case module.
-    try:
+    if sc is not None and sc.special_case_module is not None:
         sc.special_case_module.run(oc)
-    except AttributeError:
-        pass
 
 
 def get_dimension(element: Element, name: str, default: int = 0) -> int:
