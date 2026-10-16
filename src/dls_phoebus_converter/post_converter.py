@@ -517,18 +517,61 @@ def get_sub_image_widths(opi_data: etree.ElementTree) -> dict[tuple, str]:
     return widths
 
 
+def find_symbol_image(
+    sc: ScreenConverter, macros: dict[str, str], own_module: str | None, path: Path
+) -> tuple[Path, str | None] | None:
+    """Find a symbol image in a support module named in path, else in own_module.
+
+    Args:
+        sc: The running conversion, holding the support modules found so far.
+        macros: Filled in before the path is matched.
+        own_module: The screen's support module, if any.
+        path: The image path as the widget gives it.
+
+    Returns:
+        The image and the support module named in path, if any, or None if the image
+        is not found.
+    """
+
+    resolved = fill_in_macros(str(path), macros)
+    if resolved is None:
+        return None
+
+    path = Path(resolved)
+    src_sm = None
+    src_file = None
+    for sm in sc.domain_support_module_locations + sc.acc_support_module_locations:
+        for i, part in enumerate(path.parts):
+            if sm[0] == part:
+                sm_path = get_existing_support_module_filepath(sc, part)
+                if sm_path is not None:
+                    src_sm = part
+                    # ../FE/symbols/x.png becomes <sm_path>/symbols/x.png
+                    src_file = Path(sm_path) / Path(*path.parts[i + 1 :])
+                    break
+
+    if src_file is not None and src_file.is_file():
+        return src_file, src_sm
+
+    if own_module is None:
+        return None
+
+    own_sm_path = get_existing_support_module_filepath(sc, own_module)
+    if own_sm_path is None:
+        return None
+
+    # The old path is relative, but we want absolute so strip out ../
+    src_file = Path(own_sm_path) / str(path).replace("../", "")
+    if not src_file.is_file():
+        return None
+
+    return src_file, src_sm
+
+
 def fix_edm_symbol_widgets(
     sc: ScreenConverter, oc: OpiConverter, widget: Element
 ) -> None:
-    """Converts from an edm/cs-studio style symbol widget to a Pheobus style symbol
-    widget."""
-
-    # Get full list of support modules
-    all_support_modules = (
-        sc.domain_support_module_locations + sc.acc_support_module_locations
-    )
-    src_sm = None
-    src_file = None
+    """Convert an edm/cs-studio style symbol widget to a Phoebus one."""
 
     # Get name of symbol file
     old_symbol_file = Path(widget.findtext("symbols/symbol"))
@@ -539,44 +582,13 @@ def fix_edm_symbol_widgets(
         )
         return
 
-    resolved = fill_in_macros(str(old_symbol_file), oc.macros)
-    if resolved is not None:
-        old_symbol_file_resolved = Path(resolved)
-        # Look for image file in external support modules
-        for sm in all_support_modules:
-            for i, part in enumerate(old_symbol_file_resolved.parts):
-                if sm[0] == part:
-                    sm_path = get_existing_support_module_filepath(sc, part)
-                    if sm_path is not None:
-                        src_sm = part
-                        # we have an absolute path to the support module:
-                        # sm_path=/dls_sw/FE/3-10/ and a relative path
-                        # within the support module:
-                        # old_symbol_file_resolved=../FE/symbols/symbol.png
-                        # which we want to merge to get the full symbol file path
-                        src_file = Path(sm_path) / Path(
-                            *old_symbol_file_resolved.parts[i + 1 :]
-                        )
-                        break
-
-        # Look for symbol file within our own support module
-        if src_file is None or not src_file.is_file():
-            if oc.support_module_name is not None:
-                own_sm_path = get_existing_support_module_filepath(
-                    sc, oc.support_module_name
-                )
-                if own_sm_path is not None:
-                    # The old path is relative, but we want absolute so strip out ../
-                    old_symbol_file_stripped = str(old_symbol_file_resolved).replace(
-                        "../", ""
-                    )
-                    src_file = Path(own_sm_path) / Path(old_symbol_file_stripped)
-
-    if src_file is None or not src_file.is_file():
+    found = find_symbol_image(sc, oc.macros, oc.support_module_name, old_symbol_file)
+    if found is None:
         logger.error(
             f"Could not find symbol image for symbol reference {old_symbol_file}"
         )
         return
+    src_file, src_sm = found
 
     widget_name = widget.findtext("name")
     logger.debug(f"Fixing Symbol widget with name: {widget_name}")
