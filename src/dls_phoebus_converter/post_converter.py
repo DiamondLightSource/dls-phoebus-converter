@@ -57,10 +57,8 @@ def post_conversion_steps(sc: ScreenConverter, oc: OpiConverter):
     # Special cases are tweaks which are not handled by the
     # normal conversion process and are often unique to a specific screen.
     # These are optionally defined in a domain-specific special case module.
-    try:
+    if sc is not None and sc.special_case_module is not None:
         sc.special_case_module.run(oc)
-    except AttributeError:
-        pass
 
 
 def get_dimension(element: Element, name: str, default: int = 0) -> int:
@@ -177,7 +175,7 @@ def fix_widget_issues(sc: ScreenConverter, oc: OpiConverter):
         elif widget_type == "tank":
             # Phoebus is missing the <transparent_background> option, so we just set the
             # background colour to transparent
-            transparent_tank_backgrounds = get_transparent_background_tank_widget(
+            transparent_tank_backgrounds = get_transparent_background_tank_widgets(
                 oc.const_opi_data
             )
             name = widget.find("name")
@@ -300,21 +298,16 @@ def get_symbol_image_dims(src_file: Path) -> tuple[int, int] | tuple[None, None]
         str(src_file),
     ]
 
-    process = subprocess.Popen(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    stdout, stderr = process.communicate()
+    result = subprocess.run(cmd, capture_output=True, encoding="utf-8")
 
-    if process.returncode != 0:
-        logger.error(f"identify - {stderr}")
+    if result.returncode != 0:
+        logger.error(f"identify - {result.stderr}")
         return None, None
 
-    if stderr:
-        logger.debug(f"identify - {stderr}")
+    if result.stderr:
+        logger.debug(f"identify - {result.stderr}")
 
-    width, height = stdout.decode().strip("'").split(" ")
+    width, height = result.stdout.strip("'").split(" ")
     return int(width), int(height)
 
 
@@ -410,12 +403,7 @@ def create_symbol_image_file(
             str(new_output_file),
         ]
 
-        process = subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        _, stderr = process.communicate()
+        result = subprocess.run(cmd, capture_output=True, encoding="utf-8")
 
         created = new_output_file.is_file()
         if not created:
@@ -423,7 +411,7 @@ def create_symbol_image_file(
                 f"Failed to create new symbol images with command: {' '.join(cmd)}"
             )
 
-        for line in stderr.decode("utf-8").split("\n"):
+        for line in result.stderr.split("\n"):
             if line:
                 if not created:
                     logger.error(f"convert - {line}")
@@ -698,7 +686,7 @@ def get_alarm_sensitive_progress_bars(opi_data: etree.ElementTree):
     return alarm_sensitive_progress_bars
 
 
-def get_transparent_background_tank_widget(opi_data: etree.ElementTree):
+def get_transparent_background_tank_widgets(opi_data: etree.ElementTree):
     """Get a list of identifying string pairs which are used to identify a
     tank widget with a transparent background."""
 
