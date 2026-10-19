@@ -12,9 +12,7 @@ classifiers = [
 description = "Converts Diamond cs-studio screens for use in Phoebus"
 dependencies = [
     "pyyaml",
-    "xmltodict",
     "lxml",
-    "xmldiff",
     "typer",
 ] # Add project dependencies here, e.g. ["click", "numpy"]
 dynamic = ["version"]
@@ -31,8 +29,8 @@ dev = [
     "pytest-cov",
     "ruff",
     "tox-uv",
-    "types-mock",
     "types-lxml",
+    "xmldiff",
 ]
 
 [project.scripts]

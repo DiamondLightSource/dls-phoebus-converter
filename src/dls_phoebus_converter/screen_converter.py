@@ -5,6 +5,7 @@ import shutil
 import tempfile
 from importlib import import_module
 from pathlib import Path
+from types import ModuleType
 
 import yaml
 
@@ -54,15 +55,16 @@ class ScreenConverter:
         self.parse_config(self.config_data)
         self.make_top_dirs()
 
+        special_case_module_name = f"dls_phoebus_converter.{self.domain}_special_case"
+        self.special_case_module: ModuleType | None
         try:
-            self.special_case_module = import_module(
-                f"dls_phoebus_converter.{self.domain}_special_case"
-            )
-        except ModuleNotFoundError:
-            logger.info(
-                f"Could not import module: "
-                f"dls_phoebus_converter.{self.domain}_special_case."
-            )
+            self.special_case_module = import_module(special_case_module_name)
+        except ModuleNotFoundError as e:
+            # A missing import inside the module is a bug in it, not an absent module
+            if e.name != special_case_module_name:
+                raise
+            logger.info(f"Could not import module: {special_case_module_name}.")
+            self.special_case_module = None
 
     def make_top_dirs(self) -> None:
         self.acc_ui_support_bob_dst_full.mkdir(parents=True, exist_ok=True)
