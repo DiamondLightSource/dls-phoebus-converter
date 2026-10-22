@@ -9,8 +9,8 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
 WORKDIR /tmp
 
 # Install apptainer to allow us to run apptainer images from matlab
-RUN wget https://github.com/apptainer/apptainer/releases/download/v1.4.5/apptainer_1.4.5_amd64.deb \
-    && apt install -y ./apptainer_1.4.5_amd64.deb
+RUN wget https://github.com/apptainer/apptainer/releases/download/v1.5.5/apptainer_1.5.5_amd64.deb \
+    && apt install -y ./apptainer_1.5.5_amd64.deb
 
 # Install environment-modules
 RUN curl -LJO https://github.com/envmodules/modules/releases/download/v5.6.1/modules-5.6.1.tar.gz \
