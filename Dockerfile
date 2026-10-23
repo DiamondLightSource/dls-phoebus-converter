@@ -9,8 +9,8 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
 WORKDIR /tmp
 
 # Install apptainer to allow us to run apptainer images from matlab
-RUN wget https://github.com/apptainer/apptainer/releases/download/v1.4.5/apptainer_1.4.5_amd64.deb \
-    && apt install -y ./apptainer_1.4.5_amd64.deb
+RUN wget https://github.com/apptainer/apptainer/releases/download/v1.5.5/apptainer_1.5.5_amd64.deb \
+    && apt install -y ./apptainer_1.5.5_amd64.deb
 
 # Install environment-modules
 RUN curl -LJO https://github.com/envmodules/modules/releases/download/v5.6.1/modules-5.6.1.tar.gz \
@@ -37,7 +37,6 @@ ENV UV_PYTHON_INSTALL_DIR=/python
 # Sync the project without its dev dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-editable --no-dev --managed-python
-
 
 # The runtime stage copies the built venv into a runtime container
 FROM ubuntu:noble AS runtime
