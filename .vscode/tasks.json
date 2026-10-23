@@ -11,6 +11,15 @@
                 "cwd": "${workspaceRoot}"
             },
             "problemMatcher": [],
+        },
+        {
+            "type": "shell",
+            "label": "Copy test output to golden master",
+            "command": "rm -rf tests/golden_master/front_ends && cp -a test_output tests/golden_master/front_ends && git -C tests/golden_master status",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "problemMatcher": [],
         }
     ]
 }
