@@ -1,5 +1,4 @@
-"""Convert screens from the diamond filesystem and compare them to data in
-/tests/test_data/bob_files"""
+"""Convert screens from the diamond filesystem and compare them to the golden master."""
 
 import difflib
 import filecmp
@@ -9,10 +8,12 @@ from pathlib import Path
 
 import pytest
 
-from conftest import OUTPUT_DIR, REFERENCE_DIR
+from conftest import OUTPUT_DIR
 
-# Url to fetch the reference screens from
-WEBSERVER_URL = "https://screen-tests-opis.diamond.ac.uk/screen-tests-synoptic/"
+# A clone of the golden master repo, which must be at GOLDEN_MASTER_COMMIT
+GOLDEN_MASTER_DIR = Path("tests/golden_master")
+GOLDEN_MASTER_COMMIT = "4afae14c6f4cf151e9ea9c61dc0a4b0a853cceb5"
+REFERENCE_DIR = GOLDEN_MASTER_DIR / "front_ends"
 
 IGNORE_SUFFIXES = [".html", "test*"]
 IMAGE_SUFFIXES = [".png", ".svg"]
@@ -20,6 +21,9 @@ IMAGE_SUFFIXES = [".png", ".svg"]
 # The converter logs everything to stderr, so only the end of it is shown on failure.
 # That is enough for a traceback, which is what a crashed conversion leaves behind.
 STDERR_TAIL_LINES = 40
+
+# A regeneration can leave hundreds of uncommitted changes in the golden master.
+UNCOMMITTED_CHANGES_LISTED = 10
 
 
 def get_image_hash(img: Path) -> str:
@@ -110,10 +114,69 @@ def add_gitkeep_files(root: Path) -> None:
             (dir_path / ".gitkeep").touch()
 
 
+def run_golden_master_git(*args: str) -> str:
+    """Run git in the golden master clone, failing the test if git fails.
+
+    Args:
+        *args: The git subcommand and its arguments.
+
+    Returns:
+        The subcommand's stdout.
+    """
+    result = subprocess.run(
+        ["git", "-C", str(GOLDEN_MASTER_DIR), *args],
+        capture_output=True,
+        encoding="utf-8",
+    )
+    if result.returncode != 0:
+        pytest.fail(f"git {' '.join(args)} failed:\n{result.stderr}")
+
+    return result.stdout
+
+
+def check_golden_master() -> None:
+    """Fail the test unless the golden master clone is ready to be compared against.
+
+    The clone must be at GOLDEN_MASTER_COMMIT, with no uncommitted changes in
+    front_ends/.
+    """
+    # Without its own .git, git would run in the converter repo instead
+    if not (GOLDEN_MASTER_DIR / ".git").exists():
+        pytest.fail(
+            f"Clone the golden master repo to {GOLDEN_MASTER_DIR}/, as tests/README.md "
+            "describes"
+        )
+
+    head = run_golden_master_git("rev-parse", "HEAD").strip()
+    if head != GOLDEN_MASTER_COMMIT:
+        pytest.fail(
+            f"{GOLDEN_MASTER_DIR} is at {head}, not GOLDEN_MASTER_COMMIT. Fetch if "
+            f"needed, then run:\n"
+            f"git -C {GOLDEN_MASTER_DIR} checkout {GOLDEN_MASTER_COMMIT}"
+        )
+
+    changes = run_golden_master_git(
+        "status", "--porcelain", "--", "front_ends"
+    ).splitlines()
+    if not changes:
+        return
+
+    listed = "\n".join(changes[:UNCOMMITTED_CHANGES_LISTED])
+    if len(changes) > UNCOMMITTED_CHANGES_LISTED:
+        listed += f"\n...and {len(changes) - UNCOMMITTED_CHANGES_LISTED} more"
+
+    pytest.fail(
+        f"Commit or stash the uncommitted changes in {REFERENCE_DIR}:\n{listed}"
+    )
+
+
 @pytest.mark.skip(reason="Takes 30 mins, should only be run in specific situations")
-def test_front_ends(ref_output_directory):
-    """Run the conversion for front_ends.yaml. This requires access to /dls_sw.
-    Compare the output to the files saved in the webserver. This can take 30 minutes."""
+def test_front_ends():
+    """Convert config/front_ends.yaml and compare the output with the golden master.
+
+    This requires access to /dls_sw.
+    """
+    check_golden_master()
 
     # Do conversion from /dls_sw
     cmd = [
@@ -128,19 +191,6 @@ def test_front_ends(ref_output_directory):
     result = subprocess.run(
         cmd, stderr=subprocess.PIPE, encoding="utf-8", errors="replace"
     )
-
-    # Get the reference screens from kubernetes
-
-    cmd = [
-        "wget",
-        "-rq",
-        "-nH",
-        "--cut-dirs=1",
-        "-P",
-        str(REFERENCE_DIR),
-        WEBSERVER_URL,
-    ]
-    subprocess.run(cmd)
 
     add_gitkeep_files(OUTPUT_DIR)
     left, right, diffs = compare_dirs(OUTPUT_DIR, REFERENCE_DIR)
