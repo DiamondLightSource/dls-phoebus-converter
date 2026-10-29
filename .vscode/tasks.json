@@ -14,8 +14,8 @@
         },
         {
             "type": "shell",
-            "label": "Copy test output to golden master",
-            "command": "rm -rf tests/golden_master/front_ends && cp -a test_output tests/golden_master/front_ends && git -C tests/golden_master status",
+            "label": "Regenerate golden master",
+            "command": "tests/regenerate_golden_master.sh",
             "options": {
                 "cwd": "${workspaceRoot}"
             },
