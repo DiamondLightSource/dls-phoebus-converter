@@ -12,7 +12,7 @@ from conftest import OUTPUT_DIR
 
 # A clone of the golden master repo, which must be at GOLDEN_MASTER_COMMIT
 GOLDEN_MASTER_DIR = Path("tests/golden_master")
-GOLDEN_MASTER_COMMIT = "4afae14c6f4cf151e9ea9c61dc0a4b0a853cceb5"
+GOLDEN_MASTER_COMMIT = "6ceae30693207607c9acc935a455c9e71566cf25"
 REFERENCE_DIR = GOLDEN_MASTER_DIR / "front_ends"
 
 IGNORE_SUFFIXES = [".html", "test*"]
