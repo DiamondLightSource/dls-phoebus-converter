@@ -15,7 +15,6 @@ GOLDEN_MASTER_DIR = Path("tests/golden_master")
 GOLDEN_MASTER_COMMIT = "aece866bed7ebd9129332870f9ad3c47476b8b78"
 REFERENCE_DIR = GOLDEN_MASTER_DIR / "front_ends"
 
-IGNORE_SUFFIXES = [".html", "test*"]
 IMAGE_SUFFIXES = [".png", ".svg"]
 
 # The converter logs everything to stderr, so only the end of it is shown on failure.
@@ -60,7 +59,7 @@ def compare_dirs(out_dir, ref_dir):
     all_left = []
     all_right = []
     all_diffs = []
-    dcmp = filecmp.dircmp(out_dir, ref_dir, ignore=IGNORE_SUFFIXES, shallow=False)
+    dcmp = filecmp.dircmp(out_dir, ref_dir, shallow=False)
 
     for file in dcmp.diff_files:
         if Path(file).suffix in IMAGE_SUFFIXES:
