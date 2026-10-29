@@ -15,3 +15,9 @@ git -C tests/golden_master checkout <GOLDEN_MASTER_COMMIT>
 
 Before converting, the test fails if the clone is at another commit or `front_ends/` has
 uncommitted changes, and prints the command that fixes it.
+
+pytest skips the test unless given `--run-dls`. From the repo root:
+
+```bash
+pytest --run-dls tests/integration/test_conversion_dls.py
+```

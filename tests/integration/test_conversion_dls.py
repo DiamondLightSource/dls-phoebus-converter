@@ -170,12 +170,18 @@ def check_golden_master() -> None:
     )
 
 
-@pytest.mark.skip(reason="Takes 30 mins, should only be run in specific situations")
-def test_front_ends():
+def test_front_ends(pytestconfig: pytest.Config) -> None:
     """Convert config/front_ends.yaml and compare the output with the golden master.
 
-    This requires access to /dls_sw.
+    This requires access to /dls_sw and the golden master clone, so is skipped without
+    --run-dls.
+
+    Args:
+        pytestconfig: The pytest config, for --run-dls.
     """
+    if not pytestconfig.getoption("--run-dls"):
+        pytest.skip("needs --run-dls")
+
     check_golden_master()
 
     # Do conversion from /dls_sw

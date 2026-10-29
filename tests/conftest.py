@@ -13,6 +13,19 @@ setup_logging()
 logging.getLogger("dls_phoebus_converter").setLevel(logging.ERROR)
 
 
+def pytest_addoption(parser: pytest.Parser) -> None:
+    """Add the --run-dls option.
+
+    Args:
+        parser: The pytest command line parser.
+    """
+    parser.addoption(
+        "--run-dls",
+        action="store_true",
+        help="run test_front_ends, which needs /dls_sw and tests/golden_master/",
+    )
+
+
 @pytest.fixture(autouse=True)
 def output_directory():
     """Create output directory before each test and clean up after."""
