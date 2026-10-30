@@ -60,11 +60,12 @@ When a converter change alters the output on purpose:
    pytest --run-dls tests/integration/test_conversion_dls.py
    ```
 
-5. Merge the golden master merge request before the converter change. The golden master
-   repo merges with merge commits, so the pinned commit stays in `main`'s history.
+5. Open a merge request for the golden master branch, to review alongside the converter
+   pull request. Merge it with a merge commit rather than a squash, so that the pinned
+   commit ends up in the golden master's `main`.
 
-If another golden master change merges first, rebase the converter branch, check out its
-new pin in the clone, and start again from step 1.
+   If another golden master merge request merges first, your golden master branch is out
+   of date: rebase the converter branch and regenerate from the new pin.
 
 ## CI tests
 
