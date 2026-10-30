@@ -8,7 +8,8 @@
 `/dls_sw` and the DLS network, so it does not run in CI.
 
 From the repo root, clone the golden master to `tests/test_data/dls_golden_master/`,
-which is gitignored, and check out the commit in the test's `GOLDEN_MASTER_COMMIT`:
+which is gitignored, and check out the commit pinned by `GOLDEN_MASTER_COMMIT` in
+`tests/integration/test_conversion_dls.py`:
 
 ```bash
 git clone https://gitlab.diamond.ac.uk/controls/tools/phoebus-converted-files.git tests/test_data/dls_golden_master
