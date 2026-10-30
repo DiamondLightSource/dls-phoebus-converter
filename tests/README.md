@@ -31,17 +31,35 @@ pytest --run-dls tests/integration/test_conversion_dls.py
 When a converter change alters the output on purpose:
 
 1. Branch the clone from the pin:
-   `git -C tests/test_data/dls_golden_master switch -c <branch>`.
-2. Run the "Regenerate golden master" VS Code task, or
-   `tests/regenerate_golden_master.sh`. It runs the test and replaces
-   `tests/test_data/dls_golden_master/front_ends/` with the output.
-3. Review the changes, commit them, and push the branch. After
-   `git -C tests/test_data/dls_golden_master add -A`,
-   `git -C tests/test_data/dls_golden_master diff --cached` shows new files as well as
-   changed ones.
-4. Set `GOLDEN_MASTER_COMMIT` to
-   `git -C tests/test_data/dls_golden_master rev-parse HEAD`, in the converter commit
-   that changed the output, and check the test passes.
+
+   ```bash
+   git -C tests/test_data/dls_golden_master switch -c <branch>
+   ```
+
+2. Replace `tests/test_data/dls_golden_master/front_ends/` with the converter's output,
+   using the "Regenerate golden master" VS Code task or:
+
+   ```bash
+   tests/regenerate_golden_master.sh
+   ```
+
+3. Stage and review the changes, then commit them and push the branch:
+
+   ```bash
+   git -C tests/test_data/dls_golden_master add -A
+   git -C tests/test_data/dls_golden_master diff --cached
+   git -C tests/test_data/dls_golden_master commit
+   git -C tests/test_data/dls_golden_master push -u origin <branch>
+   ```
+
+4. In the converter commit that changes the output, set `GOLDEN_MASTER_COMMIT` to the
+   clone's `HEAD`, then check that the test passes:
+
+   ```bash
+   git -C tests/test_data/dls_golden_master rev-parse HEAD
+   pytest --run-dls tests/integration/test_conversion_dls.py
+   ```
+
 5. Merge the golden master merge request before the converter change. The golden master
    repo merges with merge commits, so the pinned commit stays in `main`'s history.
 
@@ -55,6 +73,11 @@ Each test in `tests/integration/test_conversion_ci.py` converts screens from
 compares the files in its `files_to_compare` with their references in
 `tests/test_data/bob_files/`.
 
-When a change alters those files on purpose, run each failing test on its own, then copy
-the files it compares from `test_output/` over their references. Each test empties
-`test_output/` first, so copy before running the next one.
+When a change alters those files on purpose, update the references one failing test at a
+time, as each test empties `test_output/` when it starts. Run the test, then copy each
+file in its `files_to_compare` over its reference:
+
+```bash
+pytest tests/integration/test_conversion_ci.py::<test>
+cp test_output/<file> tests/test_data/bob_files/<file>
+```
