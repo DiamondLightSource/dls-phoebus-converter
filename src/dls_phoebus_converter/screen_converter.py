@@ -43,6 +43,7 @@ class ScreenConverter:
         self.on_unpinned_module = UnpinnedModuleAction.LATEST
         # Support module problems, collected during the run and reported once at the end
         self.unpinned_modules_found: set[str] = set()
+        self.modules_not_found: set[str] = set()
         self.modules_without_screens: set[str] = set()
         # Symbol image destination -> (symbol width, number of symbols), so each image
         # is only split once per run
