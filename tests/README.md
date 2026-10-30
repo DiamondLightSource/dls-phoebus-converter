@@ -1,4 +1,6 @@
-# Golden master test
+# Conversion tests
+
+## Golden master test
 
 `test_front_ends` in `tests/integration/test_conversion_dls.py` converts the screens in
 `config/front_ends.yaml` from `/dls_sw` and compares them with a golden master, kept in
@@ -39,3 +41,13 @@ When a converter change alters the output on purpose:
 
 If another golden master change merges first, rebase the converter branch, check out its new
 pin in the clone, and start again from step 1.
+
+## CI tests
+
+Each test in `tests/integration/test_conversion_ci.py` converts screens from
+`tests/test_data/opi_files/` with one of the `config/example*.yaml` configs, and compares the
+files in its `files_to_compare` with their references in `tests/test_data/bob_files/`.
+
+When a change alters those files on purpose, run each failing test on its own, then copy the
+files it compares from `test_output/` over their references. Each test empties `test_output/`
+first, so copy before running the next one.
