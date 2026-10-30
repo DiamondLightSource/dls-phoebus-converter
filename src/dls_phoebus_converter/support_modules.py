@@ -232,6 +232,8 @@ def get_existing_support_module_filepath(
         is not in /dls_sw or that release holds no screens.
     """
 
+    sc.modules_looked_up.add(support_module_name)
+
     dls_sw_support_modules = Path("/dls_sw/prod/R3.14.12.7/support/")
     module_dir = dls_sw_support_modules / support_module_name
     if not module_dir.is_dir():
@@ -305,7 +307,9 @@ def report_support_module_problems(sc: ScreenConverter) -> None:
     """Fail the conversion if any support module did not resolve as intended.
 
     Called once the conversion has finished, so every problem is named in a single
-    message rather than costing one run each.
+    message rather than costing one run each. Pins that were never used are only
+    warned about, as a correct config can leave some unused, such as on a rerun into
+    a non-empty output directory.
 
     Args:
         sc: The finished conversion.
@@ -315,6 +319,15 @@ def report_support_module_problems(sc: ScreenConverter) -> None:
             UnpinnedModuleAction.ERROR, if any module was converted from an unpinned
             release.
     """
+
+    unused_pins = sc.dependency_versions.keys() - sc.modules_looked_up
+    if unused_pins:
+        logger.warning(
+            "These support modules are pinned in the dependencies field of the config "
+            "file but were never looked up, so their pins had no effect: "
+            f"{', '.join(sorted(unused_pins))}. Check them for misspellings. Modules "
+            "already in the output directory are not looked up."
+        )
 
     problems = []
 
