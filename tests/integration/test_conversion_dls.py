@@ -113,11 +113,12 @@ def add_gitkeep_files(root: Path) -> None:
             (dir_path / ".gitkeep").touch()
 
 
-def run_golden_master_git(*args: str) -> str:
-    """Run git in the golden master clone, failing the test if git fails.
+def run_golden_master_git(*args: str, check: bool = True) -> str:
+    """Run git in the golden master clone.
 
     Args:
         *args: The git subcommand and its arguments.
+        check: Whether to fail the test if git fails.
 
     Returns:
         The subcommand's stdout.
@@ -127,7 +128,7 @@ def run_golden_master_git(*args: str) -> str:
         capture_output=True,
         encoding="utf-8",
     )
-    if result.returncode != 0:
+    if check and result.returncode != 0:
         pytest.fail(f"git {' '.join(args)} failed:\n{result.stderr}")
 
     return result.stdout
@@ -148,19 +149,13 @@ def check_golden_master() -> None:
 
     # Compared by tree, so commits that leave front_ends/ alone, such as merge commits,
     # need no new pin. A pin the clone does not have resolves to nothing.
-    pinned = subprocess.run(
-        [
-            "git",
-            "-C",
-            str(GOLDEN_MASTER_DIR),
-            "rev-parse",
-            "--verify",
-            "--quiet",
-            f"{GOLDEN_MASTER_COMMIT}:front_ends",
-        ],
-        capture_output=True,
-        encoding="utf-8",
-    ).stdout
+    pinned = run_golden_master_git(
+        "rev-parse",
+        "--verify",
+        "--quiet",
+        f"{GOLDEN_MASTER_COMMIT}:front_ends",
+        check=False,
+    )
     if run_golden_master_git("rev-parse", "HEAD:front_ends") != pinned:
         pytest.fail(
             f"{REFERENCE_DIR} does not match GOLDEN_MASTER_COMMIT. Check that commit "
