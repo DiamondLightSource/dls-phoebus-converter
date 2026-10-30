@@ -10,7 +10,7 @@ import pytest
 
 from conftest import OUTPUT_DIR
 
-# A clone of the golden master repo, which must be at GOLDEN_MASTER_COMMIT
+# A clone of the golden master repo, with front_ends/ as at GOLDEN_MASTER_COMMIT
 GOLDEN_MASTER_DIR = Path("tests/golden_master")
 GOLDEN_MASTER_COMMIT = "aece866bed7ebd9129332870f9ad3c47476b8b78"
 REFERENCE_DIR = GOLDEN_MASTER_DIR / "front_ends"
@@ -136,8 +136,8 @@ def run_golden_master_git(*args: str) -> str:
 def check_golden_master() -> None:
     """Fail the test unless the golden master clone is ready to be compared against.
 
-    The clone must be at GOLDEN_MASTER_COMMIT, with no uncommitted changes in
-    front_ends/.
+    The clone's front_ends/ must match GOLDEN_MASTER_COMMIT, with no uncommitted
+    changes.
     """
     # Without its own .git, git would run in the converter repo instead
     if not (GOLDEN_MASTER_DIR / ".git").exists():
@@ -146,11 +146,26 @@ def check_golden_master() -> None:
             "describes"
         )
 
-    head = run_golden_master_git("rev-parse", "HEAD").strip()
-    if head != GOLDEN_MASTER_COMMIT:
+    # Compared by tree, so commits that leave front_ends/ alone, such as merge commits,
+    # need no new pin. A pin the clone does not have resolves to nothing.
+    pinned = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(GOLDEN_MASTER_DIR),
+            "rev-parse",
+            "--verify",
+            "--quiet",
+            f"{GOLDEN_MASTER_COMMIT}:front_ends",
+        ],
+        capture_output=True,
+        encoding="utf-8",
+    ).stdout
+    if run_golden_master_git("rev-parse", "HEAD:front_ends") != pinned:
         pytest.fail(
-            f"{GOLDEN_MASTER_DIR} is at {head}, not GOLDEN_MASTER_COMMIT. Fetch if "
-            f"needed, then run:\n"
+            f"{REFERENCE_DIR} does not match GOLDEN_MASTER_COMMIT. Check that commit "
+            f"out, fetching first if needed:\n"
+            f"git -C {GOLDEN_MASTER_DIR} fetch\n"
             f"git -C {GOLDEN_MASTER_DIR} checkout {GOLDEN_MASTER_COMMIT}"
         )
 

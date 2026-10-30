@@ -15,8 +15,9 @@ git clone https://gitlab.diamond.ac.uk/controls/tools/phoebus-converted-files.gi
 git -C tests/golden_master checkout <GOLDEN_MASTER_COMMIT>
 ```
 
-Before converting, the test fails if the clone is at another commit or `front_ends/` has
-uncommitted changes, and prints the command that fixes it.
+Before converting, the test fails if the clone's `front_ends/` does not match the pinned
+commit or has uncommitted changes, and says how to fix it. Commits that leave `front_ends/`
+alone, such as merge commits, need no new pin.
 
 pytest skips the test unless given `--run-dls`. From the repo root:
 
