@@ -11,6 +11,15 @@
                 "cwd": "${workspaceRoot}"
             },
             "problemMatcher": [],
+        },
+        {
+            "type": "shell",
+            "label": "Regenerate golden master",
+            "command": "tests/regenerate_golden_master.sh",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "problemMatcher": [],
         }
     ]
 }
