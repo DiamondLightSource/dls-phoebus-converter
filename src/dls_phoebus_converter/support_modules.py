@@ -3,6 +3,7 @@ the deployment locations."""
 
 from __future__ import annotations
 
+import configparser
 import logging
 from enum import StrEnum
 from pathlib import Path
@@ -251,18 +252,18 @@ def get_existing_support_module_filepath(
         support_module_name, module_dir, pinned_release
     )
 
-    opi_dir_guess = release_dir / f"{support_module_name}App" / "opi" / "opi"
-    if not opi_dir_guess.is_dir():
+    opi_dir = get_opi_dir(support_module_name, release_dir)
+    if not opi_dir.is_dir():
         logger.error(
             f"Could not find screens for {support_module_name} in {release_dir}"
         )
-        sc.modules_without_screens.add(f"{support_module_name} ({opi_dir_guess})")
+        sc.modules_without_screens.add(f"{support_module_name} ({opi_dir})")
         return None
 
     if support_module_name not in sc.dependency_versions:
         sc.unpinned_modules_found.add(support_module_name)
 
-    return str(opi_dir_guess)
+    return str(opi_dir)
 
 
 def get_support_module_release(
@@ -301,6 +302,29 @@ def get_support_module_release(
 
     releases = [path for path in module_dir.iterdir() if path.is_dir()]
     return max(releases, key=lambda release: release.stat().st_ctime)
+
+
+def get_opi_dir(support_module_name: str, release_dir: Path) -> Path:
+    """Get the screen directory of a support module release.
+
+    Read from opi-location in release_dir/etc/module.ini, falling back to
+    <support_module_name>App/opi/opi where that is missing or empty.
+
+    Args:
+        support_module_name: Name of the support module being resolved.
+        release_dir: The chosen release directory in /dls_sw.
+
+    Returns:
+        The path to the screen directory, which may not exist.
+    """
+
+    module_ini = configparser.ConfigParser()
+    module_ini.read(release_dir / "etc" / "module.ini")
+    opi_location = module_ini.get("general", "opi-location", fallback="")
+    if opi_location:
+        return release_dir / opi_location
+
+    return release_dir / f"{support_module_name}App" / "opi" / "opi"
 
 
 def report_support_module_problems(sc: ScreenConverter) -> None:
