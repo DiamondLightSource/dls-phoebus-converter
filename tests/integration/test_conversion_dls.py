@@ -11,7 +11,7 @@ import pytest
 from conftest import OUTPUT_DIR
 
 # A clone of the golden master repo, with front_ends/ as at GOLDEN_MASTER_COMMIT
-GOLDEN_MASTER_DIR = Path("tests/golden_master")
+GOLDEN_MASTER_DIR = Path("tests/test_data/dls_golden_master")
 GOLDEN_MASTER_COMMIT = "aece866bed7ebd9129332870f9ad3c47476b8b78"
 REFERENCE_DIR = GOLDEN_MASTER_DIR / "front_ends"
 

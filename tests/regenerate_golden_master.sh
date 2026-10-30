@@ -15,6 +15,6 @@ if [ -z "$(ls -A test_output 2>/dev/null)" ]; then
     exit 1
 fi
 
-rm -rf tests/golden_master/front_ends
-cp -a test_output tests/golden_master/front_ends
-git -C tests/golden_master status
+rm -rf tests/test_data/dls_golden_master/front_ends
+cp -a test_output tests/test_data/dls_golden_master/front_ends
+git -C tests/test_data/dls_golden_master status

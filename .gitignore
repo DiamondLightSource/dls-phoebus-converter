@@ -73,5 +73,5 @@ lockfiles/
 # input and output files for development testing
 output/
 logs/
-/tests/golden_master/
+/tests/test_data/dls_golden_master/
 test_output/

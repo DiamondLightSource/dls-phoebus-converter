@@ -22,7 +22,10 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     parser.addoption(
         "--run-dls",
         action="store_true",
-        help="run test_front_ends, which needs /dls_sw and tests/golden_master/",
+        help=(
+            "run test_front_ends, which needs /dls_sw and "
+            "tests/test_data/dls_golden_master/"
+        ),
     )
 
 
