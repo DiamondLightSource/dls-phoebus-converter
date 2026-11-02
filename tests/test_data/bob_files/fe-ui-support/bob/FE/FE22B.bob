@@ -1211,9 +1211,11 @@ $(pv_value)</tooltip>
 						<width>105</width>
 						<height>137</height>
 						<actions></actions>
-						<border_alarm_sensitive>false</border_alarm_sensitive>
 						<limits_from_pv>false</limits_from_pv>
 						<maximum>3000.0</maximum>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<level_lolo>10.0</level_lolo>
+						<level_hihi>90.0</level_hihi>
 						<background_color>
 							<color name="Transparent" red="255" green="255" blue="255"/>
 						</background_color>
@@ -1251,9 +1253,11 @@ $(pv_value)</tooltip>
 						<width>105</width>
 						<height>137</height>
 						<actions></actions>
-						<border_alarm_sensitive>false</border_alarm_sensitive>
 						<limits_from_pv>false</limits_from_pv>
 						<maximum>3000.0</maximum>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<level_lolo>10.0</level_lolo>
+						<level_hihi>90.0</level_hihi>
 						<background_color>
 							<color name="Transparent" red="255" green="255" blue="255"/>
 						</background_color>
@@ -1291,9 +1295,11 @@ $(pv_value)</tooltip>
 						<width>105</width>
 						<height>137</height>
 						<actions></actions>
-						<border_alarm_sensitive>false</border_alarm_sensitive>
 						<limits_from_pv>false</limits_from_pv>
 						<maximum>3000.0</maximum>
+						<border_alarm_sensitive>false</border_alarm_sensitive>
+						<level_lolo>10.0</level_lolo>
+						<level_hihi>90.0</level_hihi>
 						<background_color>
 							<color name="Transparent" red="255" green="255" blue="255"/>
 						</background_color>

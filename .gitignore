@@ -71,10 +71,7 @@ lockfiles/
 .ruff_cache/
 
 # input and output files for development testing
-input/
 output/
-output2/
 logs/
-golden_master/
+/tests/test_data/dls_golden_master/
 test_output/
-test_output_ref/

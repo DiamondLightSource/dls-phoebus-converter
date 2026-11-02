@@ -400,6 +400,9 @@ def create_symbol_image_file(
             str(src_file),
             "-crop",
             f"{width}x{height}+{x}+0",
+            # Omit the write-time tIME chunk, so output only changes with the image
+            "-define",
+            "png:exclude-chunk=time",
             str(new_output_file),
         ]
 
