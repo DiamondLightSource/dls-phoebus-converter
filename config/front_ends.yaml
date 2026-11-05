@@ -25,6 +25,7 @@ meta_data:
       pmac: 2-7-9
       pmacUtil: 5-13
       procServControl: 1-25
+      QPC: 2-3
       rackFan: 2-12
       rga: 4-26
       slit: 3-28-0-3

@@ -3,6 +3,7 @@ the deployment locations."""
 
 from __future__ import annotations
 
+import configparser
 import logging
 from enum import StrEnum
 from pathlib import Path
@@ -26,6 +27,21 @@ ACC_UI_SUPPORT_MODULE_LIST = [
     "rga",
     "TimingTemplates",
 ]
+
+# Names that screens use as support modules but that are not in /dls_sw, so are skipped
+# rather than failing the run. References to them are still rewritten as if they were
+# modules, so they point at directories that are never produced. Remove each entry once
+# the references that produce it are fixed.
+NOT_SUPPORT_MODULES = {
+    # Unexpanded macros, which fill_in_macros leaves in place
+    "mks937$(mks_type)",
+    "mks937$(mksType)",
+    # The motor and pmacUtil screens, referenced as ../<module>App_opi/
+    "motorApp_opi",
+    "pmacUtilApp_opi",
+    # vacuum screens referencing common/rackComponents/ from the wrong directory
+    "rackComponents",
+}
 
 logger = logging.getLogger("dls_phoebus_converter")
 
@@ -217,12 +233,18 @@ def get_existing_support_module_filepath(
         is not in /dls_sw or that release holds no screens.
     """
 
+    sc.modules_looked_up.add(support_module_name)
+
     dls_sw_support_modules = Path("/dls_sw/prod/R3.14.12.7/support/")
     module_dir = dls_sw_support_modules / support_module_name
     if not module_dir.is_dir():
-        logger.error(
-            f"Could not find {support_module_name} in {dls_sw_support_modules}"
-        )
+        if support_module_name in NOT_SUPPORT_MODULES:
+            logger.debug(f"Skipping {support_module_name}, not a support module")
+        else:
+            logger.error(
+                f"Could not find {support_module_name} in {dls_sw_support_modules}"
+            )
+            sc.modules_not_found.add(support_module_name)
         return None
 
     pinned_release = sc.dependency_versions.get(support_module_name)
@@ -230,18 +252,18 @@ def get_existing_support_module_filepath(
         support_module_name, module_dir, pinned_release
     )
 
-    opi_dir_guess = release_dir / f"{support_module_name}App" / "opi" / "opi"
-    if not opi_dir_guess.is_dir():
+    opi_dir = get_opi_dir(support_module_name, release_dir)
+    if not opi_dir.is_dir():
         logger.error(
             f"Could not find screens for {support_module_name} in {release_dir}"
         )
-        sc.modules_without_screens.add(f"{support_module_name} ({opi_dir_guess})")
+        sc.modules_without_screens.add(f"{support_module_name} ({opi_dir})")
         return None
 
     if support_module_name not in sc.dependency_versions:
         sc.unpinned_modules_found.add(support_module_name)
 
-    return str(opi_dir_guess)
+    return str(opi_dir)
 
 
 def get_support_module_release(
@@ -282,22 +304,63 @@ def get_support_module_release(
     return max(releases, key=lambda release: release.stat().st_ctime)
 
 
+def get_opi_dir(support_module_name: str, release_dir: Path) -> Path:
+    """Get the screen directory of a support module release.
+
+    Read from opi-location in release_dir/etc/module.ini, falling back to
+    <support_module_name>App/opi/opi where that is missing or empty.
+
+    Args:
+        support_module_name: Name of the support module being resolved.
+        release_dir: The chosen release directory in /dls_sw.
+
+    Returns:
+        The path to the screen directory, which may not exist.
+    """
+
+    module_ini = configparser.ConfigParser()
+    module_ini.read(release_dir / "etc" / "module.ini")
+    opi_location = module_ini.get("general", "opi-location", fallback="")
+    if opi_location:
+        return release_dir / opi_location
+
+    return release_dir / f"{support_module_name}App" / "opi" / "opi"
+
+
 def report_support_module_problems(sc: ScreenConverter) -> None:
     """Fail the conversion if any support module did not resolve as intended.
 
     Called once the conversion has finished, so every problem is named in a single
-    message rather than costing one run each.
+    message rather than costing one run each. Pins that were never used are only
+    warned about, as a correct config can leave some unused, such as on a rerun into
+    a non-empty output directory.
 
     Args:
         sc: The finished conversion.
 
     Raises:
-        ValueError: If any module's screens were not found, or, under
+        ValueError: If any module or its screens were not found, or, under
             UnpinnedModuleAction.ERROR, if any module was converted from an unpinned
             release.
     """
 
+    unused_pins = sc.dependency_versions.keys() - sc.modules_looked_up
+    if unused_pins:
+        logger.warning(
+            "These support modules are pinned in the dependencies field of the config "
+            "file but were never looked up, so their pins had no effect: "
+            f"{', '.join(sorted(unused_pins))}. Check them for misspellings. Modules "
+            "already in the output directory are not looked up."
+        )
+
     problems = []
+
+    if sc.modules_not_found:
+        problems.append(
+            "These support modules are not in /dls_sw, so nothing has been converted "
+            f"from them: {', '.join(sorted(sc.modules_not_found))}. Add any that are "
+            "not support modules to NOT_SUPPORT_MODULES in support_modules.py."
+        )
 
     if sc.modules_without_screens:
         problems.append(

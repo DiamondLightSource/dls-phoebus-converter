@@ -40,9 +40,12 @@ class ScreenConverter:
         self.convert_dependencies = False
         # Mapping between a support module name and the release to convert from
         self.dependency_versions: dict[str, str] = {}
+        # Every support module name looked up in /dls_sw, to find pins never used
+        self.modules_looked_up: set[str] = set()
         self.on_unpinned_module = UnpinnedModuleAction.LATEST
         # Support module problems, collected during the run and reported once at the end
         self.unpinned_modules_found: set[str] = set()
+        self.modules_not_found: set[str] = set()
         self.modules_without_screens: set[str] = set()
         # Symbol image destination -> (symbol width, number of symbols), so each image
         # is only split once per run
