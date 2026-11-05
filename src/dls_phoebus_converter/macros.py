@@ -41,10 +41,10 @@ def add_new_macros(
 ) -> None:
     """Add a list of macro name/values to the top level of the bob file."""
 
-    if "macros" not in bob_data.getroot():
-        bob_data.getroot().append(etree.Element("macros"))
-
-    macro_data = bob_data.find("macros")
+    root = bob_data.getroot()
+    macro_data = root.find("macros")
+    if macro_data is None:
+        macro_data = etree.SubElement(root, "macros")
 
     for new_macro_name, new_macro_value in zip(macro_names, macro_values, strict=True):
         for existing_macro in macro_data:
