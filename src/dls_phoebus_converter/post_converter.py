@@ -618,8 +618,7 @@ def fix_edm_symbol_widgets(
 
     # Run action off left click if the widget has actions
     if widget.find("actions/action") is not None:
-        widget.append(Element("run_actions_on_mouse_click"))
-        widget.find("run_actions_on_mouse_click").text = "true"
+        etree.SubElement(widget, "run_actions_on_mouse_click").text = "true"
 
     symbol_files = [str(path) for path in get_symbol_file_paths(output_file, n_images)]
 
