@@ -145,7 +145,10 @@ def replace_progress_bar_with_linear_meter(
         expected_text_update_widget_name = progress_bar.findtext("name") + " Label"
         for text_update in bob_data.findall(".//widget[@type='textupdate']"):
             if text_update.findtext("name") == expected_text_update_widget_name:
-                etree.SubElement(text_update, "border_alarm_sensitive").text = "false"
+                border = text_update.find("border_alarm_sensitive")
+                if border is None:
+                    border = etree.SubElement(text_update, "border_alarm_sensitive")
+                border.text = "false"
 
 
 # Generic function to be inlcluded in each domain-specific special case module.

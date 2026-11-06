@@ -185,7 +185,11 @@ def fix_widget_issues(sc: ScreenConverter, oc: OpiConverter):
                     new_el = etree.fromstring(
                         "<background_color>\n<color name='Transparent' red='255' green='255' blue='255'></color>\n</background_color>\n"  # noqa: E501
                     )
-                    widget.append(new_el)
+                    old_el = widget.find("background_color")
+                    if old_el is None:
+                        widget.append(new_el)
+                    else:
+                        widget.replace(old_el, new_el)
         convert_pv_function(widget)
         fix_rule_expressions(steps, widget)
         fix_actions_on_widgets_without_actions_functionality(steps, widget)
