@@ -12,7 +12,7 @@ from conftest import OUTPUT_DIR
 
 # A clone of the golden master repo, with front_ends/ as at GOLDEN_MASTER_COMMIT
 GOLDEN_MASTER_DIR = Path("tests/test_data/dls_golden_master")
-GOLDEN_MASTER_COMMIT = "ef419fbb97ccf4d4bd1acac0dd6ddc9c09c9a7d7"
+GOLDEN_MASTER_COMMIT = "c7e682077bbfa330a668b5fe023ae028cdf09e4d"
 REFERENCE_DIR = GOLDEN_MASTER_DIR / "front_ends"
 
 IMAGE_SUFFIXES = [".png", ".svg"]

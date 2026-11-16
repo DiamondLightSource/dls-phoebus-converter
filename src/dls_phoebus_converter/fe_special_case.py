@@ -96,9 +96,6 @@ def replace_progress_bar_with_linear_meter(
         etree.SubElement(linear_meter, "pv_name").text = progress_bar.findtext(
             "pv_name"
         )
-        etree.SubElement(linear_meter, "actions").text = progress_bar.findtext(
-            "actions"
-        )
 
         # Additional linear meter properties
         etree.SubElement(linear_meter, "name").text = "linear meter"
