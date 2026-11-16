@@ -169,8 +169,10 @@ def fix_widget_issues(sc: ScreenConverter, oc: OpiConverter):
             pv_name = widget.find("pv_name")
             if name is not None and pv_name is not None:
                 if [name.text, pv_name.text] in alarm_sensitive_progress_bars:
-                    widget.append(Element("border_alarm_sensitive"))
-                    widget.find("border_alarm_sensitive").text = "true"
+                    border = widget.find("border_alarm_sensitive")
+                    if border is None:
+                        border = etree.SubElement(widget, "border_alarm_sensitive")
+                    border.text = "true"
 
         elif widget_type == "tank":
             # Phoebus is missing the <transparent_background> option, so we just set the
