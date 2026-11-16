@@ -755,13 +755,9 @@ def fix_actions_on_widgets_without_actions_functionality(
     widget.attrib["type"] = "action_button"
 
     text = widget.find("text")
-    off_label = widget.find("off_label")
-    if text is not None and off_label is not None:
-        text.text = off_label.text
-    else:
-        text_el = Element("text")
-        text_el.text = ""
-        widget.append(text_el)
+    if text is None:
+        text = etree.SubElement(widget, "text")
+    text.text = widget.findtext("off_label", "")
 
     for rule in widget.findall("rules/rule"):
         if rule.attrib["prop_id"] == "line_color":
