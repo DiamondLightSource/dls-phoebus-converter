@@ -17,7 +17,6 @@
 		<width>120</width>
 		<height>28</height>
 		<pv_name>$(dom)-RS-ABSB-01:TMON01$(suffix)</pv_name>
-		<actions/>
 		<name>linear meter</name>
 		<display_mode>1</display_mode>
 		<show_units>false</show_units>
@@ -74,7 +73,6 @@ if currentTemp >= hihiRaw:
 		<width>120</width>
 		<height>28</height>
 		<pv_name>$(dom)-RS-ABSB-01:TMON02$(suffix)</pv_name>
-		<actions/>
 		<name>linear meter</name>
 		<display_mode>1</display_mode>
 		<show_units>false</show_units>
