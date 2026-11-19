@@ -55,7 +55,9 @@
         // Without this /tmp sits on the container's fuse-overlayfs, where every read and
         // write is relayed by a single userspace daemon. That daemon saturates one core
         // and starves the parallel screen conversion, which stages its files in /tmp.
-        "--tmpfs=/tmp:rw,size=4g,mode=1777"
+        "--tmpfs=/tmp:rw,size=4g,mode=1777",
+        // The claude-sandbox network jail needs this device
+        "--device=/dev/net/tun"
     ],
     "mounts": [
         // Mount in the user terminal config folder so it can be edited
