@@ -61,22 +61,6 @@ def post_conversion_steps(sc: ScreenConverter, oc: OpiConverter):
         sc.special_case_module.run(oc)
 
 
-def get_dimension(element: Element, name: str, default: int = 0) -> int:
-    """Read an integer dimension, falling back to a default where it is not set.
-
-    Args:
-        element: The widget or display to read from.
-        name: The dimension property, such as "x" or "width".
-        default: Used when the property is absent.
-
-    Returns:
-        The dimension in pixels.
-    """
-
-    value = element.findtext(name)
-    return default if value is None else int(value)
-
-
 def expand_screen_to_widgets(bob_data: etree.ElementTree) -> None:
     """Resize the screen to fit the widgets on it. This is useful for screens which have
     been converted from CS-Studio where the screen size was not set correctly."""
@@ -119,6 +103,22 @@ def expand_screen_to_widgets(bob_data: etree.ElementTree) -> None:
             height_el = etree.SubElement(root, "height")
         height_el.text = str(new_height)
         logger.info(f"Display height resized to: {new_height}")
+
+
+def get_dimension(element: Element, name: str, default: int = 0) -> int:
+    """Read an integer dimension, falling back to a default where it is not set.
+
+    Args:
+        element: The widget or display to read from.
+        name: The dimension property, such as "x" or "width".
+        default: Used when the property is absent.
+
+    Returns:
+        The dimension in pixels.
+    """
+
+    value = element.findtext(name)
+    return default if value is None else int(value)
 
 
 def fix_widget_issues(sc: ScreenConverter, oc: OpiConverter):
@@ -210,6 +210,34 @@ def fix_exit_button(steps: CompletedSteps, action: Element):
         action.remove(old_script)
 
 
+def fix_widget_actions(steps: CompletedSteps, src_file_path: Path, actions: Element):
+    """Fix issues with widget actions"""
+
+    for action in actions:
+        fix_action_open_macro(steps, action)
+        replace_open_in_tab(steps, action)
+        fix_open_databrowser_actions(steps, src_file_path, action)
+
+
+def fix_action_open_macro(steps: CompletedSteps, action: Element):
+    """Replace the macro $(name) with the actions parent widgets name"""
+
+    if action.attrib["type"] == "open_display":
+        for macros_el in action.findall("macros"):
+            for macro in macros_el:
+                if macro.text == "$(name)":
+                    steps.fix_action_macro_name = True
+                    macro.text = action.getparent().getparent().find("name").text
+
+
+def replace_open_in_tab(steps: CompletedSteps, action: Element):
+    if action.attrib["type"] == "open_display":
+        for target in action.findall("target"):
+            if target.text == "tab":
+                target.text = "standalone"
+                steps.replace_action_tab = True
+
+
 def fix_open_databrowser_actions(
     steps: CompletedSteps, src_file_path: Path, action: Element
 ):
@@ -265,385 +293,6 @@ def switch_to_new_databrowser_action(action: Element, pv_names: list[str]):
     actions.append(new_action)
     # Delete the old action
     actions.remove(action)
-
-
-def fix_widget_actions(steps: CompletedSteps, src_file_path: Path, actions: Element):
-    """Fix issues with widget actions"""
-
-    for action in actions:
-        fix_action_open_macro(steps, action)
-        replace_open_in_tab(steps, action)
-        fix_open_databrowser_actions(steps, src_file_path, action)
-
-
-def fix_action_open_macro(steps: CompletedSteps, action: Element):
-    """Replace the macro $(name) with the actions parent widgets name"""
-
-    if action.attrib["type"] == "open_display":
-        for macros_el in action.findall("macros"):
-            for macro in macros_el:
-                if macro.text == "$(name)":
-                    steps.fix_action_macro_name = True
-                    macro.text = action.getparent().getparent().find("name").text
-
-
-def get_symbol_image_dims(src_file: Path) -> tuple[int, int] | tuple[None, None]:
-    """Get the pixel dimensions of an image file.
-
-    Args:
-        src_file: The image to measure.
-
-    Returns:
-        Its width and height, or (None, None) if identify failed.
-    """
-
-    cmd = [
-        "identify",
-        "-format",
-        "'%w %h'",
-        str(src_file),
-    ]
-
-    result = subprocess.run(cmd, capture_output=True, encoding="utf-8")
-
-    if result.returncode != 0:
-        logger.error(f"identify - {result.stderr}")
-        return None, None
-
-    if result.stderr:
-        logger.debug(f"identify - {result.stderr}")
-
-    width, height = result.stdout.strip("'").split(" ")
-    return int(width), int(height)
-
-
-def get_symbol_file_paths(base_file: Path, n_images: int) -> list[Path]:
-    """One path per symbol, indexed unless the image holds a single symbol."""
-
-    if n_images == 1:
-        return [base_file]
-
-    return [base_file.with_stem(f"{base_file.stem}_{n}") for n in range(n_images)]
-
-
-def get_symbol_image_split(
-    symbol_image_splits: dict[Path, tuple[int, int]],
-    output_file_full: Path,
-    src_file: Path,
-    width: int,
-) -> int | None:
-    """Split a symbol image into one file per symbol, doing the work once per image.
-
-    An image is an array of equally sized symbols, so it can only split one way. The
-    first widget to use it sets the width; later widgets reuse that split and are
-    warned if they ask for a different one.
-
-    Args:
-        symbol_image_splits: The (symbol width, number of symbols) of each image split
-            so far, by destination. A new split is added to it.
-        output_file_full: Where the symbol files are written.
-        src_file: The combined symbol image to split.
-        width: Width of one symbol as this widget gives it, or 0 if it gives none.
-
-    Returns:
-        The number of symbols in src_file, or None if it could not be measured.
-    """
-
-    if output_file_full in symbol_image_splits:
-        split_width, n_images = symbol_image_splits[output_file_full]
-        if width not in (0, split_width):
-            logger.warning(
-                f"Symbol image {src_file} was already split at sub_image_width "
-                f"{split_width}, so the {width} asked for here is ignored."
-            )
-        return n_images
-
-    full_width, height = get_symbol_image_dims(src_file)
-    if full_width is None or height is None:
-        logger.error("Failed to convert symbol widget due to problem with identify cmd")
-        return None
-
-    if width == 0:
-        logger.warning(
-            "Could not find symbol widget sub_image_width. Assuming width==height"
-        )
-        width = height
-
-    # Need to calculate from width of full image / width
-    n_images = full_width // width
-    create_symbol_image_file(output_file_full, src_file, n_images, width, height)
-    symbol_image_splits[output_file_full] = (width, n_images)
-
-    return n_images
-
-
-def create_symbol_image_file(
-    output_file_full: Path,
-    src_file: Path,
-    n_images: int,
-    width: int,
-    height: int,
-) -> None:
-    """Use the cli 'convert' tool to split the edm style single symbol image file
-    into a seperate symbol image file per symbol"""
-
-    logger.info(f"Creating new image for symbol from: {src_file}")
-
-    # Make directory for symbols if it doesnt exist. This can happen if we convert a
-    # symbol widget which uses symbol files from a support module which has not been
-    # scheduled for conversion. Normally we only mkdir for the support module when we
-    # schedule it for conversion, so it is possible that this will happen too late or
-    # wont happen if the user has not requested to convert dependencies.
-    output_file_full.parent.mkdir(exist_ok=True)
-
-    for n, new_output_file in enumerate(
-        get_symbol_file_paths(output_file_full, n_images)
-    ):
-        x = width * n
-
-        cmd = [
-            "convert",
-            str(src_file),
-            "-crop",
-            f"{width}x{height}+{x}+0",
-            # Omit the write-time tIME chunk, so output only changes with the image
-            "-define",
-            "png:exclude-chunk=time",
-            str(new_output_file),
-        ]
-
-        result = subprocess.run(cmd, capture_output=True, encoding="utf-8")
-
-        created = new_output_file.is_file()
-        if not created:
-            logger.error(
-                f"Failed to create new symbol images with command: {' '.join(cmd)}"
-            )
-
-        for line in result.stderr.split("\n"):
-            if line:
-                if not created:
-                    logger.error(f"convert - {line}")
-                else:
-                    logger.debug(f"convert - {line}")
-
-
-def get_symbol_file_destinations(
-    sc: ScreenConverter, oc: OpiConverter, src_file: Path, src_sm: str
-) -> tuple[Path, Path]:
-    """Get the destination path for the symbols, both the full path to save the image
-    files too and the relative path to use in the screen links."""
-
-    # Decide where to put the symbol files based on the name of either the support
-    # module we got the image from (priority) or our own support module.
-    sm = src_sm if src_sm is not None else oc.support_module_name
-
-    if sm in ACC_UI_SUPPORT_MODULE_LIST:
-        output_file = sc.acc_ui_support_symbol_dst_part / sm / src_file.name
-        output_file_full = sc.acc_ui_support_symbol_dst_full / sm / src_file.name
-    else:
-        output_file = sc.domain_ui_support_symbol_dst_part / sm / src_file.name
-        output_file_full = sc.domain_ui_support_symbol_dst_full / sm / src_file.name
-
-    return oc.path_to_top / output_file, output_file_full
-
-
-def update_symbol_widget_rules(
-    widget: Element, output_file: Path
-) -> tuple[int, Element | None]:
-    """Modify/create rules to change the displayed symbol and overwrite the default
-    order"""
-
-    invalid_image_index = None
-    old_rule = None
-    # Possible bug: not cleared between rules, so a second matching rule appends the
-    # first rule's copies as well as its own. Depends on the rules in the source .opi.
-    additional_rules = []
-
-    for rule in widget.findall("rules/rule"):
-        # Look for a rule which is used to change the displayed symbol to a symbol
-        # signifying an invalid state.
-        if rule.attrib.get("prop_id") != "image_index":
-            continue
-
-        old_rule = copy.deepcopy(rule)
-        rule.attrib["prop_id"] = "symbols[0]"
-        rule.attrib["out_exp"] = "false"
-        for exp in rule.findall("exp"):
-            if exp.attrib["bool_exp"] == "pvLegacySev0==-1":
-                expression = exp.find("expression")
-                invalid_image_index = int(expression.text)
-                exp.remove(expression)
-                exp.attrib["bool_exp"] = "pvSev0==3 || pvSev0==4"
-                val_el = Element("value")
-                val_el.text = str(
-                    output_file.with_stem(f"{output_file.stem}_{invalid_image_index}")
-                )
-                exp.append(val_el)
-            else:
-                # Remove other "image_index" rule expressions. For the most part this
-                # functionality is now built into the widget, so we dont keep them.
-                rule.remove(exp)
-
-        # We must create a rule for each symbol specified for the widget which
-        # overwrites the displayed symbol widget with the special invalid state symbol.
-        for i in range(1, len(widget.find("symbols"))):
-            # Get a unique copy of the rule
-            additional_rule = copy.deepcopy(rule)
-            additional_rule.attrib["name"] = rule.attrib["name"] + f"_{i}"
-            additional_rule.attrib["prop_id"] = f"symbols[{i}]"
-            additional_rules.append(additional_rule)
-
-        # Extend the rules for this widget with the new rules we created
-        rule.getparent().extend(additional_rules)
-
-    start_index = 0 if invalid_image_index is None else 1
-    return start_index, old_rule
-
-
-@lru_cache(maxsize=1)
-def get_sub_image_widths(opi_data: etree.ElementTree) -> dict[tuple, str]:
-    """Index the sub image widths in an .opi by the symbol they belong to.
-
-    Cached on the tree so the index is built once per screen. Only the most recent is
-    kept, as screens are converted one at a time.
-
-    Args:
-        opi_data: The unmodified .opi element tree.
-
-    Returns:
-        Sub image width, as its original string, by (name, image file). Where a screen
-        repeats a pair the last one wins, as it did when this was searched linearly.
-    """
-
-    widths = {}
-    for width_el in opi_data.findall(".//sub_image_width"):
-        symbol = width_el.getparent()
-        widths[(symbol.findtext("name"), symbol.findtext("image_file"))] = (
-            symbol.findtext("sub_image_width")
-        )
-
-    return widths
-
-
-def find_symbol_image(
-    sc: ScreenConverter, macros: dict[str, str], own_module: str | None, path: Path
-) -> tuple[Path, str | None] | None:
-    """Find a symbol image in a support module named in path, else in own_module.
-
-    Args:
-        sc: The running conversion, holding the support modules found so far.
-        macros: Filled in before the path is matched.
-        own_module: The screen's support module, if any.
-        path: The image path as the widget gives it.
-
-    Returns:
-        The image and the support module named in path, if any, or None if the image
-        is not found.
-    """
-
-    resolved = fill_in_macros(str(path), macros)
-    if resolved is None:
-        return None
-
-    path = Path(resolved)
-    src_sm = None
-    src_file = None
-    for sm in sc.domain_support_module_locations + sc.acc_support_module_locations:
-        for i, part in enumerate(path.parts):
-            if sm[0] == part:
-                sm_path = get_existing_support_module_filepath(sc, part)
-                if sm_path is not None:
-                    src_sm = part
-                    # ../FE/symbols/x.png becomes <sm_path>/symbols/x.png
-                    src_file = Path(sm_path) / Path(*path.parts[i + 1 :])
-                    break
-
-    if src_file is not None and src_file.is_file():
-        return src_file, src_sm
-
-    if own_module is None:
-        return None
-
-    own_sm_path = get_existing_support_module_filepath(sc, own_module)
-    if own_sm_path is None:
-        return None
-
-    # The old path is relative, but we want absolute so strip out ../
-    src_file = Path(own_sm_path) / str(path).replace("../", "")
-    if not src_file.is_file():
-        return None
-
-    return src_file, src_sm
-
-
-def fix_edm_symbol_widgets(
-    sc: ScreenConverter, oc: OpiConverter, widget: Element
-) -> None:
-    """Convert an edm/cs-studio style symbol widget to a Phoebus one."""
-
-    # Get name of symbol file
-    old_symbol_file = Path(widget.findtext("symbols/symbol"))
-    if old_symbol_file.suffix == ".gif":
-        logger.warning(
-            "gif symbol images are not currently supported, failed to fix edm symbol: "
-            f"{old_symbol_file}"
-        )
-        return
-
-    found = find_symbol_image(sc, oc.macros, oc.support_module_name, old_symbol_file)
-    if found is None:
-        logger.error(
-            f"Could not find symbol image for symbol reference {old_symbol_file}"
-        )
-        return
-    src_file, src_sm = found
-
-    widget_name = widget.findtext("name")
-    logger.debug(f"Fixing Symbol widget with name: {widget_name}")
-
-    output_file, output_file_full = get_symbol_file_destinations(
-        sc, oc, src_file, src_sm
-    )
-
-    symbol_key = (widget_name, str(old_symbol_file))
-    sub_image_width = get_sub_image_widths(oc.const_opi_data).get(symbol_key)
-    # sub_image_width stores a stringified float, so we must convert to float first
-    width = 0 if sub_image_width is None else int(float(sub_image_width))
-
-    n_images = get_symbol_image_split(
-        sc.symbol_image_splits, output_file_full, src_file, width
-    )
-    if n_images is None:
-        return
-
-    oc.completed_conversion_steps.split_sym_images = True
-
-    # Fix rules and return the start_index
-    start_index, old_rule = update_symbol_widget_rules(widget, output_file)
-
-    # Run action off left click if the widget has actions
-    if widget.find("actions/action") is not None:
-        etree.SubElement(widget, "run_actions_on_mouse_click").text = "true"
-
-    symbol_files = [str(path) for path in get_symbol_file_paths(output_file, n_images)]
-
-    # Remove the symbol files before the start index
-    symbol_files = symbol_files[start_index:]
-
-    # Reorder the symbol files based on rules
-    if old_rule is not None:
-        symbol_files = reorder_default_symbol_order_from_rule(symbol_files, old_rule)
-
-    # Remove old combined symbol file
-    symbols_el = widget.find("symbols")
-    symbols_el.remove(symbols_el.find("symbol"))
-
-    # Add new symbols
-    for symbol_file in symbol_files:
-        new_symbol = Element("symbol")
-        new_symbol.text = symbol_file
-        symbols_el.append(new_symbol)
 
 
 def move_action_to_transparent_button(widget: Element):
@@ -720,6 +369,63 @@ def get_transparent_background_tank_widgets(opi_data: etree.ElementTree):
     return transparent_backgrounds
 
 
+def convert_pv_function(widget: Element):
+    for child in widget.iter():
+        inp_string = child.text
+        if inp_string is not None and "pv(" in inp_string:
+            # cs-studio writes a PV name as pv("NAME"), Phoebus as `NAME`
+            pv_replacement = re.sub(r'pv\("(.*?)"\)', r"`\1`", inp_string)
+            # Anything still holding pv( did not match, either a nested call such as
+            # pv(concat(...)) or an unclosed pv(". Phoebus has no equivalent for the
+            # former, so warn and leave the formula as it was.
+            if "pv(" in pv_replacement:
+                logger.warning(
+                    f"Cannot fix the following formula in Phoebus {inp_string}"
+                )
+            else:
+                logger.info(f"Replace pv() function with {pv_replacement}")
+                child.text = pv_replacement
+
+
+def fix_rule_expressions(steps: CompletedSteps, widget: Element):
+    """Fix common issues that come up in cs-studio rules"""
+
+    expressions = widget.findall("rules/rule/exp")
+    for exp in expressions:
+        # Use new syntax for getting a PV alarm severity
+        fix_pv_severity_expression(steps, exp)
+
+        # widget.getValue() is not available in Phoebus, we assume this is an attempt to
+        # get the value of the widgets pv, so we replace it with pv0
+        if "widget.getValue()" in exp.attrib["bool_exp"]:
+            exp.attrib["bool_exp"] = exp.attrib["bool_exp"].replace(
+                "widget.getValue()", "pv0"
+            )
+
+
+def fix_pv_severity_expression(steps: CompletedSteps, exp_el: Element):
+    # OK, Major, Minor, Invalid/undefined
+    css_sev_expressions = [
+        "pvLegacySev0==0",
+        "pvLegacySev0==1",
+        "pvLegacySev0==2",
+        "pvLegacySev0==-1",
+    ]
+    phoebus_sev_expressions = ["pvSev0==0", "pvSev0==2", "pvSev0==1", "pvSev0==3"]
+    initial_attrib = exp_el.attrib["bool_exp"]
+    modified_attrib = initial_attrib
+
+    for css_exp, phoebus_exp in zip(
+        css_sev_expressions, phoebus_sev_expressions, strict=True
+    ):
+        if css_exp in initial_attrib:
+            steps.update_leg_sev = True
+            modified_attrib = initial_attrib.replace(css_exp, phoebus_exp)
+            logger.debug(f"Fixing {css_exp} to {phoebus_exp} in rule")
+
+    exp_el.attrib["bool_exp"] = modified_attrib
+
+
 def fix_actions_on_widgets_without_actions_functionality(
     steps: CompletedSteps, widget: Element
 ):
@@ -764,12 +470,354 @@ def fix_actions_on_widgets_without_actions_functionality(
             rule.getparent().remove(rule)
 
 
-def replace_open_in_tab(steps: CompletedSteps, action: Element):
-    if action.attrib["type"] == "open_display":
-        for target in action.findall("target"):
-            if target.text == "tab":
-                target.text = "standalone"
-                steps.replace_action_tab = True
+def fix_edm_symbol_widgets(
+    sc: ScreenConverter, oc: OpiConverter, widget: Element
+) -> None:
+    """Convert an edm/cs-studio style symbol widget to a Phoebus one."""
+
+    # Get name of symbol file
+    old_symbol_file = Path(widget.findtext("symbols/symbol"))
+    if old_symbol_file.suffix == ".gif":
+        logger.warning(
+            "gif symbol images are not currently supported, failed to fix edm symbol: "
+            f"{old_symbol_file}"
+        )
+        return
+
+    found = find_symbol_image(sc, oc.macros, oc.support_module_name, old_symbol_file)
+    if found is None:
+        logger.error(
+            f"Could not find symbol image for symbol reference {old_symbol_file}"
+        )
+        return
+    src_file, src_sm = found
+
+    widget_name = widget.findtext("name")
+    logger.debug(f"Fixing Symbol widget with name: {widget_name}")
+
+    output_file, output_file_full = get_symbol_file_destinations(
+        sc, oc, src_file, src_sm
+    )
+
+    symbol_key = (widget_name, str(old_symbol_file))
+    sub_image_width = get_sub_image_widths(oc.const_opi_data).get(symbol_key)
+    # sub_image_width stores a stringified float, so we must convert to float first
+    width = 0 if sub_image_width is None else int(float(sub_image_width))
+
+    n_images = get_symbol_image_split(
+        sc.symbol_image_splits, output_file_full, src_file, width
+    )
+    if n_images is None:
+        return
+
+    oc.completed_conversion_steps.split_sym_images = True
+
+    # Fix rules and return the start_index
+    start_index, old_rule = update_symbol_widget_rules(widget, output_file)
+
+    # Run action off left click if the widget has actions
+    if widget.find("actions/action") is not None:
+        etree.SubElement(widget, "run_actions_on_mouse_click").text = "true"
+
+    symbol_files = [str(path) for path in get_symbol_file_paths(output_file, n_images)]
+
+    # Remove the symbol files before the start index
+    symbol_files = symbol_files[start_index:]
+
+    # Reorder the symbol files based on rules
+    if old_rule is not None:
+        symbol_files = reorder_default_symbol_order_from_rule(symbol_files, old_rule)
+
+    # Remove old combined symbol file
+    symbols_el = widget.find("symbols")
+    symbols_el.remove(symbols_el.find("symbol"))
+
+    # Add new symbols
+    for symbol_file in symbol_files:
+        new_symbol = Element("symbol")
+        new_symbol.text = symbol_file
+        symbols_el.append(new_symbol)
+
+
+def find_symbol_image(
+    sc: ScreenConverter, macros: dict[str, str], own_module: str | None, path: Path
+) -> tuple[Path, str | None] | None:
+    """Find a symbol image in a support module named in path, else in own_module.
+
+    Args:
+        sc: The running conversion, holding the support modules found so far.
+        macros: Filled in before the path is matched.
+        own_module: The screen's support module, if any.
+        path: The image path as the widget gives it.
+
+    Returns:
+        The image and the support module named in path, if any, or None if the image
+        is not found.
+    """
+
+    resolved = fill_in_macros(str(path), macros)
+    if resolved is None:
+        return None
+
+    path = Path(resolved)
+    src_sm = None
+    src_file = None
+    for sm in sc.domain_support_module_locations + sc.acc_support_module_locations:
+        for i, part in enumerate(path.parts):
+            if sm[0] == part:
+                sm_path = get_existing_support_module_filepath(sc, part)
+                if sm_path is not None:
+                    src_sm = part
+                    # ../FE/symbols/x.png becomes <sm_path>/symbols/x.png
+                    src_file = Path(sm_path) / Path(*path.parts[i + 1 :])
+                    break
+
+    if src_file is not None and src_file.is_file():
+        return src_file, src_sm
+
+    if own_module is None:
+        return None
+
+    own_sm_path = get_existing_support_module_filepath(sc, own_module)
+    if own_sm_path is None:
+        return None
+
+    # The old path is relative, but we want absolute so strip out ../
+    src_file = Path(own_sm_path) / str(path).replace("../", "")
+    if not src_file.is_file():
+        return None
+
+    return src_file, src_sm
+
+
+def get_symbol_file_destinations(
+    sc: ScreenConverter, oc: OpiConverter, src_file: Path, src_sm: str
+) -> tuple[Path, Path]:
+    """Get the destination path for the symbols, both the full path to save the image
+    files too and the relative path to use in the screen links."""
+
+    # Decide where to put the symbol files based on the name of either the support
+    # module we got the image from (priority) or our own support module.
+    sm = src_sm if src_sm is not None else oc.support_module_name
+
+    if sm in ACC_UI_SUPPORT_MODULE_LIST:
+        output_file = sc.acc_ui_support_symbol_dst_part / sm / src_file.name
+        output_file_full = sc.acc_ui_support_symbol_dst_full / sm / src_file.name
+    else:
+        output_file = sc.domain_ui_support_symbol_dst_part / sm / src_file.name
+        output_file_full = sc.domain_ui_support_symbol_dst_full / sm / src_file.name
+
+    return oc.path_to_top / output_file, output_file_full
+
+
+@lru_cache(maxsize=1)
+def get_sub_image_widths(opi_data: etree.ElementTree) -> dict[tuple, str]:
+    """Index the sub image widths in an .opi by the symbol they belong to.
+
+    Cached on the tree so the index is built once per screen. Only the most recent is
+    kept, as screens are converted one at a time.
+
+    Args:
+        opi_data: The unmodified .opi element tree.
+
+    Returns:
+        Sub image width, as its original string, by (name, image file). Where a screen
+        repeats a pair the last one wins, as it did when this was searched linearly.
+    """
+
+    widths = {}
+    for width_el in opi_data.findall(".//sub_image_width"):
+        symbol = width_el.getparent()
+        widths[(symbol.findtext("name"), symbol.findtext("image_file"))] = (
+            symbol.findtext("sub_image_width")
+        )
+
+    return widths
+
+
+def get_symbol_image_split(
+    symbol_image_splits: dict[Path, tuple[int, int]],
+    output_file_full: Path,
+    src_file: Path,
+    width: int,
+) -> int | None:
+    """Split a symbol image into one file per symbol, doing the work once per image.
+
+    An image is an array of equally sized symbols, so it can only split one way. The
+    first widget to use it sets the width; later widgets reuse that split and are
+    warned if they ask for a different one.
+
+    Args:
+        symbol_image_splits: The (symbol width, number of symbols) of each image split
+            so far, by destination. A new split is added to it.
+        output_file_full: Where the symbol files are written.
+        src_file: The combined symbol image to split.
+        width: Width of one symbol as this widget gives it, or 0 if it gives none.
+
+    Returns:
+        The number of symbols in src_file, or None if it could not be measured.
+    """
+
+    if output_file_full in symbol_image_splits:
+        split_width, n_images = symbol_image_splits[output_file_full]
+        if width not in (0, split_width):
+            logger.warning(
+                f"Symbol image {src_file} was already split at sub_image_width "
+                f"{split_width}, so the {width} asked for here is ignored."
+            )
+        return n_images
+
+    full_width, height = get_symbol_image_dims(src_file)
+    if full_width is None or height is None:
+        logger.error("Failed to convert symbol widget due to problem with identify cmd")
+        return None
+
+    if width == 0:
+        logger.warning(
+            "Could not find symbol widget sub_image_width. Assuming width==height"
+        )
+        width = height
+
+    # Need to calculate from width of full image / width
+    n_images = full_width // width
+    create_symbol_image_file(output_file_full, src_file, n_images, width, height)
+    symbol_image_splits[output_file_full] = (width, n_images)
+
+    return n_images
+
+
+def get_symbol_image_dims(src_file: Path) -> tuple[int, int] | tuple[None, None]:
+    """Get the pixel dimensions of an image file.
+
+    Args:
+        src_file: The image to measure.
+
+    Returns:
+        Its width and height, or (None, None) if identify failed.
+    """
+
+    cmd = [
+        "identify",
+        "-format",
+        "'%w %h'",
+        str(src_file),
+    ]
+
+    result = subprocess.run(cmd, capture_output=True, encoding="utf-8")
+
+    if result.returncode != 0:
+        logger.error(f"identify - {result.stderr}")
+        return None, None
+
+    if result.stderr:
+        logger.debug(f"identify - {result.stderr}")
+
+    width, height = result.stdout.strip("'").split(" ")
+    return int(width), int(height)
+
+
+def create_symbol_image_file(
+    output_file_full: Path,
+    src_file: Path,
+    n_images: int,
+    width: int,
+    height: int,
+) -> None:
+    """Use the cli 'convert' tool to split the edm style single symbol image file
+    into a seperate symbol image file per symbol"""
+
+    logger.info(f"Creating new image for symbol from: {src_file}")
+
+    # Make directory for symbols if it doesnt exist. This can happen if we convert a
+    # symbol widget which uses symbol files from a support module which has not been
+    # scheduled for conversion. Normally we only mkdir for the support module when we
+    # schedule it for conversion, so it is possible that this will happen too late or
+    # wont happen if the user has not requested to convert dependencies.
+    output_file_full.parent.mkdir(exist_ok=True)
+
+    for n, new_output_file in enumerate(
+        get_symbol_file_paths(output_file_full, n_images)
+    ):
+        x = width * n
+
+        cmd = [
+            "convert",
+            str(src_file),
+            "-crop",
+            f"{width}x{height}+{x}+0",
+            # Omit the write-time tIME chunk, so output only changes with the image
+            "-define",
+            "png:exclude-chunk=time",
+            str(new_output_file),
+        ]
+
+        result = subprocess.run(cmd, capture_output=True, encoding="utf-8")
+
+        created = new_output_file.is_file()
+        if not created:
+            logger.error(
+                f"Failed to create new symbol images with command: {' '.join(cmd)}"
+            )
+
+        for line in result.stderr.split("\n"):
+            if line:
+                if not created:
+                    logger.error(f"convert - {line}")
+                else:
+                    logger.debug(f"convert - {line}")
+
+
+def update_symbol_widget_rules(
+    widget: Element, output_file: Path
+) -> tuple[int, Element | None]:
+    """Modify/create rules to change the displayed symbol and overwrite the default
+    order"""
+
+    invalid_image_index = None
+    old_rule = None
+    # Possible bug: not cleared between rules, so a second matching rule appends the
+    # first rule's copies as well as its own. Depends on the rules in the source .opi.
+    additional_rules = []
+
+    for rule in widget.findall("rules/rule"):
+        # Look for a rule which is used to change the displayed symbol to a symbol
+        # signifying an invalid state.
+        if rule.attrib.get("prop_id") != "image_index":
+            continue
+
+        old_rule = copy.deepcopy(rule)
+        rule.attrib["prop_id"] = "symbols[0]"
+        rule.attrib["out_exp"] = "false"
+        for exp in rule.findall("exp"):
+            if exp.attrib["bool_exp"] == "pvLegacySev0==-1":
+                expression = exp.find("expression")
+                invalid_image_index = int(expression.text)
+                exp.remove(expression)
+                exp.attrib["bool_exp"] = "pvSev0==3 || pvSev0==4"
+                val_el = Element("value")
+                val_el.text = str(
+                    output_file.with_stem(f"{output_file.stem}_{invalid_image_index}")
+                )
+                exp.append(val_el)
+            else:
+                # Remove other "image_index" rule expressions. For the most part this
+                # functionality is now built into the widget, so we dont keep them.
+                rule.remove(exp)
+
+        # We must create a rule for each symbol specified for the widget which
+        # overwrites the displayed symbol widget with the special invalid state symbol.
+        for i in range(1, len(widget.find("symbols"))):
+            # Get a unique copy of the rule
+            additional_rule = copy.deepcopy(rule)
+            additional_rule.attrib["name"] = rule.attrib["name"] + f"_{i}"
+            additional_rule.attrib["prop_id"] = f"symbols[{i}]"
+            additional_rules.append(additional_rule)
+
+        # Extend the rules for this widget with the new rules we created
+        rule.getparent().extend(additional_rules)
+
+    start_index = 0 if invalid_image_index is None else 1
+    return start_index, old_rule
 
 
 def reorder_default_symbol_order_from_rule(
@@ -843,58 +891,10 @@ def reorder_default_symbol_order_from_rule(
     return new_symbols_order
 
 
-def convert_pv_function(widget: Element):
-    for child in widget.iter():
-        inp_string = child.text
-        if inp_string is not None and "pv(" in inp_string:
-            # cs-studio writes a PV name as pv("NAME"), Phoebus as `NAME`
-            pv_replacement = re.sub(r'pv\("(.*?)"\)', r"`\1`", inp_string)
-            # Anything still holding pv( did not match, either a nested call such as
-            # pv(concat(...)) or an unclosed pv(". Phoebus has no equivalent for the
-            # former, so warn and leave the formula as it was.
-            if "pv(" in pv_replacement:
-                logger.warning(
-                    f"Cannot fix the following formula in Phoebus {inp_string}"
-                )
-            else:
-                logger.info(f"Replace pv() function with {pv_replacement}")
-                child.text = pv_replacement
+def get_symbol_file_paths(base_file: Path, n_images: int) -> list[Path]:
+    """One path per symbol, indexed unless the image holds a single symbol."""
 
+    if n_images == 1:
+        return [base_file]
 
-def fix_rule_expressions(steps: CompletedSteps, widget: Element):
-    """Fix common issues that come up in cs-studio rules"""
-
-    expressions = widget.findall("rules/rule/exp")
-    for exp in expressions:
-        # Use new syntax for getting a PV alarm severity
-        fix_pv_severity_expression(steps, exp)
-
-        # widget.getValue() is not available in Phoebus, we assume this is an attempt to
-        # get the value of the widgets pv, so we replace it with pv0
-        if "widget.getValue()" in exp.attrib["bool_exp"]:
-            exp.attrib["bool_exp"] = exp.attrib["bool_exp"].replace(
-                "widget.getValue()", "pv0"
-            )
-
-
-def fix_pv_severity_expression(steps: CompletedSteps, exp_el: Element):
-    # OK, Major, Minor, Invalid/undefined
-    css_sev_expressions = [
-        "pvLegacySev0==0",
-        "pvLegacySev0==1",
-        "pvLegacySev0==2",
-        "pvLegacySev0==-1",
-    ]
-    phoebus_sev_expressions = ["pvSev0==0", "pvSev0==2", "pvSev0==1", "pvSev0==3"]
-    initial_attrib = exp_el.attrib["bool_exp"]
-    modified_attrib = initial_attrib
-
-    for css_exp, phoebus_exp in zip(
-        css_sev_expressions, phoebus_sev_expressions, strict=True
-    ):
-        if css_exp in initial_attrib:
-            steps.update_leg_sev = True
-            modified_attrib = initial_attrib.replace(css_exp, phoebus_exp)
-            logger.debug(f"Fixing {css_exp} to {phoebus_exp} in rule")
-
-    exp_el.attrib["bool_exp"] = modified_attrib
+    return [base_file.with_stem(f"{base_file.stem}_{n}") for n in range(n_images)]
