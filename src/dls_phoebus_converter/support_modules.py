@@ -218,6 +218,111 @@ def switch_filepaths(sc: ScreenConverter, oc: OpiConverter, file_path: Path) -> 
     return str(file_path)
 
 
+def report_support_module_problems(sc: ScreenConverter) -> None:
+    """Fail the conversion if any support module did not resolve as intended.
+
+    Called once the conversion has finished, so every problem is named in a single
+    message rather than costing one run each. Pins that were never used are only
+    warned about, as a correct config can leave some unused, such as on a rerun into
+    a non-empty output directory.
+
+    Args:
+        sc: The finished conversion.
+
+    Raises:
+        ValueError: If any module or its screens were not found, or, under
+            UnpinnedModuleAction.ERROR, if any module was converted from an unpinned
+            release.
+    """
+
+    unused_pins = sc.dependency_versions.keys() - sc.modules_looked_up
+    if unused_pins:
+        logger.warning(
+            "These support modules are pinned in the dependencies field of the config "
+            "file but were never looked up, so their pins had no effect: "
+            f"{', '.join(sorted(unused_pins))}. Check them for misspellings. Modules "
+            "already in the output directory are not looked up."
+        )
+
+    problems = []
+
+    if sc.modules_not_found:
+        problems.append(
+            "These support modules are not in /dls_sw, so nothing has been converted "
+            f"from them: {', '.join(sorted(sc.modules_not_found))}. Add any that are "
+            "not support modules to NOT_SUPPORT_MODULES in support_modules.py."
+        )
+
+    if sc.modules_without_screens:
+        problems.append(
+            "These support modules are in /dls_sw but their screens were not where "
+            "they were expected, so none of their screens have been converted: "
+            f"{', '.join(sorted(sc.modules_without_screens))}."
+        )
+
+    if sc.on_unpinned_module is UnpinnedModuleAction.ERROR and (
+        sc.unpinned_modules_found
+    ):
+        problems.append(
+            "The config file asks for on_unpinned_module: "
+            f"{UnpinnedModuleAction.ERROR}, but these support modules have no pinned "
+            "release and were converted from the newest release on disk: "
+            f"{', '.join(sorted(sc.unpinned_modules_found))}. Add them to the "
+            "dependencies field of the config file."
+        )
+
+    if not problems:
+        return
+
+    error_msg = "\n".join(problems)
+    logger.error(error_msg)
+    raise ValueError(error_msg)
+
+
+def convert_extra_support_modules(sc: ScreenConverter):
+    # wipe old conversion data as these are all finished
+    sc.conversion_data = []
+
+    all_support_modules = (
+        sc.domain_support_module_locations + sc.acc_support_module_locations
+    )
+
+    extra_file_data = []
+
+    existing_modules_paths = list(sc.acc_ui_support_bob_dst_full.iterdir()) + list(
+        sc.domain_ui_support_bob_dst_full.iterdir()
+    )
+    existing_module_names = [path.name for path in existing_modules_paths]
+    # sm -> support module
+    for sm_name, sm_file_path in all_support_modules:
+        if sm_name not in existing_module_names:
+            # Filter out any files which have been mistaken for support modules
+            if sm_file_path.suffix == "":
+                sm_src_file_path = get_existing_support_module_filepath(sc, sm_name)
+                if sm_src_file_path is not None:
+                    dst = "fe-ui-support"
+                    if sm_name in ACC_UI_SUPPORT_MODULE_LIST:
+                        dst = "acc-ui-support"
+
+                    extra_file_data.append(
+                        {
+                            "src": sm_src_file_path,
+                            "dst": dst,
+                            "support_module_name": sm_name,
+                            "include_subdirs": True,
+                        }
+                    )
+
+                    logger.info(f"Converting extra support module: {sm_name}")
+
+    if extra_file_data:
+        # The same config, but converting these support modules instead of its own files
+        sc.parse_config({**sc.config_data, "files": extra_file_data})
+        sc.convert_screens()
+    else:
+        logger.info("Creating extra modules finished!")
+
+
 def get_existing_support_module_filepath(
     sc: ScreenConverter, support_module_name: str
 ) -> str | None:
@@ -325,108 +430,3 @@ def get_opi_dir(support_module_name: str, release_dir: Path) -> Path:
         return release_dir / opi_location
 
     return release_dir / f"{support_module_name}App" / "opi" / "opi"
-
-
-def report_support_module_problems(sc: ScreenConverter) -> None:
-    """Fail the conversion if any support module did not resolve as intended.
-
-    Called once the conversion has finished, so every problem is named in a single
-    message rather than costing one run each. Pins that were never used are only
-    warned about, as a correct config can leave some unused, such as on a rerun into
-    a non-empty output directory.
-
-    Args:
-        sc: The finished conversion.
-
-    Raises:
-        ValueError: If any module or its screens were not found, or, under
-            UnpinnedModuleAction.ERROR, if any module was converted from an unpinned
-            release.
-    """
-
-    unused_pins = sc.dependency_versions.keys() - sc.modules_looked_up
-    if unused_pins:
-        logger.warning(
-            "These support modules are pinned in the dependencies field of the config "
-            "file but were never looked up, so their pins had no effect: "
-            f"{', '.join(sorted(unused_pins))}. Check them for misspellings. Modules "
-            "already in the output directory are not looked up."
-        )
-
-    problems = []
-
-    if sc.modules_not_found:
-        problems.append(
-            "These support modules are not in /dls_sw, so nothing has been converted "
-            f"from them: {', '.join(sorted(sc.modules_not_found))}. Add any that are "
-            "not support modules to NOT_SUPPORT_MODULES in support_modules.py."
-        )
-
-    if sc.modules_without_screens:
-        problems.append(
-            "These support modules are in /dls_sw but their screens were not where "
-            "they were expected, so none of their screens have been converted: "
-            f"{', '.join(sorted(sc.modules_without_screens))}."
-        )
-
-    if sc.on_unpinned_module is UnpinnedModuleAction.ERROR and (
-        sc.unpinned_modules_found
-    ):
-        problems.append(
-            "The config file asks for on_unpinned_module: "
-            f"{UnpinnedModuleAction.ERROR}, but these support modules have no pinned "
-            "release and were converted from the newest release on disk: "
-            f"{', '.join(sorted(sc.unpinned_modules_found))}. Add them to the "
-            "dependencies field of the config file."
-        )
-
-    if not problems:
-        return
-
-    error_msg = "\n".join(problems)
-    logger.error(error_msg)
-    raise ValueError(error_msg)
-
-
-def convert_extra_support_modules(sc: ScreenConverter):
-    # wipe old conversion data as these are all finished
-    sc.conversion_data = []
-
-    all_support_modules = (
-        sc.domain_support_module_locations + sc.acc_support_module_locations
-    )
-
-    extra_file_data = []
-
-    existing_modules_paths = list(sc.acc_ui_support_bob_dst_full.iterdir()) + list(
-        sc.domain_ui_support_bob_dst_full.iterdir()
-    )
-    existing_module_names = [path.name for path in existing_modules_paths]
-    # sm -> support module
-    for sm_name, sm_file_path in all_support_modules:
-        if sm_name not in existing_module_names:
-            # Filter out any files which have been mistaken for support modules
-            if sm_file_path.suffix == "":
-                sm_src_file_path = get_existing_support_module_filepath(sc, sm_name)
-                if sm_src_file_path is not None:
-                    dst = "fe-ui-support"
-                    if sm_name in ACC_UI_SUPPORT_MODULE_LIST:
-                        dst = "acc-ui-support"
-
-                    extra_file_data.append(
-                        {
-                            "src": sm_src_file_path,
-                            "dst": dst,
-                            "support_module_name": sm_name,
-                            "include_subdirs": True,
-                        }
-                    )
-
-                    logger.info(f"Converting extra support module: {sm_name}")
-
-    if extra_file_data:
-        # The same config, but converting these support modules instead of its own files
-        sc.parse_config({**sc.config_data, "files": extra_file_data})
-        sc.convert_screens()
-    else:
-        logger.info("Creating extra modules finished!")
