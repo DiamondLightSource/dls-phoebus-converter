@@ -34,36 +34,6 @@ def fill_in_macros(string: str, macros: dict[str, str]) -> str | None:
     return resolved_path
 
 
-def add_new_macros(
-    bob_data: etree.ElementTree,
-    macro_names: list[str],
-    macro_values: list[str],
-) -> None:
-    """Add macros to the root of bob_data, overwriting any of the same name.
-
-    Args:
-        bob_data: The converted display.
-        macro_names: The name of each macro to add.
-        macro_values: The value of each macro, in the order of macro_names.
-    """
-
-    root = bob_data.getroot()
-    macro_data = root.find("macros")
-    if macro_data is None:
-        macro_data = etree.SubElement(root, "macros")
-
-    for new_macro_name, new_macro_value in zip(macro_names, macro_values, strict=True):
-        macro = macro_data.find(new_macro_name)
-        if macro is None:
-            macro = etree.SubElement(macro_data, new_macro_name)
-        else:
-            logger.warning(
-                "An existing file macro is being overwritten: "
-                f"{new_macro_name}:{macro.text} -> {new_macro_name}:{new_macro_value}"
-            )
-        macro.text = str(new_macro_value)
-
-
 def handle_macros(bob_data: etree.ElementTree, macros: dict[str, str]) -> None:
     """Look for unique instances of a macro eg ${string} in the bob file. We ignore
     a small number of macros which are defined from other widget fields
@@ -101,3 +71,33 @@ def handle_macros(bob_data: etree.ElementTree, macros: dict[str, str]) -> None:
             new_macro_values.append(m_key)
 
     add_new_macros(bob_data, new_macro_names, new_macro_values)
+
+
+def add_new_macros(
+    bob_data: etree.ElementTree,
+    macro_names: list[str],
+    macro_values: list[str],
+) -> None:
+    """Add macros to the root of bob_data, overwriting any of the same name.
+
+    Args:
+        bob_data: The converted display.
+        macro_names: The name of each macro to add.
+        macro_values: The value of each macro, in the order of macro_names.
+    """
+
+    root = bob_data.getroot()
+    macro_data = root.find("macros")
+    if macro_data is None:
+        macro_data = etree.SubElement(root, "macros")
+
+    for new_macro_name, new_macro_value in zip(macro_names, macro_values, strict=True):
+        macro = macro_data.find(new_macro_name)
+        if macro is None:
+            macro = etree.SubElement(macro_data, new_macro_name)
+        else:
+            logger.warning(
+                "An existing file macro is being overwritten: "
+                f"{new_macro_name}:{macro.text} -> {new_macro_name}:{new_macro_value}"
+            )
+        macro.text = str(new_macro_value)
