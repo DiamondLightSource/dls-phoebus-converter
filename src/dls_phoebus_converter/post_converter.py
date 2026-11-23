@@ -9,16 +9,15 @@ from lxml import etree
 from lxml.etree import Element
 
 from dls_phoebus_converter.macros import handle_macros
+from dls_phoebus_converter.support_modules import (
+    find_required_support_modules,
+    update_filepaths,
+)
 from dls_phoebus_converter.widget_fixes import fix_widget_issues
 
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
     from dls_phoebus_converter.screen_converter import ScreenConverter
-
-from dls_phoebus_converter.support_modules import (
-    find_required_support_modules,
-    update_filepaths,
-)
 
 logger = logging.getLogger("dls_phoebus_converter")
 

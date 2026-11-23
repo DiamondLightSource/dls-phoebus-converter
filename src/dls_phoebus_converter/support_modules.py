@@ -10,11 +10,11 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from dls_phoebus_converter.macros import fill_in_macros
+from dls_phoebus_converter.utilities import find_filepaths
 
 if TYPE_CHECKING:
     from dls_phoebus_converter.opi_converter import OpiConverter
     from dls_phoebus_converter.screen_converter import ScreenConverter
-from dls_phoebus_converter.utilities import find_filepaths
 
 ACC_UI_SUPPORT_MODULE_LIST = [
     "devIocStats",
