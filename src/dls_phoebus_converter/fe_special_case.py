@@ -22,54 +22,27 @@ VISIBLE_RULE_XML = (
 )
 
 
-def replace_visible_script(bob_data: etree.ElementTree, dst_bob_filepath: Path) -> None:
-    """Replace this complex script with a rule"""
+# Generic function to be inlcluded in each domain-specific special case module.
+# This is dynamically imported and then called by the main conversion process.
+def run(oc: OpiConverter) -> None:
+    """Make any case-by-case adjustments to FE specific screens which are not handled
+    by the normal conversion process."""
 
-    logger.info(
-        f"Special case: Removing references to visible.py from {dst_bob_filepath}"
-    )
+    if "absb_temps_fe22b.bob" in str(oc.dst_bob_filepath):
+        replace_progress_bar_with_linear_meter(oc.bob_data, oc.dst_bob_filepath)
 
-    # Find and remove all <script> elements which use visible.py. Replace it with a new
-    # rule
-    for script in bob_data.findall('.//script[@file="visible.py"]'):
-        parent = script.getparent()
-        if parent is not None:
-            parent.remove(script)
-            widget = parent.getparent()
-            if widget is not None:
-                rules_elements = widget.findall("rules")
-                for rules_el in rules_elements:
-                    rules_el.insert(-1, etree.fromstring(VISIBLE_RULE_XML))
+    for name in [
+        "FE24B.bob",
+        "absb_pbpm_temps.bob",
+        "absb_temps_fe22b.bob",
+        "absb_temps.bob",
+        "absb.bob",
+    ]:
+        if name in str(oc.dst_bob_filepath):
+            remove_fe_temp_indicator_script(oc.bob_data, oc.dst_bob_filepath)
 
-                if not rules_elements:
-                    widget.insert(
-                        -1, etree.fromstring(f"<rules>{VISIBLE_RULE_XML}</rules>")
-                    )
-
-
-def remove_fe_temp_indicator_script(
-    bob_data: etree.ElementTree, dst_bob_filepath: Path
-) -> None:
-    """This script was being used to colour ProgressBars based on hihi and hi values.
-    Instead we now just use an alarm border which changes the border based on alarm.
-    Assuming hihi and hi are configured to generate Major and Minor alarms, the
-    behaviour is the same, and so we dont need this old rule which is broken in Phoebus
-    anyway"""
-
-    logger.info(
-        "Special case: Removing references to feTempIndicator.py from "
-        f"{dst_bob_filepath}"
-    )
-
-    # Find and remove all <script> elements which use feTempIndicator.py
-    for xpath in (
-        './/script[@file="feTempIndicator.py"]',
-        './/script[@file="common/plc/feTempIndicator.py"]',
-    ):
-        for script in bob_data.findall(xpath):
-            parent = script.getparent()
-            if parent is not None:
-                parent.remove(script)
+    if "motor.bob" in str(oc.dst_bob_filepath):
+        replace_visible_script(oc.bob_data, oc.dst_bob_filepath)
 
 
 def replace_progress_bar_with_linear_meter(
@@ -148,24 +121,51 @@ def replace_progress_bar_with_linear_meter(
                 border.text = "false"
 
 
-# Generic function to be inlcluded in each domain-specific special case module.
-# This is dynamically imported and then called by the main conversion process.
-def run(oc: OpiConverter) -> None:
-    """Make any case-by-case adjustments to FE specific screens which are not handled
-    by the normal conversion process."""
+def remove_fe_temp_indicator_script(
+    bob_data: etree.ElementTree, dst_bob_filepath: Path
+) -> None:
+    """This script was being used to colour ProgressBars based on hihi and hi values.
+    Instead we now just use an alarm border which changes the border based on alarm.
+    Assuming hihi and hi are configured to generate Major and Minor alarms, the
+    behaviour is the same, and so we dont need this old rule which is broken in Phoebus
+    anyway"""
 
-    if "absb_temps_fe22b.bob" in str(oc.dst_bob_filepath):
-        replace_progress_bar_with_linear_meter(oc.bob_data, oc.dst_bob_filepath)
+    logger.info(
+        "Special case: Removing references to feTempIndicator.py from "
+        f"{dst_bob_filepath}"
+    )
 
-    for name in [
-        "FE24B.bob",
-        "absb_pbpm_temps.bob",
-        "absb_temps_fe22b.bob",
-        "absb_temps.bob",
-        "absb.bob",
-    ]:
-        if name in str(oc.dst_bob_filepath):
-            remove_fe_temp_indicator_script(oc.bob_data, oc.dst_bob_filepath)
+    # Find and remove all <script> elements which use feTempIndicator.py
+    for xpath in (
+        './/script[@file="feTempIndicator.py"]',
+        './/script[@file="common/plc/feTempIndicator.py"]',
+    ):
+        for script in bob_data.findall(xpath):
+            parent = script.getparent()
+            if parent is not None:
+                parent.remove(script)
 
-    if "motor.bob" in str(oc.dst_bob_filepath):
-        replace_visible_script(oc.bob_data, oc.dst_bob_filepath)
+
+def replace_visible_script(bob_data: etree.ElementTree, dst_bob_filepath: Path) -> None:
+    """Replace this complex script with a rule"""
+
+    logger.info(
+        f"Special case: Removing references to visible.py from {dst_bob_filepath}"
+    )
+
+    # Find and remove all <script> elements which use visible.py. Replace it with a new
+    # rule
+    for script in bob_data.findall('.//script[@file="visible.py"]'):
+        parent = script.getparent()
+        if parent is not None:
+            parent.remove(script)
+            widget = parent.getparent()
+            if widget is not None:
+                rules_elements = widget.findall("rules")
+                for rules_el in rules_elements:
+                    rules_el.insert(-1, etree.fromstring(VISIBLE_RULE_XML))
+
+                if not rules_elements:
+                    widget.insert(
+                        -1, etree.fromstring(f"<rules>{VISIBLE_RULE_XML}</rules>")
+                    )
