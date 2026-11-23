@@ -12,10 +12,18 @@ import os.path
 from datetime import datetime
 
 
-def get_timestamped_log_filename() -> str:
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    os.makedirs("logs", exist_ok=True)
-    return os.path.join("logs", f"conversion_{timestamp}.log")
+def setup_logging(config: dict | None = None) -> None:
+    """Configure logging.
+
+    Args:
+        config: A mapping for logging.config.dictConfig, defaulting to
+            default_config().
+    """
+
+    if config is None:
+        config = default_config()
+
+    logging.config.dictConfig(config)
 
 
 def default_config() -> dict:
@@ -87,15 +95,7 @@ def default_config() -> dict:
     }
 
 
-def setup_logging(config: dict | None = None) -> None:
-    """Configure logging.
-
-    Args:
-        config: A mapping for logging.config.dictConfig, defaulting to
-            default_config().
-    """
-
-    if config is None:
-        config = default_config()
-
-    logging.config.dictConfig(config)
+def get_timestamped_log_filename() -> str:
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    os.makedirs("logs", exist_ok=True)
+    return os.path.join("logs", f"conversion_{timestamp}.log")
