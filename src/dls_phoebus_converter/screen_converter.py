@@ -9,7 +9,8 @@ from types import ModuleType
 
 import yaml
 
-from dls_phoebus_converter.opi_converter import OpiConverter, run_phoebus_converter
+from dls_phoebus_converter.opi_converter import OpiConverter
+from dls_phoebus_converter.phoebus_runner import run_phoebus_converter
 from dls_phoebus_converter.support_modules import (
     UnpinnedModuleAction,
     convert_extra_support_modules,
