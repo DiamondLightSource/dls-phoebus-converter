@@ -1,4 +1,4 @@
-"""Fix widgets the Phoebus converter leaves broken or missing features."""
+"""Fix, by widget type, the widgets in a .bob converted by Phoebus."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-def fix_widget_issues(sc: ScreenConverter, oc: OpiConverter):
+def fix_bob_widgets(sc: ScreenConverter, oc: OpiConverter):
     steps = oc.completed_conversion_steps
     for widget in oc.bob_data.findall(".//widget"):
         if "typeId" in widget.attrib:
