@@ -9,7 +9,8 @@ from types import ModuleType
 
 import yaml
 
-from dls_phoebus_converter.opi_converter import OpiConverter, run_phoebus_converter
+from dls_phoebus_converter.opi_converter import OpiConverter
+from dls_phoebus_converter.phoebus_runner import run_phoebus_converter
 from dls_phoebus_converter.support_modules import (
     UnpinnedModuleAction,
     convert_extra_support_modules,
@@ -19,18 +20,15 @@ from dls_phoebus_converter.support_modules import (
 logger = logging.getLogger("dls_phoebus_converter")
 
 
-def load_config(config_file: Path) -> dict:
-    """Read a config file.
+def convert_from_config(config_file_path: Path, output_dir_path: Path) -> None:
+    """Convert every screen listed in a config file.
 
     Args:
-        config_file: The .yaml file to read.
-
-    Returns:
-        The config data.
+        config_file_path: The .yaml config describing what to convert.
+        output_dir_path: Directory to write the converted screens to.
     """
 
-    with open(config_file) as file:
-        return yaml.safe_load(file)
+    ScreenConverter(config_file_path, output_dir_path).convert()
 
 
 class ScreenConverter:
@@ -296,12 +294,15 @@ class ScreenConverter:
             convert_extra_support_modules(self)
 
 
-def convert_from_config(config_file_path: Path, output_dir_path: Path) -> None:
-    """Convert every screen listed in a config file.
+def load_config(config_file: Path) -> dict:
+    """Read a config file.
 
     Args:
-        config_file_path: The .yaml config describing what to convert.
-        output_dir_path: Directory to write the converted screens to.
+        config_file: The .yaml file to read.
+
+    Returns:
+        The config data.
     """
 
-    ScreenConverter(config_file_path, output_dir_path).convert()
+    with open(config_file) as file:
+        return yaml.safe_load(file)
